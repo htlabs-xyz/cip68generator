@@ -31,42 +31,6 @@ export default function DetailPage() {
   if (isNil(assetDetails)) return "no data";
   const { onchain_metadata: metadata, fingerprint } = assetDetails;
 
-  // const transactions = [
-  //   {
-  //     txHash: "600d06204bde...af2ce50",
-  //     datetime: "25 Sep, 2024 10:46",
-  //     action: "Mint",
-  //     fees: "₳ 0.22",
-  //     owner: "600d06204bde...af2ce50",
-  //     status: "Complete",
-  //   },
-  //   {
-  //     txHash: "600d06204bde...af2ce50",
-  //     datetime: "25 Sep, 2024 10:46",
-  //     action: "Mint",
-  //     fees: "₳ 0.22",
-  //     owner: "600d06204bde...af2ce50",
-  //     status: "Complete",
-  //   },
-  //   {
-  //     txHash: "600d06204bde...af2ce50",
-  //     datetime: "25 Sep, 2024 10:46",
-  //     action: "Mint",
-  //     fees: "₳ 0.22",
-  //     owner: "600d06204bde...af2ce50",
-  //     status: "Complete",
-  //   },
-  //   {
-  //     txHash: "600d06204bde...af2ce50",
-  //     datetime: "25 Sep, 2024 10:46",
-  //     action: "Mint",
-  //     fees: "₳ 0.22",
-  //     owner: "600d06204bde...af2ce50",
-  //     status: "Complete",
-  //   },
-  //   // Add more transactions here if needed
-  // ];
-
   return (
     <div className="flex-1 overflow-x-hidden overflow-y-auto">
       <div className="py-8 px-10 m-auto flex flex-col gap-6">
