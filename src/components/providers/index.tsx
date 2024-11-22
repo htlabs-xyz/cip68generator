@@ -4,7 +4,7 @@ import React, { Suspense } from "react";
 import QueryClientProvider from "./query";
 import ErrorClientProvider from "./error";
 import { Toaster } from "@/components/ui/toaster";
-import Loading from "@/app/loading";
+import Loading from "@/app/(loading)/loading";
 import dynamic from "next/dynamic";
 import { SessionProvider, SessionProviderProps } from "next-auth/react";
 const WalletProvider = dynamic(

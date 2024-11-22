@@ -1,7 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
-import Loading from "@/app/loading";
+import Loading from "@/app/(loading)/loading";
 import { isNil } from "lodash";
 import { useWalletContext } from "@/components/providers/wallet";
 import Account from "./account";
