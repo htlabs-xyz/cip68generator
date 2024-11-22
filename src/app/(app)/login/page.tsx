@@ -18,6 +18,7 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { NetworkComponent } from "./_components/network-item";
 import Wallet from "./_components/wallet";
+import Loading from "@/app/loading";
 
 export default function LoginPage() {
   const { data: session, status } = useSession();
@@ -30,6 +31,10 @@ export default function LoginPage() {
       version: "",
     });
   };
+
+  if (status === "loading") {
+    return <Loading />;
+  }
 
   if (status === "authenticated") {
     redirect(dashboardRoutes.home.redirect);
