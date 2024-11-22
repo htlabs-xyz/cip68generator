@@ -1,6 +1,7 @@
 import {
   Globe,
   LayoutGrid,
+  Loader2,
   LucideIcon,
   LucideProps,
   MenuIcon,
@@ -33,6 +34,7 @@ export const Icons = {
   house: TiHome,
   imagePlus: IoIosCreate,
   circuitBoard: FaToolbox,
+  spinner: Loader2,
   menuIcon: MenuIcon,
   store: Store,
   globe: Globe,

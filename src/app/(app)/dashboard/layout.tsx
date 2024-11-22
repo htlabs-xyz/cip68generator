@@ -1,6 +1,6 @@
 "use client";
 
-import Loading from "@/app/loading";
+import Loading from "@/app/(loading)/loading";
 import DesktopDashboardLayout from "@/components/layouts/desktop-dashboard";
 import MobileDashboardLayout from "@/components/layouts/mobile-dashboard";
 import useWindowSize from "@/hooks/use-window-size";
