@@ -87,7 +87,7 @@ export default function MintOneProvider({
         "submit_transaction",
         "Submitting Transaction",
       );
-      // // submit transaction
+      // submit transaction
       const txHash = await submitTx(signedTx);
       setTxHash(txHash);
       updateTaskState("success");

@@ -5,7 +5,7 @@ import {
   AlertStep,
   ResultStep,
   TransactionStep,
-} from "../../_components/bun-steps";
+} from "../../_components/burn-steps";
 // import StepperNav from "../../_components/bun-steps/stepper-nav";
 
 export default function Page() {

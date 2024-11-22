@@ -6,7 +6,7 @@ export const appConfig = {
 };
 export const uploadConfig = {
   maxFiles: 50,
-  maxSize: 5,
+  maxSize: 50,
 };
 
 export const filterDefault: FilterType = {
