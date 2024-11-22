@@ -11,10 +11,10 @@ use types/cip68.{CIP68}
 pub fn check_output_utxo(output: Output, vks: List<VerificationKeyHash>) -> Bool {
   expect InlineDatum(data) = output.datum
   expect metadatum: CIP68 = data
-  expect name: ByteArray = cip68.get(metadatum, "name")
-  expect image: ByteArray = cip68.get(metadatum, "image")
-  expect media_type: ByteArray = cip68.get(metadatum, "mediaType")
-  expect author: VerificationKeyHash = cip68.get(metadatum, "author")
+  // expect name: ByteArray = cip68.get(metadatum, "name")
+  // expect image: ByteArray = cip68.get(metadatum, "image")
+  // expect media_type: ByteArray = cip68.get(metadatum, "mediaType")
+  expect author: VerificationKeyHash = cip68.get(metadatum, "_pk")
 
   let output_value =
     output.value
@@ -22,9 +22,9 @@ pub fn check_output_utxo(output: Output, vks: List<VerificationKeyHash>) -> Bool
       |> flatten()
 
   and {
-    bytearray.length(name) > 0,
-    bytearray.length(image) > 0,
-    bytearray.length(media_type) > 0,
+    // bytearray.length(name) > 0,
+    // bytearray.length(image) > 0,
+    // bytearray.length(media_type) > 0,
     tx.verify_signature(vks, author),
     list.length(output_value) == 1,
   }

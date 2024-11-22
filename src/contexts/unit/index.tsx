@@ -8,10 +8,13 @@ import { useWalletContext } from "@/components/providers/wallet";
 import { isEmpty, isNil } from "lodash";
 import { useQuery } from "@tanstack/react-query";
 import { getAssetInfo } from "@/services/blockchain/getAssetInfo";
-import { AssetDetails, AssetDetailsWithTransactionHistory } from "@/types";
+import { AssetDetailsWithTransactionHistory } from "@/types";
 import useUnitStore, { UnitStore } from "./store";
 import { useJsonBuilderStore } from "@/components/common/json-builder/store";
 import { redirect } from "next/navigation";
+import { createBurnTransaction } from "@/services/contract/burn";
+import { hexToString } from "@meshsdk/core";
+import { createUpdateTransaction } from "@/services/contract/update";
 
 const { useStepper: useUpdateStepper, steps: updateSteps } = defineStepper(
   { id: "metadata", title: "Metadata" },
@@ -80,8 +83,7 @@ export default function UnitProvider({
         setJsonContent(metadataToUpdate);
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { author_pk, ...metadata } =
-        assetData?.data?.onchain_metadata || {};
+      const { _pk, ...metadata } = assetData?.data?.onchain_metadata || {};
       setJsonContent(metadata);
     }
   }, [assetData]);
@@ -105,9 +107,12 @@ export default function UnitProvider({
       // check assetName is unique
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
+      const assetName = hexToString(
+        (assetData?.data?.asset_name ?? "").replace(/^000de140/, ""),
+      );
+
       const input = {
-        assetName: basicInfoToUpdate.assetName,
-        quantity: basicInfoToUpdate.quantity,
+        assetName: assetName,
         metadata: metadataToUpdate,
       };
 
@@ -116,34 +121,33 @@ export default function UnitProvider({
         "create_transaction",
         "Creating Transaction",
       );
-      // const {
-      //   data: tx,
-      //   message,
-      //   result,
-      // } = await createMintTransaction({
-      //   address: address,
-      //   mintInput: {
-      //     assetName: input.assetName,
-      //     metadata: input.metadata,
-      //     quantity: input.quantity,
-      //   },
-      // });
-      // if (!result || isNil(tx)) {
-      //   throw new Error(message);
-      // }
+      const {
+        data: tx,
+        message,
+        result,
+      } = await createUpdateTransaction({
+        address: address,
+        input: {
+          assetName: input.assetName,
+          metadata: input.metadata,
+        },
+      });
+      if (!result || isNil(tx)) {
+        throw new Error(message);
+      }
       // await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // wait for confirmation
       updateTaskState("inprogress", "sign_transaction", "Waiting for  sign Tx");
-      // const signedTx = await signTx(tx);
+      const signedTx = await signTx(tx);
       updateTaskState(
         "inprogress",
         "submit_transaction",
         "Submitting Transaction",
       );
       // // submit transaction
-      // const txHash = await submitTx(signedTx);
-      setTxHash("123");
+      const txHash = await submitTx(signedTx);
+      setTxHash(txHash);
       updateTaskState("success");
       // show result
       updateStepper.goTo("result");
@@ -169,13 +173,18 @@ export default function UnitProvider({
       if (isNil(address)) {
         throw new Error("Wallet not connected");
       }
+
+      if (isNil(assetData?.data?.asset_name)) {
+        throw new Error("Asset not found");
+      }
       // check assetName is unique
       await new Promise((resolve) => setTimeout(resolve, 1000));
-
+      const assetName = hexToString(
+        (assetData?.data?.asset_name ?? "").replace(/^000de140/, ""),
+      );
       const input = {
-        assetName: basicInfoToUpdate.assetName,
-        quantity: basicInfoToUpdate.quantity,
-        metadata: metadataToUpdate,
+        assetName: assetName,
+        quantity: "-1",
       };
 
       updateTaskState(
@@ -183,34 +192,32 @@ export default function UnitProvider({
         "create_transaction",
         "Creating Transaction",
       );
-      // const {
-      //   data: tx,
-      //   message,
-      //   result,
-      // } = await createMintTransaction({
-      //   address: address,
-      //   mintInput: {
-      //     assetName: input.assetName,
-      //     metadata: input.metadata,
-      //     quantity: input.quantity,
-      //   },
-      // });
-      // if (!result || isNil(tx)) {
-      //   throw new Error(message);
-      // }
+
+      const {
+        data: tx,
+        message,
+        result,
+      } = await createBurnTransaction({
+        address: address,
+        input: input,
+      });
+
+      if (!result || isNil(tx)) {
+        throw new Error(message);
+      }
       // await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // wait for confirmation
       updateTaskState("inprogress", "sign_transaction", "Waiting for  sign Tx");
-      // const signedTx = await signTx(tx);
+      const signedTx = await signTx(tx);
       updateTaskState(
         "inprogress",
         "submit_transaction",
         "Submitting Transaction",
       );
-      // // submit transaction
-      // const txHash = await submitTx(signedTx);
-      setTxHash("123");
+      // submit transaction
+      const txHash = await submitTx(signedTx);
+      setTxHash(txHash);
       updateTaskState("success");
       // show result
       burnStepper.goTo("result");

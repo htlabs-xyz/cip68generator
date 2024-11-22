@@ -10,15 +10,14 @@ import {
 } from "@meshsdk/core";
 import { isNil } from "lodash";
 
-export const createMintTransaction = async ({
+export const createUpdateTransaction = async ({
   address,
-  mintInput,
+  input,
 }: {
   address: string;
-  mintInput: {
+  input: {
     assetName: string;
     metadata: AssetMetadata;
-    quantity: string;
   };
 }) => {
   try {
@@ -43,15 +42,14 @@ export const createMintTransaction = async ({
       wallet: wallet,
       meshTxBuilder: txBuilder,
     });
-    const input = {
-      assetName: mintInput.assetName,
+    const updateInput = {
+      assetName: input.assetName,
       metadata: {
-        ...mintInput.metadata,
+        ...input.metadata,
         _pk: deserializeAddress(await wallet.getChangeAddress()).pubKeyHash,
       },
-      quantity: mintInput.quantity,
     };
-    const tx = await cip68Contract.mint(input);
+    const tx = await cip68Contract.update(updateInput);
     return {
       result: true,
       data: tx,
