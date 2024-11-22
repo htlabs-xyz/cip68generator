@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import AssetCard from "./_components/asset-card";
 import { useProfileContext } from "@/contexts/profile";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Filter, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
@@ -12,7 +12,7 @@ export default function ProfilePage() {
   return (
     <div className="py-8 px-10 m-auto flex flex-col">
       <div className="rounded-xl p-6 bg-section shadow-md flex flex-col gap-3">
-        <Tabs defaultValue="my-nfts" className="w-full">
+        {/* <Tabs defaultValue="my-nfts" className="w-full">
           <TabsList className="mb-4">
             <TabsTrigger value="my-nfts">My NFTs (5)</TabsTrigger>
             <TabsTrigger value="listings">Listings (1)</TabsTrigger>
@@ -21,7 +21,7 @@ export default function ProfilePage() {
             <TabsTrigger value="offers">Offers</TabsTrigger>
             <TabsTrigger value="creations">Creations (1)</TabsTrigger>
           </TabsList>
-        </Tabs>
+        </Tabs> */}
         <div className="flex items-center gap-4 mb-6">
           <Button variant="outline" size="icon" className="shrink-0">
             <Filter className="h-4 w-4" />
