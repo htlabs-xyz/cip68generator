@@ -29,12 +29,9 @@ export default function ProfilePage() {
           </Button>
           <div className="relative flex-1">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Search 5 NFTs" className="pl-8" />
+            <Input placeholder="Search By AssetName" className="pl-8" />
           </div>
-          <Button variant="outline" className="shrink-0">
-            Bulk list
-          </Button>
-          <Button className="shrink-0">Create Collection</Button>
+          <Button className="shrink-0">Search</Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
           {listNft.map((data, index) => (
