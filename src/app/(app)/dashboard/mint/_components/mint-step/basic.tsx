@@ -106,7 +106,7 @@ export default function BasicStep() {
                             </FormItem>
                           )}
                         />
-                        <FormField
+                        {/* <FormField
                           control={form.control}
                           name="assetQuantity"
                           render={({ field }) => (
@@ -119,7 +119,7 @@ export default function BasicStep() {
                               <FormMessage />
                             </FormItem>
                           )}
-                        />
+                        /> */}
                       </div>
                     </div>
                   </div>
