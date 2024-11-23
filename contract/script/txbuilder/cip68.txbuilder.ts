@@ -344,16 +344,48 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
   };
 }
 export const nftPoicyId = (() => {
-  const validator = plutus.validators.find(function (validator) {
-    return validator.title === title.mint;
-  });
+  const pubKeyExchange = deserializeAddress(EXCHANGE_FEE_ADDRESS).pubKeyHash;
 
-  if (!validator) {
-    throw new Error(`${title} validator not found.`);
+  const storeCompileCode = plutus.validators.find(
+    (validator) => validator.title === title.store,
+  )?.compiledCode;
+
+  if (!storeCompileCode) {
+    throw new Error(`Validator with title '${title.store}' not found.`);
   }
 
-  return resolveScriptHash(
-    applyParamsToScript(validator.compiledCode, []),
-    "V3",
-  );
+  const storeScriptCbor = applyParamsToScript(storeCompileCode, [
+    pubKeyExchange,
+    BigInt(1),
+  ]);
+
+  const storeScript: PlutusScript = {
+    code: storeScriptCbor,
+    version: "V3",
+  };
+
+  const storeAddress = serializePlutusScript(
+    storeScript,
+    undefined,
+    appNetworkId,
+    false,
+  ).address;
+
+  const storeScriptHash = deserializeAddress(storeAddress).scriptHash;
+
+  const mintCompileCode = plutus.validators.find(
+    (validator) => validator.title === title.mint,
+  )?.compiledCode;
+
+  if (!mintCompileCode) {
+    throw new Error(`Validator with title '${title.mint}' not found.`);
+  }
+
+  const mintScriptCbor = applyParamsToScript(mintCompileCode, [
+    pubKeyExchange,
+    BigInt(1),
+    storeScriptHash,
+  ]);
+
+  return resolveScriptHash(mintScriptCbor, "V3");
 })();
