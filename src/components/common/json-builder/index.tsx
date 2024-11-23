@@ -209,9 +209,12 @@ export default function JsonBuilder() {
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value;
     setInputValue(value);
+  };
+
+  useEffect(() => {
     try {
-      const parsedJson = JSON.parse(value);
-      setJsonContent(parsedJson);
+      const parsedValue = JSON.parse(inputValue);
+      setJsonContent(parsedValue);
       setErr("");
     } catch (error) {
       if (error instanceof Error) {
@@ -220,7 +223,8 @@ export default function JsonBuilder() {
         setErr(String(error));
       }
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inputValue]);
 
   useEffect(() => {
     setInputValue(JSON.stringify(jsonContent, null, 2));
