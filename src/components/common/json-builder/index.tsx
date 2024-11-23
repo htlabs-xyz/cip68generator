@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PlusCircle, Trash2, ChevronDown, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -34,8 +34,17 @@ function JsonField({
   removeField: (path: string[]) => void;
   addField: (path: string[]) => void;
 }) {
+  const keyNameInputRef = useRef<HTMLInputElement>(null);
+
   const [isExpanded, setIsExpanded] = useState(true);
   const currentPath = [...path, keyName];
+
+  useEffect(() => {
+    if (keyNameInputRef.current) {
+      keyNameInputRef.current.focus();
+    }
+  }, [keyName]);
+
   const addChildField = () => {
     if (typeof value === "object" && value !== null) {
       if (Array.isArray(value)) {
@@ -127,6 +136,7 @@ function JsonField({
         </Select>
         <Label className="w-1/4">
           <Input
+            ref={keyNameInputRef}
             value={keyName}
             disabled={parentType == "array"}
             onChange={(e) => {
