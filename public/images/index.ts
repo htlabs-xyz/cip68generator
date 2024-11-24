@@ -3,6 +3,7 @@ import hieu from "./founder/hieu.jpg";
 import khanh from "./founder/khanh.jpg";
 import son from "./founder/son.jpg";
 import dung from "./founder/dung.jpg";
+import thanh from "./founder/thanh.jpg";
 
 import nami from "./wallet/nami.svg";
 import flint from "./wallet/flint.svg";
@@ -34,6 +35,7 @@ export const founderImage = {
   hieu: hieu,
   khanh: khanh,
   dung: dung,
+  thanh: thanh,
 } as const;
 
 export const appImage = {

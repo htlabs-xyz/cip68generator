@@ -16,7 +16,7 @@ const CardanoWallet = () => {
         <Account />
       ) : (
         <div>
-          <Button onClick={() => router.push("/login")}>Login</Button>
+          <Button onClick={() => router.push("/login")}>Connect Wallet</Button>
         </div>
       )}
     </div>

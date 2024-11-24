@@ -8,7 +8,7 @@ export const uploadConfig = {
   maxFiles: 50,
   maxSize: 50,
 };
-
+export const decialPlace = 1_000_000;
 export const filterDefault: FilterType = {
   range: {
     from: new Date(2024, 0, 1),
