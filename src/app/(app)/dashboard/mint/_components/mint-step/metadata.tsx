@@ -3,13 +3,14 @@ import { useMintOneContext } from "@/contexts/mint-one";
 import { useJsonBuilderStore } from "@/components/common/json-builder/store";
 import { Button } from "@/components/ui/button";
 import { isEmpty, isNil } from "lodash";
+import { convertEmpty } from "@/utils/convert-empty";
 
 export default function MetadataStep() {
   const { stepper, setMetadataToMint } = useMintOneContext();
   const { jsonContent } = useJsonBuilderStore();
   const handleNext = () => {
     if (!isNil(jsonContent) || !isEmpty(jsonContent)) {
-      setMetadataToMint(jsonContent);
+      setMetadataToMint(convertEmpty(jsonContent));
       stepper.next();
     }
   };
