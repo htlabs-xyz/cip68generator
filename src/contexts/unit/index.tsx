@@ -15,6 +15,7 @@ import { redirect } from "next/navigation";
 import { createBurnTransaction } from "@/services/contract/burn";
 import { hexToString } from "@meshsdk/core";
 import { createUpdateTransaction } from "@/services/contract/update";
+import { submitTx } from "@/services/blockchain/submitTx";
 
 const { useStepper: useUpdateStepper, steps: updateSteps } = defineStepper(
   { id: "metadata", title: "Metadata" },
@@ -49,7 +50,7 @@ export default function UnitProvider({
   unit: string;
   children: React.ReactNode;
 }) {
-  const { signTx, address, submitTx } = useWalletContext();
+  const { signTx, address } = useWalletContext();
   const { jsonContent, setJsonContent } = useJsonBuilderStore();
 
   const updateStepper = useUpdateStepper();
@@ -146,7 +147,14 @@ export default function UnitProvider({
         "Submitting Transaction",
       );
       // // submit transaction
-      const txHash = await submitTx(signedTx);
+      const {
+        data: txHash,
+        result: txResult,
+        message: txMessage,
+      } = await submitTx(signedTx);
+      if (!txResult || isNil(txHash)) {
+        throw new Error(txMessage);
+      }
       setTxHash(txHash);
       updateTaskState("success");
       // show result
@@ -216,7 +224,14 @@ export default function UnitProvider({
         "Submitting Transaction",
       );
       // submit transaction
-      const txHash = await submitTx(signedTx);
+      const {
+        data: txHash,
+        result: txResult,
+        message: txMessage,
+      } = await submitTx(signedTx);
+      if (!txResult || isNil(txHash)) {
+        throw new Error(txMessage);
+      }
       setTxHash(txHash);
       updateTaskState("success");
       // show result

@@ -15,7 +15,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { IPFS_GATEWAY } from "@/constants";
 import { useUploadContext } from "@/contexts/storage";
 import { Media } from "@prisma/client";
-import FileDisplay from "../../../../../../components/common/file-display";
+import FileDisplay from "@/components/common/file-display";
 
 export default function MediaList() {
   const { loading, listMedia, listSelected, setListSelected } =
