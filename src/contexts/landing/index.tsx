@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, PropsWithChildren, useState } from "react";
+import { createContext, useContext, PropsWithChildren } from "react";
 import { LandingStore } from "./store";
 import { useQuery } from "@tanstack/react-query";
 import { getAddressDetail } from "@/services/blockchain/getAddressDetail";
@@ -11,15 +11,25 @@ type LandingContextType = LandingStore & {
 };
 
 export default function LandingProvider({ children }: PropsWithChildren) {
-  console.log(storeAddress);
   const { data, isLoading } = useQuery({
-    queryKey: [""],
+    queryKey: ["getAddressDetail"],
     queryFn: function () {
       return getAddressDetail(storeAddress);
     },
   });
+
   return (
-    <LadingContext.Provider value={{ loading: isLoading, statistic: null! }}>
+    <LadingContext.Provider
+      value={{
+        loading: isLoading,
+        statistic: {
+          totalBurn: data?.data?.burn,
+          totalMint: data?.data?.mint,
+          totalUpdate: data?.data?.update,
+          totalTransaction: data?.data?.transaction,
+        },
+      }}
+    >
       {children}
     </LadingContext.Provider>
   );
