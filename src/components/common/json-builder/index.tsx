@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PlusCircle, Trash2, ChevronDown, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -34,8 +34,17 @@ function JsonField({
   removeField: (path: string[]) => void;
   addField: (path: string[]) => void;
 }) {
+  const keyNameInputRef = useRef<HTMLInputElement>(null);
+
   const [isExpanded, setIsExpanded] = useState(true);
   const currentPath = [...path, keyName];
+
+  useEffect(() => {
+    if (keyNameInputRef.current) {
+      keyNameInputRef.current.focus();
+    }
+  }, [keyName]);
+
   const addChildField = () => {
     if (typeof value === "object" && value !== null) {
       if (Array.isArray(value)) {
@@ -127,6 +136,7 @@ function JsonField({
         </Select>
         <Label className="w-1/4">
           <Input
+            ref={keyNameInputRef}
             value={keyName}
             disabled={parentType == "array"}
             onChange={(e) => {
@@ -199,9 +209,12 @@ export default function JsonBuilder() {
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value;
     setInputValue(value);
+  };
+
+  useEffect(() => {
     try {
-      const parsedJson = JSON.parse(value);
-      setJsonContent(parsedJson);
+      const parsedValue = JSON.parse(inputValue);
+      setJsonContent(parsedValue);
       setErr("");
     } catch (error) {
       if (error instanceof Error) {
@@ -210,7 +223,8 @@ export default function JsonBuilder() {
         setErr(String(error));
       }
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inputValue]);
 
   useEffect(() => {
     setInputValue(JSON.stringify(jsonContent, null, 2));

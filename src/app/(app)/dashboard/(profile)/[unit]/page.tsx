@@ -52,10 +52,14 @@ export default function DetailsPage() {
   const mediaType = onchain_metadata?.type || "image/png";
 
   const description = onchain_metadata?.description || "";
-  const { _pk, ...originMetadata } = onchain_metadata;
+
+  const { _pk, ...originMetadata } = onchain_metadata ?? {};
+
+  const pubKeyHash = !isNil(address) && deserializeAddress(address)?.pubKeyHash;
   const assetAdmin =
-    _pk.includes(deserializeAddress(address || "").pubKeyHash) ||
-    deserializeAddress(address || "").pubKeyHash.includes(_pk);
+    (!isNil(_pk) && pubKeyHash && _pk.includes(pubKeyHash)) ||
+    (pubKeyHash && pubKeyHash.includes(_pk));
+
   return (
     <div className="py-8 px-10 m-auto flex flex-col">
       <div className="rounded-xl p-6  flex flex-col gap-3">
