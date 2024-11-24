@@ -48,7 +48,16 @@ export default function StogarePage() {
             </TabsList>
             <div className="flex items-center space-x-2">
               <FileAction />
-              <DropdownMenu>
+              <Link
+                href={
+                  dashboardRoutes.utilities.children.storage.children
+                    .uploadFolder.redirect
+                }
+                className={cn(buttonVariants({ variant: "ghost" }))}
+              >
+                <Button> Upload New</Button>
+              </Link>
+              {/* <DropdownMenu>
                 <DropdownMenuTrigger
                   className={cn(
                     buttonVariants({ variant: "default" }),
@@ -77,7 +86,7 @@ export default function StogarePage() {
                     <DropdownMenuItem> Upload Many</DropdownMenuItem>
                   </Link>
                 </DropdownMenuContent>
-              </DropdownMenu>
+              </DropdownMenu> */}
             </div>
           </div>
           <Filter />
