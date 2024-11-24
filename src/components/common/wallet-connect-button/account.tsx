@@ -10,7 +10,8 @@ import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { useWalletContext } from "@/components/providers/wallet";
 import { useEffect, useState } from "react";
-
+import CountUp from "react-countup";
+import { appNetwork, decialPlace } from "@/constants";
 export default function Account() {
   const { wallet, address, getBalance } = useWalletContext();
   const [balance, setBalance] = useState<number>(0);
@@ -28,7 +29,7 @@ export default function Account() {
     <Popover>
       <PopoverTrigger
         className={cn(
-          "flex items-center h-9 gap-2 rounded-3xl bg-slate-800 px-2 py-4",
+          "flex items-center h-10 gap-2 rounded-3xl bg-slate-800 px-2 py-4",
         )}
       >
         <div className={cn("h-8 w-8")}>
@@ -46,7 +47,14 @@ export default function Account() {
           <h2 className="text-[12px] leading-4">
             {address?.slice(0, 12)}...{address?.slice(-4)}
           </h2>
-          <p className={cn("text-left text-[14px] leading-4")}>{balance} ₳</p>
+          <p className={cn("text-left text-[14px] leading-4")}>
+            <CountUp
+              start={0}
+              end={Number((balance / decialPlace).toFixed(6))}
+              decimals={6}
+            />{" "}
+            ₳
+          </p>
         </div>
       </PopoverTrigger>
       <PopoverContent
@@ -64,10 +72,12 @@ export default function Account() {
             />
           </div>
           <div className="">
-            <h2 className={cn("text-[18px] font-medium")}>{wallet?.name}</h2>
+            <h2 className={"text-[18px] font-medium capitalize"}>
+              {wallet?.name}
+            </h2>
             <div className="flex items-center gap-2">
-              <p className={cn("select-none text-[12px] text-gray-500")}>
-                Base Mainnet
+              <p className={"select-none text-[12px] text-gray-500"}>
+                Base {appNetwork}
               </p>
               <svg
                 className=""

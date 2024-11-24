@@ -3,6 +3,7 @@ import hieu from "./founder/hieu.jpg";
 import khanh from "./founder/khanh.jpg";
 import son from "./founder/son.jpg";
 import dung from "./founder/dung.jpg";
+import thanh from "./founder/thanh.jpg";
 
 import nami from "./wallet/nami.svg";
 import flint from "./wallet/flint.svg";
@@ -26,6 +27,7 @@ import collection from "./utilities/collection.png";
 import marketplace from "./utilities/marketplace.png";
 import mintOne from "./utilities/mint-one.png";
 import mintMultiple from "./utilities/mint-multiple.png";
+import login from "./common/login.png";
 
 export const founderImage = {
   son: son,
@@ -33,10 +35,12 @@ export const founderImage = {
   hieu: hieu,
   khanh: khanh,
   dung: dung,
+  thanh: thanh,
 } as const;
 
 export const appImage = {
   logo: logo,
+  login: login,
   cardano: cardano,
   metadata: metadata,
   storegae: storegae,

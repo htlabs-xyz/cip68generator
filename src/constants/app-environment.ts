@@ -8,7 +8,7 @@ const appNetwork: Network =
   "preprod";
 
 const appNetworkId = appNetwork === "mainnet" ? 1 : 0;
-
+const storeAddress = process.env.NEXT_PUBLIC_STORE_VALIDATOR_ADDRESS || "";
 const IPFS_ENDPOINT = process.env.IPFS_ENDPOINT || "";
 const IPFS_GATEWAY = process.env.NEXT_PUBLIC_IPFS_GATEWAY || "https://ipfs.io/";
 export {
@@ -18,4 +18,5 @@ export {
   KOIOS_TOKEN,
   IPFS_ENDPOINT,
   IPFS_GATEWAY,
+  storeAddress,
 };

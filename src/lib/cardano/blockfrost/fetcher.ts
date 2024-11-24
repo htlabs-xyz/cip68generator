@@ -30,6 +30,19 @@ export class BlockfrostFetcher {
     }
   }
 
+  async fetchAddressDetail(address: string) {
+    try {
+      const { data, status } = await this._axiosInstance.get(
+        `/addresses/${address}`,
+      );
+
+      if (status === 200 || status == 202) return data;
+      throw parseHttpError(data);
+    } catch (error) {
+      throw parseHttpError(error);
+    }
+  }
+
   async fetchSpecificAsset(asset: string) {
     try {
       const { data, status } = await this._axiosInstance.get(
