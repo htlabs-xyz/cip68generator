@@ -27,6 +27,13 @@ export type FilterType = {
   query: string;
 };
 
+export type StatisticType = {
+  totalTransaction: number;
+  totalMint: number;
+  totalBurn: number;
+  totalUpdate: number;
+};
+
 export type WalletType = {
   name: string;
   image: string | StaticImageData;

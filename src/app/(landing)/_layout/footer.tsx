@@ -8,6 +8,8 @@ import routers from "@/constants/routers";
 import { FaMailBulk, FaTelegramPlane, FaYoutube } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { appImage } from "@/public/images";
+import router from "@/constants/routers";
+import { appSocialMedia } from "@/constants";
 
 const Footer = function () {
   return (
@@ -28,8 +30,9 @@ const Footer = function () {
               <span className="pl-4 text-[#ccc]">CIP68 Generator</span>
             </h2>
             <p className="mb-7 mt-4 text-gray-400 max-sm:text-[12px] max-md:mt-1">
-              Unlock instant updates and exclusive insights, engage with your
-              favorite projects and earn rewards just for staying informed!
+              CIP68 Generator is a tool designed to simplify the creation,
+              management, and burning of CIP68-compliant native assets on the
+              Cardano platform.
             </p>
             <Button className="flex h-[35px] items-center gap-2 rounded-md max-md:text-[12px]">
               <span>Subcribe</span>
@@ -68,10 +71,9 @@ const Footer = function () {
             </Link>
 
             <p className="mx-0 mb-[12px] mt-[35px] text-[15px] leading-[25px] text-gray-300 max-md:mt-[15px] max-md:mb-[20px] max-md:leading-[16px] max-md:text-[12px]">
-              CIP68 Generator is an AI-powered decentralized communication
-              infrastructure built to provide encrypted emails, unified
-              notifications, and targeted marketing across multiple chains and
-              dApps for users, developers, and marketers.
+              CIP68 Generator is a tool designed to simplify the creation,
+              management, and burning of CIP68-compliant native assets on the
+              Cardano platform.
             </p>
 
             <p className={"text-[15px] leading-[22px] text-gray-500"}>
@@ -82,38 +84,38 @@ const Footer = function () {
           <div className="flex gap-[45px] max-md:gap-6 leading-[20px] mt-[50px]">
             <ul>
               <h2 className="mb-9 max-md:mb-4 text-[19px] font-bold text-white max-md:text-[12px]">
-                Products
+                Explore
               </h2>
               <li className="mt-[25px] max-md:mt-2">
                 <Link
                   className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
-                  href={"/#"}
+                  href={router.mint}
                 >
-                  CIP68 DApp
+                  Asset Minting
                 </Link>
               </li>
               <li className="mt-[25px] max-md:mt-2">
                 <Link
                   className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
-                  href={"/#"}
+                  href={router.document}
                 >
-                  Subcription Hub
+                  Collections
                 </Link>
               </li>
               <li className="mt-[25px] max-md:mt-2">
                 <Link
                   className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
-                  href={"/#"}
+                  href={router.metadata}
                 >
-                  Prescale
+                  Metadata
                 </Link>
               </li>
               <li className="mt-[25px] max-md:mt-2">
                 <Link
                   className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
-                  href={"/#"}
+                  href={router.storages}
                 >
-                  3D NFT
+                  Storage
                 </Link>
               </li>
             </ul>
@@ -125,9 +127,9 @@ const Footer = function () {
               <li className="mt-[25px] max-md:mt-2">
                 <Link
                   className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
-                  href={"/#"}
+                  href={router.document}
                 >
-                  Gitbook
+                  Documentation
                 </Link>
               </li>
               <li className={"mt-[25px] max-md:mt-2"}>
@@ -143,7 +145,7 @@ const Footer = function () {
                   className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
                   href={"/#"}
                 >
-                  Generator Docs
+                  User guide
                 </Link>
               </li>
               <li className={"mt-[25px] max-md:mt-2"}>
@@ -173,7 +175,7 @@ const Footer = function () {
                   className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
                   href={"/#"}
                 >
-                  Ecosystem
+                  User Feedback
                 </Link>
               </li>
               <li className={"mt-[25px] max-md:mt-2"}>
@@ -181,7 +183,7 @@ const Footer = function () {
                   className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
                   href={"/#"}
                 >
-                  Terms Of Service
+                  Term Of Service
                 </Link>
               </li>
               <li className={"mt-[25px] max-md:mt-2"}>
@@ -196,11 +198,19 @@ const Footer = function () {
 
             <ul>
               <h2 className="mb-9 max-md:mb-4 text-[19px] font-bold text-white max-md:text-[12px]">
-                Learn More
+                Supports
               </h2>
               <li className={"mt-[25px] max-md:mt-2"}>
                 <Link
                   className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px] "
+                  href={"/#"}
+                >
+                  About Us
+                </Link>
+              </li>
+              <li className={"mt-[25px] max-md:mt-2"}>
+                <Link
+                  className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
                   href={"/#"}
                 >
                   Contact Us
@@ -211,15 +221,7 @@ const Footer = function () {
                   className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
                   href={"/#"}
                 >
-                  Roadmap
-                </Link>
-              </li>
-              <li className={"mt-[25px] max-md:mt-2"}>
-                <Link
-                  className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
-                  href={"/#"}
-                >
-                  FAQs
+                  FAQS
                 </Link>
               </li>
               <li className={"mt-[25px] max-md:mt-2"}>
@@ -245,25 +247,29 @@ const Footer = function () {
             <div className="flex items-center gap-8 max-md:gap-1">
               <Link
                 className="flex items-center justify-center rounded-full border-[1px] border-solid border-slate-500 p-[8px] max-md:p-2 max-md:border-none"
-                href="/#"
+                target="_blank"
+                href={appSocialMedia.telegram}
               >
                 <FaTelegramPlane className="text-[19px] max-md:text-[16px]" />
               </Link>
               <Link
                 className="flex items-center justify-center rounded-full border-[1px] border-solid border-slate-500 p-[8px] max-md:p-2 max-md:border-none"
-                href="/#"
+                target="_blank"
+                href={appSocialMedia.email}
               >
                 <FaMailBulk className="text-[19px] max-md:text-[16px]" />
               </Link>
               <Link
                 className="flex items-center justify-center rounded-full border-[1px] border-solid border-slate-500 p-[8px] max-md:p-2 max-md:border-none"
-                href="/#"
+                target="_blank"
+                href={appSocialMedia.youtube}
               >
                 <FaYoutube className="text-[19px] max-md:text-[16px]" />
               </Link>
               <Link
                 className="flex items-center justify-center rounded-full border-[1px] border-solid border-slate-500 p-[8px] max-md:p-2 max-md:border-none"
-                href="/#"
+                target="_blank"
+                href={appSocialMedia.x}
               >
                 <FaXTwitter className="text-[19px] max-md:text-[16px]" />
               </Link>

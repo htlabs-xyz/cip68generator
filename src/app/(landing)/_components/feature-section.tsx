@@ -4,7 +4,13 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { appImage } from "@/public/images";
 
-const Feature = function () {
+type Props = {
+  title: string;
+  slogan: string;
+  description: string;
+};
+
+const Feature = function ({ title, slogan, description }: Props) {
   return (
     <div className="w-full max-w-[calc(100%/var(--columns)-var(--gap)*(var(--columns)-1)/var(--columns))] p-4 shadow-2xl">
       <div className="perspective-1000 group relative h-full min-h-[190px] w-full">
@@ -22,10 +28,10 @@ const Feature = function () {
             </div>
             <div className="text-center md:ml-6 md:text-left">
               <h3 className="truncate text-xl font-normal text-white max-md:text-base">
-                Transform
+                {title}
               </h3>
               <p className="line-clamp-4 text-sm font-normal text-white max-md:text-xs">
-                To enable transformations you have to add the transform utility.
+                {slogan}
               </p>
             </div>
           </div>
@@ -34,12 +40,8 @@ const Feature = function () {
         {/* Back Side of the Flip Card */}
         <div className="flip-card-back group-hover:rotate-y-0 rotate-y-180 absolute inset-0 rounded-lg bg-slate-900 p-6 max-md:p-4 transition-transform duration-700 ease-in-out">
           <div className="flex h-full flex-col gap-3">
-            <div className="text-sm font-normal text-white max-md:text-xs">
-              <p>
-                A lot of transformations can be executed on the GPU instead of
-                the CPU. This enables better performance. You can use the
-                transform-gpu utility to enable GPU Acceleration.
-              </p>
+            <div className="text-sm font-normal flex-1 text-white max-md:text-xs">
+              <p>{description}</p>
             </div>
             <Button className="max-md:text-xs h-8">Explore</Button>
           </div>

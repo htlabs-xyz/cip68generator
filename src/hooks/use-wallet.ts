@@ -67,7 +67,7 @@ export const useWallet = create<useWalletStore>((set, get) => ({
           `${appNetworkId == 0 ? " Testnet" : " Mainnet"}`,
       );
     }
-    const address = (await browserWallet.getUsedAddresses())[0];
+    const address = await browserWallet.getChangeAddress();
     if (!address) return;
     set({
       browserWallet: browserWallet,
@@ -84,7 +84,7 @@ export const useWallet = create<useWalletStore>((set, get) => ({
     if (!browserWallet) {
       throw new Error("Failed to connect wallet");
     }
-    const address = (await browserWallet.getUsedAddresses())[0];
+    const address = await browserWallet.getChangeAddress();
     if (address.length === 0) {
       throw new Error("Cant get address");
     }
@@ -108,7 +108,7 @@ export const useWallet = create<useWalletStore>((set, get) => ({
     } else if (session.user?.address !== address) {
       await signOut();
     } else {
-      const address = (await browserWallet.getUsedAddresses())[0];
+      const address = await browserWallet.getChangeAddress();
       set({
         browserWallet: browserWallet,
         wallet: wallet,
@@ -130,7 +130,7 @@ export const useWallet = create<useWalletStore>((set, get) => ({
           `${appNetworkId == 0 ? "Testnet" : "Mainnet"}`,
       );
     }
-    const address = (await browserWallet.getUsedAddresses())[0];
+    const address = await browserWallet.getChangeAddress();
     if (!address) return;
 
     set({

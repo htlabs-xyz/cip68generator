@@ -3,7 +3,7 @@ import { nftPoicyId } from "@/contract";
 import { blockfrostFetcher, koiosFetcher } from "@/lib/cardano";
 import { AssetDetails, AssetType } from "@/types";
 
-export async function getWalletAssets({
+export async function getHistoryAssets({
   walletAddress,
   page = 1,
   limit = 12,
@@ -15,11 +15,9 @@ export async function getWalletAssets({
   try {
     const assetsAddress: AssetType[] =
       await koiosFetcher.fetchAssetsFromAddress(walletAddress);
-    const filteredAssetsAddress = assetsAddress.filter(
-      (asset) => asset.policy_id === nftPoicyId,
-    );
-    const total = filteredAssetsAddress.length;
-    const assetsSlice: AssetType[] = filteredAssetsAddress.slice(
+    assetsAddress.filter((asset) => asset.policy_id === nftPoicyId);
+    const total = assetsAddress.length;
+    const assetsSlice: AssetType[] = assetsAddress.slice(
       (page - 1) * limit,
       page * limit,
     );

@@ -36,14 +36,14 @@ export const founderData: {
   },
   {
     id: 3,
-    firstName: "Son",
-    lastName: "Nguyen Hong",
-    role: "Full-stack Developer/Blockchain Developer",
-    avatar: founderImage.son,
+    firstName: "Thanh",
+    lastName: "Dinh Khuat",
+    role: "Project Manager",
+    avatar: founderImage.thanh,
     twitter: "https://t.me/tiennguyenanh",
     linkedin: "https://www.linkedin.com/in/tienna/",
     description:
-      "More than 2 years of building and operating on the Cardano platform.",
+      "More than 1 years of leading and managing the operations of the projects, organizations, and club.",
   },
   {
     id: 4,
@@ -62,6 +62,17 @@ export const founderData: {
     lastName: "Phung Tien",
     role: "Full-stack Developer/Blockchain Developer",
     avatar: founderImage.dung,
+    twitter: "https://t.me/tidvn",
+    linkedin: "https://www.linkedin.com/",
+    description:
+      "More than 2 years of building and operating on the Cardano platform.",
+  },
+  {
+    id: 4,
+    firstName: "Son",
+    lastName: "Nguyen Hong",
+    role: "Full-stack Developer/Blockchain Developer",
+    avatar: founderImage.son,
     twitter: "https://t.me/tidvn",
     linkedin: "https://www.linkedin.com/",
     description:
