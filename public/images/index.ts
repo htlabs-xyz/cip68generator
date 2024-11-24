@@ -26,6 +26,7 @@ import collection from "./utilities/collection.png";
 import marketplace from "./utilities/marketplace.png";
 import mintOne from "./utilities/mint-one.png";
 import mintMultiple from "./utilities/mint-multiple.png";
+import login from "./common/login.png"
 
 export const founderImage = {
   son: son,
@@ -37,6 +38,7 @@ export const founderImage = {
 
 export const appImage = {
   logo: logo,
+  login: login,
   cardano: cardano,
   metadata: metadata,
   storegae: storegae,

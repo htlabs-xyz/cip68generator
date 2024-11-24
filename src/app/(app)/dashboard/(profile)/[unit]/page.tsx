@@ -156,17 +156,17 @@ export default function DetailPage() {
                               <h3 className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-white text-[14px] font-medium leading-[20px]">
                                 {transaction.tx_index}
                               </h3>
-                              {/* <p className="text-[#5b6372] max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-[12px] font-medium leading-4">
+                              <p className="text-[#5b6372] max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-[12px] font-medium leading-4">
                                 {transaction.block_time}
-                              </p> */}
+                              </p>
                             </TableCell>
                             <TableCell className="h-14 py-5 px-4 text-center">
                               <h3 className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-white text-[14px] font-medium leading-[20px]">
                                 {transaction.tx_hash}
                               </h3>
-                              {/* <p className="text-[#5b6372] max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-[12px] font-medium leading-4">
-                                {transaction.fees}
-                              </p> */}
+                              <p className="text-[#5b6372] max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-[12px] font-medium leading-4">
+                                {/* {transaction.fee} */}
+                              </p>
                             </TableCell>
                             <TableCell className="h-14 py-5 px-4 text-center">
                               <h3 className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-white text-[14px] font-medium leading-[20px]">
@@ -174,9 +174,9 @@ export default function DetailPage() {
                                   transaction.block_time * 1000,
                                 ).toLocaleString()}
                               </h3>
-                              {/* <p className="text-[#5b6372] max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-[12px] font-medium leading-4">
-                                {transaction.status}
-                              </p> */}
+                              <p className="text-[#5b6372] max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-[12px] font-medium leading-4">
+                                Complete
+                              </p>
                             </TableCell>
                           </TableRow>
                         ),

@@ -223,6 +223,7 @@ export default function UnitProvider({
       burnStepper.goTo("result");
       // create transaction
     } catch (e) {
+      console.log(e)
       updateTaskState(
         "error",
         "",
