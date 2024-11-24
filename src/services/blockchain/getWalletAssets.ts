@@ -15,9 +15,11 @@ export async function getWalletAssets({
   try {
     const assetsAddress: AssetType[] =
       await koiosFetcher.fetchAssetsFromAddress(walletAddress);
-    assetsAddress.filter((asset) => asset.policy_id === nftPoicyId);
-    const total = assetsAddress.length;
-    const assetsSlice: AssetType[] = assetsAddress.slice(
+    const filteredAssetsAddress = assetsAddress.filter(
+      (asset) => asset.policy_id === nftPoicyId,
+    );
+    const total = filteredAssetsAddress.length;
+    const assetsSlice: AssetType[] = filteredAssetsAddress.slice(
       (page - 1) * limit,
       page * limit,
     );

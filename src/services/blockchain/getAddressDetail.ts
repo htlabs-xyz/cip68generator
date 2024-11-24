@@ -12,7 +12,6 @@ export const getAddressDetail = async (address: string) => {
   try {
     const data = await blockfrostFetcher.fetchAddressDetail(address);
 
-
     return {
       data,
       message: "Success",

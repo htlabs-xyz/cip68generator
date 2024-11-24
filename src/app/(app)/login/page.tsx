@@ -1,13 +1,9 @@
 import { Metadata } from "next";
 import Link from "next/link";
-// import UserAuthForm from "./user-auth-form";
-import { cn } from "@/utils";
-import Image from "next/image";
-import { appImage } from "@/public/images";
 import WalletConnect from "./_components/wallet-connect";
 export const metadata: Metadata = {
   title: "Authentication",
-  description: "Authentication forms built using the components.",
+  description: "Authentication",
 };
 
 export default function SignInViewPage() {

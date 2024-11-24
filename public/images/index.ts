@@ -26,7 +26,7 @@ import collection from "./utilities/collection.png";
 import marketplace from "./utilities/marketplace.png";
 import mintOne from "./utilities/mint-one.png";
 import mintMultiple from "./utilities/mint-multiple.png";
-import login from "./common/login.png"
+import login from "./common/login.png";
 
 export const founderImage = {
   son: son,
