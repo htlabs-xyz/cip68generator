@@ -19,8 +19,12 @@ export default function PreviewStep() {
     useMintOneContext();
   const assetNameSort = basicInfoToMint?.assetName || "No name";
   const imgSrc =
-    IPFS_GATEWAY + metadataToMint?.image.replace("ipfs://", "ipfs/") || "";
-  const mediaType = metadataToMint?.mediaType || "image/png";
+    !isNil(metadataToMint?.image) && metadataToMint?.image !== ""
+      ? IPFS_GATEWAY + metadataToMint?.image.replace("ipfs://", "ipfs/") ||
+        metadataToMint?.image
+      : "";
+  const mediaType =
+    imgSrc == "" ? "text/plain" : metadataToMint?.mediaType || "image/png";
   const description = metadataToMint?.description || "No description";
 
   return (
