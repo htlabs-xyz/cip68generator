@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { appImage } from "@/public/images";
 import { useMintOneContext } from "@/contexts/mint-one";
 import Property from "../property";
 import { isEmpty, isNil } from "lodash";
