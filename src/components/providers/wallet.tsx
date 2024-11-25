@@ -30,7 +30,7 @@ export default function WalletProvider({ children }: PropsWithChildren) {
     signTx,
     submitTx,
   }: useWalletStore = useWallet();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const wallets = useWalletList();
 
   useEffect(() => {
@@ -38,8 +38,9 @@ export default function WalletProvider({ children }: PropsWithChildren) {
       if (isEmpty(wallets)) {
         return;
       }
-      if (isNil(session)) {
+      if (isNil(session) || status === "unauthenticated") {
         disconnect();
+        await signOut();
         return;
       }
       if (isNil(wallet)) {
