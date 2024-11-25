@@ -2,13 +2,16 @@
 import { nftPoicyId } from "@/contract";
 import { blockfrostFetcher, koiosFetcher } from "@/lib/cardano";
 import { AssetDetails, AssetType } from "@/types";
+import { hexToString } from "@meshsdk/core";
 
 export async function getWalletAssets({
   walletAddress,
+  query = "",
   page = 1,
   limit = 12,
 }: {
   walletAddress: string;
+  query?: string;
   page?: number;
   limit?: number;
 }) {
@@ -18,8 +21,12 @@ export async function getWalletAssets({
     const filteredAssetsAddress = assetsAddress.filter(
       (asset) => asset.policy_id === nftPoicyId,
     );
-    const total = filteredAssetsAddress.length;
-    const assetsSlice: AssetType[] = filteredAssetsAddress.slice(
+    const filteredAssetsAddressQuery = filteredAssetsAddress.filter((asset) => {
+      const assetNameString = hexToString(asset.asset_name);
+      return assetNameString.toLowerCase().includes(query.toLowerCase());
+    });
+    const total = filteredAssetsAddressQuery.length;
+    const assetsSlice: AssetType[] = filteredAssetsAddressQuery.slice(
       (page - 1) * limit,
       page * limit,
     );
@@ -35,7 +42,7 @@ export async function getWalletAssets({
     return {
       data: assets,
       totalItem: total,
-      totalPage: Math.ceil(total / limit),
+      totalPages: Math.ceil(total / limit),
       currentPage: page,
     };
   } catch (e) {
