@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect } from "react";
 import { defineStepper } from "@stepperize/react";
 import { toast } from "@/hooks/use-toast";
 import { useWalletContext } from "@/components/providers/wallet";
-import { isNil } from "lodash";
+import { isEmpty, isNil, set } from "lodash";
 import { useQuery } from "@tanstack/react-query";
 import { getAssetInfo } from "@/services/blockchain/getAssetInfo";
 import { AssetDetailsWithTransactionHistory } from "@/types";
@@ -68,7 +68,7 @@ export default function UnitProvider({
   const { data: assetData, isLoading } = useQuery({
     queryKey: ["getAssetInfo", unit],
     queryFn: () => getAssetInfo(unit),
-    enabled: !isNil(unit),
+    enabled: !isNil(unit) && !isEmpty(unit),
   });
 
   useEffect(() => {
@@ -80,15 +80,18 @@ export default function UnitProvider({
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { _pk, ...metadata } = assetData.data.onchain_metadata;
       setMetadataToUpdate(metadata);
+    } else {
+      setMetadataToUpdate({});
     }
   }, [assetData, isLoading]);
 
   const pubKeyHash = !isNil(address) && deserializeAddress(address)?.pubKeyHash;
+
   const isAuthor =
-    (!isNil(assetData?.data?.onchain_metadata._pk) &&
+    (!isNil(assetData?.data?.onchain_metadata?._pk) &&
       pubKeyHash &&
-      assetData?.data?.onchain_metadata._pk.includes(pubKeyHash)) ||
-    (pubKeyHash && pubKeyHash.includes(assetData?.data?.onchain_metadata._pk));
+      assetData?.data?.onchain_metadata?._pk.includes(pubKeyHash)) ||
+    (pubKeyHash && pubKeyHash.includes(assetData?.data?.onchain_metadata?._pk));
 
   const handleUpdate = () => {
     redirect(`/dashboard/${unit}/update`);

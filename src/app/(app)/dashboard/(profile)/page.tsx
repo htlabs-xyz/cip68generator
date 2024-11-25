@@ -3,16 +3,14 @@
 import { Button } from "@/components/ui/button";
 import AssetCard from "./_components/asset-card";
 import { useProfileContext } from "@/contexts/profile";
-import { ExternalLink, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { FilterType } from "@/types";
 import { filterDefault } from "@/constants";
 import PaginationPage from "./_components/pagination-page";
-import { useWalletContext } from "@/components/providers/wallet";
 
 export default function ProfilePage() {
-  const { wallet } = useWalletContext();
   const { listNft, filter, setFilter } = useProfileContext();
   const [temp, setTemp] = useState<FilterType>(filter);
   const handleSearch = () => {
