@@ -42,7 +42,7 @@ export async function getWalletAssets({
     return {
       data: assets,
       totalItem: total,
-      totalPage: Math.ceil(total / limit),
+      totalPages: Math.ceil(total / limit),
       currentPage: page,
     };
   } catch (e) {

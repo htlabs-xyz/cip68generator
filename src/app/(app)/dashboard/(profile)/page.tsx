@@ -3,14 +3,16 @@
 import { Button } from "@/components/ui/button";
 import AssetCard from "./_components/asset-card";
 import { useProfileContext } from "@/contexts/profile";
-// import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Filter, Search } from "lucide-react";
+import { ExternalLink, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { FilterType } from "@/types";
 import { filterDefault } from "@/constants";
+import PaginationPage from "./_components/pagination-page";
+import { useWalletContext } from "@/components/providers/wallet";
 
 export default function ProfilePage() {
+  const { wallet } = useWalletContext();
   const { listNft, filter, setFilter } = useProfileContext();
   const [temp, setTemp] = useState<FilterType>(filter);
   const handleSearch = () => {
@@ -25,21 +27,7 @@ export default function ProfilePage() {
   return (
     <div className="py-8 px-10 m-auto flex flex-col">
       <div className="rounded-xl p-6 bg-section shadow-md flex flex-col gap-3">
-        {/* <Tabs defaultValue="my-nfts" className="w-full">
-          <TabsList className="mb-4">
-            <TabsTrigger value="my-nfts">My NFTs (5)</TabsTrigger>
-            <TabsTrigger value="listings">Listings (1)</TabsTrigger>
-            <TabsTrigger value="loans">Loans (0)</TabsTrigger>
-            <TabsTrigger value="activity">Activity (3)</TabsTrigger>
-            <TabsTrigger value="offers">Offers</TabsTrigger>
-            <TabsTrigger value="creations">Creations (1)</TabsTrigger>
-          </TabsList>
-        </Tabs> */}
         <div className="flex items-center gap-4 mb-6">
-          <Button variant="outline" size="icon" className="shrink-0">
-            <Filter className="h-4 w-4" />
-            <span className="sr-only">Filters</span>
-          </Button>
           <div className="relative flex-1">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
@@ -70,6 +58,14 @@ export default function ProfilePage() {
           {listNft.map((data, index) => (
             <AssetCard data={data} key={index} />
           ))}
+        </div>
+        <div className="mt-auto flex flex-col items-center justify-between space-y-2 sm:flex-row sm:space-y-0">
+          {/* <Button variant="link" className="text-sm font-semibold sm:text-base">
+            <span>Exploer</span>
+            <ExternalLink className="ml-2 h-4 w-4" />
+          </Button> */}
+          <div />
+          <PaginationPage />
         </div>
       </div>
     </div>

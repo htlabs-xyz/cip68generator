@@ -14,7 +14,7 @@ export default function ProfileProvider({ children }: PropsWithChildren) {
   useState<boolean>(false);
 
   const { address } = useWalletContext();
-  const { filter, setFilter } = useProfileStore();
+  const { filter, setFilter, currentPage, setCurrentPage } = useProfileStore();
 
   const { data, isLoading } = useQuery({
     queryKey: ["getWalletAssets", address, filter],
@@ -22,7 +22,7 @@ export default function ProfileProvider({ children }: PropsWithChildren) {
       getWalletAssets({
         walletAddress: address!,
         query: filter.query,
-        page: 1,
+        page: currentPage,
         limit: 10,
       }),
     enabled: !!address,
@@ -31,6 +31,9 @@ export default function ProfileProvider({ children }: PropsWithChildren) {
   return (
     <ProfileContext.Provider
       value={{
+        currentPage,
+        setCurrentPage,
+        totalPages: data?.totalPages || 0,
         loading: isLoading,
         listNft: data?.data || [],
         filter,
