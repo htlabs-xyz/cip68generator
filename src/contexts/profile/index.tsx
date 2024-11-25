@@ -4,7 +4,7 @@ import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useWalletContext } from "@/components/providers/wallet";
 import { getWalletAssets } from "@/services/blockchain/getWalletAssets";
-import { ProfileStore } from "./store";
+import useProfileStore, { ProfileStore } from "./store";
 
 type ProfileContextType = ProfileStore & {
   loading: boolean;
@@ -14,23 +14,27 @@ export default function ProfileProvider({ children }: PropsWithChildren) {
   useState<boolean>(false);
 
   const { address } = useWalletContext();
+  const { filter, setFilter } = useProfileStore();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getWalletAssets", address],
+    queryKey: ["getWalletAssets", address, filter],
     queryFn: () =>
       getWalletAssets({
         walletAddress: address!,
+        query: filter.query,
         page: 1,
         limit: 10,
       }),
     enabled: !!address,
   });
-
+  console.log(filter);
   return (
     <ProfileContext.Provider
       value={{
         loading: isLoading,
         listNft: data?.data || [],
+        filter,
+        setFilter,
       }}
     >
       {children}
