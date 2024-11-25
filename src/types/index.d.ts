@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
 import { Icons } from "@/components/common/icons";
 import { AssetMetadata, BrowserWallet } from "@meshsdk/core";
 import { StaticImageData } from "next/image";
@@ -7,19 +6,6 @@ declare module "next-auth" {
     address?: string;
     wallet?: string;
   }
-}
-
-export type JsonValue = string | number | boolean | JsonObject | JsonArray;
-export interface JsonObject {
-  [key: string]: JsonValue;
-}
-export interface JsonArray extends Array<JsonValue> {}
-export interface JsonStore {
-  jsonBuilder: { [key: string]: JsonValue };
-  setJsonBuilder: (newJson: { [key: string]: JsonValue }) => void;
-  addField: (path: string[]) => void;
-  updateField: (path: string[], value: JsonValue) => void;
-  removeField: (path: string[]) => void;
 }
 
 export type FilterType = {
@@ -100,3 +86,8 @@ export type Task = {
   content: string;
   status: "todo" | "inprogress" | "success" | "error";
 };
+
+export interface KeyValuePair {
+  key: string;
+  value: string;
+}
