@@ -1,16 +1,20 @@
 "use server";
 
 import { blockfrostFetcher } from "@/lib/cardano";
-import {
-  AssetDetails,
-  AssetDetailsWithTransactionHistory,
-  TransactionHistory,
-} from "@/types";
-import { isNil } from "lodash";
 
 export const getAddressDetail = async (address: string) => {
   try {
-    const data = await blockfrostFetcher.fetchAddressDetail(address);
+    const response = await blockfrostFetcher.fetchAddressDetail(address);
+    const totalTransaction = response.tx_count;
+    const totalMint = response.received_sum.length - 1;
+    const totalBurn = response.received_sum.length - response.sent_sum.length;
+    const totalUpdate = totalTransaction - totalMint - totalBurn;
+    const data = {
+      transaction: totalTransaction,
+      mint: totalMint,
+      burn: totalBurn,
+      update: totalUpdate,
+    };
 
     return {
       data,
