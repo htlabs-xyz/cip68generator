@@ -75,13 +75,10 @@ export default function UnitProvider({
   }, [isLoading]);
 
   useEffect(() => {
-    if (
-      assetData?.data &&
-      !isNil(assetData.data.metadata && isNil(metadataToUpdate))
-    ) {
+    if (assetData?.data && !isNil(assetData.data.metadata)) {
       setMetadataToUpdate(assetData.data.metadata);
     }
-  }, [assetData]);
+  }, [assetData, isLoading]);
 
   const handleUpdate = () => {
     redirect(`/dashboard/${unit}/update`);
@@ -232,7 +229,6 @@ export default function UnitProvider({
       burnStepper.goTo("result");
       // create transaction
     } catch (e) {
-      console.log(e);
       updateTaskState(
         "error",
         "",

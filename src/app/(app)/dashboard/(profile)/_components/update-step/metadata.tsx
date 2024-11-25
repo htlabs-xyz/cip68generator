@@ -5,7 +5,6 @@ import { useUnitContext } from "@/contexts/unit";
 export default function MetadataStep() {
   const { updateStepper, metadataToUpdate, setMetadataToUpdate } =
     useUnitContext();
-
   const handleNext = () => {
     updateStepper.next();
   };

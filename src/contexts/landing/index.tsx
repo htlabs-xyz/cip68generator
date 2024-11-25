@@ -11,7 +11,6 @@ type LandingContextType = LandingStore & {
 };
 
 export default function LandingProvider({ children }: PropsWithChildren) {
-  console.log(storeAddress);
   const { data, isLoading } = useQuery({
     queryKey: [""],
     queryFn: function () {
