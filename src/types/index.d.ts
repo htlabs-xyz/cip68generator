@@ -14,10 +14,10 @@ export type FilterType = {
 };
 
 export type StatisticType = {
-  totalTransaction: number;
-  totalMint: number;
-  totalBurn: number;
-  totalUpdate: number;
+  totalTransaction?: number;
+  totalMint?: number;
+  totalBurn?: number;
+  totalUpdate?: number;
 };
 
 export type WalletType = {

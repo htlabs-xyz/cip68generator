@@ -33,7 +33,7 @@ export class BlockfrostFetcher {
   async fetchAddressDetail(address: string) {
     try {
       const { data, status } = await this._axiosInstance.get(
-        `/addresses/${address}`,
+        `/addresses/${address}/total`,
       );
 
       if (status === 200 || status == 202) return data;
