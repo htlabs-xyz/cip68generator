@@ -16,6 +16,7 @@ import { IPFS_GATEWAY } from "@/constants";
 import { useUploadContext } from "@/contexts/storage";
 import { Media } from "@prisma/client";
 import FileDisplay from "@/components/common/file-display";
+import { copyToClipboard } from "@/utils/copy";
 
 export default function MediaList() {
   const { loading, listMedia, listSelected, setListSelected } =
@@ -85,7 +86,7 @@ export default function MediaList() {
                 <TableCell className="hidden md:table-cell">
                   <div
                     onClick={async () => {
-                      await navigator.clipboard.writeText(file.url || "");
+                      await copyToClipboard(file.url || "");
                     }}
                     className="flex items-center space-x-2"
                   >
