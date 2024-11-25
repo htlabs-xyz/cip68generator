@@ -1,3 +1,5 @@
+"use client";
+
 import Header from "@/app/(landing)/_layout/header";
 import { Button } from "@/components/ui/button";
 import Footer from "@/app/(landing)/_layout/footer";
@@ -9,8 +11,10 @@ import Founder from "./founder-section";
 import StatisticItem from "./statistic-item";
 import Link from "next/link";
 import router from "@/constants/routers";
+import { useLandingContext } from "@/contexts/landing";
 
 export default function LandingPage() {
+  const { statistic } = useLandingContext();
   return (
     <main className="relative bg-[#0d0e12] px-4 overflow-x-hidden">
       <Header />
@@ -64,10 +68,13 @@ export default function LandingPage() {
 
           {/* statistic-begin */}
           <section className="mt-[125px] flex h-[160px] items-center justify-around rounded-xl bg-[#13161B] px-[10px] py-0 text-center shadow-2xl max-md:mt-[35px] max-md:bg-none max-md:flex-wrap max-md:h-0 max-md:p-0">
-            <StatisticItem value={1332} title="Transactions" />
-            <StatisticItem value={2332} title="Minting" />
-            <StatisticItem value={1536} title="Updating" />
-            <StatisticItem value={1451} title="Burning" />
+            <StatisticItem
+              value={statistic.totalTransaction}
+              title="Transactions"
+            />
+            <StatisticItem value={statistic.totalMint} title="Minting" />
+            <StatisticItem value={statistic.totalUpdate} title="Updating" />
+            <StatisticItem value={statistic.totalBurn} title="Burning" />
           </section>
           {/* statistic-end */}
         </aside>
