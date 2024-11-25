@@ -1,11 +1,24 @@
 import JsonBuilder from "@/components/common/json-builder";
 import { Button } from "@/components/ui/button";
 import { useUnitContext } from "@/contexts/unit";
+import { KeyValuePair } from "@/types";
+import { generateFields, generateJson } from "@/utils/json";
+import { useEffect, useState } from "react";
 
 export default function MetadataStep() {
-  const { updateStepper, metadataToUpdate, setMetadataToUpdate } =
+  const { metadataToUpdate, updateStepper, setMetadataToUpdate } =
     useUnitContext();
+
+  const [fields, setFields] = useState<KeyValuePair[]>(
+    generateFields(metadataToUpdate),
+  );
+
+  useEffect(() => {
+    setFields(generateFields(metadataToUpdate));
+  }, [metadataToUpdate]);
+
   const handleNext = () => {
+    setMetadataToUpdate(generateJson(fields));
     updateStepper.next();
   };
   return (
@@ -16,7 +29,7 @@ export default function MetadataStep() {
             Metadata Build
           </h1>
         </div>
-        <JsonBuilder json={metadataToUpdate} setJson={setMetadataToUpdate} />
+        <JsonBuilder fields={fields} setFields={setFields} />
       </div>
       <div className="flex justify-end gap-4 mt-6">
         <Button

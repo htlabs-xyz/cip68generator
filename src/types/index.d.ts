@@ -86,3 +86,8 @@ export type Task = {
   content: string;
   status: "todo" | "inprogress" | "success" | "error";
 };
+
+export interface KeyValuePair {
+  key: string;
+  value: string;
+}

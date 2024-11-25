@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,33 +12,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-interface KeyValuePair {
-  key: string;
-  value: string;
-}
-const generateJson = (fields: KeyValuePair[]) => {
-  return fields.reduce(
-    (acc, { key, value }) => {
-      if (key) {
-        acc[key] = value;
-      }
-      return acc;
-    },
-    {} as Record<string, string>,
-  );
-};
-const generateFields = (json: Record<string, string>) => {
-  return Object.entries(json).map(([key, value]) => ({ key, value }));
-};
+import { generateJson } from "@/utils/json";
+import { KeyValuePair } from "@/types";
 
 export default function JsonBuilder({
-  json,
-  setJson,
+  fields,
+  setFields,
 }: {
-  json: Record<string, string>;
-  setJson: (json: Record<string, string>) => void;
+  fields: KeyValuePair[];
+  setFields: (fields: KeyValuePair[]) => void;
 }) {
-  const [fields, setFields] = useState<KeyValuePair[]>(generateFields(json));
   const [template, setTemplate] = useState<string>("");
   const addField = () => {
     setFields([...fields, { key: "", value: "" }]);
@@ -58,10 +41,6 @@ export default function JsonBuilder({
     const newFields = fields.filter((_, i) => i !== index);
     setFields(newFields);
   };
-
-  useEffect(() => {
-    setJson(generateJson(fields));
-  }, [fields, setJson]);
 
   return (
     <div className="flex h-full bg-section p-5">

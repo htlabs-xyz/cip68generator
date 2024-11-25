@@ -1,10 +1,15 @@
 import JsonBuilder from "@/components/common/json-builder";
 import { useMintOneContext } from "@/contexts/mint-one";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { KeyValuePair } from "@/types";
+import { generateJson } from "@/utils/json";
 
 export default function MetadataStep() {
-  const { stepper, metadataToMint, setMetadataToMint } = useMintOneContext();
+  const { stepper, setMetadataToMint } = useMintOneContext();
+  const [fields, setFields] = useState<KeyValuePair[]>([]);
   const handleNext = () => {
+    setMetadataToMint(generateJson(fields));
     stepper.next();
   };
   return (
@@ -15,7 +20,7 @@ export default function MetadataStep() {
             Metadata Build
           </h1>
         </div>
-        <JsonBuilder json={metadataToMint} setJson={setMetadataToMint} />
+        <JsonBuilder fields={fields} setFields={setFields} />
       </div>
       <div className="flex justify-end gap-4 mt-6">
         <Button
