@@ -14,7 +14,7 @@ import {
 import Property from "../property";
 import { useUnitContext } from "@/contexts/unit";
 export default function PreviewStep() {
-  const { updateStepper, metadataToUpdate, basicInfoToUpdate, startUpdating } =
+  const { assetDetails, updateStepper, metadataToUpdate, startUpdating } =
     useUnitContext();
   return (
     <div className="h-full py-8 px-10 m-auto flex flex-col">
@@ -101,11 +101,11 @@ export default function PreviewStep() {
                 <div className="flex items-center flex-1 overflow-hidden gap-[10px]">
                   <div className=" flex items-center justify-center w-8 h-8 rounded-full border-[1px] border-solid border-gray-400">
                     <span className="text-[16px] leading-6 font-medium">
-                      {basicInfoToUpdate.quantity}
+                      {assetDetails.quantity}
                     </span>
                   </div>
                   <h1 className="w-full flex overflow-hidden text-ellipsis max-w-full whitespace-nowrap">
-                    {basicInfoToUpdate.assetName}
+                    {assetDetails.asset_name}
                   </h1>
                 </div>
               </div>

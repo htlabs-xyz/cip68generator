@@ -1,17 +1,13 @@
 import JsonBuilder from "@/components/common/json-builder";
-import { useJsonBuilderStore } from "@/components/common/json-builder/store";
 import { Button } from "@/components/ui/button";
 import { useUnitContext } from "@/contexts/unit";
-import { isEmpty, isNil } from "lodash";
 
 export default function MetadataStep() {
-  const { updateStepper, setMetadataToUpdate } = useUnitContext();
-  const { jsonContent } = useJsonBuilderStore();
+  const { updateStepper, metadataToUpdate, setMetadataToUpdate } =
+    useUnitContext();
+
   const handleNext = () => {
-    if (!isNil(jsonContent) || !isEmpty(jsonContent)) {
-      setMetadataToUpdate(jsonContent);
-      updateStepper.next();
-    }
+    updateStepper.next();
   };
   return (
     <div className="h-full py-8 px-10 m-auto flex flex-col">
@@ -21,7 +17,7 @@ export default function MetadataStep() {
             Metadata Build
           </h1>
         </div>
-        <JsonBuilder />
+        <JsonBuilder json={metadataToUpdate} setJson={setMetadataToUpdate} />
       </div>
       <div className="flex justify-end gap-4 mt-6">
         <Button

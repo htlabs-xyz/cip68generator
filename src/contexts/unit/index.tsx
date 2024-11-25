@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { defineStepper } from "@stepperize/react";
 import { toast } from "@/hooks/use-toast";
 import { useWalletContext } from "@/components/providers/wallet";
@@ -10,7 +10,6 @@ import { useQuery } from "@tanstack/react-query";
 import { getAssetInfo } from "@/services/blockchain/getAssetInfo";
 import { AssetDetailsWithTransactionHistory } from "@/types";
 import useUnitStore, { UnitStore } from "./store";
-import { useJsonBuilderStore } from "@/components/common/json-builder/store";
 import { redirect } from "next/navigation";
 import { createBurnTransaction } from "@/services/contract/burn";
 import { hexToString } from "@meshsdk/core";
@@ -51,7 +50,6 @@ export default function UnitProvider({
   children: React.ReactNode;
 }) {
   const { signTx, address } = useWalletContext();
-  const { jsonContent, setJsonContent } = useJsonBuilderStore();
 
   const updateStepper = useUpdateStepper();
   const burnStepper = useBurnStepper();
@@ -60,8 +58,6 @@ export default function UnitProvider({
     setMetadataToUpdate,
     loading,
     setLoading,
-    basicInfoToUpdate,
-    setBasicInfoToUpdate,
     tasks,
     updateTaskState,
     txhash,
@@ -79,13 +75,11 @@ export default function UnitProvider({
   }, [isLoading]);
 
   useEffect(() => {
-    if (isNil(jsonContent) || isEmpty(jsonContent)) {
-      if (!isNil(metadataToUpdate) || !isEmpty(metadataToUpdate)) {
-        setJsonContent(metadataToUpdate);
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { _pk, ...metadata } = assetData?.data?.onchain_metadata || {};
-      setJsonContent(metadata);
+    if (
+      assetData?.data &&
+      !isNil(assetData.data.metadata && isNil(metadataToUpdate))
+    ) {
+      setMetadataToUpdate(assetData.data.metadata);
     }
   }, [assetData]);
 
@@ -261,8 +255,6 @@ export default function UnitProvider({
         setLoading,
         metadataToUpdate,
         setMetadataToUpdate,
-        basicInfoToUpdate,
-        setBasicInfoToUpdate,
         tasks,
         updateTaskState,
         txhash,
