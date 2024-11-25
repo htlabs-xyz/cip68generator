@@ -5,15 +5,14 @@ import { createContext, useContext, useEffect } from "react";
 import { defineStepper } from "@stepperize/react";
 import { toast } from "@/hooks/use-toast";
 import { useWalletContext } from "@/components/providers/wallet";
-import { isEmpty, isNil } from "lodash";
+import { isEmpty, isNil, set } from "lodash";
 import { useQuery } from "@tanstack/react-query";
 import { getAssetInfo } from "@/services/blockchain/getAssetInfo";
 import { AssetDetailsWithTransactionHistory } from "@/types";
 import useUnitStore, { UnitStore } from "./store";
-import { useJsonBuilderStore } from "@/components/common/json-builder/store";
 import { redirect } from "next/navigation";
 import { createBurnTransaction } from "@/services/contract/burn";
-import { hexToString } from "@meshsdk/core";
+import { deserializeAddress, hexToString } from "@meshsdk/core";
 import { createUpdateTransaction } from "@/services/contract/update";
 import { submitTx } from "@/services/blockchain/submitTx";
 
@@ -32,6 +31,7 @@ const { useStepper: useBurnStepper, steps: burnSteps } = defineStepper(
 
 type UnitContextType = UnitStore & {
   unit: string;
+  isAuthor: boolean;
   assetDetails: AssetDetailsWithTransactionHistory;
   updateStepper: ReturnType<typeof useUpdateStepper>;
   updateSteps: typeof updateSteps;
@@ -51,7 +51,6 @@ export default function UnitProvider({
   children: React.ReactNode;
 }) {
   const { signTx, address } = useWalletContext();
-  const { jsonContent, setJsonContent } = useJsonBuilderStore();
 
   const updateStepper = useUpdateStepper();
   const burnStepper = useBurnStepper();
@@ -60,8 +59,6 @@ export default function UnitProvider({
     setMetadataToUpdate,
     loading,
     setLoading,
-    basicInfoToUpdate,
-    setBasicInfoToUpdate,
     tasks,
     updateTaskState,
     txhash,
@@ -71,7 +68,7 @@ export default function UnitProvider({
   const { data: assetData, isLoading } = useQuery({
     queryKey: ["getAssetInfo", unit],
     queryFn: () => getAssetInfo(unit),
-    enabled: !isNil(unit),
+    enabled: !isNil(unit) && !isEmpty(unit),
   });
 
   useEffect(() => {
@@ -79,15 +76,22 @@ export default function UnitProvider({
   }, [isLoading]);
 
   useEffect(() => {
-    if (isNil(jsonContent) || isEmpty(jsonContent)) {
-      if (!isNil(metadataToUpdate) || !isEmpty(metadataToUpdate)) {
-        setJsonContent(metadataToUpdate);
-      }
+    if (assetData?.data && !isNil(assetData.data.onchain_metadata)) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { _pk, ...metadata } = assetData?.data?.onchain_metadata || {};
-      setJsonContent(metadata);
+      const { _pk, ...metadata } = assetData.data.onchain_metadata;
+      setMetadataToUpdate(metadata);
+    } else {
+      setMetadataToUpdate({});
     }
-  }, [assetData]);
+  }, [assetData, isLoading]);
+
+  const pubKeyHash = !isNil(address) && deserializeAddress(address)?.pubKeyHash;
+
+  const isAuthor =
+    (!isNil(assetData?.data?.onchain_metadata?._pk) &&
+      pubKeyHash &&
+      assetData?.data?.onchain_metadata?._pk.includes(pubKeyHash)) ||
+    (pubKeyHash && pubKeyHash.includes(assetData?.data?.onchain_metadata?._pk));
 
   const handleUpdate = () => {
     redirect(`/dashboard/${unit}/update`);
@@ -238,7 +242,6 @@ export default function UnitProvider({
       burnStepper.goTo("result");
       // create transaction
     } catch (e) {
-      console.log(e);
       updateTaskState(
         "error",
         "",
@@ -256,13 +259,12 @@ export default function UnitProvider({
     <UnitContext.Provider
       value={{
         unit,
+        isAuthor,
         assetDetails: assetData?.data || null!,
         loading: loading,
         setLoading,
         metadataToUpdate,
         setMetadataToUpdate,
-        basicInfoToUpdate,
-        setBasicInfoToUpdate,
         tasks,
         updateTaskState,
         txhash,

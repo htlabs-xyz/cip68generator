@@ -1,18 +1,16 @@
 import JsonBuilder from "@/components/common/json-builder";
 import { useMintOneContext } from "@/contexts/mint-one";
-import { useJsonBuilderStore } from "@/components/common/json-builder/store";
 import { Button } from "@/components/ui/button";
-import { isEmpty, isNil } from "lodash";
-import { convertEmpty } from "@/utils/convert-empty";
+import { useState } from "react";
+import { KeyValuePair } from "@/types";
+import { generateJson } from "@/utils/json";
 
 export default function MetadataStep() {
   const { stepper, setMetadataToMint } = useMintOneContext();
-  const { jsonContent } = useJsonBuilderStore();
+  const [fields, setFields] = useState<KeyValuePair[]>([]);
   const handleNext = () => {
-    if (!isNil(jsonContent) || !isEmpty(jsonContent)) {
-      setMetadataToMint(convertEmpty(jsonContent));
-      stepper.next();
-    }
+    setMetadataToMint(generateJson(fields));
+    stepper.next();
   };
   return (
     <div className="h-full py-8 px-10 m-auto flex flex-col">
@@ -22,7 +20,7 @@ export default function MetadataStep() {
             Metadata Build
           </h1>
         </div>
-        <JsonBuilder />
+        <JsonBuilder fields={fields} setFields={setFields} />
       </div>
       <div className="flex justify-end gap-4 mt-6">
         <Button

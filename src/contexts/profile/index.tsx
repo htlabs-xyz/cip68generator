@@ -27,7 +27,6 @@ export default function ProfileProvider({ children }: PropsWithChildren) {
       }),
     enabled: !!address,
   });
-  console.log(filter);
   return (
     <ProfileContext.Provider
       value={{

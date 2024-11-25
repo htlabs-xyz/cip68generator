@@ -8,14 +8,6 @@ export type UnitStore = {
   setLoading: (loading: boolean) => void;
   metadataToUpdate: AssetMetadata | null;
   setMetadataToUpdate: (metadata: AssetMetadata) => void;
-  basicInfoToUpdate: {
-    assetName: string;
-    quantity: string;
-  };
-  setBasicInfoToUpdate: (basicnfo: {
-    assetName: string;
-    quantity: string;
-  }) => void;
   tasks: Task[];
   updateTaskState: (
     status: "todo" | "inprogress" | "success" | "error",
@@ -29,14 +21,9 @@ export type UnitStore = {
 const useUnitStore = create<UnitStore>((set) => ({
   loading: false,
   metadataToUpdate: null,
-  basicInfoToUpdate: {
-    assetName: "",
-    quantity: "1",
-  },
   txhash: "",
   tasks: [],
   setTxHash: (txhash) => set({ txhash }),
-  setBasicInfoToUpdate: (basicInfo) => set({ basicInfoToUpdate: basicInfo }),
   setLoading: (loading) => set({ loading }),
   setMetadataToUpdate: (metadata) => set({ metadataToUpdate: metadata }),
   updateTaskState: (status, name = "", content = "") => {

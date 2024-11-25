@@ -1,17 +1,25 @@
 import JsonBuilder from "@/components/common/json-builder";
-import { useJsonBuilderStore } from "@/components/common/json-builder/store";
 import { Button } from "@/components/ui/button";
 import { useUnitContext } from "@/contexts/unit";
-import { isEmpty, isNil } from "lodash";
+import { KeyValuePair } from "@/types";
+import { generateFields, generateJson } from "@/utils/json";
+import { useEffect, useState } from "react";
 
 export default function MetadataStep() {
-  const { updateStepper, setMetadataToUpdate } = useUnitContext();
-  const { jsonContent } = useJsonBuilderStore();
+  const { metadataToUpdate, updateStepper, setMetadataToUpdate } =
+    useUnitContext();
+
+  const [fields, setFields] = useState<KeyValuePair[]>(
+    generateFields(metadataToUpdate),
+  );
+
+  useEffect(() => {
+    setFields(generateFields(metadataToUpdate));
+  }, [metadataToUpdate]);
+
   const handleNext = () => {
-    if (!isNil(jsonContent) || !isEmpty(jsonContent)) {
-      setMetadataToUpdate(jsonContent);
-      updateStepper.next();
-    }
+    setMetadataToUpdate(generateJson(fields));
+    updateStepper.next();
   };
   return (
     <div className="h-full py-8 px-10 m-auto flex flex-col">
@@ -21,7 +29,7 @@ export default function MetadataStep() {
             Metadata Build
           </h1>
         </div>
-        <JsonBuilder />
+        <JsonBuilder fields={fields} setFields={setFields} />
       </div>
       <div className="flex justify-end gap-4 mt-6">
         <Button
