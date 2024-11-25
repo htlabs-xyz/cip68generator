@@ -40,7 +40,6 @@ export default function WalletProvider({ children }: PropsWithChildren) {
       }
       if (isNil(session) || status === "unauthenticated") {
         disconnect();
-        await signOut();
         return;
       }
       if (isNil(wallet)) {
