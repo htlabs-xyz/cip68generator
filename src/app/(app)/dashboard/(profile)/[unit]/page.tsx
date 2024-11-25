@@ -26,7 +26,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Property from "../_components/property";
-import Pagination from "../_components/pagination";
+import Pagination from "../_components/pagination-table";
 
 export default function DetailsPage() {
   const { address } = useWalletContext();
