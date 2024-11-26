@@ -1,34 +1,59 @@
 "use server";
 
 import { blockfrostFetcher } from "@/lib/cardano";
-import { Input, Output } from "@/types";
+import { SpecialTransaction } from "@/types";
 
-export const getHistoryMetadata = async function (txHash: string) {
+export const getHistoryMetadata = async function (
+  txHash: string,
+  unit: string,
+) {
   try {
+    const specialTransaction: SpecialTransaction =
+      await blockfrostFetcher.fetchSpecialTransaction(txHash);
     const transaction = await blockfrostFetcher.fetchTransactionsUTxO(txHash);
-    const input = transaction.inputs.find(function (input: Input) {
-      return input.inline_datum != null && input.data_hash != null;
+
+    const assetInput = transaction.inputs.find(function (input) {
+      const asset = input.amount.find(function (amt) {
+        return amt.unit === unit;
+      });
+      return asset !== undefined;
     });
 
-    const output = transaction.outputs.find(function (output: Output) {
-      return output.inline_datum != null && output.data_hash != null;
+    const assetOutput = transaction.outputs.find(function (output) {
+      const asset = output.amount.find(function (amt) {
+        return amt.unit === unit;
+      });
+      return asset !== undefined;
     });
 
-    if (!input && output?.data_hash) {
-      const datumOutput = await blockfrostFetcher.fetchDatum(output.data_hash);
-      console.log(datumOutput.json_value.fields[0].map);
+    if (!assetInput && assetOutput) {
+      return {
+        txHash: txHash,
+        datetime: specialTransaction.block_time,
+        fee: specialTransaction.fees,
+        status: "Completed",
+        action: "Mint",
+      };
     }
 
-    if (!output && input?.data_hash) {
-      const datumInput = await blockfrostFetcher.fetchDatum(input.data_hash);
-      console.log(datumInput.json_value.fields[0].map);
+    if (!assetOutput && assetInput) {
+      return {
+        txHash: txHash,
+        datetime: specialTransaction.block_time,
+        fee: specialTransaction.fees,
+        status: "Completed",
+        action: "Burn",
+      };
     }
 
-    if (input?.data_hash && output?.data_hash) {
-      const datumOutput = await blockfrostFetcher.fetchDatum(output.data_hash);
-      console.log(datumOutput.json_value.fields[0].map);
-      const datumInput = await blockfrostFetcher.fetchDatum(input.data_hash);
-      console.log(datumInput.json_value.fields[0].map);
+    if (assetInput && assetOutput) {
+      return {
+        txHash: txHash,
+        datetime: specialTransaction.block_time,
+        fee: specialTransaction.fees,
+        status: "Completed",
+        action: "Update",
+      };
     }
 
     return {
