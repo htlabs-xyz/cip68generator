@@ -5,6 +5,7 @@ import {
   resolveRewardAddress,
 } from "@meshsdk/core";
 import { parseHttpError } from "@/utils";
+import { SpecialTransaction, Transaction } from "@/types";
 
 export class BlockfrostFetcher {
   private readonly _axiosInstance: AxiosInstance;
@@ -75,11 +76,48 @@ export class BlockfrostFetcher {
       : address;
     try {
       const { data, status } = await this._axiosInstance.get(
-        `accounts/${rewardAddress}/addresses/assets`,
+        `/accounts/${rewardAddress}/addresses/assets`,
       );
 
       if (status === 200 || status == 202) return data;
 
+      throw parseHttpError(data);
+    } catch (error) {
+      throw parseHttpError(error);
+    }
+  }
+
+  async fetchTransactionsUTxO(txHash: string): Promise<Transaction> {
+    try {
+      const { data, status } = await this._axiosInstance.get(
+        `/txs/${txHash}/utxos`,
+      );
+
+      if (status === 200 || status == 202) return data;
+      throw parseHttpError(data);
+    } catch (error) {
+      throw parseHttpError(error);
+    }
+  }
+
+  async fetchDatum(datum: string) {
+    try {
+      const { data, status } = await this._axiosInstance.get(
+        `/scripts/datum/${datum}`,
+      );
+
+      if (status === 200 || status == 202) return data;
+      throw parseHttpError(data);
+    } catch (error) {
+      throw parseHttpError(error);
+    }
+  }
+
+  async fetchSpecialTransaction(txHash: string) {
+    try {
+      const { data, status } = await this._axiosInstance.get(`/txs/${txHash}`);
+
+      if (status === 200 || status == 202) return data;
       throw parseHttpError(data);
     } catch (error) {
       throw parseHttpError(error);

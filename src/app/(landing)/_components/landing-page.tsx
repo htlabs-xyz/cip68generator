@@ -12,6 +12,7 @@ import StatisticItem from "./statistic-item";
 import Link from "next/link";
 import router from "@/constants/routers";
 import { useLandingContext } from "@/contexts/landing";
+import { motion } from "framer-motion";
 
 export default function LandingPage() {
   const { statistic } = useLandingContext();
@@ -23,22 +24,54 @@ export default function LandingPage() {
         <aside className="mx-auto my-0 w-full max-w-[1200px]">
           {/* slogan-begin */}
           <section className="text-center">
-            <h2 className="text-[54px] leading-[64px] text-[#ff9345] max-md:text-[28px] max-md:leading-[33px] max-md:w-[320px] max-md:my-0 max-md:mx-auto">
+            <motion.h2
+              initial={{ y: 100, scale: 0.5, opacity: 0 }}
+              animate={{ y: 0, scale: 1, opacity: 1 }}
+              transition={{
+                duration: 0.5,
+                ease: "easeOut",
+              }}
+              className="text-[54px] leading-[64px] text-[#ff9345] max-md:text-[28px] max-md:leading-[33px] max-md:w-[320px] max-md:my-0 max-md:mx-auto"
+            >
               Simplify Cardano Asset Creation
-            </h2>
-            <h3 className="mt-[15px] text-[42px] leading-[50px] text-[#fff] max-md:mt-[10px] max-md:text-[18px] max-md:leading-[22px]">
+            </motion.h2>
+            <motion.h3
+              initial={{ y: 100, scale: 0.5, opacity: 0 }}
+              animate={{ y: 0, scale: 1, opacity: 1 }}
+              transition={{
+                duration: 0.5,
+                ease: "easeOut",
+              }}
+              className="mt-[15px] text-[42px] leading-[50px] text-[#fff] max-md:mt-[10px] max-md:text-[18px] max-md:leading-[22px]"
+            >
               Open-Source Innovation for All
-            </h3>
-            <h4 className="text-[rgb(119, 119, 118)] mx-auto mb-0 mt-10 max-w-[940px] text-[16px] leading-[20px] max-md:mt-5 max-md:mx-auto max-md:mb-0 max-md:text-[12px] max-md:leading-[16px]">
+            </motion.h3>
+            <motion.h4
+              initial={{ y: 100, scale: 0.5, opacity: 0 }}
+              animate={{ y: 0, scale: 1, opacity: 1 }}
+              transition={{
+                duration: 0.5,
+                ease: "easeOut",
+              }}
+              className="text-[rgb(119, 119, 118)] mx-auto mb-0 mt-10 max-w-[940px] text-[16px] leading-[20px] max-md:mt-5 max-md:mx-auto max-md:mb-0 max-md:text-[12px] max-md:leading-[16px]"
+            >
               CIP68 Generator is a tool designed to simplify the creation,
               management, and burning of CIP68-compliant native assets on the
               Cardano platform
-            </h4>
+            </motion.h4>
           </section>
           {/* slogan-end */}
 
           {/* links-begin */}
-          <section className="mt-[60px] max-md:mt-[30px] flex justify-center gap-10">
+          <motion.section
+            initial={{ y: 100, scale: 0.5, opacity: 0 }}
+            animate={{ y: 0, scale: 1, opacity: 1 }}
+            transition={{
+              duration: 0.5,
+              ease: "easeOut",
+            }}
+            className="mt-[60px] max-md:mt-[30px] flex justify-center gap-10"
+          >
             <Button className="box-border flex cursor-pointer items-center rounded-[10px] px-6 py-0 text-[16px] font-medium leading-8 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg max-md:text-[14px] max-md:h-[35px] max-md:rounded-[5px] gap-2 ">
               <Link className="flex items-center gap-2" href={router.mint}>
                 Launch Token
@@ -63,11 +96,19 @@ export default function LandingPage() {
                 Subscription
               </Link>
             </Button>
-          </section>
+          </motion.section>
           {/* links-end */}
 
           {/* statistic-begin */}
-          <section className="mt-[125px] flex h-[160px] items-center justify-around rounded-xl bg-[#13161B] px-[10px] py-0 text-center shadow-2xl max-md:mt-[35px] max-md:bg-none max-md:flex-wrap max-md:h-0 max-md:p-0">
+          <motion.section
+            initial={{ y: 100, scale: 0.5, opacity: 0 }}
+            animate={{ y: 0, scale: 1, opacity: 1 }}
+            transition={{
+              duration: 0.5,
+              ease: "easeOut",
+            }}
+            className="mt-[125px] flex h-[160px] items-center justify-around rounded-xl bg-[#13161B] px-[10px] py-0 text-center shadow-2xl max-md:mt-[35px] max-md:bg-none max-md:flex-wrap max-md:h-0 max-md:p-0"
+          >
             <StatisticItem
               value={statistic.totalTransaction}
               title="Transactions"
@@ -75,7 +116,7 @@ export default function LandingPage() {
             <StatisticItem value={statistic.totalMint} title="Minting" />
             <StatisticItem value={statistic.totalUpdate} title="Updating" />
             <StatisticItem value={statistic.totalBurn} title="Burning" />
-          </section>
+          </motion.section>
           {/* statistic-end */}
         </aside>
       </section>
@@ -94,6 +135,7 @@ export default function LandingPage() {
             {features.map(function (feature, index: number) {
               return (
                 <Feature
+                  index={index}
                   key={index}
                   title={feature.title}
                   slogan={feature.slogan}
@@ -155,6 +197,7 @@ export default function LandingPage() {
             {founderData.map(function (founder, index: number) {
               return (
                 <Founder
+                  index={index}
                   key={index}
                   avatar={founder.avatar!}
                   description={founder.description}

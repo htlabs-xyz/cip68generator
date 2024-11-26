@@ -35,7 +35,7 @@ export default function Account() {
         <div className={cn("h-8 w-8")}>
           <Image
             className={cn(
-              "h-full w-full rounded-full bg-slate-300 object-cover p-1",
+              "h-full w-full rounded-full bg-slate-700 object-cover p-1",
             )}
             src={wallet?.icon || ""}
             width={32}

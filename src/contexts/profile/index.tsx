@@ -23,7 +23,7 @@ export default function ProfileProvider({ children }: PropsWithChildren) {
         walletAddress: address!,
         query: filter.query,
         page: currentPage,
-        limit: 10,
+        limit: 9,
       }),
     enabled: !!address,
   });
