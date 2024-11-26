@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect } from "react";
 import { defineStepper } from "@stepperize/react";
 import { toast } from "@/hooks/use-toast";
 import { useWalletContext } from "@/components/providers/wallet";
-import { isEmpty, isNil, set } from "lodash";
+import { isEmpty, isNil } from "lodash";
 import { useQuery } from "@tanstack/react-query";
 import { getAssetInfo } from "@/services/blockchain/getAssetInfo";
 import { AssetDetailsWithTransactionHistory } from "@/types";
@@ -72,7 +72,7 @@ export default function UnitProvider({
     enabled: !isNil(unit) && !isEmpty(unit),
   });
 
-  const { data: assetHistory, isLoading: assetHistoryLoading } = useQuery({
+  const { data: assetHistory } = useQuery({
     queryKey: ["getAssetHistory", unit],
     queryFn: () =>
       getHistoryAssets({
