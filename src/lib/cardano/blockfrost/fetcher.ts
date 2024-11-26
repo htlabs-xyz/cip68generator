@@ -5,7 +5,7 @@ import {
   resolveRewardAddress,
 } from "@meshsdk/core";
 import { parseHttpError } from "@/utils";
-import { SpecialTransaction, Transaction } from "@/types";
+import { Transaction } from "@/types";
 
 export class BlockfrostFetcher {
   private readonly _axiosInstance: AxiosInstance;

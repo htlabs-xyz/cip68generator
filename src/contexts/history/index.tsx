@@ -15,6 +15,7 @@ export default function HistoryProvider({ children }: PropsWithChildren) {
     queryFn: function () {
       return getHistoryMetadata(
         "07f70d7e65dca4c47e1fbce93d8bfdf08eff0d3adee20c63c926a317900eef9f",
+        "",
       );
     },
   });
@@ -25,6 +26,7 @@ export default function HistoryProvider({ children }: PropsWithChildren) {
     <HistoryContext.Provider
       value={{
         loading: isLoading,
+        metadata: "",
       }}
     >
       {children}
