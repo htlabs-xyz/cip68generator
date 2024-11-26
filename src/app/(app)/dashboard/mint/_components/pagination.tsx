@@ -49,7 +49,7 @@ const Pagination: React.FC<Props> = ({
         <span className="mx-1">Previous</span>
       </Button>
       <span className="text-xs font-light leading-8 min-w-[110px] text-center">
-        {page} - {totalPages} of {totalItems} Orders
+        {page} - {totalPages} of {totalItems} Pages
       </span>
       <Button
         className="bg-[#030711] border-0 rounded-[12px] text-white cursor-pointer flex items-center justify-center text-xs h-[24px] font-normal px-3 py-[1px] mx-2"

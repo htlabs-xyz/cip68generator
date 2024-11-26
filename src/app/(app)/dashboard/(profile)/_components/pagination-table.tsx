@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { paginationIcon } from "@/public/icons";
 import { Button } from "@/components/ui/button";
+import { useProfileContext } from "@/contexts/profile";
 
 type Props = {
   page: number;
@@ -13,21 +14,15 @@ type Props = {
   className?: string;
 };
 
-const Pagination: React.FC<Props> = ({
-  page = 1,
-  totalItems,
-  className,
-  setPage,
-  totalPages,
-}) => {
+const Pagination: React.FC<Props> = () => {
+  const { totalPages, currentPage, setCurrentPage } = useProfileContext();
+
   return (
-    <div
-      className={`flex justify-center items-center mt-6 text-white ${className}`}
-    >
+    <div className={`flex justify-center items-center mt-6 text-white `}>
       <Button
         className="bg-[#030711] border-0 rounded-[8px] text-white cursor-pointer flex items-center justify-center text-[16px] h-8 font-normal px-3 py-[1px] mx-2"
-        disabled={page === 1}
-        onClick={() => setPage(1)}
+        disabled={currentPage === 1}
+        onClick={() => setCurrentPage(1)}
       >
         <Image
           className="w-2 h-2 object-contain"
@@ -38,7 +33,7 @@ const Pagination: React.FC<Props> = ({
       </Button>
       <Button
         className="bg-[#030711] border-0 rounded-[8px] text-white cursor-pointer flex items-center justify-center text-[16px] h-8 font-normal px-3 py-[1px] mx-2"
-        disabled={page === 1}
+        disabled={currentPage === 1}
         // onClick={() => setPage((prev) => (Math.max(prev - 1, 1))}
       >
         <Image
@@ -49,11 +44,11 @@ const Pagination: React.FC<Props> = ({
         <span className="mx-1">Previous</span>
       </Button>
       <span className="text-[16px] font-light leading-8 min-w-[110px] text-center">
-        {page} - {totalPages} of {totalItems} Orders
+        {currentPage} - {totalPages} of {totalPages} Pages
       </span>
       <Button
         className="bg-[#030711] border-0 rounded-[8px] text-white cursor-pointer flex items-center justify-center text-[16px] h-8 font-normal px-3 py-[1px] mx-2"
-        disabled={page === totalPages}
+        disabled={currentPage === totalPages}
         // onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
       >
         <span className="mx-1">Next</span>
@@ -65,8 +60,8 @@ const Pagination: React.FC<Props> = ({
       </Button>
       <Button
         className="bg-[#030711] border-0 rounded-[8px] text-white cursor-pointer flex items-center justify-center text-[16px] h-8 font-normal px-3 py-[1px] mx-2"
-        disabled={page === totalPages}
-        onClick={() => setPage(totalPages)}
+        disabled={currentPage === totalPages}
+        onClick={() => setCurrentPage(totalPages)}
       >
         <span className="mx-1">Last</span>
         <Image
