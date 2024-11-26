@@ -100,3 +100,69 @@ export type Task = {
   content: string;
   status: "todo" | "inprogress" | "success" | "error";
 };
+
+export type Transaction = {
+  hash: string;
+  inputs: Input[];
+  outputs: Output[];
+};
+
+export type Input = {
+  address: string;
+  amount: Asset[];
+  tx_hash: string;
+  output_index: number;
+  data_hash?: string;
+  inline_datum?: string;
+  reference_script_hash?: string;
+  collateral: boolean;
+  reference: boolean;
+};
+
+export type Output = {
+  address: string;
+  amount: Asset[];
+  output_index: number;
+  data_hash?: string;
+  inline_datum?: string;
+  reference_script_hash?: string;
+  collateral: boolean;
+  consumed_by_tx?: string;
+};
+
+export type Asset = {
+  unit: string;
+  quantity: string;
+};
+
+export type TransactionAsset = {
+  tx_hash: string;
+  tx_index: number;
+  block_height: number;
+  block_time: number;
+};
+
+export type SpecialTransaction = {
+  hash: string;
+  block: string;
+  block_height: number;
+  block_time: number;
+  slot: number;
+  index: number;
+  output_amount: Asset[];
+  fees: string;
+  deposit: string;
+  size: number;
+  invalid_before: string | null;
+  invalid_hereafter: string | null;
+  utxo_count: number;
+  withdrawal_count: number;
+  mir_cert_count: number;
+  delegation_count: number;
+  stake_cert_count: number;
+  pool_update_count: number;
+  pool_retire_count: number;
+  asset_mint_or_burn_count: number;
+  redeemer_count: number;
+  valid_contract: boolean;
+};

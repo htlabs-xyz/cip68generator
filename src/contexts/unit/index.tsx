@@ -15,6 +15,7 @@ import { redirect } from "next/navigation";
 import { createBurnTransaction } from "@/services/contract/burn";
 import { hexToString } from "@meshsdk/core";
 import { createUpdateTransaction } from "@/services/contract/update";
+import { getHistoryAssets } from "@/services/blockchain/getHistoryAssets";
 
 const { useStepper: useUpdateStepper, steps: updateSteps } = defineStepper(
   { id: "metadata", title: "Metadata" },
@@ -72,6 +73,16 @@ export default function UnitProvider({
     queryFn: () => getAssetInfo(unit),
     enabled: !isNil(unit),
   });
+
+  const { data: assetHistory, isLoading: assetHistoryLoading } = useQuery({
+    queryKey: ["getAssetHistory", unit],
+    queryFn: () =>
+      getHistoryAssets({
+        unit: "ec64872c1965bbbaa8868aef2bd9a343b821a9f2c7787ea096f62262000643b03132333435363738393130",
+      }),
+    enabled: !isNil(unit),
+  });
+  console.log(assetHistory);
 
   useEffect(() => {
     setLoading(isLoading);
