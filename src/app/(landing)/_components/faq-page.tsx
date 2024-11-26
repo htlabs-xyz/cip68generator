@@ -1,5 +1,3 @@
-"use client";
-
 import Banner from "@/components/common/banner";
 import { bannerImage } from "@/public/images";
 import Header from "@/app/(landing)/_layout/header";

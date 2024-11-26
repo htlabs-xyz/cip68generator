@@ -1,7 +1,5 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-"use client";
-
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { cn } from "@/utils";
 import { useState } from "react";
 

@@ -46,7 +46,9 @@ export default function JsonBuilder({
     <div className="flex h-full bg-section p-5">
       <div className="w-1/2 p-4 space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg p-2 mb-4">
-          <h1>JSON Builder</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Metadata Builder
+          </h1>
           <Select
             value={template}
             onValueChange={(newValue) => {

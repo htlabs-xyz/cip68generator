@@ -1,5 +1,3 @@
-import { motion } from "framer-motion";
-
 type Props = {
   title?: string;
   description?: string;
@@ -9,24 +7,10 @@ export default function Title({ title, description }: Props) {
   return (
     <section className=" relative mx-auto mb-[30px] flex flex-col items-center justify-center">
       <div className="relative mt-[15px] text-[42px] leading-[50px] text-[#fff]">
-        <motion.h3
-          initial={{ y: 100, scale: 0.5, opacity: 0 }}
-          animate={{ y: 0, scale: 1, opacity: 1 }}
-          transition={{
-            duration: 0.5,
-            ease: "easeOut",
-          }}
-          className="mb-3 font-bold text-center text-white max-md:text-[28px] max-md:leading-[33px] max-md:w-[320px] max-md:my-0 max-md:mx-auto"
-        >
+        <h3 className="mb-3 font-bold text-center text-white max-md:text-[28px] max-md:leading-[33px] max-md:w-[320px] max-md:my-0 max-md:mx-auto">
           {title}
-        </motion.h3>
-        <motion.svg
-          initial={{ y: 100, scale: 0.5, opacity: 0 }}
-          animate={{ y: 0, scale: 1, opacity: 1 }}
-          transition={{
-            duration: 0.5,
-            ease: "easeOut",
-          }}
+        </h3>
+        <svg
           className="absolute bottom-[-8px] right-[-24px] w-14 animate-pulse"
           xmlns="http://www.w3.org/2000/svg"
           version="1.1"
@@ -47,19 +31,11 @@ export default function Title({ title, description }: Props) {
               <stop stopColor="hsl(316, 73%, 52%)" offset={1} />
             </linearGradient>
           </defs>
-        </motion.svg>
+        </svg>
       </div>
-      <motion.p
-        initial={{ y: 100, scale: 0.5, opacity: 0 }}
-        animate={{ y: 0, scale: 1, opacity: 1 }}
-        transition={{
-          duration: 0.5,
-          ease: "easeOut",
-        }}
-        className="max-w-[600px] text-center font-normal max-md:text-[14px] max-md:leading-[18px] max-md:w-[320px] max-md:my-0 max-md:mx-auto"
-      >
+      <h5 className="max-w-[600px] text-center font-normal max-md:text-[14px] max-md:leading-[18px] max-md:w-[320px] max-md:my-0 max-md:mx-auto">
         {description}
-      </motion.p>
+      </h5>
     </section>
   );
 }

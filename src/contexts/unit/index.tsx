@@ -32,7 +32,7 @@ const { useStepper: useBurnStepper, steps: burnSteps } = defineStepper(
 
 type UnitContextType = UnitStore & {
   unit: string;
-  // assetHistory: AssetHistory[];
+  assetHistory: AssetHistory[];
   isAuthor: boolean;
   assetDetails: AssetDetailsWithTransactionHistory;
   updateStepper: ReturnType<typeof useUpdateStepper>;
@@ -76,9 +76,7 @@ export default function UnitProvider({
   const { data: assetHistory } = useQuery({
     queryKey: ["getAssetHistory", unit],
     queryFn: () =>
-      getHistoryAssets({
-        unit: "ec64872c1965bbbaa8868aef2bd9a343b821a9f2c7787ea096f62262000643b03132333435363738393130",
-      }),
+      getHistoryAssets({ unit: unit.replace("000de140", "000643b0") }),
     enabled: !isNil(unit),
   });
 
@@ -273,7 +271,7 @@ export default function UnitProvider({
         isAuthor,
         assetDetails: assetData?.data || null!,
         loading: loading,
-        // assetHistory: assetHistory?.data || null!,
+        assetHistory: assetHistory?.data || [],
         setLoading,
         metadataToUpdate,
         setMetadataToUpdate,

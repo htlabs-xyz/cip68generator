@@ -60,7 +60,7 @@ export class BlockfrostFetcher {
   async fetchAssetTransactions(asset: string) {
     try {
       const { data, status } = await this._axiosInstance.get(
-        `/assets/${asset}/transactions`,
+        `/assets/${asset}/transactions?order=desc`,
       );
 
       if (status === 200 || status == 202) return data;

@@ -1,4 +1,5 @@
 import cbor from "cbor";
+import { isNil } from "lodash";
 
 /**
  * @description Convert inline datum from utxo to metadata
@@ -9,12 +10,15 @@ import cbor from "cbor";
  * @param datum
  * @returns metadata
  */
-export async function converMetadata(
-  datum: string,
+export async function datumToJson(
+  datum: string | undefined | null,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   key?: string,
 ): Promise<unknown> {
   try {
+    if (isNil(datum)) {
+      throw new Error("No metadata found.");
+    }
     const cborDatum: Buffer = Buffer.from(datum, "hex");
     const decoded = await cbor.decodeFirst(cborDatum);
     const convertToJSON = (data: unknown): unknown => {
@@ -22,10 +26,11 @@ export async function converMetadata(
         const obj: Record<string, string> = {};
         data.forEach((value, key) => {
           const keyStr = key.toString("utf-8");
+          if (keyStr === "_pk") {
+            return;
+          }
           obj[keyStr] =
-            keyStr !== "author"
-              ? value.toString("utf-8")
-              : value.toString("hex");
+            keyStr !== "_pk" ? value.toString("utf-8") : value.toString("hex");
         });
         return obj;
       }
@@ -36,7 +41,7 @@ export async function converMetadata(
     };
     return convertToJSON(decoded.value[0]);
   } catch (error) {
-    console.error("Error decoding CBOR data:", error);
-    throw new Error("Failed to parse hex data to JSON.");
+    console.error(error);
+    return {};
   }
 }
