@@ -56,7 +56,6 @@ export async function getHistoryAssets({
         }
 
         if (!assetOutput && assetInput) {
-          console.log("Burn");
           return {
             txHash: assetTx.tx_hash,
             datetime: assetTx.block_time,

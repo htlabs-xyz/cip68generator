@@ -1,12 +1,19 @@
 import FileDisplay from "@/components/common/file-display";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
+import { motion } from "framer-motion";
 import { IPFS_GATEWAY } from "@/constants";
 import { AssetDetails } from "@/types";
 import { hexToString } from "@meshsdk/core";
 import Link from "next/link";
 
-export default function AssetCard({ data }: { data: AssetDetails }) {
+export default function AssetCard({
+  data,
+  index,
+}: {
+  data: AssetDetails;
+  index: number;
+}) {
   const { asset_name, policy_id, onchain_metadata, fingerprint } = data;
 
   const imgSrc =
@@ -26,30 +33,31 @@ export default function AssetCard({ data }: { data: AssetDetails }) {
 
   return (
     <Link href={`/dashboard/${policy_id + asset_name}`}>
-      <div className="h-full rounded-lg">
-        <Card className=" border-0 bg-zinc-900">
-          <CardHeader className="p-0">
-            <AspectRatio ratio={4 / 4}>
-              <FileDisplay
-                src={imgSrc}
-                alt={"image"}
-                objectFit="contain"
-                type={mediaType}
-                className="h-auto w-full rounded-lg border object-contain"
-              />
-            </AspectRatio>
-          </CardHeader>
-          <CardContent className="p-4 space-y-2">
-            <p className="text-sm text-zinc-400 font-mono break-all">
-              <span className="text-xs">{fingerprintSort}</span>
-            </p>
-            <h3 className="text-xl text-white font-semibold">
-              {" "}
-              {assetNameSort}
-            </h3>
-          </CardContent>
+      <motion.div
+        initial={{ scale: 0.5, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.8, delay: index * 0.2 }}
+        className="rounded-lg shadow-none transition-shadow duration-300 hover:shadow-md hover:shadow-slate-800"
+      >
+        <Card className="h-full">
+          <AspectRatio ratio={5 / 3} className="bg-muted">
+            <FileDisplay
+              src={imgSrc}
+              alt={"image"}
+              type={mediaType}
+              className="h-full w-full rounded-t-lg object-cover"
+            />
+          </AspectRatio>
+          <div className="flex flex-col items-center justify-start gap-2 self-stretch px-4 py-2">
+            <div className="font-semibol self-stretch text-center text-base">
+              {"(222) " + assetNameSort}
+            </div>
+            <div className="font- self-stretch text-center text-sm text-secondary">
+              {fingerprintSort}
+            </div>
+          </div>
         </Card>
-      </div>
+      </motion.div>
     </Link>
   );
 }
