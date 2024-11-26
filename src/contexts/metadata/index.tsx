@@ -47,7 +47,6 @@ export default function MetadataProvider({
         query: filter.query,
         range: filter.range,
       }),
-    refetchInterval: 5000,
   });
 
   const createMetadata = async (metadataContent: AssetMetadata) => {

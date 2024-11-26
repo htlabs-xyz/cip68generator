@@ -20,7 +20,6 @@ export default function CollectionProvider({ children }: PropsWithChildren) {
   const { data, isLoading } = useQuery({
     queryKey: ["getCollection"],
     queryFn: () => getAllCollection(),
-    refetchInterval: 5000,
   });
   return (
     <CollectionContext.Provider
