@@ -20,7 +20,7 @@ export const Images = {
     <Image
       src={appImage.collection}
       className={props.className}
-      alt="metadata"
+      alt="Collection"
     />
   ),
   storegae: (props: LucideProps) => (
@@ -35,7 +35,15 @@ export const Images = {
     <Image
       src={appImage.mintMultiple}
       className={props.className}
-      alt="metadata"
+      alt="mintMultiple"
+    />
+  ),
+
+  startFromScratch: (props: LucideProps) => (
+    <Image
+      src={appImage.startFromCratch}
+      className={props.className}
+      alt="Start from Scratch"
     />
   ),
 };

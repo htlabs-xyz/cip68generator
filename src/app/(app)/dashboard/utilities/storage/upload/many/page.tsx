@@ -8,26 +8,28 @@ export default function UploadFilePage() {
     useUploadContext();
 
   return (
-    <>
-      <div className="mt-5 rounded-lg bg-section p-4">
-        <h1 className="text-2xl font-semibold leading-7">Stogare</h1>
-        <p className="mb-4 text-gray-400">
-          Provide the images youd like to use. Make sure each image name is
-          unique, starting from 0 and going up. For example: 0.png, 1.png,
-          2.png, and so on.
-        </p>
+    <div className="py-8 px-10 m-auto flex flex-col max-md:px-0">
+      <div className="rounded-xl p-6 bg-section shadow-md flex-wrap gap-3 space-y-5">
+        <h1 className="text-2xl font-medium leading-7">Stogare</h1>
+
         <div className="mt-5">
-          <div className="px-4">
-            <FilePicker setFiles={setListFileToUpload} />
+          <div>
+            <FilePicker
+              title=" Provide the images youd like to use. Make sure each image name is
+          unique, starting from 0 and going up."
+              setFiles={setListFileToUpload}
+            />
             {listFileToUpload.length > 0 && (
-              <>
+              <div>
                 <MediaGirdtoUpload />
-                <Button onClick={uploadFiles}>Upload</Button>
-              </>
+                <Button className="mt-5" onClick={uploadFiles}>
+                  Upload
+                </Button>
+              </div>
             )}
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

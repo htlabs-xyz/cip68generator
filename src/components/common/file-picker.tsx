@@ -4,10 +4,12 @@ import { uploadConfig } from "@/constants";
 import { useToast } from "@/hooks/use-toast";
 
 export default function FilePicker({
+  title,
   setFiles,
   accept = "*/*",
   multiple = true,
 }: {
+  title?: string;
   setFiles: (files: File[]) => void;
   accept?: string;
   multiple?: boolean;
@@ -43,10 +45,13 @@ export default function FilePicker({
   };
 
   return (
-    <div className="flex w-full items-center rounded-lg bg-gray-800 p-4">
+    <div className="w-full  h-[30vh] flex items-center flex-col justify-center bg-transparent border-dashed border-gray-700 border-[1px] rounded-lg gap-4 text-center ">
+      <p className="font-normal flex items-center justify-center self-stretch  text-sm text-[16px] text-center">
+        <p className="max-w-[480px]">{title}</p>
+      </p>
       <label
         htmlFor="file-upload"
-        className="cursor-pointer rounded-md bg-blue-600 p-2"
+        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
       >
         Upload File
       </label>
