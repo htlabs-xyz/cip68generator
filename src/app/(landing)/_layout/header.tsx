@@ -78,7 +78,7 @@ const Header = function () {
 
       {/* connect-wallet-begin */}
       <Link className="max-md:hidden" href={"/login"}>
-        <Button>Connect Wallet</Button>
+        <Button>Open App</Button>
       </Link>
       {/* connect-wallet-end */}
 

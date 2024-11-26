@@ -1,13 +1,9 @@
-"use client";
-
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import {
   FaTwitter as TwitterIcon,
   FaLinkedinIn as LinkedinIcon,
 } from "react-icons/fa";
-import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 
 type Props = {
   id?: number;
@@ -29,23 +25,9 @@ const Founder = function ({
   twitter,
   linkedin,
   description,
-  index,
 }: Props) {
-  const { ref, inView } = useInView({
-    threshold: 0.2,
-    triggerOnce: true,
-  });
   return (
-    <motion.div
-      ref={ref}
-      initial={{ y: 100, scale: 0.5, opacity: 0 }}
-      animate={inView ? { y: 0, scale: 1, opacity: 1 } : {}}
-      transition={{
-        duration: 0.5 + index * 0.5,
-        ease: "easeOut",
-      }}
-      className="flex flex-col items-center gap-5 rounded-2xl bg-slate-900 p-7 transition-all duration-300 ease-in-out"
-    >
+    <div className="flex flex-col items-center gap-5 rounded-2xl bg-slate-900 p-7 transition-all duration-300 ease-in-out">
       <div className="bg-[rgba(0, 0, 0, 0.08)] relative h-[150px] w-[150px] overflow-hidden rounded-full transition-all duration-500">
         <Image
           className="absolute inset-0 h-full w-full object-cover text-transparent transition-all duration-500 ease-in-out hover:scale-150"
@@ -84,7 +66,7 @@ const Founder = function ({
           {description}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

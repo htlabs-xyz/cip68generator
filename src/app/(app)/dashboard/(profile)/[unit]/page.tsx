@@ -12,12 +12,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import FileDisplay from "@/components/common/file-display";
-import { IPFS_GATEWAY } from "@/constants";
+import { appNetwork, decialPlace, IPFS_GATEWAY } from "@/constants";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { isEmpty, isNil } from "lodash";
 import { useUnitContext } from "@/contexts/unit";
 import Loading from "@/app/(loading)/loading";
-
 import {
   Tooltip,
   TooltipContent,
@@ -27,10 +26,20 @@ import {
 import Property from "../_components/property";
 import Pagination from "../_components/pagination-table";
 import { hexToString } from "@meshsdk/core";
+import { shortenString } from "@/utils";
+import Link from "next/link";
+import { AssetHistory } from "@/types";
 
 export default function DetailsPage() {
-  const { assetDetails, handleBurn, handleUpdate, isAuthor, metadataToUpdate } =
-    useUnitContext();
+  const {
+    unit,
+    assetDetails,
+    handleBurn,
+    handleUpdate,
+    isAuthor,
+    metadataToUpdate,
+    assetHistory,
+  } = useUnitContext();
   if (isNil(assetDetails)) return <Loading />;
   const { asset_name, policy_id, onchain_metadata, fingerprint } = assetDetails;
 
@@ -134,7 +143,6 @@ export default function DetailsPage() {
           <TabsList className="bg-gray-900">
             <TabsTrigger value="properties">Properties</TabsTrigger>
             <TabsTrigger value="transaction">Transaction History</TabsTrigger>
-            <TabsTrigger value="meadata">Metadata History</TabsTrigger>
           </TabsList>
           <TabsContent value="properties" className="mt-4">
             <Card className="p-5 border-none rounded-lg flex flex-col gap-8">
@@ -176,52 +184,59 @@ export default function DetailsPage() {
                   <TableHeader>
                     <TableRow>
                       <TableHead className="h-8 py-5 px-4 text-[#8e97a8] text-[10px] uppercase leading-[16px] font-medium text-center">
-                        Tx Index
+                        {"Tx Hash / Datetime"}
                       </TableHead>
                       <TableHead className="h-8 py-5 px-4 text-[#8e97a8] text-[10px] uppercase leading-[16px] font-medium text-center">
-                        TX Hash
+                        {"Fees / Action"}
                       </TableHead>
                       <TableHead className="h-8 py-5 px-4 text-[#8e97a8] text-[10px] uppercase leading-[16px] font-medium text-center">
-                        Time
+                        {"Status / History"}
                       </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {assetDetails.transaction_history.map(
-                      (transaction, index) => (
-                        <TableRow
-                          key={index}
-                          className={index % 2 === 0 ? "bg-[#0d0e12]" : ""}
-                        >
-                          <TableCell className="h-14 py-5 px-4 text-center">
-                            <h3 className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-white text-[14px] font-medium leading-[20px]">
-                              {transaction.tx_index}
-                            </h3>
-                            {/* <p className="text-[#5b6372] max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-[12px] font-medium leading-4">
-                                {transaction.block_time}
-                              </p> */}
-                          </TableCell>
-                          <TableCell className="h-14 py-5 px-4 text-center">
-                            <h3 className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-white text-[14px] font-medium leading-[20px]">
-                              {transaction.tx_hash}
-                            </h3>
-                            {/* <p className="text-[#5b6372] max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-[12px] font-medium leading-4">
-                                {transaction.fees}
-                              </p> */}
-                          </TableCell>
-                          <TableCell className="h-14 py-5 px-4 text-center">
-                            <h3 className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-white text-[14px] font-medium leading-[20px]">
-                              {new Date(
-                                transaction.block_time * 1000,
-                              ).toLocaleString()}
-                            </h3>
-                            {/* <p className="text-[#5b6372] max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-[12px] font-medium leading-4">
-                                {transaction.status}
-                              </p> */}
-                          </TableCell>
-                        </TableRow>
-                      ),
-                    )}
+                    {assetHistory?.map((transaction: AssetHistory, index) => (
+                      <TableRow
+                        key={index}
+                        className={index % 2 === 0 ? "bg-[#0d0e12]" : ""}
+                      >
+                        <TableCell className="h-14 py-5 px-4 text-center">
+                          <Link
+                            href={`https://${appNetwork}.cexplorer.io/tx/${transaction.txHash}`}
+                            target="_blank"
+                            className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-white text-[14px] font-medium leading-[20px]"
+                          >
+                            {shortenString(transaction.txHash, 10)}
+                          </Link>
+                          <p className="text-[#5b6372] max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-[12px] font-medium leading-4">
+                            {new Date(
+                              transaction?.datetime * 1000,
+                            ).toLocaleString()}
+                          </p>
+                        </TableCell>
+                        <TableCell className="h-14 py-5 px-4 text-center">
+                          <h3 className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-white text-[14px] font-medium leading-[20px]">
+                            {(
+                              (Number(transaction.fee) || 0) / decialPlace
+                            ).toFixed(3)}{" "}
+                            ₳
+                          </h3>
+                          <p className="text-[#5b6372] max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-[12px] font-medium leading-4">
+                            {transaction.action}
+                          </p>
+                        </TableCell>
+                        <TableCell className="h-14 py-5 px-4 text-center">
+                          <h3 className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-white text-[14px] font-medium leading-[20px]">
+                            {transaction.status}
+                          </h3>
+                          <Link href={`${unit}/${transaction.txHash}`}>
+                            <p className="text-[#5b6372] underline max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-[12px] font-medium leading-4">
+                              View History
+                            </p>
+                          </Link>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
                 <>

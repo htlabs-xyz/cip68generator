@@ -4,7 +4,6 @@ import khanh from "./founder/khanh.jpg";
 import son from "./founder/son.jpg";
 import dung from "./founder/dung.jpg";
 import thanh from "./founder/thanh.jpg";
-
 import nami from "./wallet/nami.svg";
 import flint from "./wallet/flint.svg";
 import eternl from "./wallet/eternl.webp";
@@ -14,13 +13,9 @@ import vespr from "./wallet/vespr.png";
 import lace from "./wallet/lace.png";
 import yoroi from "./wallet/yoroi.png";
 import nufi from "./wallet/nufi.png";
-
 import faq from "./banner/faq.jpg";
-
 import logo from "./common/logo.png";
-
 import cardano from "./network/cardano.png";
-
 import metadata from "./utilities/metadata.png";
 import storegae from "./utilities/storage.png";
 import collection from "./utilities/collection.png";
@@ -28,7 +23,7 @@ import marketplace from "./utilities/marketplace.png";
 import mintOne from "./utilities/mint-one.png";
 import mintMultiple from "./utilities/mint-multiple.png";
 import login from "./common/login.png";
-
+import startFromCratch from "./utilities/start-from-scratch.png"
 export const founderImage = {
   son: son,
   tien: tien,
@@ -48,6 +43,7 @@ export const appImage = {
   marketplace: marketplace,
   mintOne: mintOne,
   mintMultiple: mintMultiple,
+  startFromCratch: startFromCratch
 } as const;
 
 export const walletImage = {

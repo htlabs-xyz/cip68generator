@@ -2,11 +2,15 @@
 
 import { blockfrostFetcher } from "@/lib/cardano";
 import { SpecialTransaction } from "@/types";
+import { datumToJson } from "@/utils";
 
-export const getHistoryMetadata = async function (
-  txHash: string,
-  unit: string,
-) {
+export const getHistoryMetadata = async function ({
+  unit,
+  txHash,
+}: {
+  unit: string;
+  txHash: string;
+}) {
   try {
     const specialTransaction: SpecialTransaction =
       await blockfrostFetcher.fetchSpecialTransaction(txHash);
@@ -28,6 +32,10 @@ export const getHistoryMetadata = async function (
 
     if (!assetInput && assetOutput) {
       return {
+        metadata: {
+          from: null!,
+          to: await datumToJson(assetOutput.inline_datum),
+        },
         txHash: txHash,
         datetime: specialTransaction.block_time,
         fee: specialTransaction.fees,
@@ -38,6 +46,10 @@ export const getHistoryMetadata = async function (
 
     if (!assetOutput && assetInput) {
       return {
+        metadata: {
+          from: await datumToJson(assetInput.inline_datum),
+          to: null!,
+        },
         txHash: txHash,
         datetime: specialTransaction.block_time,
         fee: specialTransaction.fees,
@@ -48,6 +60,10 @@ export const getHistoryMetadata = async function (
 
     if (assetInput && assetOutput) {
       return {
+        metadata: {
+          from: await datumToJson(assetInput.inline_datum),
+          to: await datumToJson(assetOutput.inline_datum),
+        },
         txHash: txHash,
         datetime: specialTransaction.block_time,
         fee: specialTransaction.fees,
@@ -55,11 +71,6 @@ export const getHistoryMetadata = async function (
         action: "Update",
       };
     }
-
-    return {
-      data: null!,
-      message: "Success",
-    };
   } catch (e) {
     return {
       data: null,

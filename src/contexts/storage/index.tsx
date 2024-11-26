@@ -44,7 +44,6 @@ export default function UploadProvider({ children }: PropsWithChildren) {
         query: filter.query,
         range: filter.range,
       }),
-    refetchInterval: 5000,
   });
 
   const uploadFiles = async () => {

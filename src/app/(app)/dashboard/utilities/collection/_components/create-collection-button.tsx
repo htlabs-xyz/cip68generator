@@ -50,12 +50,12 @@ export function CreateCollectionButton() {
   }
 
   return (
-    <>
-      <Button
-        onClick={() => toggleCreateNewDialogOpen(true)}
-        className="bg-orange-500 text-white hover:bg-orange-600"
-      >
-        Create New
+    <div className="flex items-center justify-center flex-col gap-4">
+      <p className="font-normal self-stretch text-center text-sm text-[16px] ">
+        Have images but need JSON? We got you covered!
+      </p>
+      <Button onClick={() => toggleCreateNewDialogOpen(true)}>
+        Create Collection
       </Button>
       <Dialog
         open={createNewDialogOpen}
@@ -105,6 +105,6 @@ export function CreateCollectionButton() {
           </div>
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
 }

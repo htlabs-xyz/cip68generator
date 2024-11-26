@@ -2,9 +2,10 @@
 
 import { blockfrostFetcher } from "@/lib/cardano";
 import { SpecialTransaction, Transaction, TransactionAsset } from "@/types";
+import { isNil } from "lodash";
 
 export async function getHistoryAssets({
-  unit = "ec64872c1965bbbaa8868aef2bd9a343b821a9f2c7787ea096f62262000643b03132333435363738393130",
+  unit,
   page = 1,
   limit = 12,
 }: {
@@ -18,7 +19,7 @@ export async function getHistoryAssets({
     const total = assetTxs.length;
     const assetsSlice = assetTxs.slice((page - 1) * limit, page * limit);
 
-    const response = await Promise.all(
+    const assetHistories = await Promise.all(
       assetsSlice.map(async function (assetTx) {
         const specialTransaction: SpecialTransaction =
           await blockfrostFetcher.fetchSpecialTransaction(assetTx.tx_hash);
@@ -69,6 +70,8 @@ export async function getHistoryAssets({
         }
       }),
     );
+
+    const response = assetHistories.filter((history) => !isNil(history));
 
     return {
       data: response,
