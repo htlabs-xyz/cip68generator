@@ -17,8 +17,7 @@ import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { isEmpty, isNil } from "lodash";
 import { useUnitContext } from "@/contexts/unit";
 import Loading from "@/app/(loading)/loading";
-import { deserializeAddress, hexToString } from "@meshsdk/core";
-import { useWalletContext } from "@/components/providers/wallet";
+
 import {
   Tooltip,
   TooltipContent,
@@ -26,11 +25,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Property from "../_components/property";
-import Pagination from "../_components/pagination";
+import Pagination from "../_components/pagination-table";
+import { hexToString } from "@meshsdk/core";
 
 export default function DetailsPage() {
-  const { address } = useWalletContext();
-  const { assetDetails, handleBurn, handleUpdate } = useUnitContext();
+  const { assetDetails, handleBurn, handleUpdate, isAuthor, metadataToUpdate } =
+    useUnitContext();
   if (isNil(assetDetails)) return <Loading />;
   const { asset_name, policy_id, onchain_metadata, fingerprint } = assetDetails;
 
@@ -52,13 +52,6 @@ export default function DetailsPage() {
   const mediaType = onchain_metadata?.type || "image/png";
 
   const description = onchain_metadata?.description || "";
-
-  const { _pk, ...originMetadata } = onchain_metadata ?? {};
-
-  const pubKeyHash = !isNil(address) && deserializeAddress(address)?.pubKeyHash;
-  const assetAdmin =
-    (!isNil(_pk) && pubKeyHash && _pk.includes(pubKeyHash)) ||
-    (pubKeyHash && pubKeyHash.includes(_pk));
 
   return (
     <div className="py-8 px-10 m-auto flex flex-col">
@@ -115,7 +108,7 @@ export default function DetailsPage() {
               {/* Description */}
               <p className="text-gray-400">{description}</p>
               <div className="space-y-4">
-                {assetAdmin && (
+                {isAuthor && (
                   <div className="flex gap-4">
                     <Button
                       onClick={handleUpdate}
@@ -147,8 +140,8 @@ export default function DetailsPage() {
             <Card className="p-5 border-none rounded-lg flex flex-col gap-8">
               <div className="flex flex-col gap-8">
                 <div className="grid grid-cols-4 gap-y-5 gap-x-2">
-                  {originMetadata &&
-                    Object.entries(originMetadata).map(
+                  {metadataToUpdate &&
+                    Object.entries(metadataToUpdate).map(
                       ([name, value], index) => (
                         <TooltipProvider key={index}>
                           <Tooltip>

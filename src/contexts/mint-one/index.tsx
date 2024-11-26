@@ -7,6 +7,7 @@ import { toast } from "@/hooks/use-toast";
 import { createMintTransaction } from "@/services/contract/mint";
 import { useWalletContext } from "@/components/providers/wallet";
 import { isNil } from "lodash";
+import { submitTx } from "@/services/blockchain/submitTx";
 const { useStepper, steps } = defineStepper(
   { id: "template", title: "Template" },
   { id: "basic", title: "Basic" },
@@ -26,7 +27,7 @@ export default function MintOneProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { signTx, address, submitTx } = useWalletContext();
+  const { signTx, address } = useWalletContext();
   const stepper = useStepper();
   const {
     metadataToMint,
@@ -88,7 +89,14 @@ export default function MintOneProvider({
         "Submitting Transaction",
       );
       // submit transaction
-      const txHash = await submitTx(signedTx);
+      const {
+        data: txHash,
+        result: txResult,
+        message: txMessage,
+      } = await submitTx(signedTx);
+      if (!txResult || isNil(txHash)) {
+        throw new Error(txMessage);
+      }
       setTxHash(txHash);
       updateTaskState("success");
       // show result

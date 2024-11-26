@@ -2,7 +2,6 @@
 
 export async function middleware() {
   // const session = await auth();
-  // console.log("session", session);
   // return;
 }
 

@@ -15,12 +15,21 @@ export default function ResultStep() {
           Check your Nft in your Wallet. If it’s not visible, please wait a
           moment for the transaction to complete.
         </p>
-        <Link
-          href={`https://${appNetwork}.cexplorer.io/tx/${txhash}`}
-          className="mt-4 rounded-lg bg-white px-6 py-2 text-sm font-semibold text-blue-500 shadow-md hover:bg-gray-100"
-        >
-          View on Cexplorer
-        </Link>
+        <div className="flex flex-row items-center justify-center space-x-4">
+          <Link
+            href={`/dashboard}`}
+            className="mt-4 rounded-lg bg-white px-6 py-2 text-sm font-semibold text-orange-500 shadow-md hover:bg-gray-100"
+          >
+            Go Home
+          </Link>
+          <Link
+            href={`https://${appNetwork}.cexplorer.io/tx/${txhash}`}
+            target="_blank"
+            className="mt-4 rounded-lg bg-white px-6 py-2 text-sm font-semibold text-blue-500 shadow-md hover:bg-gray-100"
+          >
+            View on Cexplorer
+          </Link>
+        </div>
       </div>
     </div>
   );
