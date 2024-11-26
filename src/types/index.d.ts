@@ -157,3 +157,11 @@ export interface KeyValuePair {
   key: string;
   value: string;
 }
+
+export type AssetHistory = {
+  txHash: string;
+  datetime: number;
+  fee: string;
+  status: string;
+  action: string;
+};

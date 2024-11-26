@@ -8,7 +8,7 @@ import { useWalletContext } from "@/components/providers/wallet";
 import { isEmpty, isNil } from "lodash";
 import { useQuery } from "@tanstack/react-query";
 import { getAssetInfo } from "@/services/blockchain/getAssetInfo";
-import { AssetDetailsWithTransactionHistory } from "@/types";
+import { AssetDetailsWithTransactionHistory, AssetHistory } from "@/types";
 import useUnitStore, { UnitStore } from "./store";
 import { redirect } from "next/navigation";
 import { createBurnTransaction } from "@/services/contract/burn";
@@ -32,6 +32,7 @@ const { useStepper: useBurnStepper, steps: burnSteps } = defineStepper(
 
 type UnitContextType = UnitStore & {
   unit: string;
+  // assetHistory: AssetHistory[];
   isAuthor: boolean;
   assetDetails: AssetDetailsWithTransactionHistory;
   updateStepper: ReturnType<typeof useUpdateStepper>;
@@ -80,7 +81,6 @@ export default function UnitProvider({
       }),
     enabled: !isNil(unit),
   });
-  console.log(assetHistory);
 
   useEffect(() => {
     setLoading(isLoading);
@@ -273,6 +273,7 @@ export default function UnitProvider({
         isAuthor,
         assetDetails: assetData?.data || null!,
         loading: loading,
+        // assetHistory: assetHistory?.data || null!,
         setLoading,
         metadataToUpdate,
         setMetadataToUpdate,
