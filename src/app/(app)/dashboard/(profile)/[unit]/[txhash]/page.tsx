@@ -1,4 +1,3 @@
-import "react-vertical-timeline-component/style.min.css";
 import { getHistoryMetadata } from "@/services/blockchain/getHistoryMetadata";
 import { JsonDiffViewer } from "../../_components/json-diff-viewer";
 
