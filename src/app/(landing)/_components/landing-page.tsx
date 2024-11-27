@@ -75,7 +75,7 @@ export default async function LandingPage() {
                   title="Transactions"
                 />
                 <StatisticItem value={statistic.mint} title="Minting" />
-                <StatisticItem value={statistic.update || 0} title="Updating" />
+                <StatisticItem value={statistic.update} title="Updating" />
                 <StatisticItem value={statistic.burn} title="Burning" />
               </>
             )}
