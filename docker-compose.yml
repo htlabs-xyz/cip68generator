@@ -5,7 +5,7 @@ services:
     env_file:
       - stack.env
     volumes:
-      - cip68:/data/postgres
+      - /home/cip68/postgresql/data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
@@ -26,8 +26,7 @@ services:
     networks:
       - cip68
     restart: always
+
 networks:
   cip68:
     driver: bridge
-volumes:
-  cip68:
