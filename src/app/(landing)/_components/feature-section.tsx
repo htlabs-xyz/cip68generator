@@ -1,10 +1,6 @@
-"use client";
-
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { appImage } from "@/public/images";
-import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 type Props = {
   title: string;
   slogan: string;
@@ -12,22 +8,9 @@ type Props = {
   index: number;
 };
 
-const Feature = function ({ title, slogan, description, index }: Props) {
-  const { ref, inView } = useInView({
-    threshold: 0.2,
-    triggerOnce: true,
-  });
+const Feature = function ({ title, slogan, description }: Props) {
   return (
-    <motion.div
-      ref={ref}
-      initial={{ y: 100, scale: 0.5, opacity: 0 }}
-      animate={inView ? { y: 0, scale: 1, opacity: 1 } : {}}
-      transition={{
-        duration: 0.5 + index * 0.5,
-        ease: "easeOut",
-      }}
-      className="w-full max-w-[calc(100%/var(--columns)-var(--gap)*(var(--columns)-1)/var(--columns))] p-4 shadow-2xl"
-    >
+    <div className="w-full max-w-[calc(100%/var(--columns)-var(--gap)*(var(--columns)-1)/var(--columns))] p-4 shadow-2xl">
       <div className="perspective-1000 group relative h-full min-h-[190px] w-full">
         {/* Front Side of the Flip Card */}
         <div className="flip-card-front group-hover:rotate-y-180 absolute inset-0 flex items-center justify-center rounded-lg bg-slate-900 p-6 transition-transform duration-700 ease-in-out">
@@ -85,7 +68,7 @@ const Feature = function ({ title, slogan, description, index }: Props) {
                     transform: rotateY(0deg);
                 }
             `}</style>
-    </motion.div>
+    </div>
   );
 };
 

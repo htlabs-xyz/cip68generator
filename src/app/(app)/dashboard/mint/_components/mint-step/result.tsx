@@ -17,7 +17,7 @@ export default function ResultStep() {
         </p>
         <div className="flex flex-row items-center justify-center space-x-4">
           <Link
-            href={`/dashboard}`}
+            href={`/dashboard`}
             className="mt-4 rounded-lg bg-white px-6 py-2 text-sm font-semibold text-orange-500 shadow-md hover:bg-gray-100"
           >
             Go Home
