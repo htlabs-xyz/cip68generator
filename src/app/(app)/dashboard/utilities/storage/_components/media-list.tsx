@@ -1,3 +1,4 @@
+"use client";
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { Checkbox } from "@/components/ui/checkbox";
@@ -16,11 +17,12 @@ import { useUploadContext } from "@/contexts/storage";
 import { Media } from "@prisma/client";
 import FileDisplay from "@/components/common/file-display";
 import { copyToClipboard } from "@/utils/copy-to-clipboard";
+import { Skeleton } from "@/components/ui/skeleton";
+import { isEmpty } from "lodash";
 
 export default function MediaList() {
   const { loading, listMedia, listSelected, setListSelected } =
     useUploadContext();
-  if (loading) return <div>Loading...</div>;
 
   const handleSellect = (media: Media, checked: boolean) => {
     if (checked) {
@@ -47,60 +49,87 @@ export default function MediaList() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {listMedia.map((file, index) => (
-              <TableRow key={index} className="mb-2 rounded-lg">
-                <TableCell className="rounded-l-lg font-medium">
-                  <div className="flex items-center space-x-4">
-                    <Checkbox
-                      id={`checkbox-${index}`}
-                      checked={listSelected.includes(file)}
-                      className="rounded-full"
-                      onClick={() =>
-                        handleSellect(file, !listSelected.includes(file))
-                      }
-                    />
-
-                    <div className="h-10 w-10 overflow-hidden rounded-lg">
-                      <AspectRatio ratio={10 / 10} className="bg-muted">
-                        <FileDisplay
-                          src={file.url}
-                          alt={file.name}
-                          type={file.type}
-                          className="h-full w-full rounded-md object-cover"
-                        />
-                      </AspectRatio>
-                    </div>
-                    <div>
-                      <div className="font-bold">
-                        {file.name.length > 30
-                          ? file.name.slice(0, 30) + "..."
-                          : file.name}
+            {loading
+              ? [...Array(5)].map((_, index) => (
+                  <TableRow key={index} className="mb-2 rounded-lg">
+                    <TableCell className="rounded-l-lg font-medium">
+                      <div className="flex items-center space-x-4">
+                        <Skeleton className="h-4 w-4 rounded-full" />
+                        <Skeleton className="h-10 w-10 rounded-lg" />
+                        <div className="space-y-2">
+                          <Skeleton className="h-4 w-[200px]" />
+                          <Skeleton className="h-3 w-[100px]" />
+                        </div>
                       </div>
-                      <div className="text-sm font-light">{file.type}</div>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell className="hidden md:table-cell">
-                  <div
-                    onClick={async () => {
-                      await copyToClipboard(file.url || "");
-                    }}
-                    className="flex items-center space-x-2"
-                  >
-                    <span className="">{file.url}</span>
-                    <Copy className="h-5 w-5" />
-                  </div>
-                </TableCell>
-                <TableCell className="hidden sm:table-cell">
-                  {file.createdAt.toLocaleDateString()}
-                </TableCell>
-                <TableCell className="rounded-r-lg text-right">
-                  <Button variant="ghost" size="icon" className="hover:">
-                    <MoreVertical className="h-5 w-5" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      <Skeleton className="h-4 w-[200px]" />
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      <Skeleton className="h-4 w-[100px]" />
+                    </TableCell>
+                    <TableCell className="rounded-r-lg text-right">
+                      <Button variant="ghost" size="icon" className="hover:">
+                        <MoreVertical className="h-5 w-5" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              : !isEmpty(listMedia) &&
+                listMedia.map((file: Media, index: number) => (
+                  <TableRow key={index} className="mb-2 rounded-lg">
+                    <TableCell className="rounded-l-lg font-medium">
+                      <div className="flex items-center space-x-4">
+                        <Checkbox
+                          id={`checkbox-${index}`}
+                          checked={listSelected.includes(file)}
+                          className="rounded-full"
+                          onClick={() =>
+                            handleSellect(file, !listSelected.includes(file))
+                          }
+                        />
+
+                        <div className="h-10 w-10 overflow-hidden rounded-lg">
+                          <AspectRatio ratio={10 / 10} className="bg-muted">
+                            <FileDisplay
+                              src={file.url}
+                              alt={file.name}
+                              type={file.type}
+                              className="h-full w-full rounded-md object-cover"
+                            />
+                          </AspectRatio>
+                        </div>
+                        <div>
+                          <div className="font-bold">
+                            {file.name.length > 30
+                              ? file.name.slice(0, 30) + "..."
+                              : file.name}
+                          </div>
+                          <div className="text-sm font-light">{file.type}</div>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      <div
+                        onClick={async () => {
+                          await copyToClipboard(file.url || "");
+                        }}
+                        className="flex items-center space-x-2"
+                      >
+                        <span className="">{file.url}</span>
+                        <Copy className="h-5 w-5" />
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      {file.createdAt.toLocaleDateString()}
+                    </TableCell>
+                    <TableCell className="rounded-r-lg text-right">
+                      <Button variant="ghost" size="icon" className="hover:">
+                        <MoreVertical className="h-5 w-5" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
           </TableBody>
         </Table>
       </div>
