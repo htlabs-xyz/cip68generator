@@ -12,7 +12,6 @@ import {
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import FileDisplay from "@/components/common/file-display";
 import { Card, CardContent } from "@/components/ui/card";
-import { Copy } from "lucide-react";
 import { shortenString } from "@/utils";
 import { useEffect, useState } from "react";
 import { getContractPolicyId } from "@/services/contract/get-policy-id";
@@ -26,7 +25,7 @@ export default function PreviewStep() {
   const imgSrc = metadataToMint?.image || "";
   const mediaType =
     imgSrc == "" ? "text/plain" : metadataToMint?.mediaType || "image/png";
-  const description = metadataToMint?.description || "";
+  // const description = metadataToMint?.description || "";
 
   useEffect(() => {
     getContractPolicyId().then(setNftPolicyId);
