@@ -24,6 +24,7 @@ export default function DesktopDashboardlLayout({
         )}
       >
         <Navbar />
+
         <div className="container mt-20 px-4">{children}</div>
       </main>
     </>

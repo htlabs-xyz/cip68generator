@@ -1,15 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import AssetCard from "./_components/asset-card";
-import { motion } from "framer-motion";
 import { useProfileContext } from "@/contexts/profile";
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { IoLocation } from "react-icons/io5";
 import { useEffect, useState } from "react";
-import { FilterType } from "@/types";
-import { filterDefault } from "@/constants";
 import Image from "next/image";
 import { appImage, walletImage } from "@/public/images";
 import { useWalletContext } from "@/components/providers/wallet";
@@ -17,10 +11,11 @@ import CountUp from "react-countup";
 import { decialPlace } from "@/constants";
 import { shortenString } from "@/utils";
 import AssetCardSkeleton from "./_components/asset-card-skeleton";
-import Pagination from "./_components/pagination-table";
+import Pagination from "@/components/common/pagination";
+import ProfileFilter from "./_components/profile-filter";
 
 export default function ProfilePage() {
-  const { wallet, address, getBalance } = useWalletContext();
+  const { wallet, address, getBalance, browserWallet } = useWalletContext();
   const {
     listNft,
     filter,
@@ -30,27 +25,20 @@ export default function ProfilePage() {
     currentPage,
     setCurrentPage,
   } = useProfileContext();
-  const [temp, setTemp] = useState<FilterType>(filter);
-  const handleSearch = () => {
-    if (temp) {
-      setFilter(temp);
-    }
-  };
-  const resetFilter = () => {
-    setTemp(filterDefault);
-    setFilter(filterDefault);
-  };
 
   const [balance, setBalance] = useState<number>(0);
+  const [stakeAddress, setStakeAddress] = useState<string>("");
 
   useEffect(() => {
     (async () => {
-      if (wallet) {
+      if (wallet && browserWallet) {
+        const stakeAddress = await browserWallet.getRewardAddresses();
+        setStakeAddress(stakeAddress[0]);
         const balance = await getBalance();
         setBalance(balance);
       }
     })();
-  }, [wallet, getBalance]);
+  }, [wallet, getBalance, browserWallet]);
 
   return (
     <div className="py-8 px-10 m-auto flex flex-col">
@@ -67,7 +55,7 @@ export default function ProfilePage() {
               </div>
               <div className="min-w-0 grid gap-1 justify-start ">
                 <h3 className="max-w-full overflow-hidden text-ellipsis whitespace-nowrap justify-stretch text-2xl max-md:text-[24px] max-md:leading-7">
-                  CIP68 Generators
+                  {shortenString(stakeAddress || "Cardano", 10)}
                 </h3>
                 <div className="flex items-center justify-center py-1 px-2 rounded-lg bg-[#282c34] text-gray-400 shadow-md gap-1">
                   <IoLocation className="text-[20px] max-md:text-[14px] font-bold text-gray-200" />
@@ -112,40 +100,11 @@ export default function ProfilePage() {
           </div>
           <div></div>
         </section>
-        <div className="flex items-center gap-4 mb-6">
-          <div className="relative flex-1">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search By AssetName"
-              className="pl-8"
-              value={temp.query}
-              onChange={(e) => setTemp({ ...temp, query: e.target.value })}
-            />
-          </div>
-          {JSON.stringify(filter) == JSON.stringify(filterDefault) ? (
-            <Button
-              variant="secondary"
-              onClick={handleSearch}
-              className="rounded-md bg-blue-500 w-20 px-4 py-2 font-semibold transition duration-300 ease-in-out"
-            >
-              Search
-            </Button>
-          ) : (
-            <Button
-              onClick={resetFilter}
-              className="rounded-md bg-blue-500 w-20 px-4 py-2 font-semibold transition duration-300 ease-in-out"
-            >
-              Reset
-            </Button>
-          )}
-        </div>
-
+        <ProfileFilter filter={filter} setFilter={setFilter} />
         {loading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-4">
             {Array.from({ length: 9 }).map((_, index) => (
-              <motion.div key={index}>
-                <AssetCardSkeleton index={index} key={index} />
-              </motion.div>
+              <AssetCardSkeleton key={index} />
             ))}
           </div>
         )}
@@ -160,9 +119,8 @@ export default function ProfilePage() {
         {!loading && (
           <div>
             <Pagination
-              page={currentPage}
-              setPage={setCurrentPage}
-              totalItems={1}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
               totalPages={totalPages}
             />
           </div>

@@ -11,40 +11,8 @@ import { useEffect, useState } from "react";
 import Hamburger from "./hamburger";
 
 const Header = function () {
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  const handleScroll = () => {
-    const currentScrollY = window.scrollY;
-
-    if (currentScrollY > lastScrollY) {
-      setIsVisible(false);
-    } else {
-      setIsVisible(true);
-    }
-
-    setLastScrollY(currentScrollY);
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lastScrollY]);
-
   return (
-    <motion.header
-      initial={{ y: 30, scale: 0.5, opacity: 0 }}
-      transition={{
-        duration: 0.5,
-        ease: "easeInOut",
-      }}
-      animate={{ y: isVisible ? 30 : -100, scale: 1, opacity: 1 }}
-      className="fixed left-[50%] top-0 z-50 my-0 ml-[-600px] mr-auto box-border flex h-[75px] w-[1200px] translate-y-[30px] items-center justify-between rounded-2xl bg-[#13161b] px-[30px] py-0 shadow-sm transition duration-300 ease-out max-md:h-[52px] max-md:w-full max-md:px-[15px] max-md:m-0 max-md:py-0 max-md:left-3 max-md:top-0 max-md:right-[10px] "
-    >
+    <header className="fixed left-[50%] top-0 z-50 my-0 ml-[-600px] mr-auto box-border flex h-[75px] w-[1200px] translate-y-[30px] items-center justify-between rounded-2xl bg-[#13161b] px-[30px] py-0 shadow-sm transition duration-300 ease-out max-md:h-[52px] max-md:w-full max-md:px-[15px] max-md:m-0 max-md:py-0 max-md:left-3 max-md:top-0 max-md:right-[10px] ">
       {/* logo-begin */}
 
       <Link
@@ -83,7 +51,7 @@ const Header = function () {
       {/* connect-wallet-end */}
 
       <Hamburger />
-    </motion.header>
+    </header>
   );
 };
 

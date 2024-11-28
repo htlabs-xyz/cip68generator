@@ -9,6 +9,7 @@ export type UnitStore = {
   metadataToUpdate: AssetMetadata | null;
   setMetadataToUpdate: (metadata: AssetMetadata) => void;
   tasks: Task[];
+  resetTasks: () => void;
   updateTaskState: (
     status: "todo" | "inprogress" | "success" | "error",
     name?: string,
@@ -16,6 +17,9 @@ export type UnitStore = {
   ) => void;
   txhash: string;
   setTxHash: (txhash: string) => void;
+  txCurrentPage: number;
+  txTotalPages: number;
+  setTxCurrentPage: (page: number) => void;
 };
 
 const useUnitStore = create<UnitStore>((set) => ({
@@ -23,6 +27,10 @@ const useUnitStore = create<UnitStore>((set) => ({
   metadataToUpdate: null,
   txhash: "",
   tasks: [],
+  resetTasks: () => set({ tasks: [] }),
+  txCurrentPage: 1,
+  txTotalPages: 1,
+  setTxCurrentPage: (page) => set({ txCurrentPage: page }),
   setTxHash: (txhash) => set({ txhash }),
   setLoading: (loading) => set({ loading }),
   setMetadataToUpdate: (metadata) => set({ metadataToUpdate: metadata }),
