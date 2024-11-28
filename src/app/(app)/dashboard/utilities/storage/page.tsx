@@ -52,7 +52,6 @@ export default function StogarePage() {
                     dashboardRoutes.utilities.children.storage.children.upload
                       .redirect
                   }
-                  className={cn(buttonVariants({ variant: "ghost" }))}
                 >
                   <Button> Upload New</Button>
                 </Link>

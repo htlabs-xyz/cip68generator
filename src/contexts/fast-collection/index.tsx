@@ -3,9 +3,9 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 import useUploadCsvStore, { UploadCsvStore } from "./store";
 import { isEmpty, isNil } from "lodash";
-import { convertObject } from "@/utils";
 import { createCollectionWithData } from "@/services/database/collection";
 import { redirect } from "next/navigation";
+import { convertObject } from "@/utils";
 
 type UploadCsvContextType = UploadCsvStore & {
   loading: boolean;
