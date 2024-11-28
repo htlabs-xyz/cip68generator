@@ -44,7 +44,7 @@ model Collection {
   thumbnail   String?    @map(name: "thumbnail")
   description String?    @map(name: "description")
   user        User       @relation(fields: [userId], references: [id])
-  Metadata    Metadata[]
+  Metadata    Metadata[] 
 
   @@map(name: "collection")
 }
@@ -56,10 +56,11 @@ model Metadata {
   collectionId String     @map(name: "collection_id")
   content      Json       @map(name: "content")
   nftReference String[]   @map(name: "nft_reference")
-  collection   Collection @relation(fields: [collectionId], references: [id])
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
 
   @@map(name: "metadata")
 }
+
 
 model Media {
   id        String   @id @default(cuid())

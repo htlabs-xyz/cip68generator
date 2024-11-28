@@ -84,16 +84,14 @@ export async function deleteCollection(collectionId: string) {
       where: {
         id: collectionId,
       },
-      include: {
-        Metadata: true,
-      },
     });
 
     return {
       result: true,
       message: "delete collection successfull",
     };
-  } catch (e: unknown) {
+  } catch (e) {
+    console.log(e);
     return {
       result: false,
       message:
