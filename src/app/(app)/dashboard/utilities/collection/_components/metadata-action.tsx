@@ -1,20 +1,16 @@
+"use client";
 import JsonBuilder from "@/components/common/json-builder";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useMetadataContext } from "@/contexts/metadata";
+import { toast } from "@/hooks/use-toast";
+import { updateMetadata } from "@/services/database/metadata";
 import { KeyValuePair } from "@/types";
 import { copyToClipboard } from "@/utils/copy-to-clipboard";
 import { generateFields, generateJson } from "@/utils/json";
@@ -25,13 +21,35 @@ import { useState } from "react";
 export default function MetadataAction({ metadata }: { metadata: Metadata }) {
   const [copied, setCopied] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const { refetch } = useMetadataContext();
   const [fields, setFields] = useState<KeyValuePair[]>(
     generateFields(metadata.content),
   );
 
   const handleUpdate = async () => {
-    const newContent = generateJson(fields);
-    console.log(newContent);
+    try {
+      const newMetadata = { ...metadata, content: generateJson(fields) };
+      const { result, message } = await updateMetadata({
+        collectionId: metadata.collectionId,
+        metadata: newMetadata,
+      });
+      if (!result) {
+        throw new Error(message);
+      }
+      toast({
+        title: "Metadata Updated",
+        description: message,
+      });
+    } catch (e) {
+      toast({
+        title: "Failed to update metadata",
+        description: e instanceof Error ? e.message : "unknown error",
+        variant: "destructive",
+      });
+    } finally {
+      refetch();
+      setOpenDialog(false);
+    }
   };
   return (
     <>

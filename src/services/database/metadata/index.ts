@@ -209,3 +209,50 @@ export async function deleteMetadata({
     };
   }
 }
+
+export async function updateMetadata({
+  collectionId,
+  metadata,
+}: {
+  collectionId: string;
+  metadata: Metadata;
+}) {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) {
+      throw new UnauthorizedException();
+    }
+
+    const collection = await prisma.collection.findFirst({
+      where: {
+        id: collectionId,
+        userId: userId,
+      },
+    });
+
+    if (isNil(collection)) {
+      throw new Error("Collection not found");
+    }
+
+    await prisma.metadata.update({
+      where: {
+        id: metadata.id,
+      },
+      data: {
+        content: metadata.content ?? {},
+      },
+    });
+
+    return {
+      result: true,
+      message: "success",
+    };
+  } catch (e) {
+    return {
+      result: false,
+      message: e instanceof Error ? e.message : "unknown error",
+    };
+  }
+}

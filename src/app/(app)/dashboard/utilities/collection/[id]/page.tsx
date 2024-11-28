@@ -53,17 +53,12 @@ export default function MetadataPage() {
             <MetadataGird />
           </TabsContent>
         </Tabs>
-        <div className="flex flex-col items-center justify-between space-y-2 sm:flex-row sm:space-y-0">
-          <Button variant="link" className="text-sm font-semibold sm:text-base">
-            <span>Document</span>
-            <ExternalLink className="ml-2 h-4 w-4" />
-          </Button>
-          <Pagination
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            totalPages={totalPages}
-          />
-        </div>
+
+        <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+        />
       </div>
     </div>
   );

@@ -18,6 +18,7 @@ type MetadataContextType = MetadataStore & {
   collectionId: string;
   createMetadata: (metadataContent: AssetMetadata) => void;
   deleteMetadataSelected: () => void;
+  refetch: () => void;
 };
 
 export default function MetadataProvider({
@@ -105,6 +106,7 @@ export default function MetadataProvider({
         currentPage,
         totalPages: data?.totalPages || 0,
         filter,
+        refetch,
         setFilter,
         setListMetadata,
         setCurrentPage,
