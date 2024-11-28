@@ -1,6 +1,9 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import WalletConnect from "./_components/wallet-connect";
+import Image from "next/image";
+import { appImage } from "@/public/images";
+import routers from "@/constants/routers";
 export const metadata: Metadata = {
   title: "Authentication",
   description: "Authentication",
@@ -8,20 +11,26 @@ export const metadata: Metadata = {
 
 export default function SignInViewPage() {
   return (
-    <div className="relative h-screen flex-col items-center justify-center">
-      {/* <div className="hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r"> */}
-      {/* <Image
-          src={appImage.login}
-          alt="Login"
-          className="w-full h-full absolute object-cover"
-        /> */}
-      {/* <div className="absolute inset-0 bg-zinc-900" /> */}
-      {/* </div> */}
-      <div className="flex h-full flex-col items-center justify-center p-4 lg:p-8">
-        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[500px]">
-          <div className="flex flex-col space-y-2 text-center">
-            <WalletConnect />
+    <div className="h-screen">
+      <div className="mx-auto my-0 flex h-full w-full max-w-[1200px] flex-col">
+        <header className="container mx-auto flex items-center justify-between px-4 py-4">
+          <div className="flex h-[60px] w-[150px] items-center justify-center">
+            <Link
+              className="relative flex items-center justify-center gap-2"
+              href={routers.landing}
+            >
+              <Image
+                className="h-[35px] w-[35px] object-cover"
+                src={appImage.logo}
+                alt="Logo"
+              />
+              <span className="text-2xl">Generator</span>
+            </Link>
           </div>
+        </header>
+
+        <main className="mx-auto w-[550px] flex flex-1 flex-col items-center justify-center spacey-y-4">
+          <WalletConnect />
           <p className="px-8 text-center text-sm text-muted-foreground">
             Created by cardano2vn , you agree to our{" "}
             <Link
@@ -39,7 +48,7 @@ export default function SignInViewPage() {
             </Link>
             .
           </p>
-        </div>
+        </main>
       </div>
     </div>
   );
