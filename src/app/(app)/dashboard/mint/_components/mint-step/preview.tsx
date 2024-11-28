@@ -16,6 +16,7 @@ import { Copy } from "lucide-react";
 import { shortenString } from "@/utils";
 import { useEffect, useState } from "react";
 import { getContractPolicyId } from "@/services/contract/get-policy-id";
+import CoppyButton from "@/components/common/coppy-button";
 
 export default function PreviewStep() {
   const { stepper, metadataToMint, basicInfoToMint, startMinting } =
@@ -66,22 +67,17 @@ export default function PreviewStep() {
                     <span className="text-sm text-gray-400">
                       Policy ID: {shortenString(nftPolicyId, 10)}
                     </span>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <Copy className="h-4 w-4" />
-                    </Button>
+                    <CoppyButton content={nftPolicyId} />
                   </div>
                   <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg">
                     <span className="text-sm text-gray-400">
                       Asset ID: (will show affter mint)
                     </span>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <Copy className="h-4 w-4" />
-                    </Button>
                   </div>
                 </div>
 
                 {/* Description */}
-                <p className="text-gray-400">{description}</p>
+                {/* <p className="text-gray-400">{description}</p> */}
               </CardContent>
             </Card>
           </div>
@@ -90,7 +86,7 @@ export default function PreviewStep() {
           <div className="w-full mt-5">
             <Card className="p-5 border-none rounded-lg flex flex-col gap-8">
               <div className="flex flex-col gap-8">
-                <div className="grid grid-cols-4 gap-y-5 gap-x-2">
+                <div className="grid grid-cols-2 gap-y-5 gap-x-2">
                   {metadataToMint &&
                     Object.entries(metadataToMint).map(
                       ([name, value], index) => (
