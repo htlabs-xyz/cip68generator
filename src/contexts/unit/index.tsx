@@ -8,13 +8,13 @@ import { useWalletContext } from "@/components/providers/wallet";
 import { isEmpty, isNil } from "lodash";
 import { useQuery } from "@tanstack/react-query";
 import { getAssetInfo } from "@/services/blockchain/getAssetInfo";
-import { AssetDetailsWithTransactionHistory, AssetHistory } from "@/types";
+import { AssetDetailsWithTransactionHistory, TxHistory } from "@/types";
 import useUnitStore, { UnitStore } from "./store";
 import { redirect } from "next/navigation";
 import { createBurnTransaction } from "@/services/contract/burn";
 import { deserializeAddress, hexToString } from "@meshsdk/core";
 import { createUpdateTransaction } from "@/services/contract/update";
-import { getHistoryAssets } from "@/services/blockchain/getHistoryAssets";
+import { getHistoryAssets } from "@/services/blockchain/get-asset-tx-history";
 import { submitTx } from "@/services/blockchain/submitTx";
 
 const { useStepper: useUpdateStepper, steps: updateSteps } = defineStepper(
@@ -32,7 +32,7 @@ const { useStepper: useBurnStepper, steps: burnSteps } = defineStepper(
 
 type UnitContextType = UnitStore & {
   unit: string;
-  assetHistory: AssetHistory[];
+  txHistory: TxHistory[];
   isAuthor: boolean;
   assetDetails: AssetDetailsWithTransactionHistory;
   updateStepper: ReturnType<typeof useUpdateStepper>;
@@ -65,6 +65,9 @@ export default function UnitProvider({
     updateTaskState,
     txhash,
     setTxHash,
+    txCurrentPage,
+    txTotalPages,
+    setTxCurrentPage,
   } = useUnitStore();
 
   const { data: assetData, isLoading } = useQuery({
@@ -73,10 +76,14 @@ export default function UnitProvider({
     enabled: !isNil(unit) && !isEmpty(unit),
   });
 
-  const { data: assetHistory } = useQuery({
+  const { data: assetTransactionsHistory } = useQuery({
     queryKey: ["getAssetHistory", unit],
     queryFn: () =>
-      getHistoryAssets({ unit: unit.replace("000de140", "000643b0") }),
+      getHistoryAssets({
+        unit: unit.replace("000de140", "000643b0"),
+        page: txCurrentPage,
+        limit: 8,
+      }),
     enabled: !isNil(unit),
   });
 
@@ -271,7 +278,7 @@ export default function UnitProvider({
         isAuthor,
         assetDetails: assetData?.data || null!,
         loading: loading,
-        assetHistory: assetHistory?.data || [],
+        txHistory: assetTransactionsHistory?.data || [],
         setLoading,
         metadataToUpdate,
         setMetadataToUpdate,
@@ -287,6 +294,9 @@ export default function UnitProvider({
         handleBurn,
         startUpdating,
         startBurning,
+        txCurrentPage,
+        txTotalPages,
+        setTxCurrentPage,
       }}
     >
       {children}

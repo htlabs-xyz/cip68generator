@@ -16,6 +16,9 @@ export type UnitStore = {
   ) => void;
   txhash: string;
   setTxHash: (txhash: string) => void;
+  txCurrentPage: number;
+  txTotalPages: number;
+  setTxCurrentPage: (page: number) => void;
 };
 
 const useUnitStore = create<UnitStore>((set) => ({
@@ -23,6 +26,9 @@ const useUnitStore = create<UnitStore>((set) => ({
   metadataToUpdate: null,
   txhash: "",
   tasks: [],
+  txCurrentPage: 1,
+  txTotalPages: 1,
+  setTxCurrentPage: (page) => set({ txCurrentPage: page }),
   setTxHash: (txhash) => set({ txhash }),
   setLoading: (loading) => set({ loading }),
   setMetadataToUpdate: (metadata) => set({ metadataToUpdate: metadata }),

@@ -158,7 +158,7 @@ export interface KeyValuePair {
   value: string;
 }
 
-export type AssetHistory = {
+export type TxHistory = {
   txHash: string;
   datetime: number;
   fee: string;

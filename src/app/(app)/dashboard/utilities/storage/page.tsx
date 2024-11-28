@@ -6,7 +6,6 @@ import { TabsList } from "@radix-ui/react-tabs";
 import Link from "next/link";
 import { cn } from "@/utils";
 import { dashboardRoutes } from "@/constants/routers";
-import { UploadOneDialog } from "./_components/upload-one-dialog";
 import MediaGird from "./_components/media-gird";
 import MediaList from "./_components/media-list";
 import { ExternalLink } from "lucide-react";
@@ -16,7 +15,6 @@ import FileAction from "./_components/file-action";
 export default function StogarePage() {
   return (
     <div className="mt-5 rounded-lg bg-section p-4">
-      <UploadOneDialog />
       <h1 className="text-2xl font-semibold leading-7">Storage</h1>
       <div className="mt-5 flex flex-col h-full">
         <Tabs
@@ -42,8 +40,8 @@ export default function StogarePage() {
               <FileAction />
               <Link
                 href={
-                  dashboardRoutes.utilities.children.storage.children
-                    .uploadFolder.redirect
+                  dashboardRoutes.utilities.children.storage.children.upload
+                    .redirect
                 }
                 className={cn(buttonVariants({ variant: "ghost" }))}
               >

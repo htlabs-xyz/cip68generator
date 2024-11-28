@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import FilePicker from "@/components/common/file-picker";
 import { useUploadContext } from "@/contexts/storage";
-import MediaGirdtoUpload from "../../_components/media-gird-to-upload";
+import MediaGirdtoUpload from "../_components/media-gird-to-upload";
 export default function UploadFilePage() {
   const { listFileToUpload, setListFileToUpload, uploadFiles } =
     useUploadContext();

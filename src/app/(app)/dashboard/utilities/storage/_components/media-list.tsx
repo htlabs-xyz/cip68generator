@@ -16,7 +16,7 @@ import { IPFS_GATEWAY } from "@/constants";
 import { useUploadContext } from "@/contexts/storage";
 import { Media } from "@prisma/client";
 import FileDisplay from "@/components/common/file-display";
-import { copyToClipboard } from "@/utils/copy";
+import { copyToClipboard } from "@/utils/copy-to-clipboard";
 
 export default function MediaList() {
   const { loading, listMedia, listSelected, setListSelected } =
