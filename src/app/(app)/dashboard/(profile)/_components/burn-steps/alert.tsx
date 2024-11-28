@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { useUnitContext } from "@/contexts/unit";
+import Link from "next/link";
 
 export default function MetadataStep() {
-  const { startBurning } = useUnitContext();
+  const { startBurning, unit } = useUnitContext();
 
   return (
     <div className="h-full py-8 px-10 m-auto flex flex-col">
@@ -17,9 +18,15 @@ export default function MetadataStep() {
           </p>
         </div>
       </div>
-      <div className="flex justify-end gap-4 mt-6">
-        <Button variant="secondary">Back</Button>
-        <Button onClick={startBurning}>Next</Button>
+      <div className="fixed right-0 bottom-0 z-10 max-h-16 w-full bg-section">
+        <div className="mx-4 flex h-16 items-center sm:mx-8">
+          <div className="flex flex-1 items-center justify-end space-x-2">
+            <Link href={`/dashboard/${unit}`}>
+              <Button variant="secondary">Back</Button>
+            </Link>
+            <Button onClick={startBurning}>Next</Button>
+          </div>
+        </div>
       </div>
     </div>
   );

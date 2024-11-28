@@ -16,7 +16,7 @@ export default function Page() {
     <div className="py-8 px-10 m-auto flex flex-col">
       <div className="rounded-xl p-6 bg-section shadow-md flex flex-col gap-3">
         <h1 className="text-2xl font-medium leading-7 text-center">
-          Update Step:
+          Update Step
         </h1>
         <StepperNav />
         <div className="space-y-4">
