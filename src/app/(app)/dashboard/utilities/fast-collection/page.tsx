@@ -1,16 +1,14 @@
 import CSVReader from "./_components/upload-csv";
 export default function UploadCSVPage() {
   return (
-    <>
-      <div className="mt-5 rounded-lg bg-section p-4">
-        <h1 className="text-2xl font-semibold leading-7">Stogare</h1>
-        <p className="mb-4 text-gray-400">Upload .csv file</p>
+    <div className="py-8 px-10 m-auto flex flex-col max-md:px-0">
+      <div className="rounded-xl p-6 bg-section shadow-md flex-wrap gap-3 space-y-5">
+        <h1 className="text-2xl font-medium leading-7">Stogare</h1>
+
         <div className="mt-5">
-          <div className="px-4">
-            <CSVReader />
-          </div>
+          <CSVReader />
         </div>
       </div>
-    </>
+    </div>
   );
 }
