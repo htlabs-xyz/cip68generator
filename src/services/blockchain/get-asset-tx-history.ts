@@ -4,7 +4,7 @@ import { blockfrostFetcher } from "@/lib/cardano";
 import { SpecialTransaction, Transaction, TransactionAsset } from "@/types";
 import { isNil } from "lodash";
 
-export async function getHistoryAssets({
+export async function getAssetTxHistory({
   unit,
   page = 1,
   limit = 12,

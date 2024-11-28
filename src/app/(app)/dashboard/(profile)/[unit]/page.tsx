@@ -1,18 +1,9 @@
 "use client";
-import { Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import FileDisplay from "@/components/common/file-display";
-import { appNetwork, decialPlace, IPFS_GATEWAY } from "@/constants";
+import { IPFS_GATEWAY } from "@/constants";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { isEmpty, isNil } from "lodash";
 import { useUnitContext } from "@/contexts/unit";
@@ -24,23 +15,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Property from "../_components/property";
-import Pagination from "../../../../../components/common/pagination";
 import { hexToString } from "@meshsdk/core";
-import { shortenString } from "@/utils";
-import Link from "next/link";
-import { AssetHistory } from "@/types";
 import CoppyButton from "@/components/common/coppy-button";
 
 export default function DetailsPage() {
-  const {
-    unit,
-    assetDetails,
-    handleBurn,
-    handleUpdate,
-    isAuthor,
-    metadataToUpdate,
-    assetHistory,
-  } = useUnitContext();
+  const { assetDetails, handleBurn, handleUpdate, isAuthor, metadataToUpdate } =
+    useUnitContext();
 
   if (isNil(assetDetails)) return <Loading />;
   const { asset_name, policy_id, onchain_metadata, fingerprint } = assetDetails;
@@ -178,9 +158,7 @@ export default function DetailsPage() {
               </div>
             </Card>
           </TabsContent>
-          <TabsContent value="transaction" className="mt-4">
-            
-          </TabsContent>
+          <TabsContent value="transaction" className="mt-4"></TabsContent>
         </Tabs>
       </div>
     </div>

@@ -10,13 +10,18 @@ import {
 } from "@/components/ui/table";
 import { appNetwork, decialPlace } from "@/constants";
 import { useUnitContext } from "@/contexts/unit";
-import { AssetHistory } from "@/types";
+import { TxHistory } from "@/types";
 import { shortenString } from "@/utils";
 import Link from "next/link";
 
 export default function TransactionHistory() {
-  const { assetHistory, unit, txCurrentPage, txTotalPages, setTxCurrentPage } =
-    useUnitContext();
+  const {
+    assetTxHistory,
+    unit,
+    txCurrentPage,
+    txTotalPages,
+    setTxCurrentPage,
+  } = useUnitContext();
   return (
     <Card className="bg-gray-900 border-gray-800">
       <CardContent className="p-4">
@@ -35,7 +40,7 @@ export default function TransactionHistory() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {assetHistory?.map((transaction: AssetHistory, index) => (
+            {assetTxHistory?.map((transaction: TxHistory, index) => (
               <TableRow
                 key={index}
                 className={index % 2 === 0 ? "bg-[#0d0e12]" : ""}

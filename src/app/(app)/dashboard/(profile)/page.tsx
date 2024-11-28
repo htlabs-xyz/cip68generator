@@ -1,15 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import AssetCard from "./_components/asset-card";
 import { motion } from "framer-motion";
 import { useProfileContext } from "@/contexts/profile";
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { IoLocation } from "react-icons/io5";
 import { useEffect, useState } from "react";
-import { FilterType } from "@/types";
-import { filterDefault } from "@/constants";
 import Image from "next/image";
 import { appImage, walletImage } from "@/public/images";
 import { useWalletContext } from "@/components/providers/wallet";

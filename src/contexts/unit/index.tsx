@@ -14,7 +14,7 @@ import { redirect } from "next/navigation";
 import { createBurnTransaction } from "@/services/contract/burn";
 import { deserializeAddress, hexToString } from "@meshsdk/core";
 import { createUpdateTransaction } from "@/services/contract/update";
-import { getHistoryAssets } from "@/services/blockchain/get-asset-tx-history";
+import { getAssetTxHistory } from "@/services/blockchain/get-asset-tx-history";
 import { submitTx } from "@/services/blockchain/submitTx";
 
 const { useStepper: useUpdateStepper, steps: updateSteps } = defineStepper(
@@ -32,7 +32,7 @@ const { useStepper: useBurnStepper, steps: burnSteps } = defineStepper(
 
 type UnitContextType = UnitStore & {
   unit: string;
-  txHistory: TxHistory[];
+  assetTxHistory: TxHistory[];
   isAuthor: boolean;
   assetDetails: AssetDetailsWithTransactionHistory;
   updateStepper: ReturnType<typeof useUpdateStepper>;
@@ -76,10 +76,10 @@ export default function UnitProvider({
     enabled: !isNil(unit) && !isEmpty(unit),
   });
 
-  const { data: assetTransactionsHistory } = useQuery({
-    queryKey: ["getAssetHistory", unit],
+  const { data: assetTxHistory } = useQuery({
+    queryKey: ["getAssetTxHistory", unit],
     queryFn: () =>
-      getHistoryAssets({
+      getAssetTxHistory({
         unit: unit.replace("000de140", "000643b0"),
         page: txCurrentPage,
         limit: 8,
@@ -278,7 +278,7 @@ export default function UnitProvider({
         isAuthor,
         assetDetails: assetData?.data || null!,
         loading: loading,
-        txHistory: assetTransactionsHistory?.data || [],
+        assetTxHistory: assetTxHistory?.data || [],
         setLoading,
         metadataToUpdate,
         setMetadataToUpdate,
