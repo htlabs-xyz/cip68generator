@@ -4,15 +4,14 @@ import { Images } from "@/components/common/images";
 import Link from "next/link";
 import { dashboardRoutes } from "@/constants/routers";
 import { Box } from "lucide-react";
-export default function MintPage() {
+export default function UtilitiesPage() {
   return (
-    <div className="py-8 px-10 m-auto flex flex-col">
-      <div className="rounded-xl p-6 bg-section shadow-md flex flex-col gap-3">
-        {/* <h1 className="text-2xl font-medium leading-7">Minting</h1> */}
-        <div className="mt-2 grid gap-4 grid-cols-3 max-md:grid-cols-1">
+    <div className="py-8 px-10 m-auto flex flex-col max-md:px-0">
+      <div className="rounded-xl p-6 bg-section shadow-md flex-wrap gap-3 space-y-5">
+        <div className="mt-2 grid  gap-4 grid-cols-3 max-md:grid-cols-1">
           <Link
             href={dashboardRoutes.mint.children.mintOne.redirect}
-            className="rounded-lg shadow-none transition-shadow duration-300 hover:shadow-lg "
+            className="rounded-lg shadow-none transition-shadow duration-300 hover:shadow-md hover:shadow-slate-800"
           >
             <Card className="h-full">
               <AspectRatio ratio={5 / 3} className="bg-muted">

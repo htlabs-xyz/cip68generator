@@ -4,7 +4,6 @@ import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
 import { SidebarToggle } from "./sidebar-toggle";
 import { MenuList } from "./menu-list";
 import { Button } from "@/components/ui/button";
-import { dashboardRoutes } from "@/constants/routers";
 import Image from "next/image";
 import { appImage } from "@/public/images";
 
@@ -36,7 +35,7 @@ export function Sidebar() {
         >
           <Link
             className="relative flex items-center decoration-transparent justify-center gap-1"
-            href={dashboardRoutes.home.redirect}
+            href={"/"}
           >
             <Image
               className={cn("h-[35px] w-[35px] object-cover", {

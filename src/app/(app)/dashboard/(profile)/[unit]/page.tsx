@@ -17,6 +17,7 @@ import {
 import Property from "../_components/property";
 import { hexToString } from "@meshsdk/core";
 import CoppyButton from "@/components/common/coppy-button";
+import TransactionHistory from "../_components/transaction-history";
 
 export default function DetailsPage() {
   const { assetDetails, handleBurn, handleUpdate, isAuthor, metadataToUpdate } =
@@ -158,7 +159,9 @@ export default function DetailsPage() {
               </div>
             </Card>
           </TabsContent>
-          <TabsContent value="transaction" className="mt-4"></TabsContent>
+          <TabsContent value="transaction" className="mt-4">
+            <TransactionHistory />
+          </TabsContent>
         </Tabs>
       </div>
     </div>
