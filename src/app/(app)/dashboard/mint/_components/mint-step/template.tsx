@@ -1,9 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Images } from "@/components/common/images";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Eye, Plus } from "lucide-react";
+import { Card } from "@/components/ui/card";
 import { useMintOneContext } from "@/contexts/mint-one";
 
 export default function TemplateStep() {
