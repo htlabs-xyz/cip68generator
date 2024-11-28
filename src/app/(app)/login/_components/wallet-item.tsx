@@ -22,7 +22,7 @@ const WalletItem = function ({ wallet, onConnectWallet }: Props) {
         width={32}
         height={32}
       />
-      <span className="flex-grow text-left">{wallet.name}</span>
+      <span className="flex-grow text-left capitalize">{wallet.name}</span>
       <span className="text-sm text-green-500">•</span>
     </Button>
   );

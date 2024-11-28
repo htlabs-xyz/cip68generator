@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
-import { IPFS_GATEWAY } from "@/constants";
 import { useUploadContext } from "@/contexts/storage";
 
 export default function TableData() {
@@ -51,9 +50,7 @@ export default function TableData() {
                     <div className="h-10 w-10 overflow-hidden rounded-lg">
                       <AspectRatio ratio={10 / 10} className="bg-muted">
                         <Image
-                          src={
-                            IPFS_GATEWAY + file.url.replace("ipfs://", "ipfs/")
-                          }
+                          src={file.url}
                           alt={file.name}
                           fill
                           className="h-full w-full rounded-md object-cover"

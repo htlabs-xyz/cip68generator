@@ -78,7 +78,7 @@ export default function UnitProvider({
   });
 
   const { data: assetTxHistory } = useQuery({
-    queryKey: ["getAssetTxHistory", unit],
+    queryKey: ["getAssetTxHistory", unit, txCurrentPage],
     queryFn: () =>
       getAssetTxHistory({
         unit: unit.replace("000de140", "000643b0"),

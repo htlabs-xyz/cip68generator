@@ -12,16 +12,11 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import FileDisplay from "@/components/common/file-display";
 import { Card, CardContent } from "@/components/ui/card";
 import { Copy } from "lucide-react";
-import { IPFS_GATEWAY } from "@/constants";
 export default function PreviewStep() {
   const { stepper, metadataToMint, basicInfoToMint, startMinting } =
     useMintOneContext();
   const assetNameSort = basicInfoToMint?.assetName || "No name";
-  const imgSrc =
-    !isNil(metadataToMint?.image) && metadataToMint?.image !== ""
-      ? IPFS_GATEWAY + metadataToMint?.image.replace("ipfs://", "ipfs/") ||
-        metadataToMint?.image
-      : "";
+  const imgSrc = metadataToMint?.image || "";
   const mediaType =
     imgSrc == "" ? "text/plain" : metadataToMint?.mediaType || "image/png";
   const description = metadataToMint?.description || "";
@@ -117,15 +112,19 @@ export default function PreviewStep() {
           </div>
         </div>
       </div>
-      <div className="flex justify-end gap-4 mt-6">
-        <Button
-          variant="secondary"
-          onClick={stepper.prev}
-          disabled={stepper.isFirst}
-        >
-          Back
-        </Button>
-        <Button onClick={startMinting}>Next</Button>
+      <div className="fixed right-0 bottom-0 z-10 max-h-16 w-full bg-section">
+        <div className="mx-4 flex h-16 items-center sm:mx-8">
+          <div className="flex flex-1 items-center justify-end space-x-2">
+            <Button
+              variant="secondary"
+              onClick={stepper.prev}
+              disabled={stepper.isFirst}
+            >
+              Back
+            </Button>
+            <Button onClick={startMinting}>Next</Button>
+          </div>
+        </div>
       </div>
     </div>
   );

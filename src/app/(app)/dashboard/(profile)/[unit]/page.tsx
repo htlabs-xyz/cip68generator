@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FileDisplay from "@/components/common/file-display";
-import { IPFS_GATEWAY } from "@/constants";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { isEmpty, isNil } from "lodash";
 import { useUnitContext } from "@/contexts/unit";
@@ -38,8 +37,7 @@ export default function DetailsPage() {
   const fingerprintSort =
     fingerprint.slice(0, 10) + "..." + fingerprint.slice(-15);
 
-  const imgSrc =
-    IPFS_GATEWAY + onchain_metadata?.image.replace("ipfs://", "ipfs/") || "";
+  const imgSrc = onchain_metadata?.image || "";
 
   const mediaType = onchain_metadata?.type || "image/png";
 

@@ -45,11 +45,11 @@ function renderJsonDiff(
     if (value !== null) {
       let bgColor = "";
       if (item.status === "added" && version === "new") {
-        bgColor = "bg-green-500 dark:bg-green-900";
+        bgColor = "bg-green-700";
       } else if (item.status === "removed" && version === "old") {
-        bgColor = "bg-red-500 dark:bg-red-900";
+        bgColor = "bg-red-700";
       } else if (item.status === "changed") {
-        bgColor = "";
+        bgColor = "bg-yellow-700";
       }
 
       jsonLines.push(

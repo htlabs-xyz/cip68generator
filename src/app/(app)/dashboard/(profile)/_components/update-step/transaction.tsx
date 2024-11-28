@@ -50,14 +50,18 @@ export default function TransactionStep() {
           })}
         </ul>
       </div>
-      <div className="flex justify-end gap-4 mt-6">
-        <Button
-          variant="secondary"
-          onClick={updateStepper.prev}
-          disabled={updateStepper.isFirst}
-        >
-          Back
-        </Button>
+      <div className="fixed right-0 bottom-0 z-10 max-h-16 w-full bg-section">
+        <div className="mx-4 flex h-16 items-center sm:mx-8">
+          <div className="flex flex-1 items-center justify-end space-x-2">
+            <Button
+              variant="secondary"
+              onClick={updateStepper.prev}
+              disabled={updateStepper.isFirst}
+            >
+              Back
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -4,7 +4,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card } from "@/components/ui/card";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { Media } from "@prisma/client";
-import { IPFS_GATEWAY } from "@/constants";
 import { useUploadContext } from "@/contexts/storage";
 import FileDisplay from "@/components/common/file-display";
 
@@ -39,7 +38,7 @@ export default function FileCard({ file }: { file: Media }) {
       </div>
       <AspectRatio ratio={4 / 3} className="bg-muted">
         <FileDisplay
-          src={IPFS_GATEWAY + file.url.replace("ipfs://", "ipfs/")}
+          src={file.url}
           alt={file.name}
           type={file.type}
           className="h-full w-full rounded-lg border object-cover"

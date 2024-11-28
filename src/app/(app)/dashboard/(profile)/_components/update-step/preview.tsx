@@ -11,17 +11,12 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import FileDisplay from "@/components/common/file-display";
 import { Card, CardContent } from "@/components/ui/card";
 import { Copy } from "lucide-react";
-import { IPFS_GATEWAY } from "@/constants";
 import { useUnitContext } from "@/contexts/unit";
 export default function PreviewStep() {
   const { assetDetails, updateStepper, metadataToUpdate, startUpdating } =
     useUnitContext();
   const assetNameSort = assetDetails?.asset_name || "No name";
-  const imgSrc =
-    !isNil(metadataToUpdate?.image) && metadataToUpdate?.image !== ""
-      ? IPFS_GATEWAY + metadataToUpdate?.image.replace("ipfs://", "ipfs/") ||
-        metadataToUpdate?.image
-      : "";
+  const imgSrc = metadataToUpdate?.image || "";
   const mediaType =
     imgSrc == "" ? "text/plain" : metadataToUpdate?.mediaType || "image/png";
   const description = metadataToUpdate?.description || "";
@@ -117,15 +112,19 @@ export default function PreviewStep() {
           </div>
         </div>
       </div>
-      <div className="flex justify-end gap-4 mt-6">
-        <Button
-          variant="secondary"
-          onClick={updateStepper.prev}
-          disabled={updateStepper.isFirst}
-        >
-          Back
-        </Button>
-        <Button onClick={startUpdating}>Next</Button>
+      <div className="fixed right-0 bottom-0 z-10 max-h-16 w-full bg-section">
+        <div className="mx-4 flex h-16 items-center sm:mx-8">
+          <div className="flex flex-1 items-center justify-end space-x-2">
+            <Button
+              variant="secondary"
+              onClick={updateStepper.prev}
+              disabled={updateStepper.isFirst}
+            >
+              Back
+            </Button>
+            <Button onClick={startUpdating}>Next</Button>
+          </div>
+        </div>
       </div>
     </div>
   );
