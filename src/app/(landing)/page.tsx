@@ -1,4 +1,3 @@
-"use server";
 import Header from "@/app/(landing)/_layout/header";
 import { Button } from "@/components/ui/button";
 import Footer from "@/app/(landing)/_layout/footer";
