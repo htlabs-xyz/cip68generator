@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/utils";
 import { useUnitContext } from "@/contexts/unit";
 
-export default function StepperNav() {
+export default function UpdateStepperNav() {
   const { updateStepper, updateSteps } = useUnitContext();
 
   return (
