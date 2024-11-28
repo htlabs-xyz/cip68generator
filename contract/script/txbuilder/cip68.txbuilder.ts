@@ -17,12 +17,12 @@ import {
 import { MeshAdapter } from "../adapters/mesh.adapter";
 import plutus from "../../plutus.json";
 import {
-  EXCHANGE_FEE_ADDRESS,
   MINT_REFERENCE_SCRIPT_HASH,
   STORE_REFERENCE_SCRIPT_HASH,
   MINT_REFERENCE_SCRIPT_ADDRESS,
   STORE_REFERENCE_SCRIPT_ADDRESS,
   title,
+  EXCHANGE_FEE_ADDRESS,
 } from "../constants";
 import { Plutus } from "../types";
 import { appNetwork, appNetworkId } from "@/constants";
@@ -51,7 +51,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     version: "V3",
   };
 
-  protected storeAddress = serializePlutusScript(
+  public storeAddress = serializePlutusScript(
     this.storeScript,
     undefined,
     appNetworkId,
@@ -68,7 +68,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     code: this.mintScriptCbor,
     version: "V3",
   };
-  protected policyId = resolveScriptHash(this.mintScriptCbor, "V3");
+  public policyId = resolveScriptHash(this.mintScriptCbor, "V3");
 
   /**
    * @method Mint
@@ -343,49 +343,3 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     return unsignedTx.complete();
   };
 }
-export const nftPoicyId = (() => {
-  const pubKeyExchange = deserializeAddress(EXCHANGE_FEE_ADDRESS).pubKeyHash;
-
-  const storeCompileCode = plutus.validators.find(
-    (validator) => validator.title === title.store,
-  )?.compiledCode;
-
-  if (!storeCompileCode) {
-    throw new Error(`Validator with title '${title.store}' not found.`);
-  }
-
-  const storeScriptCbor = applyParamsToScript(storeCompileCode, [
-    pubKeyExchange,
-    BigInt(1),
-  ]);
-
-  const storeScript: PlutusScript = {
-    code: storeScriptCbor,
-    version: "V3",
-  };
-
-  const storeAddress = serializePlutusScript(
-    storeScript,
-    undefined,
-    appNetworkId,
-    false,
-  ).address;
-
-  const storeScriptHash = deserializeAddress(storeAddress).scriptHash;
-
-  const mintCompileCode = plutus.validators.find(
-    (validator) => validator.title === title.mint,
-  )?.compiledCode;
-
-  if (!mintCompileCode) {
-    throw new Error(`Validator with title '${title.mint}' not found.`);
-  }
-
-  const mintScriptCbor = applyParamsToScript(mintCompileCode, [
-    pubKeyExchange,
-    BigInt(1),
-    storeScriptHash,
-  ]);
-
-  return resolveScriptHash(mintScriptCbor, "V3");
-})();

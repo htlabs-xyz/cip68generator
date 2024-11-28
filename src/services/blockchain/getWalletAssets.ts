@@ -1,5 +1,5 @@
 "use server";
-import { nftPoicyId } from "@/contract";
+import { Cip68Contract } from "@/contract";
 import { blockfrostFetcher, koiosFetcher } from "@/lib/cardano";
 import { AssetDetails, AssetType } from "@/types";
 import { hexToString } from "@meshsdk/core";
@@ -19,7 +19,7 @@ export async function getWalletAssets({
     const assetsAddress: AssetType[] =
       await koiosFetcher.fetchAssetsFromAddress(walletAddress);
     const filteredAssetsAddress = assetsAddress.filter(
-      (asset) => asset.policy_id === nftPoicyId,
+      (asset) => asset.policy_id === new Cip68Contract({}).policyId,
     );
     const filteredAssetsAddressQuery = filteredAssetsAddress.filter((asset) => {
       const assetNameString = hexToString(asset.asset_name);
