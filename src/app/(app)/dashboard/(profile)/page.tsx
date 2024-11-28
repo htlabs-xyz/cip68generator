@@ -111,7 +111,7 @@ export default function ProfilePage() {
         {!loading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-4">
             {listNft.map((data, index) => (
-              <AssetCard data={data} index={index} key={index} />
+              <AssetCard data={data} key={index} />
             ))}
           </div>
         )}

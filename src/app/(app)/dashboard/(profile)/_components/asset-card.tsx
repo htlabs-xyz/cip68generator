@@ -6,13 +6,7 @@ import { AssetDetails } from "@/types";
 import { hexToString } from "@meshsdk/core";
 import Link from "next/link";
 
-export default function AssetCard({
-  data,
-  index,
-}: {
-  data: AssetDetails;
-  index: number;
-}) {
+export default function AssetCard({ data }: { data: AssetDetails }) {
   const { asset_name, policy_id, onchain_metadata, fingerprint } = data;
 
   const imgSrc =
