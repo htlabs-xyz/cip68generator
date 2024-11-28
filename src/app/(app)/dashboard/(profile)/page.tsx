@@ -1,7 +1,6 @@
 "use client";
 
 import AssetCard from "./_components/asset-card";
-import { motion } from "framer-motion";
 import { useProfileContext } from "@/contexts/profile";
 import { IoLocation } from "react-icons/io5";
 import { useEffect, useState } from "react";
@@ -105,9 +104,7 @@ export default function ProfilePage() {
         {loading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-4">
             {Array.from({ length: 9 }).map((_, index) => (
-              <motion.div key={index}>
-                <AssetCardSkeleton index={index} key={index} />
-              </motion.div>
+              <AssetCardSkeleton key={index} />
             ))}
           </div>
         )}

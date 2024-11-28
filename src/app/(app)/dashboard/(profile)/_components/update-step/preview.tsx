@@ -24,7 +24,7 @@ export default function PreviewStep() {
       : "";
   const mediaType =
     imgSrc == "" ? "text/plain" : metadataToUpdate?.mediaType || "image/png";
-  const description = metadataToUpdate?.description || "No description";
+  const description = metadataToUpdate?.description || "";
 
   return (
     <div className="h-full py-8 px-10 m-auto flex flex-col">

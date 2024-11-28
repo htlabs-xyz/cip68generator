@@ -40,9 +40,11 @@ export default function MintOneProvider({
     updateTaskState,
     txhash,
     setTxHash,
+    resetTasks,
   } = useMintOneStore();
 
   const startMinting = async () => {
+    resetTasks();
     stepper.goTo("transaction");
     try {
       updateTaskState("inprogress", "validate", "Validating Data");
@@ -126,6 +128,7 @@ export default function MintOneProvider({
         basicInfoToMint,
         setBasicInfoToMint,
         tasks,
+        resetTasks,
         updateTaskState,
         startMinting,
         txhash,

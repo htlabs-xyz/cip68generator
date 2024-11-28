@@ -24,7 +24,7 @@ export default function PreviewStep() {
       : "";
   const mediaType =
     imgSrc == "" ? "text/plain" : metadataToMint?.mediaType || "image/png";
-  const description = metadataToMint?.description || "No description";
+  const description = metadataToMint?.description || "";
 
   return (
     <div className="h-full py-8 px-10 m-auto flex flex-col">
@@ -53,22 +53,22 @@ export default function PreviewStep() {
                     <h1 className="text-2xl font-bold">{assetNameSort}</h1>
                     <span className="text-blue-400">✓</span>
                   </div>
-                  {/* <div className="flex items-center gap-2 text-sm text-gray-400">
-                  <span>Owned by</span>
-                  <span className="text-blue-400">legend</span>
-                </div> */}
                 </div>
 
                 {/* Policy and Asset IDs */}
                 <div className="space-y-2 ">
                   <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg">
-                    <span className="text-sm text-gray-400">Policy ID: {}</span>
+                    <span className="text-sm text-gray-400">
+                      Policy ID: (will show affter mint)
+                    </span>
                     <Button variant="ghost" size="icon" className="h-8 w-8">
                       <Copy className="h-4 w-4" />
                     </Button>
                   </div>
                   <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg">
-                    <span className="text-sm text-gray-400">Asset ID: {}</span>
+                    <span className="text-sm text-gray-400">
+                      Asset ID: (will show affter mint)
+                    </span>
                     <Button variant="ghost" size="icon" className="h-8 w-8">
                       <Copy className="h-4 w-4" />
                     </Button>

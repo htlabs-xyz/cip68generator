@@ -68,6 +68,7 @@ export default function UnitProvider({
     txCurrentPage,
     txTotalPages,
     setTxCurrentPage,
+    resetTasks,
   } = useUnitStore();
 
   const { data: assetData, isLoading } = useQuery({
@@ -118,6 +119,7 @@ export default function UnitProvider({
   };
 
   const startUpdating = async () => {
+    resetTasks();
     updateStepper.goTo("transaction");
     try {
       updateTaskState("inprogress", "validate", "Validating Data");
@@ -194,6 +196,7 @@ export default function UnitProvider({
     }
   };
   const startBurning = async () => {
+    resetTasks();
     burnStepper.goTo("transaction");
     try {
       updateTaskState("inprogress", "validate", "Validating Data");
@@ -283,6 +286,7 @@ export default function UnitProvider({
         metadataToUpdate,
         setMetadataToUpdate,
         tasks,
+        resetTasks,
         updateTaskState,
         txhash,
         setTxHash,

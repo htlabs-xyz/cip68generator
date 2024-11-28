@@ -35,7 +35,7 @@ export default function TemplateStep() {
                 Start from Scratch
               </div>
               <div className="font- self-stretch text-center text-sm text-secondary">
-                Explore how it relates to NFTs, creativity, or any other topic
+                Begin your journey with a blank slate
               </div>
             </div>
           </Card>

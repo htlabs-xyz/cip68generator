@@ -1,7 +1,6 @@
 import FileDisplay from "@/components/common/file-display";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card } from "@/components/ui/card";
-import { motion } from "framer-motion";
 import { IPFS_GATEWAY } from "@/constants";
 import { AssetDetails } from "@/types";
 import { hexToString } from "@meshsdk/core";
@@ -33,12 +32,7 @@ export default function AssetCard({
 
   return (
     <Link href={`/dashboard/${policy_id + asset_name}`}>
-      <motion.div
-        initial={{ scale: 0.5, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.8, delay: index * 0.2 }}
-        className="rounded-lg shadow-none transition-shadow duration-300 hover:shadow-md hover:shadow-slate-800"
-      >
+      <div className="rounded-lg shadow-none transition-shadow duration-300 hover:shadow-md hover:shadow-slate-800">
         <Card className="h-full">
           <AspectRatio ratio={5 / 3} className="bg-muted">
             <FileDisplay
@@ -57,7 +51,7 @@ export default function AssetCard({
             </div>
           </div>
         </Card>
-      </motion.div>
+      </div>
     </Link>
   );
 }

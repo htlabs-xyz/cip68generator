@@ -22,6 +22,7 @@ export type MintOneStore = {
     quantity: string;
   }) => void;
   tasks: Task[];
+  resetTasks: () => void;
   updateTaskState: (
     status: "todo" | "inprogress" | "success" | "error",
     name?: string,
@@ -40,6 +41,7 @@ const useMintOneStore = create<MintOneStore>((set) => ({
   },
   txhash: "",
   tasks: [],
+  resetTasks: () => set({ tasks: [] }),
   setTxHash: (txhash) => set({ txhash }),
   setBasicInfoToMint: (basicInfo) => set({ basicInfoToMint: basicInfo }),
   setLoading: (loading) => set({ loading }),
