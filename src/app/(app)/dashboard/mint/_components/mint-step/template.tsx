@@ -1,9 +1,17 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card } from "@/components/ui/card";
 import { useMintOneContext } from "@/contexts/mint-one";
+import { isNil } from "lodash";
+import { useEffect } from "react";
 
 export default function TemplateStep() {
-  const { stepper } = useMintOneContext();
+  const { stepper, metadataTemplate } = useMintOneContext();
+
+  useEffect(() => {
+    if (!isNil(metadataTemplate)) {
+      stepper.next();
+    }
+  }, [metadataTemplate, stepper]);
 
   return (
     <div className="h-full m-auto flex flex-col">

@@ -8,18 +8,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { dashboardRoutes } from "@/constants/routers";
 import { useMetadataContext } from "@/contexts/metadata";
 import { toast } from "@/hooks/use-toast";
 import { updateMetadata } from "@/services/database/metadata";
 import { KeyValuePair } from "@/types";
-import { copyToClipboard } from "@/utils/copy-to-clipboard";
 import { generateFields, generateJson } from "@/utils/json";
 import { Metadata } from "@prisma/client";
 import { MoreVertical } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function MetadataAction({ metadata }: { metadata: Metadata }) {
-  const [copied, setCopied] = useState(false);
+  const router = useRouter();
   const [openDialog, setOpenDialog] = useState(false);
   const { refetch } = useMetadataContext();
   const [fields, setFields] = useState<KeyValuePair[]>(
@@ -79,12 +80,14 @@ export default function MetadataAction({ metadata }: { metadata: Metadata }) {
         <DropdownMenuContent className="w-32">
           <DropdownMenuItem
             onClick={() =>
-              copyToClipboard(JSON.stringify(metadata.content, null, 2))
-                .then(() => setCopied(true))
-                .finally(() => setTimeout(() => setCopied(false), 500))
+              router.push(
+                dashboardRoutes.mint.children.mintOne.redirect +
+                  "?template=" +
+                  metadata.id,
+              )
             }
           >
-            <span>{copied ? "Copied" : "Copy Content"}</span>
+            <span>Mint This</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpenDialog(true)}>
             <span>Edit Content</span>

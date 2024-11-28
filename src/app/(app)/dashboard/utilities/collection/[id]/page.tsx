@@ -7,7 +7,6 @@ import Link from "next/link";
 import { useMetadataContext } from "@/contexts/metadata";
 import MetadataList from "../_components/metadata-list";
 import MetadataGird from "../_components/metadata-gird";
-import { ExternalLink } from "lucide-react";
 import { Filter } from "../_components/filter";
 import CollectionAction from "../_components/collection-action";
 import Pagination from "@/components/common/pagination";

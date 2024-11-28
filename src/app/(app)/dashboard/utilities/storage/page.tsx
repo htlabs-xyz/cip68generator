@@ -1,10 +1,9 @@
 "use client";
 import { Icons } from "@/components/common/icons";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import { TabsList } from "@radix-ui/react-tabs";
 import Link from "next/link";
-import { cn } from "@/utils";
 import { dashboardRoutes } from "@/constants/routers";
 import MediaGird from "./_components/media-gird";
 import MediaList from "./_components/media-list";
