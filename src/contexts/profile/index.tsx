@@ -17,7 +17,7 @@ export default function ProfileProvider({ children }: PropsWithChildren) {
   const { filter, setFilter, currentPage, setCurrentPage } = useProfileStore();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getWalletAssets", address, filter],
+    queryKey: ["getWalletAssets", address, filter, currentPage],
     queryFn: () =>
       getWalletAssets({
         walletAddress: address!,
