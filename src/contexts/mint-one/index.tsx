@@ -8,6 +8,9 @@ import { createMintTransaction } from "@/services/contract/mint";
 import { useBlockchainContext } from "@/components/providers/blockchain";
 import { isNil } from "lodash";
 import { submitTx } from "@/services/blockchain/submitTx";
+import { AssetMetadata } from "@meshsdk/core";
+import { useQuery } from "@tanstack/react-query";
+import { getMetadataById } from "@/services/database/metadata";
 const { useStepper, steps } = defineStepper(
   { id: "template", title: "Template" },
   { id: "basic", title: "Basic" },
@@ -17,14 +20,17 @@ const { useStepper, steps } = defineStepper(
   { id: "result", title: "Result" },
 );
 type MintOneContextType = MintOneStore & {
+  metadataTemplate: AssetMetadata | null;
   stepper: ReturnType<typeof useStepper>;
   steps: typeof steps;
   startMinting: () => void;
 };
 
 export default function MintOneProvider({
+  metadataTemplateId,
   children,
 }: {
+  metadataTemplateId: string | null;
   children: React.ReactNode;
 }) {
   const { signTx, address } = useBlockchainContext();
@@ -42,6 +48,12 @@ export default function MintOneProvider({
     setTxHash,
     resetTasks,
   } = useMintOneStore();
+
+  const { data } = useQuery({
+    queryKey: ["getMetadataById", metadataTemplateId],
+    queryFn: () => getMetadataById({ metadataId: metadataTemplateId! }),
+    enabled: !!metadataTemplateId,
+  });
 
   const startMinting = async () => {
     resetTasks();
@@ -121,6 +133,7 @@ export default function MintOneProvider({
   return (
     <MintOneContext.Provider
       value={{
+        metadataTemplate: data?.data?.content || null,
         loading,
         setLoading,
         metadataToMint,

@@ -1,11 +1,13 @@
 "use client";
-// import { useRouter } from "next/navigation";
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 import useUploadCsvStore, { UploadCsvStore } from "./store";
 import { isEmpty, isNil } from "lodash";
-import { convertObject } from "@/utils";
 import { createCollectionWithData } from "@/services/database/collection";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { convertObject } from "@/utils";
+import { toast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { dashboardRoutes } from "@/constants/routers";
 
 type UploadCsvContextType = UploadCsvStore & {
   loading: boolean;
@@ -15,6 +17,7 @@ type UploadCsvContextType = UploadCsvStore & {
 export default function UploadCSVProvider({ children }: PropsWithChildren) {
   const [loading, setLoading] = useState(false);
   const { csvContent, setCsvContent, csvName } = useUploadCsvStore();
+  const router = useRouter();
   const uploadCsv = async () => {
     setLoading(true);
 
@@ -30,9 +33,27 @@ export default function UploadCSVProvider({ children }: PropsWithChildren) {
       if (!result || isNil(data)) {
         throw new Error(message);
       }
-      redirect(`/dashboard/collection/${data.id}`);
-    } catch (error) {
-      console.error("Error uploading CSV", error);
+      toast({
+        title: "Create Collection Success",
+        description: (
+          <Button
+            onClick={() =>
+              router.push(
+                dashboardRoutes.utilities.children.collection.redirect +
+                  `/${data.id}`,
+              )
+            }
+          >
+            Go to Collection
+          </Button>
+        ),
+      });
+    } catch (e) {
+      toast({
+        title: "Error",
+        description: e instanceof Error ? e.message : "Unknown error",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }

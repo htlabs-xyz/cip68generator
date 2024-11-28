@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { useUploadContext } from "@/contexts/storage";
 import {
@@ -12,7 +13,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export default function FileAction() {
+export default function StorageAction() {
   const { listMedia, listSelected, setListSelected, deleteMediaSelected } =
     useUploadContext();
   return (

@@ -28,7 +28,7 @@ export async function createCollection({
 
     return {
       result: true,
-      message: "success",
+      message: "create collection successfull",
     };
   } catch (e: unknown) {
     return {
@@ -38,6 +38,7 @@ export async function createCollection({
     };
   }
 }
+
 export async function getAllCollection() {
   try {
     const session = await auth();
@@ -55,7 +56,7 @@ export async function getAllCollection() {
 
     return {
       result: true,
-      message: "success",
+      message: "get all collection successfull",
       data: collections,
     };
   } catch (error: unknown) {
@@ -66,6 +67,79 @@ export async function getAllCollection() {
         error instanceof Error
           ? error.message
           : "Cant get collection ,Unknown error",
+    };
+  }
+}
+
+export async function deleteCollection(collectionId: string) {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) {
+      throw new UnauthorizedException();
+    }
+
+    await prisma.collection.delete({
+      where: {
+        id: collectionId,
+      },
+    });
+
+    return {
+      result: true,
+      message: "delete collection successfull",
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      result: false,
+      message:
+        e instanceof Error
+          ? e.message
+          : "Cant delete collection, unknown error",
+    };
+  }
+}
+
+export async function updateCollection({
+  collectionId,
+  name,
+  description,
+}: {
+  collectionId: string;
+  name: string;
+  description?: string;
+}) {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) {
+      throw new UnauthorizedException();
+    }
+
+    await prisma.collection.update({
+      where: {
+        id: collectionId,
+      },
+      data: {
+        name,
+        description,
+      },
+    });
+
+    return {
+      result: true,
+      message: "update collection successfull",
+    };
+  } catch (e: unknown) {
+    return {
+      result: false,
+      message:
+        e instanceof Error
+          ? e.message
+          : "Cant update collection, unknown error",
     };
   }
 }

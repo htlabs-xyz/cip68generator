@@ -15,11 +15,13 @@ import FileDisplay from "@/components/common/file-display";
 import { AssetMetadata } from "@meshsdk/core";
 import { isEmpty, isNil } from "lodash";
 import { Metadata } from "@prisma/client";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ViewMetadataContent } from "./view-json";
+import MetadataAction from "./metadata-action";
 
 export default function MetadataList() {
   const { loading, listMetadata, setListSelected, listSelected } =
     useMetadataContext();
-  if (loading) return <div>Loading...</div>;
 
   const handleSellect = (metadata: Metadata, checked: boolean) => {
     if (checked) {
@@ -37,7 +39,7 @@ export default function MetadataList() {
             <TableRow>
               <TableHead className="w-[300px] font-normal">NAME</TableHead>
               <TableHead className="hidden font-normal md:table-cell">
-                Content
+                CONTENT
               </TableHead>
               <TableHead className="hidden font-normal sm:table-cell">
                 DATE
@@ -46,7 +48,33 @@ export default function MetadataList() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {!isNil(listMetadata) && !isEmpty(listMetadata) ? (
+            {loading ? (
+              [...Array(5)].map((_, index) => (
+                <TableRow key={index} className="mb-2 rounded-lg">
+                  <TableCell className="rounded-l-lg font-medium">
+                    <div className="flex items-center space-x-4">
+                      <Skeleton className="h-4 w-4 rounded-full" />
+                      <Skeleton className="h-10 w-10 rounded-lg" />
+                      <div className="space-y-2">
+                        <Skeleton className="h-4 w-[200px]" />
+                        <Skeleton className="h-3 w-[100px]" />
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    <Skeleton className="h-4 w-[200px]" />
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    <Skeleton className="h-4 w-[100px]" />
+                  </TableCell>
+                  <TableCell className="rounded-r-lg text-right">
+                    <Button variant="ghost" size="icon" className="hover:">
+                      <MoreVertical className="h-5 w-5" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : !isNil(listMetadata) && !isEmpty(listMetadata) ? (
               listMetadata.map((item, index) => {
                 const { name } = item.content as AssetMetadata;
                 return (
@@ -83,24 +111,14 @@ export default function MetadataList() {
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
                       <div className="flex items-center space-x-2">
-                        {/* <AspectRatio ratio={4 / 3} className="bg-muted">
-                        <Image
-                          src={`/metadata-image?metadata=${encodeURIComponent(JSON.stringify(metadata.content))}`}
-                          alt={name}
-                          fill
-                          className="h-full w-full rounded-lg border object-cover"
-                        />
-                      </AspectRatio>
-                      <Copy className="h-5 w-5" /> */}
+                        <ViewMetadataContent json={item.content} />
                       </div>
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
                       {item.createdAt.toLocaleDateString()}
                     </TableCell>
                     <TableCell className="rounded-r-lg text-right">
-                      <Button variant="ghost" size="icon" className="hover:">
-                        <MoreVertical className="h-5 w-5" />
-                      </Button>
+                      <MetadataAction metadata={item} />
                     </TableCell>
                   </TableRow>
                 );

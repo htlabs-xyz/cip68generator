@@ -162,6 +162,43 @@ export async function getMetadata({
   }
 }
 
+export async function getMetadataById({ metadataId }: { metadataId: string }) {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) {
+      throw new UnauthorizedException();
+    }
+
+    const metadata = await prisma.metadata.findFirst({
+      where: {
+        id: metadataId,
+      },
+    });
+    const collection = await prisma.collection.findFirst({
+      where: {
+        id: metadata?.collectionId,
+        userId: userId,
+      },
+    });
+
+    if (isNil(collection)) {
+      throw new Error("Metadata not found");
+    }
+
+    return {
+      data: metadata,
+      message: "success",
+    };
+  } catch (e) {
+    return {
+      data: null,
+      message: e instanceof Error ? e.message : "unknown error",
+    };
+  }
+}
+
 export async function deleteMetadata({
   collectionId,
   listMetadata,
@@ -195,6 +232,53 @@ export async function deleteMetadata({
         id: {
           in: metadataIds,
         },
+      },
+    });
+
+    return {
+      result: true,
+      message: "success",
+    };
+  } catch (e) {
+    return {
+      result: false,
+      message: e instanceof Error ? e.message : "unknown error",
+    };
+  }
+}
+
+export async function updateMetadata({
+  collectionId,
+  metadata,
+}: {
+  collectionId: string;
+  metadata: Metadata;
+}) {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) {
+      throw new UnauthorizedException();
+    }
+
+    const collection = await prisma.collection.findFirst({
+      where: {
+        id: collectionId,
+        userId: userId,
+      },
+    });
+
+    if (isNil(collection)) {
+      throw new Error("Collection not found");
+    }
+
+    await prisma.metadata.update({
+      where: {
+        id: metadata.id,
+      },
+      data: {
+        content: metadata.content ?? {},
       },
     });
 

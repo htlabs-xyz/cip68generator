@@ -14,13 +14,16 @@ import {
 } from "@/components/ui/select";
 import { generateJson } from "@/utils/json";
 import { KeyValuePair } from "@/types";
+import { cn } from "@/utils";
 
 export default function JsonBuilder({
   fields,
   setFields,
+  className,
 }: {
   fields: KeyValuePair[];
   setFields: (fields: KeyValuePair[]) => void;
+  className?: string;
 }) {
   const [template, setTemplate] = useState<string>("");
   const addField = () => {
@@ -43,7 +46,7 @@ export default function JsonBuilder({
   };
 
   return (
-    <div className="flex h-full bg-section p-5">
+    <div className={cn(className, "flex h-full bg-section p-5")}>
       <div className="w-1/2 p-4 space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg p-2 mb-4">
           <h1 className="text-2xl font-semibold tracking-tight">

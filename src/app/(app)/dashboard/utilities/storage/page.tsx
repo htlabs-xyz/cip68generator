@@ -1,18 +1,25 @@
 "use client";
 import { Icons } from "@/components/common/icons";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import { TabsList } from "@radix-ui/react-tabs";
 import Link from "next/link";
-import { cn } from "@/utils";
 import { dashboardRoutes } from "@/constants/routers";
 import MediaGird from "./_components/media-gird";
 import MediaList from "./_components/media-list";
-import { ExternalLink } from "lucide-react";
-import Pagination from "./_components/pagination";
 import { Filter } from "./_components/filter";
-import FileAction from "./_components/file-action";
+import { useEffect } from "react";
+import { useUploadContext } from "@/contexts/storage";
+import Pagination from "@/components/common/pagination";
+import StorageAction from "./_components/storage-action";
 export default function StogarePage() {
+  const { totalPages, currentPage, setCurrentPage, refetch } =
+    useUploadContext();
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
   return (
     <div className="py-8 px-10 m-auto flex flex-col max-md:px-0">
       <div className="rounded-xl p-6 bg-section shadow-md flex-wrap gap-3 space-y-5">
@@ -38,13 +45,12 @@ export default function StogarePage() {
                 </TabsTrigger>
               </TabsList>
               <div className="flex items-center space-x-2">
-                <FileAction />
+                <StorageAction />
                 <Link
                   href={
                     dashboardRoutes.utilities.children.storage.children.upload
                       .redirect
                   }
-                  className={cn(buttonVariants({ variant: "ghost" }))}
                 >
                   <Button> Upload New</Button>
                 </Link>
@@ -58,16 +64,12 @@ export default function StogarePage() {
               <MediaGird />
             </TabsContent>
           </Tabs>
-          <div className="mt-auto flex flex-col items-center justify-between space-y-2 sm:flex-row sm:space-y-0">
-            <Button
-              variant="link"
-              className="text-sm font-semibold sm:text-base"
-            >
-              <span>Document</span>
-              <ExternalLink className="ml-2 h-4 w-4" />
-            </Button>
-            <Pagination />
-          </div>
+
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPages={totalPages}
+          />
         </div>
       </div>
     </div>

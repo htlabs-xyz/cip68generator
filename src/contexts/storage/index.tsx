@@ -15,6 +15,7 @@ type UploadContextType = UploadStore & {
   uploadFiles: () => void;
   deleteMediaSelected: () => any;
   loading: boolean;
+  refetch: () => void;
 };
 
 export default function UploadProvider({ children }: PropsWithChildren) {
@@ -54,7 +55,6 @@ export default function UploadProvider({ children }: PropsWithChildren) {
       });
       const { result, message } = await uploadIPFS(formData);
       if (result) {
-        refetch();
         toast({
           title: "Sucess",
           variant: "default",
@@ -77,7 +77,6 @@ export default function UploadProvider({ children }: PropsWithChildren) {
         });
       }
     }
-    refetch();
   };
 
   const deleteMediaSelected = async () => {
@@ -104,6 +103,7 @@ export default function UploadProvider({ children }: PropsWithChildren) {
         currentPage: currentPage,
         totalPages: listMedia?.totalPages ?? 0,
         filter: filter,
+        refetch: refetch,
         setListSelected: setListSelected,
         setUploadOneDialogOpen: setUploadOneDialogOpen,
         setListFileToUpload: setListFileToUpload,

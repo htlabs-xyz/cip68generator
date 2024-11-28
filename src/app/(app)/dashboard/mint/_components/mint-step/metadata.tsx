@@ -3,11 +3,13 @@ import { useMintOneContext } from "@/contexts/mint-one";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { KeyValuePair } from "@/types";
-import { generateJson } from "@/utils/json";
+import { generateFields, generateJson } from "@/utils/json";
 
 export default function MetadataStep() {
-  const { stepper, setMetadataToMint } = useMintOneContext();
-  const [fields, setFields] = useState<KeyValuePair[]>([]);
+  const { stepper, setMetadataToMint, metadataTemplate } = useMintOneContext();
+  const [fields, setFields] = useState<KeyValuePair[]>(
+    generateFields(metadataTemplate),
+  );
   const handleNext = () => {
     setMetadataToMint(generateJson(fields));
     stepper.next();

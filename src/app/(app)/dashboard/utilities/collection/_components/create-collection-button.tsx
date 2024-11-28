@@ -15,17 +15,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import { createCollection } from "@/services/database/collection";
-import { useCollectionContext } from "@/contexts/collection";
+import { Plus } from "lucide-react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z
+    .string()
+    .min(1, "Name is required")
+    .regex(
+      /^[a-zA-Z_][a-zA-Z0-9_]*$/,
+      "Name must start with a letter or underscore and only contain letters, numbers, and underscores",
+    )
+    .max(50, "Name must not exceed 50 characters"),
   description: z.string(),
 });
 
 export function CreateCollectionButton() {
-  const { createNewDialogOpen, toggleCreateNewDialogOpen } =
-    useCollectionContext();
-
+  const [createNewDialogOpen, toggleCreateNewDialogOpen] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,29 +40,38 @@ export function CreateCollectionButton() {
       description: "",
     },
   });
+  const router = useRouter();
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
-    const { result, message } = await createCollection(values);
-    if (result) {
+    try {
+      const { result, message } = await createCollection(values);
+      if (!result) {
+        throw new Error(message);
+      }
       toast({ title: "Success", description: message });
-      form.reset();
-      toggleCreateNewDialogOpen(false);
-    } else {
+    } catch (e) {
       toast({
         title: "Error",
-        description: message,
+        description: e instanceof Error ? e.message : "Unknown error",
         variant: "destructive",
       });
+    } finally {
+      form.reset();
+      toggleCreateNewDialogOpen(false);
+      router.refresh();
     }
   }
 
   return (
-    <div className="flex items-center justify-center flex-col gap-4">
-      <p className="font-normal self-stretch text-center text-sm text-[16px] ">
-        Have images but need JSON? We got you covered!
-      </p>
-      <Button onClick={() => toggleCreateNewDialogOpen(true)}>
-        Create Collection
+    <>
+      <Button
+        onClick={() => toggleCreateNewDialogOpen(true)}
+        className="bg-orange-500 text-white hover:bg-orange-600"
+      >
+        <span>
+          <Plus className="h-5 w-5" />
+        </span>
+        Create New
       </Button>
       <Dialog
         open={createNewDialogOpen}
@@ -105,6 +121,6 @@ export function CreateCollectionButton() {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }
