@@ -5,9 +5,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import routers, { publicRoutes } from "@/constants/routers";
 import NavLink from "./nav-link";
-import { motion } from "framer-motion";
 import { appImage } from "@/public/images";
-import { useEffect, useState } from "react";
 import Hamburger from "./hamburger";
 
 const Header = function () {

@@ -2,7 +2,6 @@
 
 import Loading from "@/app/(loading)/loading";
 import DesktopDashboardLayout from "@/components/layouts/desktop-dashboard";
-import MobileDashboardLayout from "@/components/layouts/mobile-dashboard";
 import useWindowSize from "@/hooks/use-window-size";
 import { useSession } from "next-auth/react";
 import { PropsWithChildren, useMemo } from "react";

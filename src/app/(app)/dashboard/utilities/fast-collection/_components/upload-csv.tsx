@@ -30,14 +30,19 @@ export default function CSVReader() {
       >
         {({ getRootProps, acceptedFile, getRemoveFileProps }: any) => (
           <div {...getRootProps()}>
-            <div className="flex w-full items-center rounded-lg bg-gray-800 p-4">
-              <label
-                htmlFor="file-upload"
-                className="cursor-pointer rounded-md bg-blue-600 p-2"
-              >
-                Upload File
-              </label>
-              <p className="ml-2 text-red-400"> {error && <p>{error}</p>}</p>
+            <div className="w-full h-[30vh] flex items-center justify-center bg-transparent border-dashed border-gray-700 border-[1px] rounded-lg">
+              <div className="flex items-center justify-center flex-col gap-4">
+                <p className="font-normal self-stretch text-center text-sm text-[16px] ">
+                  Have images but need JSON? We got you covered!
+                </p>
+                <label
+                  htmlFor="file-upload"
+                  className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+                >
+                  Upload File
+                </label>
+                <p className="ml-2 text-red-400"> {error && <p>{error}</p>}</p>
+              </div>
             </div>
             <div className="h-full w-full space-y-4 rounded-lg p-4">
               <div className="overflow-x-auto">
