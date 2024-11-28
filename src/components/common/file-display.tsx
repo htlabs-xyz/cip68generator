@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import { FileText, File } from "lucide-react";
+import { IPFS_GATEWAY } from "@/constants";
+import { cn } from "@/utils";
 
 type FileDisplayProps = {
   src: string;
@@ -31,17 +33,37 @@ export default function FileDisplay({
 
   const renderContent = () => {
     switch (fileType) {
-      case "image":
+      case "image": {
+        if (src.startsWith("ipfs://"))
+          return (
+            <Image
+              src={
+                error
+                  ? "/images/common/placeholder.svg"
+                  : src.replace("ipfs://", IPFS_GATEWAY + "ipfs/")
+              }
+              alt={alt}
+              fill
+              style={{ objectFit }}
+              onError={() => setError(true)}
+              className={cn(className, `rounded-md`)}
+            />
+          );
+
         return (
-          <Image
-            src={error ? "/images/common/placeholder.svg" : src}
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={src}
             alt={alt}
-            fill
+            className={cn(
+              className,
+              `rounded-md absolute inset-0 w-full h-full`,
+            )}
             style={{ objectFit }}
             onError={() => setError(true)}
-            className={`rounded-md ${className}`}
           />
         );
+      }
       case "text":
         return (
           <div className="flex flex-col items-center justify-center h-full">

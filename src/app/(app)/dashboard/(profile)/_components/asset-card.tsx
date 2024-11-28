@@ -1,7 +1,6 @@
 import FileDisplay from "@/components/common/file-display";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card } from "@/components/ui/card";
-import { IPFS_GATEWAY } from "@/constants";
 import { AssetDetails } from "@/types";
 import { hexToString } from "@meshsdk/core";
 import Link from "next/link";
@@ -9,8 +8,7 @@ import Link from "next/link";
 export default function AssetCard({ data }: { data: AssetDetails }) {
   const { asset_name, policy_id, onchain_metadata, fingerprint } = data;
 
-  const imgSrc =
-    IPFS_GATEWAY + onchain_metadata?.image.replace("ipfs://", "ipfs/") || "";
+  const imgSrc = onchain_metadata?.image || "";
 
   const mediaType = onchain_metadata?.type || "image/png";
 

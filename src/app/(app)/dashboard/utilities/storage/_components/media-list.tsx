@@ -12,7 +12,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Copy, MoreVertical } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { IPFS_GATEWAY } from "@/constants";
 import { useUploadContext } from "@/contexts/storage";
 import { Media } from "@prisma/client";
 import FileDisplay from "@/components/common/file-display";
@@ -64,9 +63,7 @@ export default function MediaList() {
                     <div className="h-10 w-10 overflow-hidden rounded-lg">
                       <AspectRatio ratio={10 / 10} className="bg-muted">
                         <FileDisplay
-                          src={
-                            IPFS_GATEWAY + file.url.replace("ipfs://", "ipfs/")
-                          }
+                          src={file.url}
                           alt={file.name}
                           type={file.type}
                           className="h-full w-full rounded-md object-cover"

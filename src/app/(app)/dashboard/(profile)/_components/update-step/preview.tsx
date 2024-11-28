@@ -11,17 +11,12 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import FileDisplay from "@/components/common/file-display";
 import { Card, CardContent } from "@/components/ui/card";
 import { Copy } from "lucide-react";
-import { IPFS_GATEWAY } from "@/constants";
 import { useUnitContext } from "@/contexts/unit";
 export default function PreviewStep() {
   const { assetDetails, updateStepper, metadataToUpdate, startUpdating } =
     useUnitContext();
   const assetNameSort = assetDetails?.asset_name || "No name";
-  const imgSrc =
-    !isNil(metadataToUpdate?.image) && metadataToUpdate?.image !== ""
-      ? IPFS_GATEWAY + metadataToUpdate?.image.replace("ipfs://", "ipfs/") ||
-        metadataToUpdate?.image
-      : "";
+  const imgSrc = metadataToUpdate?.image || "";
   const mediaType =
     imgSrc == "" ? "text/plain" : metadataToUpdate?.mediaType || "image/png";
   const description = metadataToUpdate?.description || "";

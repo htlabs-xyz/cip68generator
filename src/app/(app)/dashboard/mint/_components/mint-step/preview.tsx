@@ -12,16 +12,11 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import FileDisplay from "@/components/common/file-display";
 import { Card, CardContent } from "@/components/ui/card";
 import { Copy } from "lucide-react";
-import { IPFS_GATEWAY } from "@/constants";
 export default function PreviewStep() {
   const { stepper, metadataToMint, basicInfoToMint, startMinting } =
     useMintOneContext();
   const assetNameSort = basicInfoToMint?.assetName || "No name";
-  const imgSrc =
-    !isNil(metadataToMint?.image) && metadataToMint?.image !== ""
-      ? IPFS_GATEWAY + metadataToMint?.image.replace("ipfs://", "ipfs/") ||
-        metadataToMint?.image
-      : "";
+  const imgSrc = metadataToMint?.image || "";
   const mediaType =
     imgSrc == "" ? "text/plain" : metadataToMint?.mediaType || "image/png";
   const description = metadataToMint?.description || "";
