@@ -7,13 +7,14 @@ import Link from "next/link";
 import { useMetadataContext } from "@/contexts/metadata";
 import MetadataList from "../_components/metadata-list";
 import MetadataGird from "../_components/metadata-gird";
-import Pagination from "../_components/pagination";
 import { ExternalLink } from "lucide-react";
 import { Filter } from "../_components/filter";
-import MetadataAction from "../_components/metadata-action";
+import CollectionAction from "../_components/collection-action";
+import Pagination from "@/components/common/pagination";
 
 export default function MetadataPage() {
-  const { collectionId } = useMetadataContext();
+  const { collectionId, currentPage, totalPages, setCurrentPage } =
+    useMetadataContext();
   return (
     <div className="mt-5 rounded-lg bg-section p-2">
       <h1 className="text-2xl font-semibold leading-7">Metadata</h1>
@@ -36,7 +37,7 @@ export default function MetadataPage() {
             </TabsList>
 
             <div className="flex items-center space-x-2">
-              <MetadataAction />
+              <CollectionAction />
               <Link href={`${collectionId}/create`}>
                 <Button className="bg-orange-500 text-white hover:bg-orange-600">
                   Create New
@@ -57,7 +58,11 @@ export default function MetadataPage() {
             <span>Document</span>
             <ExternalLink className="ml-2 h-4 w-4" />
           </Button>
-          <Pagination />
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPages={totalPages}
+          />
         </div>
       </div>
     </div>

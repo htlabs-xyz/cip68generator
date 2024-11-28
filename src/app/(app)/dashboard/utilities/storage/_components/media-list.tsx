@@ -1,6 +1,5 @@
 "use client";
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
+
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
@@ -10,15 +9,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Copy, MoreVertical } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useUploadContext } from "@/contexts/storage";
 import { Media } from "@prisma/client";
 import FileDisplay from "@/components/common/file-display";
-import { copyToClipboard } from "@/utils/copy-to-clipboard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { isEmpty } from "lodash";
+import CoppyButton from "@/components/common/coppy-button";
 
 export default function MediaList() {
   const { loading, listMedia, listSelected, setListSelected } =
@@ -45,7 +42,6 @@ export default function MediaList() {
               <TableHead className="hidden font-normal sm:table-cell">
                 DATE
               </TableHead>
-              <TableHead className="text-right font-normal">ACTION</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -67,11 +63,6 @@ export default function MediaList() {
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
                       <Skeleton className="h-4 w-[100px]" />
-                    </TableCell>
-                    <TableCell className="rounded-r-lg text-right">
-                      <Button variant="ghost" size="icon" className="hover:">
-                        <MoreVertical className="h-5 w-5" />
-                      </Button>
                     </TableCell>
                   </TableRow>
                 ))
@@ -110,23 +101,13 @@ export default function MediaList() {
                       </div>
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
-                      <div
-                        onClick={async () => {
-                          await copyToClipboard(file.url || "");
-                        }}
-                        className="flex items-center space-x-2"
-                      >
+                      <div className="flex items-center space-x-2">
                         <span className="">{file.url}</span>
-                        <Copy className="h-5 w-5" />
+                        <CoppyButton content={file.url} />
                       </div>
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
                       {file.createdAt.toLocaleDateString()}
-                    </TableCell>
-                    <TableCell className="rounded-r-lg text-right">
-                      <Button variant="ghost" size="icon" className="hover:">
-                        <MoreVertical className="h-5 w-5" />
-                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}

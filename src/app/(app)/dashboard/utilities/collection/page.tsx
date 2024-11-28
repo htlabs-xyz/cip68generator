@@ -1,5 +1,5 @@
 import { getAllCollection } from "@/services/database/collection";
-import FolderCard from "../_components/folder-card";
+import FolderCard from "./_components/folder-card";
 import { CreateCollectionButton } from "./_components/create-collection-button";
 export default async function CollectionPage() {
   const { result, data: listCollection, message } = await getAllCollection();

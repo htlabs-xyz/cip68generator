@@ -1,5 +1,3 @@
-import { MoreVertical } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card } from "@/components/ui/card";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
@@ -8,6 +6,7 @@ import { useMetadataContext } from "@/contexts/metadata";
 import { AssetMetadata } from "@meshsdk/core";
 import Image from "next/image";
 import { isNil } from "lodash";
+import MetadataAction from "./metadata-action";
 
 export default function MetadataCard({ metadata }: { metadata: Metadata }) {
   const { listSelected, setListSelected } = useMetadataContext();
@@ -41,9 +40,7 @@ export default function MetadataCard({ metadata }: { metadata: Metadata }) {
               : name}
           </label>
         </div>
-        <Button variant="ghost" size="icon" className="hover:bg-white/10">
-          <MoreVertical className="h-5 w-5" />
-        </Button>
+        <MetadataAction metadata={metadata} />
       </div>
       <AspectRatio ratio={4 / 3} className="bg-muted">
         <Image

@@ -9,10 +9,10 @@ import { dashboardRoutes } from "@/constants/routers";
 import MediaGird from "./_components/media-gird";
 import MediaList from "./_components/media-list";
 import { Filter } from "./_components/filter";
-import FileAction from "./_components/file-action";
 import { useEffect } from "react";
 import { useUploadContext } from "@/contexts/storage";
 import Pagination from "@/components/common/pagination";
+import StorageAction from "./_components/storage-action";
 export default function StogarePage() {
   const { totalPages, currentPage, setCurrentPage, refetch } =
     useUploadContext();
@@ -46,7 +46,7 @@ export default function StogarePage() {
                 </TabsTrigger>
               </TabsList>
               <div className="flex items-center space-x-2">
-                <FileAction />
+                <StorageAction />
                 <Link
                   href={
                     dashboardRoutes.utilities.children.storage.children.upload
