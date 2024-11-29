@@ -16,7 +16,7 @@ import { getMedia } from "@/services/database/media";
 import FileDisplay from "../file-display";
 import { KeyValuePair } from "@/types";
 
-export function ImagePick({
+export function FilePick({
   fields,
   setFields,
 }: {
@@ -40,12 +40,21 @@ export function ImagePick({
   const listMedia = data?.data || [];
 
   const handleSelectImage = (file: Media) => {
-    const updatedFields = fields.map((field) =>
-      field.key === "image" ? { ...field, value: file.url } : field,
-    );
+    const updatedFields = fields.map((field) => {
+      if (field.key === "image") {
+        return { ...field, value: file.url };
+      }
+      if (field.key === "mediaType") {
+        return { ...field, value: file.type };
+      }
+      return field;
+    });
 
     if (!fields.some((field) => field.key === "image")) {
       updatedFields.push({ key: "image", value: file.url });
+    }
+    if (!fields.some((field) => field.key === "mediaType")) {
+      updatedFields.push({ key: "mediaType", value: file.type });
     }
 
     setFields(updatedFields);
@@ -55,13 +64,13 @@ export function ImagePick({
   return (
     <>
       <Button onClick={() => setDialogOpen(!dialogOpen)} variant="outline">
-        Add Image
+        Add Media
       </Button>
       <Dialog onOpenChange={setDialogOpen} open={dialogOpen}>
         <DialogContent className="max-w-[90vw] w-full max-h-[90vh] h-full overflow-y-auto p-0">
           <div className="flex flex-col h-full">
             <DialogHeader className="px-6 py-4 border-b">
-              <DialogTitle>Select an Image</DialogTitle>
+              <DialogTitle>Select an Media</DialogTitle>
             </DialogHeader>
             <div className="flex-1 overflow-y-auto px-6 py-4">
               <div className="mb-4">
@@ -76,7 +85,7 @@ export function ImagePick({
               {isLoading ? (
                 <div className="text-center py-4">Loading...</div>
               ) : listMedia.length === 0 ? (
-                <div className="text-center py-4">No images found</div>
+                <div className="text-center py-4">No Media found</div>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
                   {listMedia.map((file) => (
