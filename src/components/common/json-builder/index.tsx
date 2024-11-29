@@ -15,6 +15,7 @@ import {
 import { generateJson } from "@/utils/json";
 import { KeyValuePair } from "@/types";
 import { cn } from "@/utils";
+import { ImagePick } from "./image-pick";
 
 export default function JsonBuilder({
   fields,
@@ -122,7 +123,10 @@ export default function JsonBuilder({
               </Button>
             </div>
           ))}
-          <Button onClick={addField}>Add Field</Button>
+          <div className="flex items-center justify-start space-x-4">
+            <Button onClick={addField}>Add Field</Button>
+            <ImagePick fields={fields} setFields={setFields} />
+          </div>
         </div>
       </div>
       <div className="w-1/2 p-4 ">
