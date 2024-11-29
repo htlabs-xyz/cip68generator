@@ -75,6 +75,8 @@ export function ImagePick({
               </div>
               {isLoading ? (
                 <div className="text-center py-4">Loading...</div>
+              ) : listMedia.length === 0 ? (
+                <div className="text-center py-4">No images found</div>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
                   {listMedia.map((file) => (
