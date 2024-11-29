@@ -11,6 +11,8 @@ export type Task = {
 export type MintOneStore = {
   loading: boolean;
   setLoading: (loading: boolean) => void;
+  collectionToSave: string;
+  setCollectionToSave: (collection: string) => void;
   metadataToMint: AssetMetadata | null;
   setMetadataToMint: (metadata: AssetMetadata) => void;
   basicInfoToMint: {
@@ -41,6 +43,8 @@ const useMintOneStore = create<MintOneStore>((set) => ({
   },
   txhash: "",
   tasks: [],
+  collectionToSave: "",
+  setCollectionToSave: (collection) => set({ collectionToSave: collection }),
   resetTasks: () => set({ tasks: [] }),
   setTxHash: (txhash) => set({ txhash }),
   setBasicInfoToMint: (basicInfo) => set({ basicInfoToMint: basicInfo }),

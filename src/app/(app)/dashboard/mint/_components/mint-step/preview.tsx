@@ -16,10 +16,19 @@ import { shortenString } from "@/utils";
 import { useEffect, useState } from "react";
 import { getContractPolicyId } from "@/services/contract/get-policy-id";
 import CoppyButton from "@/components/common/coppy-button";
+import { SaveMetadata } from "../save-metadata";
 
 export default function PreviewStep() {
-  const { stepper, metadataToMint, basicInfoToMint, startMinting } =
-    useMintOneContext();
+  const {
+    stepper,
+    metadataToMint,
+    basicInfoToMint,
+    startMinting,
+    collectionToSave,
+    setCollectionToSave,
+  } = useMintOneContext();
+  // const [collectioToSave, setCollectioToSave] = useState<string>(null!);
+
   const [nftPolicyId, setNftPolicyId] = useState<string>("");
   const assetNameSort = basicInfoToMint?.assetName || "No name";
   const imgSrc = metadataToMint?.image || "";
@@ -74,9 +83,12 @@ export default function PreviewStep() {
                     </span>
                   </div>
                 </div>
-
+                <SaveMetadata
+                  collectioToSave={collectionToSave}
+                  setCollectionToSave={setCollectionToSave}
+                />
                 {/* Description */}
-                {/* <p className="text-gray-400">{description}</p> */}
+                {/* <p className="text-gray-400">{123}</p> */}
               </CardContent>
             </Card>
           </div>

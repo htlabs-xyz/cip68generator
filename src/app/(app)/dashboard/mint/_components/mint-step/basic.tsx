@@ -41,11 +41,11 @@ const nftFormSchema = z.object({
 type NftFormValues = z.infer<typeof nftFormSchema>;
 
 export default function BasicStep() {
-  const { stepper, basicInfoToMint, setBasicInfoToMint } = useMintOneContext();
+  const { stepper, setBasicInfoToMint } = useMintOneContext();
 
   const defaultValues: Partial<NftFormValues> = {
-    assetQuantity: basicInfoToMint.quantity,
-    assetName: basicInfoToMint.assetName,
+    assetQuantity: "1",
+    assetName: "",
   };
 
   const form = useForm<NftFormValues>({

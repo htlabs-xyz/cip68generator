@@ -1,16 +1,17 @@
 "use client";
 
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect } from "react";
 import { defineStepper } from "@stepperize/react";
 import useMintOneStore, { MintOneStore } from "./store";
 import { toast } from "@/hooks/use-toast";
 import { createMintTransaction } from "@/services/contract/mint";
 import { useBlockchainContext } from "@/components/providers/blockchain";
-import { isNil } from "lodash";
+import { isEmpty, isNil } from "lodash";
 import { submitTx } from "@/services/blockchain/submitTx";
 import { AssetMetadata } from "@meshsdk/core";
 import { useQuery } from "@tanstack/react-query";
-import { getMetadataById } from "@/services/database/metadata";
+import { addMetadata, getMetadataById } from "@/services/database/metadata";
+
 const { useStepper, steps } = defineStepper(
   { id: "template", title: "Template" },
   { id: "basic", title: "Basic" },
@@ -47,7 +48,16 @@ export default function MintOneProvider({
     txhash,
     setTxHash,
     resetTasks,
+    collectionToSave,
+    setCollectionToSave,
   } = useMintOneStore();
+
+  useEffect(() => {
+    setBasicInfoToMint(null!);
+    setMetadataToMint(null!);
+    setCollectionToSave(null!);
+    resetTasks();
+  }, [resetTasks, setBasicInfoToMint, setCollectionToSave, setMetadataToMint]);
 
   const { data } = useQuery({
     queryKey: ["getMetadataById", metadataTemplateId],
@@ -64,14 +74,34 @@ export default function MintOneProvider({
       if (isNil(address)) {
         throw new Error("Wallet not connected");
       }
-      // check assetName is unique
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      if (isNil(metadataToMint) && isEmpty(metadataToMint)) {
+        throw new Error("Metadata is required");
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      if (!isNil(collectionToSave) && !isEmpty(collectionToSave)) {
+        updateTaskState(
+          "inprogress",
+          "save_metadata",
+          "Save Metadata to Database",
+        );
+        const { result, message } = await addMetadata({
+          collectionId: collectionToSave,
+          listMetadata: [metadataToMint],
+        });
+        if (!result) {
+          throw new Error(message);
+        }
+      }
 
       const input = {
         assetName: basicInfoToMint.assetName,
         quantity: basicInfoToMint.quantity,
         metadata: metadataToMint,
       };
+
       updateTaskState(
         "inprogress",
         "create_transaction",
@@ -133,6 +163,8 @@ export default function MintOneProvider({
   return (
     <MintOneContext.Provider
       value={{
+        collectionToSave,
+        setCollectionToSave,
         metadataTemplate: data?.data?.content || null,
         loading,
         setLoading,
