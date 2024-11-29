@@ -8,17 +8,27 @@ import { deleteMedia, getMedia } from "@/services/database/media";
 import { uploadIPFS } from "@/services/upload";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { createContext, PropsWithChildren, useContext } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  use,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import useUploadStore, { UploadStore } from "./store";
+import { set } from "lodash";
 
 type UploadContextType = UploadStore & {
   uploadFiles: () => void;
   deleteMediaSelected: () => any;
   loading: boolean;
   refetch: () => void;
+  setloading: (loading: boolean) => void;
 };
 
 export default function UploadProvider({ children }: PropsWithChildren) {
+  const [loading, setloading] = useState(false);
   const router = useRouter();
   const {
     currentPage,
@@ -47,7 +57,12 @@ export default function UploadProvider({ children }: PropsWithChildren) {
       }),
   });
 
+  useEffect(() => {
+    setloading(isLoading);
+  }, [isLoading]);
+
   const uploadFiles = async () => {
+    setloading(true);
     if (listFileToUpload) {
       const formData = new FormData();
       Array.from(listFileToUpload).forEach((file) => {
@@ -77,6 +92,7 @@ export default function UploadProvider({ children }: PropsWithChildren) {
         });
       }
     }
+    setloading(false);
   };
 
   const deleteMediaSelected = async () => {
@@ -95,7 +111,7 @@ export default function UploadProvider({ children }: PropsWithChildren) {
   return (
     <UploadContext.Provider
       value={{
-        loading: isLoading,
+        loading: loading,
         listMedia: listMedia?.data ?? [],
         listSelected: listSelected,
         uploadOneDialogOpen: uploadOneDialogOpen,
@@ -103,6 +119,7 @@ export default function UploadProvider({ children }: PropsWithChildren) {
         currentPage: currentPage,
         totalPages: listMedia?.totalPages ?? 0,
         filter: filter,
+        setloading: setloading,
         refetch: refetch,
         setListSelected: setListSelected,
         setUploadOneDialogOpen: setUploadOneDialogOpen,
