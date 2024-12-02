@@ -26,7 +26,7 @@ pub fn check_output_utxo(output: Output, vks: List<VerificationKeyHash>) -> Bool
     // bytearray.length(image) > 0,
     // bytearray.length(media_type) > 0,
     tx.verify_signature(vks, author),
-    list.length(output_value) == 1,
+    list.length(output_value) >= 1,
   }
 }
 
