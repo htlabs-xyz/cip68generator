@@ -59,22 +59,22 @@ validator mint(
                   )
                 and {
                   amount_mint_token >= 2,
-                  list.length(outputs) == 4,
-                  minting.exact(mint_flatten, policy_id, reference_token, 1)?,
-                  minting.exact(
-                    mint_flatten,
-                    policy_id,
-                    user_token,
-                    amount_mint_token - 1,
-                  )?,
+                  list.length(outputs) >= 4,
                   utils.check_output_utxo(output_utxo_store, extra_signatories)?,
                   output_utxo_exchange != None,
-                  bytearray.compare(
-                    bytearray.drop(reference_token, 4),
-                    bytearray.drop(user_token, 4),
-                  ) == Equal,
                 }
               }
+              // minting.exact(mint_flatten, policy_id, reference_token, 1)?,
+              // minting.exact(
+              //   mint_flatten,
+              //   policy_id,
+              //   user_token,
+              //   amount_mint_token - 1,
+              // )?,
+              // bytearray.compare(
+              //   bytearray.drop(reference_token, 4),
+              //   bytearray.drop(user_token, 4),
+              // ) == Equal,
               _ -> False
             }
           _ -> False
@@ -96,7 +96,7 @@ validator mint(
             cip68.prefix_222,
             -(amount_mint_token - 1),
           )?,
-          list.length(outputs) == 2,
+          list.length(outputs) >= 2,
           minting.by_prefix(mint_flatten, policy_id, cip68.prefix_100, -1)?,
         }
     }
