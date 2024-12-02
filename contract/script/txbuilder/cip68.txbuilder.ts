@@ -399,6 +399,17 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
   };
 
   /**
+   * 
+   */
+  burnMultiple = async (params: {
+    assetName: string;
+    quantity: string;
+    txHash?: string;
+  }[]) => {
+    
+  }
+
+  /**
    * @method CreateReferenceScriptMint
    * @description Create reference script for mint transaction
    *
