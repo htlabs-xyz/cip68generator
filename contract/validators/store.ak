@@ -74,7 +74,7 @@ validator store(exchange: VerificationKeyHash, exchange_fee: Int) {
           )
         and {
           tx.verify_signature(extra_signatories, author_input),
-          list.length(outputs) == 2,
+          list.length(outputs) >= 2,
           output_utxo_author != None,
           output_utxo_exchange != None,
         }

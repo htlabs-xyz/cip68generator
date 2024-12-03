@@ -12,10 +12,15 @@ import FileDisplay from "@/components/common/file-display";
 import { Card, CardContent } from "@/components/ui/card";
 import { Copy } from "lucide-react";
 import { useUnitContext } from "@/contexts/unit";
+import { hexToString } from "@meshsdk/core";
 export default function PreviewStep() {
   const { assetDetails, updateStepper, metadataToUpdate, startUpdating } =
     useUnitContext();
-  const assetNameSort = assetDetails?.asset_name || "No name";
+
+  const assetNameString = hexToString(
+    assetDetails?.asset_name.replace(/^000de140/, ""),
+  );
+  const assetNameSort = assetNameString;
   const imgSrc = metadataToUpdate?.image || "";
   const mediaType =
     imgSrc == "" ? "text/plain" : metadataToUpdate?.mediaType || "image/png";
