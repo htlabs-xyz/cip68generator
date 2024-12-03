@@ -27,11 +27,8 @@ validator mint(
       mint
         |> without_lovelace()
         |> assets.flatten()
-    let amount_mint_token: Int = list.length(mint_flatten)
+    let store_address = address.from_script(store)
     let exchange_address = address.from_verification_key(exchange)
-    let user_token_option = utils.token_prefix(mint_flatten, cip68.prefix_222)
-    let reference_token_option =
-      utils.token_prefix(mint_flatten, cip68.prefix_100)
     let output_utxo_exchange =
       utils.find_output(outputs, exchange_fee, exchange_address)
     when redeemer is {
@@ -42,45 +39,35 @@ validator mint(
       // - amount_tx_output: number of utxo output = 4 where 1 utxo for exchange_fee address, 1 utxo for store validator address and 2 utxo recipient address where 1 utxo contains CIP222 Token.
       // - check_store_address: Check that the asset (CIP100) sent to an address must be the store validator's address
       Mint -> {
-        let check_none_token =
-          utils.check_none_token(user_token_option, reference_token_option)
-        when check_none_token is {
-          True ->
-            when (reference_token_option, user_token_option) is {
-              (Some(reference_token), Some(user_token)) -> {
-                let reference_value =
-                  assets.from_asset(policy_id, reference_token, 1)
-                let store_address = address.from_script(store)
-                let output_utxo_store =
-                  find.output_by_addr_value(
-                    outputs,
-                    store_address,
-                    reference_value,
-                  )
-                and {
-                  amount_mint_token >= 2,
-                  list.length(outputs) >= 4,
-                  utils.check_output_utxo(output_utxo_store, extra_signatories)?,
-                  output_utxo_exchange != None,
-                }
+        let check_reference_token =
+          utils.check_pairs_with_fold(
+            mint_flatten,
+            cip68.prefix_100,
+            cip68.prefix_222,
+            fn(reference_asset_name, user_asset_name) -> Bool {
+              let reference_value =
+                assets.from_asset(policy_id, reference_asset_name, 1)
+              let output_utxo_store =
+                find.output_by_addr_value(
+                  outputs,
+                  store_address,
+                  reference_value,
+                )
+              and {
+                utils.check_output_utxo(output_utxo_store, extra_signatories)?,
+                minting.exact(mint_flatten, policy_id, reference_asset_name, 1)?,
+                bytearray.compare(
+                  bytearray.drop(reference_asset_name, 4),
+                  bytearray.drop(user_asset_name, 4),
+                ) == Equal,
               }
-              // minting.exact(mint_flatten, policy_id, reference_token, 1)?,
-              // minting.exact(
-              //   mint_flatten,
-              //   policy_id,
-              //   user_token,
-              //   amount_mint_token - 1,
-              // )?,
-              // bytearray.compare(
-              //   bytearray.drop(reference_token, 4),
-              //   bytearray.drop(user_token, 4),
-              // ) == Equal,
-              _ -> False
-            }
-          _ -> False
+            },
+          )
+        and {
+          check_reference_token?,
+          output_utxo_exchange != None,
         }
       }
-
       // @action: Burn - Conditions for burning assets (NFT/Token)
       // - signed_by_author: When a user performs asset burning, the datum of the store validator contains an author field and the user must provide a signature to identify that this is the author performing the asset burning transaction. This condition is performed by comparing the signature entered in the datum of the store validator.
       // - amount_tx_output: The output of the transaction is 2 (1 utxo of the exchange address, 1uxto of the recipient address).

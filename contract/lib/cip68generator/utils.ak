@@ -15,18 +15,18 @@ pub fn check_output_utxo(output: Output, vks: List<VerificationKeyHash>) -> Bool
   // expect image: ByteArray = cip68.get(metadatum, "image")
   // expect media_type: ByteArray = cip68.get(metadatum, "mediaType")
   expect author: VerificationKeyHash = cip68.get(metadatum, "_pk")
-
   let output_value =
     output.value
       |> without_lovelace()
       |> flatten()
-
   and {
     // bytearray.length(name) > 0,
     // bytearray.length(image) > 0,
     // bytearray.length(media_type) > 0,
+    // True,
+    // True,
     tx.verify_signature(vks, author),
-    list.length(output_value) >= 1,
+    list.length(output_value) == 1,
   }
 }
 
@@ -46,6 +46,56 @@ pub fn token_prefix(
     Some((_policy_id, asset_name, _amount)) -> Some(asset_name)
     None -> None
   }
+}
+
+pub fn filter_and_pair(
+  flat: List<(PolicyId, AssetName, Int)>,
+  prefix100: ByteArray,
+  prefix222: ByteArray,
+) -> List<(AssetName, AssetName)> {
+  let filtered100 =
+    list.filter(
+      flat,
+      fn((_policy_id, asset_name, _amount)) {
+        bytearray.starts_with(asset_name, prefix100)
+      },
+    )
+  let filtered222 =
+    list.filter(
+      flat,
+      fn((_policy_id, asset_name, _amount)) {
+        bytearray.starts_with(asset_name, prefix222)
+      },
+    )
+  let asset_names100 =
+    list.map(filtered100, fn((_policy_id, asset_name, _amount)) { asset_name })
+  let asset_names222 =
+    list.map(filtered222, fn((_policy_id, asset_name, _amount)) { asset_name })
+  let sorted100 = list.sort(asset_names100, bytearray.compare)
+  let sorted222 = list.sort(asset_names222, bytearray.compare)
+  let paired = list.zip(sorted100, sorted222)
+  paired
+}
+
+pub fn check_pairs_with_fold(
+  flat: List<(PolicyId, AssetName, Int)>,
+  prefix1: ByteArray,
+  prefix2: ByteArray,
+  check_fn: fn(AssetName, AssetName) -> Bool,
+) -> Bool {
+  let pairs = filter_and_pair(flat, prefix1, prefix2)
+
+  list.foldl(
+    pairs,
+    True,
+    fn((asset1, asset2), acc) {
+      if !acc {
+        False
+      } else {
+        check_fn(asset1, asset2)
+      }
+    },
+  )
 }
 
 // check none token from asset name use only for user_token and reference_token

@@ -100,6 +100,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       // .mintTxInReference(utxoRef.input.txHash, utxoRef.input.outputIndex)
       .mintingScript(this.mintScriptCbor)
       .mintRedeemerValue(mConStr0([]))
+
       .mintPlutusScriptV3()
       .mint("1", this.policyId, CIP68_100(stringToHex(assetName)))
       // .mintTxInReference(utxoRef.input.txHash, utxoRef.input.outputIndex)
@@ -299,28 +300,32 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     //   MINT_REFERENCE_SCRIPT_HASH,
     // );
     const unsignedTx = this.meshTxBuilder.mintPlutusScriptV3();
-    params.flatMap(async ({ assetName, metadata, quantity }) => {
+    params.forEach(async ({ assetName, metadata, quantity }) => {
       unsignedTx
         .mintPlutusScriptV3()
         .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
         // .mintTxInReference(utxoRef.input.txHash, utxoRef.input.outputIndex)
         .mintingScript(this.mintScriptCbor)
         .mintRedeemerValue(mConStr0([]))
+
         .mintPlutusScriptV3()
         .mint("1", this.policyId, CIP68_100(stringToHex(assetName)))
         // .mintTxInReference(utxoRef.input.txHash, utxoRef.input.outputIndex)
         .mintingScript(this.mintScriptCbor)
         .mintRedeemerValue(mConStr0([]))
-        .txOut(this.storeAddress, [
-          {
-            unit: this.policyId + CIP68_100(stringToHex(assetName)),
-            quantity: "1",
-          },
-        ])
+
         .txOut(walletAddress, [
           {
             unit: this.policyId + CIP68_222(stringToHex(assetName)),
             quantity: quantity,
+          },
+        ])
+       
+
+        .txOut(this.storeAddress, [
+          {
+            unit: this.policyId + CIP68_100(stringToHex(assetName)),
+            quantity: "1",
           },
         ])
         .txOutInlineDatumValue(metadataToCip68(metadata));
@@ -365,8 +370,8 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
         : await this.getAddressUTXOAsset(
             this.storeAddress,
             this.policyId + CIP68_100(stringToHex(assetName)),
-        );
-      console.log(storeUtxo)
+          );
+      console.log(storeUtxo);
       if (!storeUtxo) throw new Error("Store UTXO not found");
       unsignedTx
         .spendingPlutusScriptV3()
@@ -435,8 +440,8 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
         : await this.getAddressUTXOAsset(
             this.storeAddress,
             this.policyId + CIP68_100(stringToHex(assetName)),
-        );
-      console.log(storeUtxo)
+          );
+      console.log(storeUtxo);
 
       if (!storeUtxo) throw new Error("Store UTXO not found");
       unsignedTx
