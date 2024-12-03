@@ -48,11 +48,40 @@ pub fn token_prefix(
   }
 }
 
+// pub fn filter_and_pair(
+//   flat: List<(PolicyId, AssetName, Int)>,
+//   prefix100: ByteArray,
+//   prefix222: ByteArray,
+// ) -> List<(AssetName, AssetName)> {
+//   let filtered100 =
+//     list.filter(
+//       flat,
+//       fn((_policy_id, asset_name, _amount)) {
+//         bytearray.starts_with(asset_name, prefix100)
+//       },
+//     )
+//   let filtered222 =
+//     list.filter(
+//       flat,
+//       fn((_policy_id, asset_name, _amount)) {
+//         bytearray.starts_with(asset_name, prefix222)
+//       },
+//     )
+//   let asset_names100 =
+//     list.map(filtered100, fn((_policy_id, asset_name, _amount)) { asset_name })
+//   let asset_names222 =
+//     list.map(filtered222, fn((_policy_id, asset_name, _amount)) { asset_name })
+//   let sorted100 = list.sort(asset_names100, bytearray.compare)
+//   let sorted222 = list.sort(asset_names222, bytearray.compare)
+//   let paired = list.zip(sorted100, sorted222)
+//   paired
+// }
+
 pub fn filter_and_pair(
   flat: List<(PolicyId, AssetName, Int)>,
   prefix100: ByteArray,
   prefix222: ByteArray,
-) -> List<(AssetName, AssetName)> {
+) -> List<(AssetName, AssetName, Int)> {
   let filtered100 =
     list.filter(
       flat,
@@ -67,32 +96,53 @@ pub fn filter_and_pair(
         bytearray.starts_with(asset_name, prefix222)
       },
     )
-  let asset_names100 =
-    list.map(filtered100, fn((_policy_id, asset_name, _amount)) { asset_name })
-  let asset_names222 =
-    list.map(filtered222, fn((_policy_id, asset_name, _amount)) { asset_name })
-  let sorted100 = list.sort(asset_names100, bytearray.compare)
-  let sorted222 = list.sort(asset_names222, bytearray.compare)
+  let asset_names_amounts100 =
+    list.map(
+      filtered100,
+      fn((_policy_id, asset_name, amount)) { (asset_name, amount) },
+    )
+  let asset_names_amounts222 =
+    list.map(
+      filtered222,
+      fn((_policy_id, asset_name, amount)) { (asset_name, amount) },
+    )
+
+  let sorted100 =
+    list.sort(
+      asset_names_amounts100,
+      fn((name1, _), (name2, _)) { bytearray.compare(name1, name2) },
+    )
+  let sorted222 =
+    list.sort(
+      asset_names_amounts222,
+      fn((name1, _), (name2, _)) { bytearray.compare(name1, name2) },
+    )
+
   let paired = list.zip(sorted100, sorted222)
-  paired
+  list.map(
+    paired,
+    fn(((name1, amount1), (name2, amount2))) {
+      (name1, name2, amount1 + amount2)
+    },
+  )
 }
 
 pub fn check_pairs_with_fold(
   flat: List<(PolicyId, AssetName, Int)>,
   prefix1: ByteArray,
   prefix2: ByteArray,
-  check_fn: fn(AssetName, AssetName) -> Bool,
+  check_fn: fn(AssetName, AssetName, Int) -> Bool,
 ) -> Bool {
   let pairs = filter_and_pair(flat, prefix1, prefix2)
 
   list.foldl(
     pairs,
     True,
-    fn((asset1, asset2), acc) {
+    fn((asset1, asset2, amount), acc) {
       if !acc {
         False
       } else {
-        check_fn(asset1, asset2)
+        check_fn(asset1, asset2, amount)
       }
     },
   )

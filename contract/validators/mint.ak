@@ -44,7 +44,7 @@ validator mint(
             mint_flatten,
             cip68.prefix_100,
             cip68.prefix_222,
-            fn(reference_asset_name, user_asset_name) -> Bool {
+            fn(reference_asset_name, user_asset_name, amount) -> Bool {
               let reference_value =
                 assets.from_asset(policy_id, reference_asset_name, 1)
               let output_utxo_store =
@@ -56,6 +56,12 @@ validator mint(
               and {
                 utils.check_output_utxo(output_utxo_store, extra_signatories)?,
                 minting.exact(mint_flatten, policy_id, reference_asset_name, 1)?,
+                minting.by_prefix(
+                  mint_flatten,
+                  policy_id,
+                  cip68.prefix_222,
+                  amount - 1,
+                )?,
                 bytearray.compare(
                   bytearray.drop(reference_asset_name, 4),
                   bytearray.drop(user_asset_name, 4),
