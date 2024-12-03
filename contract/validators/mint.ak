@@ -75,7 +75,9 @@ validator mint(
       // - check_amount: Check that the amount of user tokens the sender wants to burn is valid and does not exceed the amount they own.
       // - ada_attacked: Check where the ADA attached to the reference token will go (to the wallet the user currently owns).
       // - check_amount_burn: The author will burn both NFTs (User Token, Reference Token) with the given amount.
-      Burn -> and {
+      Burn -> {
+        let amount_mint_token: Int = list.length(mint_flatten)
+        and {
           output_utxo_exchange != None,
           minting.by_prefix(
             mint_flatten,
@@ -86,6 +88,7 @@ validator mint(
           list.length(outputs) >= 2,
           minting.by_prefix(mint_flatten, policy_id, cip68.prefix_100, -1)?,
         }
+      }
     }
   }
 
