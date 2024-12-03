@@ -11,13 +11,11 @@ import { useRouter } from "next/navigation";
 import {
   createContext,
   PropsWithChildren,
-  use,
   useContext,
   useEffect,
   useState,
 } from "react";
 import useUploadStore, { UploadStore } from "./store";
-import { set } from "lodash";
 
 type UploadContextType = UploadStore & {
   uploadFiles: () => void;

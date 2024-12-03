@@ -43,14 +43,16 @@ export const createMintTransaction = async ({
       wallet: wallet,
       meshTxBuilder: txBuilder,
     });
-    const input = {
-      assetName: mintInput.assetName,
-      metadata: {
-        ...mintInput.metadata,
-        _pk: deserializeAddress(await wallet.getChangeAddress()).pubKeyHash,
+    const input = [
+      {
+        assetName: mintInput.assetName,
+        metadata: {
+          ...mintInput.metadata,
+          _pk: deserializeAddress(await wallet.getChangeAddress()).pubKeyHash,
+        },
+        quantity: mintInput.quantity,
       },
-      quantity: mintInput.quantity,
-    };
+    ];
     const tx = await cip68Contract.mint(input);
     return {
       result: true,

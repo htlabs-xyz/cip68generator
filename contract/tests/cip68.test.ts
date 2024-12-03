@@ -77,7 +77,6 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     //     owner: wallet.getChangeAddress(),
     //     _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
     //   },
-     
     // });
     // const signedTx = await wallet.signTx(unsignedTx, true);
     // const txHash = await wallet.submitTx(signedTx);
@@ -95,7 +94,6 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     // const unsignedTx: string = await cip68Contract.burn({
     //   assetName: "CIP68 Generators 1",
     //   quantity: "-1",
-      
     // });
     // const signedTx = wallet.signTx(unsignedTx, true);
     // const txHash = await wallet.submitTx(signedTx);
@@ -151,7 +149,8 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
           owner: wallet.getChangeAddress(),
           _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
         },
-        txHash: "7ea1ef7e3b9510e16c845a420dc87e7269f08afa1eb2c9ed62c52068dc694e1e"
+        txHash:
+          "7ea1ef7e3b9510e16c845a420dc87e7269f08afa1eb2c9ed62c52068dc694e1e",
       })),
     );
     const signedTx = wallet.signTx(unsignedTx, true);

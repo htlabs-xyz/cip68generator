@@ -1,5 +1,5 @@
 export const EXCHANGE_FEE_ADDRESS = process.env.EXCHANGE_FEE_ADDRESS || "";
-export const EXCHANGE_FEE_PRICE = process.env.EXCHANGE_FEE_PRICE || "";
+export const EXCHANGE_FEE_PRICE = process.env.EXCHANGE_FEE_PRICE || "1000000"; //lovelace
 
 export const MINT_REFERENCE_SCRIPT_ADDRESS =
   process.env.MINT_REFERENCE_SCRIPT_ADDRESS || "";
