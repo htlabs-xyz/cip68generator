@@ -48,35 +48,7 @@ pub fn token_prefix(
   }
 }
 
-// pub fn filter_and_pair(
-//   flat: List<(PolicyId, AssetName, Int)>,
-//   prefix100: ByteArray,
-//   prefix222: ByteArray,
-// ) -> List<(AssetName, AssetName)> {
-//   let filtered100 =
-//     list.filter(
-//       flat,
-//       fn((_policy_id, asset_name, _amount)) {
-//         bytearray.starts_with(asset_name, prefix100)
-//       },
-//     )
-//   let filtered222 =
-//     list.filter(
-//       flat,
-//       fn((_policy_id, asset_name, _amount)) {
-//         bytearray.starts_with(asset_name, prefix222)
-//       },
-//     )
-//   let asset_names100 =
-//     list.map(filtered100, fn((_policy_id, asset_name, _amount)) { asset_name })
-//   let asset_names222 =
-//     list.map(filtered222, fn((_policy_id, asset_name, _amount)) { asset_name })
-//   let sorted100 = list.sort(asset_names100, bytearray.compare)
-//   let sorted222 = list.sort(asset_names222, bytearray.compare)
-//   let paired = list.zip(sorted100, sorted222)
-//   paired
-// }
-
+// filter flatten and return pair of asset names
 pub fn filter_and_pair(
   flat: List<(PolicyId, AssetName, Int)>,
   prefix100: ByteArray,
@@ -127,6 +99,7 @@ pub fn filter_and_pair(
   )
 }
 
+// check assets pairs with fold
 pub fn check_pairs_with_fold(
   flat: List<(PolicyId, AssetName, Int)>,
   prefix1: ByteArray,
