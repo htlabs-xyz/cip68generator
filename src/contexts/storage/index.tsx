@@ -11,13 +11,11 @@ import { useRouter } from "next/navigation";
 import {
   createContext,
   PropsWithChildren,
-  use,
   useContext,
   useEffect,
   useState,
 } from "react";
 import useUploadStore, { UploadStore } from "./store";
-import { set } from "lodash";
 
 type UploadContextType = UploadStore & {
   uploadFiles: () => void;
@@ -112,12 +110,12 @@ export default function UploadProvider({ children }: PropsWithChildren) {
     <UploadContext.Provider
       value={{
         loading: loading,
-        listMedia: listMedia?.data ?? [],
+        listMedia: listMedia?.data || [],
         listSelected: listSelected,
         uploadOneDialogOpen: uploadOneDialogOpen,
-        listFileToUpload: listFileToUpload ?? [],
+        listFileToUpload: listFileToUpload!,
         currentPage: currentPage,
-        totalPages: listMedia?.totalPages ?? 0,
+        totalPages: listMedia?.totalPages || 1,
         filter: filter,
         setloading: setloading,
         refetch: refetch,

@@ -12,12 +12,12 @@ import { MoreVertical } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useMetadataContext } from "@/contexts/metadata";
 import FileDisplay from "@/components/common/file-display";
-import { AssetMetadata } from "@meshsdk/core";
 import { isEmpty, isNil } from "lodash";
 import { Metadata } from "@prisma/client";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ViewMetadataContent } from "./view-json";
+import { ViewMetadataContent } from "../../../../../../components/common/view-json";
 import MetadataAction from "./metadata-action";
+import { shortenString } from "@/utils";
 
 export default function MetadataList() {
   const { loading, listMetadata, setListSelected, listSelected } =
@@ -76,7 +76,7 @@ export default function MetadataList() {
               ))
             ) : !isNil(listMetadata) && !isEmpty(listMetadata) ? (
               listMetadata.map((item, index) => {
-                const { name } = item.content as AssetMetadata;
+                const { name } = item.content as Record<string, string>;
                 return (
                   <TableRow key={index} className="mb-2 rounded-lg">
                     <TableCell className="rounded-l-lg font-medium">
@@ -100,11 +100,7 @@ export default function MetadataList() {
                           </AspectRatio>
                         </div>
                         <div>
-                          <div className="">
-                            {!isNil(name) && name.length > 15
-                              ? name.slice(0, 15) + "..."
-                              : name}
-                          </div>
+                          <div className="">{shortenString(name, 15)}</div>
                           <div className="text-sm">application/json</div>
                         </div>
                       </div>

@@ -1,17 +1,25 @@
+import Spinner from "@/app/(loading)/components/spinner";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card } from "@/components/ui/card";
-import { useMintOneContext } from "@/contexts/mint-one";
-import { isNil } from "lodash";
 import { useEffect } from "react";
 
-export default function TemplateStep() {
-  const { stepper, metadataTemplate } = useMintOneContext();
-
+export default function TemplateStep({
+  stepper,
+  metadataTemplate,
+}: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  stepper: any;
+  metadataTemplate: Record<string, string> | null;
+}) {
   useEffect(() => {
-    if (!isNil(metadataTemplate)) {
+    if (metadataTemplate) {
       stepper.next();
     }
   }, [metadataTemplate, stepper]);
+
+  if (metadataTemplate) {
+    return <Spinner />;
+  }
 
   return (
     <div className="h-full m-auto flex flex-col">

@@ -5,12 +5,19 @@ import React from "react";
 import { useCSVReader } from "react-papaparse";
 import { Button } from "@/components/ui/button";
 import { Loader2, Trash2 } from "lucide-react";
-import { useUploadCsvContext } from "@/contexts/fast-collection";
 import FileDisplay from "@/components/common/file-display";
 import { isEmpty, isNil } from "lodash";
+import Link from "next/link";
 
-export default function CSVReader() {
-  const { loading, setCsvContent, uploadCsv } = useUploadCsvContext();
+export default function CSVReader({
+  loading,
+  setCsvContent,
+  onSubmit,
+}: {
+  loading: boolean;
+  setCsvContent: ({ name, data }: { name: string; data: string[][] }) => void;
+  onSubmit: () => void;
+}) {
   const [error, setError] = React.useState<string | null>(null);
   const { CSVReader } = useCSVReader();
   return (
@@ -27,7 +34,10 @@ export default function CSVReader() {
                 throw new Error(result.errors[0][0].message);
               }
               setError(null);
-              setCsvContent(file.name.replace(/\.csv$/, ""), result.data);
+              setCsvContent({
+                name: file.name.replace(/\.csv$/, ""),
+                data: result.data,
+              });
             } catch (e) {
               setError(e instanceof Error ? e.message : "unknown error");
             }
@@ -53,7 +63,7 @@ export default function CSVReader() {
                     {...getRemoveFileProps()}
                     onClick={(event: Event) => {
                       getRemoveFileProps().onClick(event);
-                      setCsvContent(null!, null!);
+                      setCsvContent(null!);
                       setError(null);
                     }}
                     variant="destructive"
@@ -65,7 +75,7 @@ export default function CSVReader() {
                   <div className="fixed right-0 bottom-0 z-10 max-h-16 w-full bg-section">
                     <div className="mx-4 flex h-16 items-center sm:mx-8">
                       <div className="flex flex-1 items-center justify-end space-x-2">
-                        <Button onClick={uploadCsv} disabled={!isNil(error)}>
+                        <Button onClick={onSubmit} disabled={!isNil(error)}>
                           Upload
                         </Button>
                       </div>
@@ -73,16 +83,19 @@ export default function CSVReader() {
                   </div>
                 </div>
               ) : (
-                <div {...getRootProps()}>
-                  <div className="flex items-center justify-center flex-col gap-4">
-                    <p className="font-normal self-stretch text-center text-sm text-[16px] ">
-                      Have images but need JSON? We got you covered!
-                    </p>
+                <div className="flex items-center justify-center flex-col gap-4">
+                  <Link
+                    href={"/csv/example.csv"}
+                    className="font-normal self-stretch text-center text-sm text-[16px] "
+                  >
+                    Download Example CSV
+                  </Link>
+                  <div {...getRootProps()}>
                     <label
                       htmlFor="file-upload"
                       className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
                     >
-                      Upload File
+                      Select File
                     </label>
                   </div>
                 </div>

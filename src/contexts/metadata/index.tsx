@@ -2,7 +2,6 @@
 
 import { createContext, useContext } from "react";
 import useMetadataStore, { MetadataStore } from "./store";
-import { AssetMetadata } from "@meshsdk/core";
 import {
   addMetadata,
   deleteMetadata,
@@ -16,7 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 type MetadataContextType = MetadataStore & {
   loading: boolean;
   collectionId: string;
-  createMetadata: (metadataContent: AssetMetadata) => void;
+  createMetadata: (metadataContent: Record<string, string>) => void;
   deleteMetadataSelected: () => void;
   refetch: () => void;
 };
@@ -50,7 +49,7 @@ export default function MetadataProvider({
       }),
   });
 
-  const createMetadata = async (metadataContent: AssetMetadata) => {
+  const createMetadata = async (metadataContent: Record<string, string>) => {
     const { result, message } = await addMetadata({
       collectionId,
       listMetadata: [metadataContent],
@@ -104,7 +103,7 @@ export default function MetadataProvider({
         loading: isLoading,
         listMetadata: data?.data || [],
         currentPage,
-        totalPages: data?.totalPages || 0,
+        totalPages: data?.totalPages || 1,
         filter,
         refetch,
         setFilter,

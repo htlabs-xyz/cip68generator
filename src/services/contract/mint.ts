@@ -2,26 +2,22 @@
 import { appNetworkId } from "@/constants";
 import { Cip68Contract } from "@/contract";
 import { blockfrostProvider } from "@/lib/cardano";
-import {
-  AssetMetadata,
-  deserializeAddress,
-  MeshTxBuilder,
-  MeshWallet,
-} from "@meshsdk/core";
-import { isNil } from "lodash";
+import { AssetInput } from "@/types";
+import { deserializeAddress, MeshTxBuilder, MeshWallet } from "@meshsdk/core";
+import { isEmpty, isNil } from "lodash";
 
 export const createMintTransaction = async ({
   address,
   mintInput,
 }: {
   address: string;
-  mintInput: {
-    assetName: string;
-    metadata: AssetMetadata;
-    quantity: string;
-  };
+  mintInput: AssetInput[];
 }) => {
   try {
+    if (isEmpty(mintInput)) {
+      throw new Error("No assets to mint");
+    }
+
     if (isNil(address)) {
       throw new Error("User not found");
     }
@@ -43,14 +39,17 @@ export const createMintTransaction = async ({
       wallet: wallet,
       meshTxBuilder: txBuilder,
     });
-    const input = {
-      assetName: mintInput.assetName,
-      metadata: {
-        ...mintInput.metadata,
-        _pk: deserializeAddress(await wallet.getChangeAddress()).pubKeyHash,
-      },
-      quantity: mintInput.quantity,
-    };
+    const input = await Promise.all(
+      mintInput.map(async (mint) => ({
+        assetName: mint.assetName,
+        quantity: mint.quantity ?? "1",
+        receiver: mint.receiver ?? address,
+        metadata: {
+          ...mint.metadata,
+          _pk: deserializeAddress(await wallet.getChangeAddress()).pubKeyHash,
+        },
+      })),
+    );
     const tx = await cip68Contract.mint(input);
     return {
       result: true,

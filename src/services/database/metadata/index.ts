@@ -3,7 +3,6 @@
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { UnauthorizedException } from "@/utils/http/http-exceptions";
-import { AssetMetadata } from "@meshsdk/core";
 import { Metadata } from "@prisma/client";
 import { isEmpty, isNil } from "lodash";
 import { DateRange } from "react-day-picker";
@@ -13,7 +12,7 @@ export async function addMetadata({
   listMetadata,
 }: {
   collectionId: string;
-  listMetadata: AssetMetadata[];
+  listMetadata: Record<string, string>[];
 }) {
   try {
     const session = await auth();

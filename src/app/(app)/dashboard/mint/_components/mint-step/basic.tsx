@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,7 +16,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { useMintOneContext } from "@/contexts/mint-one";
 import { toast } from "@/hooks/use-toast";
 
 const nftFormSchema = z.object({
@@ -40,9 +40,13 @@ const nftFormSchema = z.object({
 
 type NftFormValues = z.infer<typeof nftFormSchema>;
 
-export default function BasicStep() {
-  const { stepper, setBasicInfoToMint } = useMintOneContext();
-
+export default function BasicStep({
+  stepper,
+  setBasicInfoToMint,
+}: {
+  stepper: any;
+  setBasicInfoToMint: (data: { assetName: string; quantity: string }) => void;
+}) {
   const defaultValues: Partial<NftFormValues> = {
     assetQuantity: "1",
     assetName: "",

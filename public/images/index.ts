@@ -21,7 +21,7 @@ import storegae from "./utilities/storage.png";
 import collection from "./utilities/collection.png";
 import marketplace from "./utilities/marketplace.png";
 import mintOne from "./utilities/mint-one.png";
-import mintMultiple from "./utilities/mint-multiple.png";
+import mintMany from "./utilities/mint-many.png";
 import login from "./common/login.png";
 import startFromCratch from "./utilities/start-from-scratch.png";
 export const founderImage = {
@@ -42,7 +42,7 @@ export const appImage = {
   collection: collection,
   marketplace: marketplace,
   mintOne: mintOne,
-  mintMultiple: mintMultiple,
+  mintMany: mintMany,
   startFromCratch: startFromCratch,
 } as const;
 

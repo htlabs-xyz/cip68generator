@@ -1,13 +1,12 @@
 import { Task } from "@/types";
-import { AssetMetadata } from "@meshsdk/core";
 import { isEmpty } from "lodash";
 import { create } from "zustand";
 
 export type UnitStore = {
   loading: boolean;
   setLoading: (loading: boolean) => void;
-  metadataToUpdate: AssetMetadata | null;
-  setMetadataToUpdate: (metadata: AssetMetadata) => void;
+  metadataToUpdate: Record<string, string> | null;
+  setMetadataToUpdate: (metadata: Record<string, string>) => void;
   tasks: Task[];
   resetTasks: () => void;
   updateTaskState: (

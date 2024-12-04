@@ -26,8 +26,8 @@ export const dashboardRoutes = {
       mintOne: {
         redirect: "/dashboard/mint/one",
       },
-      mintMultiple: {
-        redirect: "/dashboard/mint/multiple",
+      mintMany: {
+        redirect: "/dashboard/mint/many",
       },
     },
   },

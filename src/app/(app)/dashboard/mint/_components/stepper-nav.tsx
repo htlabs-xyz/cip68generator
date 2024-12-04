@@ -1,11 +1,17 @@
 import React from "react";
-import { useMintOneContext } from "@/contexts/mint-one";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/utils";
 
-export default function StepperNav() {
-  const { stepper, steps } = useMintOneContext();
-
+export default function StepperNav({
+  stepper,
+  steps,
+}: {
+  stepper: {
+    all: { id: string; title: string }[];
+    current: { id: string; index: number };
+  };
+  steps: { id: string; title: string }[];
+}) {
   return (
     <nav aria-label="Checkout Steps" className="group my-4">
       <ol className="flex items-center justify-between gap-2">
