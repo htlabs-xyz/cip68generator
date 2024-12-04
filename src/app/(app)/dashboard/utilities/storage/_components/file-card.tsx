@@ -32,9 +32,7 @@ export default function FileCard({ file }: { file: Media }) {
             {file.name.length > 15 ? file.name.slice(0, 15) + "..." : file.name}
           </label>
         </div>
-        <Button variant="ghost" size="icon" className="hover:bg-white/10">
-          <CoppyButton content={file.url} className="h-5 w-5" />
-        </Button>
+        <CoppyButton content={file.url} className=" h-10 px-4 py-2" />
       </div>
       <AspectRatio ratio={4 / 3} className="bg-muted">
         <FileDisplay
