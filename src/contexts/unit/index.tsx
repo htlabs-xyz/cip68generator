@@ -104,11 +104,14 @@ export default function UnitProvider({
 
   const pubKeyHash = !isNil(address) && deserializeAddress(address)?.pubKeyHash;
 
-  const isAuthor =
+  const isAuthor = !!(
     (!isNil(assetData?.data?.onchain_metadata?._pk) &&
       pubKeyHash &&
       assetData?.data?.onchain_metadata?._pk.includes(pubKeyHash)) ||
-    (pubKeyHash && pubKeyHash.includes(assetData?.data?.onchain_metadata?._pk));
+    (pubKeyHash &&
+      assetData?.data?.onchain_metadata?._pk &&
+      pubKeyHash.includes(assetData.data.onchain_metadata._pk))
+  );
 
   const handleUpdate = () => {
     redirect(`/dashboard/${unit}/update`);
@@ -152,7 +155,7 @@ export default function UnitProvider({
         address: address,
         input: {
           assetName: input.assetName,
-          metadata: input.metadata,
+          metadata: input.metadata ?? {},
         },
       });
       if (!result || isNil(tx)) {

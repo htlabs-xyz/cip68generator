@@ -10,11 +10,11 @@ export default function MetadataStep() {
     useUnitContext();
 
   const [fields, setFields] = useState<KeyValuePair[]>(
-    generateFields(metadataToUpdate),
+    generateFields(metadataToUpdate || {}),
   );
 
   useEffect(() => {
-    setFields(generateFields(metadataToUpdate));
+    setFields(generateFields(metadataToUpdate || {}));
   }, [metadataToUpdate]);
 
   const handleNext = () => {
