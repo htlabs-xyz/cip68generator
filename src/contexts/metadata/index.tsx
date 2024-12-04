@@ -104,7 +104,7 @@ export default function MetadataProvider({
         loading: isLoading,
         listMetadata: data?.data || [],
         currentPage,
-        totalPages: data?.totalPages || 0,
+        totalPages: data?.totalPages || 1,
         filter,
         refetch,
         setFilter,

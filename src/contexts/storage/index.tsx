@@ -110,12 +110,12 @@ export default function UploadProvider({ children }: PropsWithChildren) {
     <UploadContext.Provider
       value={{
         loading: loading,
-        listMedia: listMedia?.data ?? [],
+        listMedia: listMedia?.data || [],
         listSelected: listSelected,
         uploadOneDialogOpen: uploadOneDialogOpen,
-        listFileToUpload: listFileToUpload ?? [],
+        listFileToUpload: listFileToUpload!,
         currentPage: currentPage,
-        totalPages: listMedia?.totalPages ?? 0,
+        totalPages: listMedia?.totalPages || 1,
         filter: filter,
         setloading: setloading,
         refetch: refetch,
