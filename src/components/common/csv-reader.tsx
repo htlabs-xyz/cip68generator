@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Trash2 } from "lucide-react";
 import FileDisplay from "@/components/common/file-display";
 import { isEmpty, isNil } from "lodash";
+import Link from "next/link";
 
 export default function CSVReader({
   loading,
@@ -82,11 +83,14 @@ export default function CSVReader({
                   </div>
                 </div>
               ) : (
-                <div {...getRootProps()}>
-                  <div className="flex items-center justify-center flex-col gap-4">
-                    <p className="font-normal self-stretch text-center text-sm text-[16px] ">
-                      Have images but need JSON? We got you covered!
-                    </p>
+                <div className="flex items-center justify-center flex-col gap-4">
+                  <Link
+                    href={"/csv/example.csv"}
+                    className="font-normal self-stretch text-center text-sm text-[16px] "
+                  >
+                    Download Example CSV
+                  </Link>
+                  <div {...getRootProps()}>
                     <label
                       htmlFor="file-upload"
                       className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
