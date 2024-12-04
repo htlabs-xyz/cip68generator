@@ -12,7 +12,7 @@ import {
   deserializeAddress,
   UTxO,
 } from "@meshsdk/core";
-import { datumToJson } from "@/utils";
+import { getPkHash } from "@/utils";
 
 import { MeshAdapter } from "../adapters/mesh.adapter";
 import plutus from "../../plutus.json";
@@ -103,11 +103,9 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
             this.storeAddress,
             this.policyId + CIP68_100(stringToHex(assetName)),
           );
-          if (existUtXOwithUnit) {
-            const datumJson = await datumToJson(
-              existUtXOwithUnit.output.plutusData,
-            );
-            console.log(datumJson);
+          if (existUtXOwithUnit && existUtXOwithUnit.output.plutusData) {
+            const pkHash = await getPkHash(existUtXOwithUnit.output.plutusData);
+            console.log(pkHash);
             // if (!datumJson._pk)
             //   throw new Error(`${assetName} has been already exists`);
           }
