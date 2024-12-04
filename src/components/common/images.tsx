@@ -32,11 +32,7 @@ export const Images = {
   ),
 
   mintMany: (props: LucideProps) => (
-    <Image
-      src={appImage.mintMany}
-      className={props.className}
-      alt="mintMany"
-    />
+    <Image src={appImage.mintMany} className={props.className} alt="mintMany" />
   ),
 
   startFromScratch: (props: LucideProps) => (
