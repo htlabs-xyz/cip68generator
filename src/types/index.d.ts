@@ -169,4 +169,5 @@ export type AssetInput = {
   assetName: string;
   metadata: Record<string, string>;
   quantity?: string;
+  receiver?: string;
 };

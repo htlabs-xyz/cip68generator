@@ -23,6 +23,8 @@ export function convertObject(data: string[][]): AssetInput[] {
           acc.assetName = curr;
         } else if (key === "quantity") {
           acc.quantity = curr;
+        } else if (key === "receiver") {
+          acc.receiver = curr;
         } else {
           throw new Error(`Invalid key: ${key}`);
         }
