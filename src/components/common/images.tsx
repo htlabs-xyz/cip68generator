@@ -31,11 +31,11 @@ export const Images = {
     <Image src={appImage.mintOne} className={props.className} alt="metadata" />
   ),
 
-  mintMultiple: (props: LucideProps) => (
+  mintMany: (props: LucideProps) => (
     <Image
-      src={appImage.mintMultiple}
+      src={appImage.mintMany}
       className={props.className}
-      alt="mintMultiple"
+      alt="mintMany"
     />
   ),
 

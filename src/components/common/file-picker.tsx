@@ -7,12 +7,12 @@ export default function FilePicker({
   title,
   setFiles,
   accept = "*/*",
-  multiple = true,
+  many = true,
 }: {
   title?: string;
   setFiles: (files: File[]) => void;
   accept?: string;
-  multiple?: boolean;
+  many?: boolean;
 }) {
   const { toast } = useToast();
 
@@ -60,7 +60,7 @@ export default function FilePicker({
         type="file"
         className="hidden"
         accept={accept}
-        multiple={multiple}
+        many={many}
         onChange={handleFileUpload}
       />
     </div>

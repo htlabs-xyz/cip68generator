@@ -290,7 +290,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     return unsignedTx.complete();
   };
 
-  updateMultiple = async (
+  updateMany = async (
     params: {
       assetName: string;
       metadata: Record<string, string>;
@@ -352,7 +352,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
   /**
    *
    */
-  burnMultiple = async (
+  burnMany = async (
     params: {
       assetName: string;
       quantity: string;
