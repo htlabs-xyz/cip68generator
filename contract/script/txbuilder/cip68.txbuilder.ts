@@ -103,11 +103,8 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
             this.storeAddress,
             this.policyId + CIP68_100(stringToHex(assetName)),
           );
-          if (existUtXOwithUnit && existUtXOwithUnit.output.plutusData) {
-            const pkHash = await getPkHash(existUtXOwithUnit.output.plutusData);
-            console.log(pkHash);
-            // if (!datumJson._pk)
-            //   throw new Error(`${assetName} has been already exists`);
+          if (existUtXOwithUnit) {
+              throw new Error(`${assetName} has been already exists`);
           }
           unsignedTx
             .mintPlutusScriptV3()
