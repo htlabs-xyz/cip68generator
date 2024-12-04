@@ -12,7 +12,6 @@ import { MoreVertical } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useMetadataContext } from "@/contexts/metadata";
 import FileDisplay from "@/components/common/file-display";
-import { AssetMetadata } from "@meshsdk/core";
 import { isEmpty, isNil } from "lodash";
 import { Metadata } from "@prisma/client";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -76,7 +75,7 @@ export default function MetadataList() {
               ))
             ) : !isNil(listMetadata) && !isEmpty(listMetadata) ? (
               listMetadata.map((item, index) => {
-                const { name } = item.content as AssetMetadata;
+                const { name } = item.content as Record<string, string>;
                 return (
                   <TableRow key={index} className="mb-2 rounded-lg">
                     <TableCell className="rounded-l-lg font-medium">

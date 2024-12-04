@@ -25,7 +25,9 @@ export default function UploadCSVProvider({ children }: PropsWithChildren) {
       if (isNil(csvContent) || isEmpty(csvContent)) {
         throw new Error("CSV content is empty");
       }
-      const listMetadata = convertObject(csvContent);
+      const listAssetInput = convertObject(csvContent);
+      const listMetadata = listAssetInput.map((item) => item.metadata);
+
       const { result, message, data } = await createCollectionWithData({
         collectionName: csvName,
         listMetadata: listMetadata,

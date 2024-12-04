@@ -7,7 +7,6 @@ import {
   stringToHex,
   mConStr0,
   CIP68_100,
-  AssetMetadata,
   metadataToCip68,
   mConStr1,
   deserializeAddress,
@@ -75,7 +74,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
    * @method Mint
    * @description Mint Asset (NFT/Token) with CIP68
    * @param assetName - string
-   * @param metadata - AssetMetadata
+   * @param metadata - Record<string, string>
    * @param quantity - string
    *
    * @returns unsignedTx
@@ -84,7 +83,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
   mint = async (
     params: {
       assetName: string;
-      metadata: AssetMetadata;
+      metadata: Record<string, string>;
       quantity: string;
     }[],
   ) => {
@@ -229,7 +228,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
    * @method Update
    * @description Update Asset (NFT/Token) with CIP68
    * @param assetName - string
-   * @param metadata - AssetMetadata
+   * @param metadata - Record<string, string>
    * @param txHash - string
    * @returns
    */
@@ -239,7 +238,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     txHash,
   }: {
     assetName: string;
-    metadata: AssetMetadata;
+    metadata: Record<string, string>;
     txHash?: string;
   }) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
@@ -294,7 +293,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
   updateMultiple = async (
     params: {
       assetName: string;
-      metadata: AssetMetadata;
+      metadata: Record<string, string>;
       txHash?: string;
     }[],
   ) => {

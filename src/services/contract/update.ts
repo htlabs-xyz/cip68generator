@@ -2,12 +2,7 @@
 import { appNetworkId } from "@/constants";
 import { Cip68Contract } from "@/contract";
 import { blockfrostProvider } from "@/lib/cardano";
-import {
-  AssetMetadata,
-  deserializeAddress,
-  MeshTxBuilder,
-  MeshWallet,
-} from "@meshsdk/core";
+import { deserializeAddress, MeshTxBuilder, MeshWallet } from "@meshsdk/core";
 import { isNil } from "lodash";
 
 export const createUpdateTransaction = async ({
@@ -17,7 +12,7 @@ export const createUpdateTransaction = async ({
   address: string;
   input: {
     assetName: string;
-    metadata: AssetMetadata;
+    metadata: Record<string, string>;
   };
 }) => {
   try {

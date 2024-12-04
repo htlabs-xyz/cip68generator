@@ -1,4 +1,3 @@
-import { AssetMetadata } from "@meshsdk/core";
 import { isEmpty } from "lodash";
 import { create } from "zustand";
 
@@ -13,8 +12,8 @@ export type MintOneStore = {
   setLoading: (loading: boolean) => void;
   collectionToSave: string;
   setCollectionToSave: (collection: string) => void;
-  metadataToMint: AssetMetadata | null;
-  setMetadataToMint: (metadata: AssetMetadata) => void;
+  metadataToMint: Record<string, string> | null;
+  setMetadataToMint: (metadata: Record<string, string>) => void;
   basicInfoToMint: {
     assetName: string;
     quantity: string;

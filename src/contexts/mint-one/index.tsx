@@ -8,7 +8,6 @@ import { createMintTransaction } from "@/services/contract/mint";
 import { useBlockchainContext } from "@/components/providers/blockchain";
 import { isEmpty, isNil } from "lodash";
 import { submitTx } from "@/services/blockchain/submitTx";
-import { AssetMetadata } from "@meshsdk/core";
 import { useQuery } from "@tanstack/react-query";
 import { addMetadata, getMetadataById } from "@/services/database/metadata";
 
@@ -21,7 +20,7 @@ const { useStepper, steps } = defineStepper(
   { id: "result", title: "Result" },
 );
 type MintOneContextType = MintOneStore & {
-  metadataTemplate: AssetMetadata | null;
+  metadataTemplate: Record<string, string> | null;
   stepper: ReturnType<typeof useStepper>;
   steps: typeof steps;
   startMinting: () => void;
@@ -89,7 +88,7 @@ export default function MintOneProvider({
         );
         const { result, message } = await addMetadata({
           collectionId: collectionToSave,
-          listMetadata: [metadataToMint],
+          listMetadata: [metadataToMint!],
         });
         if (!result) {
           throw new Error(message);
@@ -99,7 +98,7 @@ export default function MintOneProvider({
       const input = {
         assetName: basicInfoToMint.assetName,
         quantity: basicInfoToMint.quantity,
-        metadata: metadataToMint,
+        metadata: metadataToMint!,
       };
 
       updateTaskState(
@@ -165,7 +164,7 @@ export default function MintOneProvider({
       value={{
         collectionToSave,
         setCollectionToSave,
-        metadataTemplate: data?.data?.content || null,
+        metadataTemplate: data?.data?.content as Record<string, string>,
         loading,
         setLoading,
         metadataToMint,

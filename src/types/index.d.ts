@@ -1,5 +1,4 @@
 import { Icons } from "@/components/common/icons";
-import { AssetMetadata, BrowserWallet } from "@meshsdk/core";
 import { StaticImageData } from "next/image";
 declare module "next-auth" {
   interface User {
@@ -64,10 +63,10 @@ export type AssetDetails = {
   quantity: string;
   initial_mint_tx_hash: string;
   mint_or_burn_count: number;
-  onchain_metadata: AssetMetadata;
-  onchain_metadata_standard: AssetMetadata;
-  onchain_metadata_extra: AssetMetadata;
-  metadata: AssetMetadata;
+  onchain_metadata: Record<string, string>;
+  onchain_metadata_standard: Record<string, string>;
+  onchain_metadata_extra: Record<string, string>;
+  metadata: Record<string, string>;
 };
 
 export type TransactionHistory = {
@@ -168,6 +167,6 @@ export type TxHistory = {
 
 export type AssetInput = {
   assetName: string;
+  metadata: Record<string, string>;
   quantity?: string;
-  metadata?: AssetMetadata;
 };
