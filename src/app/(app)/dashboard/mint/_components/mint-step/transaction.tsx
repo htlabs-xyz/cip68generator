@@ -3,11 +3,14 @@
 import React from "react";
 import { CheckCircle, CircleX, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useMintOneContext } from "@/contexts/mint-one";
 
-export default function TransactionStep() {
-  const { stepper, tasks } = useMintOneContext();
-
+export default function TransactionStep({
+  stepper,
+  tasks,
+}: {
+  stepper: { prev: () => void; isFirst: boolean };
+  tasks: { content: string; status: string }[];
+}) {
   return (
     <div className="h-full py-8 px-10 m-auto flex flex-col">
       <div className="rounded-md border border-dashed">

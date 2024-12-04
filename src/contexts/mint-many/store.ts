@@ -1,22 +1,12 @@
-import { Task } from "@/types";
+import { AssetInput, Task } from "@/types";
 import { isEmpty } from "lodash";
 import { create } from "zustand";
 
-export type MintOneStore = {
+export type MintManyStore = {
   loading: boolean;
   setLoading: (loading: boolean) => void;
-  collectionToSave: string;
-  setCollectionToSave: (collection: string) => void;
-  metadataToMint: Record<string, string> | null;
-  setMetadataToMint: (metadata: Record<string, string>) => void;
-  basicInfoToMint: {
-    assetName: string;
-    quantity: string;
-  };
-  setBasicInfoToMint: (basicInfo: {
-    assetName: string;
-    quantity: string;
-  }) => void;
+  assetInputToMint: AssetInput[];
+  setAssetInputToMint: (assetInput: AssetInput[]) => void;
   tasks: Task[];
   resetTasks: () => void;
   updateTaskState: (
@@ -28,22 +18,15 @@ export type MintOneStore = {
   setTxHash: (txhash: string) => void;
 };
 
-const useMintOneStore = create<MintOneStore>((set) => ({
+const useMintManyStore = create<MintManyStore>((set) => ({
   loading: false,
-  metadataToMint: null,
-  basicInfoToMint: {
-    assetName: "",
-    quantity: "1",
-  },
+  assetInputToMint: null!,
   txhash: "",
   tasks: [],
-  collectionToSave: "",
-  setCollectionToSave: (collection) => set({ collectionToSave: collection }),
+  setAssetInputToMint: (assetInput) => set({ assetInputToMint: assetInput }),
   resetTasks: () => set({ tasks: [] }),
   setTxHash: (txhash) => set({ txhash }),
-  setBasicInfoToMint: (basicInfo) => set({ basicInfoToMint: basicInfo }),
   setLoading: (loading) => set({ loading }),
-  setMetadataToMint: (metadata) => set({ metadataToMint: metadata }),
   updateTaskState: (status, name = "", content = "") => {
     set((state) => {
       const tasks = [...state.tasks];
@@ -86,4 +69,4 @@ const useMintOneStore = create<MintOneStore>((set) => ({
   },
 }));
 
-export default useMintOneStore;
+export default useMintManyStore;

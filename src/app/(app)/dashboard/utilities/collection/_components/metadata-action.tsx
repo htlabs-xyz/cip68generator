@@ -24,7 +24,7 @@ export default function MetadataAction({ metadata }: { metadata: Metadata }) {
   const [openDialog, setOpenDialog] = useState(false);
   const { refetch } = useMetadataContext();
   const [fields, setFields] = useState<KeyValuePair[]>(
-    generateFields(metadata.content),
+    generateFields((metadata.content as Record<string, string>) ?? {}),
   );
 
   const handleUpdate = async () => {

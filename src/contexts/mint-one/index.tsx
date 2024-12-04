@@ -1,18 +1,17 @@
 "use client";
 
 import { createContext, useContext, useEffect } from "react";
-import { defineStepper } from "@stepperize/react";
 import useMintOneStore, { MintOneStore } from "./store";
 import { toast } from "@/hooks/use-toast";
 import { createMintTransaction } from "@/services/contract/mint";
 import { useBlockchainContext } from "@/components/providers/blockchain";
 import { isEmpty, isNil } from "lodash";
 import { submitTx } from "@/services/blockchain/submitTx";
-import { AssetMetadata } from "@meshsdk/core";
 import { useQuery } from "@tanstack/react-query";
 import { addMetadata, getMetadataById } from "@/services/database/metadata";
+import { defineStepper } from "@stepperize/react";
 
-const { useStepper, steps } = defineStepper(
+const { useStepper: useMintOneStepper, steps: mintOneSteps } = defineStepper(
   { id: "template", title: "Template" },
   { id: "basic", title: "Basic" },
   { id: "metadata", title: "Metadata" },
@@ -20,10 +19,11 @@ const { useStepper, steps } = defineStepper(
   { id: "transaction", title: "Transaction" },
   { id: "result", title: "Result" },
 );
+
 type MintOneContextType = MintOneStore & {
-  metadataTemplate: AssetMetadata | null;
-  stepper: ReturnType<typeof useStepper>;
-  steps: typeof steps;
+  metadataTemplate: Record<string, string> | null;
+  mintOneStepper: ReturnType<typeof useMintOneStepper>;
+  mintOneSteps: typeof mintOneSteps;
   startMinting: () => void;
 };
 
@@ -35,7 +35,7 @@ export default function MintOneProvider({
   children: React.ReactNode;
 }) {
   const { signTx, address } = useBlockchainContext();
-  const stepper = useStepper();
+  const mintOneStepper = useMintOneStepper();
   const {
     metadataToMint,
     setMetadataToMint,
@@ -67,7 +67,7 @@ export default function MintOneProvider({
 
   const startMinting = async () => {
     resetTasks();
-    stepper.goTo("transaction");
+    mintOneStepper.goTo("transaction");
     try {
       updateTaskState("inprogress", "validate", "Validating Data");
 
@@ -89,7 +89,7 @@ export default function MintOneProvider({
         );
         const { result, message } = await addMetadata({
           collectionId: collectionToSave,
-          listMetadata: [metadataToMint],
+          listMetadata: [metadataToMint!],
         });
         if (!result) {
           throw new Error(message);
@@ -99,7 +99,7 @@ export default function MintOneProvider({
       const input = {
         assetName: basicInfoToMint.assetName,
         quantity: basicInfoToMint.quantity,
-        metadata: metadataToMint,
+        metadata: metadataToMint!,
       };
 
       updateTaskState(
@@ -113,16 +113,17 @@ export default function MintOneProvider({
         result,
       } = await createMintTransaction({
         address: address,
-        mintInput: {
-          assetName: input.assetName,
-          metadata: input.metadata,
-          quantity: input.quantity,
-        },
+        mintInput: [
+          {
+            assetName: input.assetName,
+            metadata: input.metadata,
+            quantity: input.quantity,
+          },
+        ],
       });
       if (!result || isNil(tx)) {
         throw new Error(message);
       }
-      // await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // wait for confirmation
       updateTaskState("inprogress", "sign_transaction", "Waiting for  sign Tx");
@@ -144,7 +145,7 @@ export default function MintOneProvider({
       setTxHash(txHash);
       updateTaskState("success");
       // show result
-      stepper.goTo("result");
+      mintOneStepper.goTo("result");
       // create transaction
     } catch (e) {
       updateTaskState(
@@ -165,7 +166,7 @@ export default function MintOneProvider({
       value={{
         collectionToSave,
         setCollectionToSave,
-        metadataTemplate: data?.data?.content || null,
+        metadataTemplate: data?.data?.content as Record<string, string>,
         loading,
         setLoading,
         metadataToMint,
@@ -178,8 +179,8 @@ export default function MintOneProvider({
         startMinting,
         txhash,
         setTxHash,
-        stepper,
-        steps,
+        mintOneStepper,
+        mintOneSteps,
       }}
     >
       {children}

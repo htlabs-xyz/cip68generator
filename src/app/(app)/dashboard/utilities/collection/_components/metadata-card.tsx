@@ -3,7 +3,6 @@ import { Card } from "@/components/ui/card";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { Metadata } from "@prisma/client";
 import { useMetadataContext } from "@/contexts/metadata";
-import { AssetMetadata } from "@meshsdk/core";
 import Image from "next/image";
 import { isNil } from "lodash";
 import MetadataAction from "./metadata-action";
@@ -18,7 +17,7 @@ export default function MetadataCard({ metadata }: { metadata: Metadata }) {
     }
   };
 
-  const { name } = metadata.content as AssetMetadata;
+  const { name } = metadata.content as Record<string, string>;
 
   return (
     <Card className="rounded-lg p-2">

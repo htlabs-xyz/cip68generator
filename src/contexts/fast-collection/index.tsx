@@ -1,6 +1,5 @@
 "use client";
 import { createContext, PropsWithChildren, useContext, useState } from "react";
-import useUploadCsvStore, { UploadCsvStore } from "./store";
 import { isEmpty, isNil } from "lodash";
 import { createCollectionWithData } from "@/services/database/collection";
 import { useRouter } from "next/navigation";
@@ -9,23 +8,30 @@ import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { dashboardRoutes } from "@/constants/routers";
 
-type UploadCsvContextType = UploadCsvStore & {
+type UploadCsvContextType = {
   loading: boolean;
-  uploadCsv: () => void;
+  uploadCsv: (input: { csvContent: string[][]; csvName: string }) => void;
 };
 
 export default function UploadCSVProvider({ children }: PropsWithChildren) {
   const [loading, setLoading] = useState(false);
-  const { csvContent, setCsvContent, csvName } = useUploadCsvStore();
   const router = useRouter();
-  const uploadCsv = async () => {
+  const uploadCsv = async ({
+    csvContent,
+    csvName,
+  }: {
+    csvContent: string[][];
+    csvName: string;
+  }) => {
     setLoading(true);
 
     try {
       if (isNil(csvContent) || isEmpty(csvContent)) {
         throw new Error("CSV content is empty");
       }
-      const listMetadata = convertObject(csvContent);
+      const listAssetInput = convertObject(csvContent);
+      const listMetadata = listAssetInput.map((item) => item.metadata);
+
       const { result, message, data } = await createCollectionWithData({
         collectionName: csvName,
         listMetadata: listMetadata,
@@ -63,10 +69,7 @@ export default function UploadCSVProvider({ children }: PropsWithChildren) {
     <UploadCsvContext.Provider
       value={{
         loading: loading,
-        csvContent,
-        csvName,
-        setCsvContent,
-        uploadCsv: uploadCsv,
+        uploadCsv,
       }}
     >
       {children}

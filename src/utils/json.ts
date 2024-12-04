@@ -1,15 +1,19 @@
 import { KeyValuePair } from "@/types";
-import { AssetMetadata } from "@meshsdk/core";
 
 export const generateJson = (fields: KeyValuePair[]) => {
-  return fields.reduce((acc, { key, value }) => {
-    if (key) {
-      acc[key] = value;
-    }
-    return acc;
-  }, {} as AssetMetadata);
+  return fields.reduce(
+    (acc, { key, value }) => {
+      if (key) {
+        acc[key] = value;
+      }
+      return acc;
+    },
+    {} as Record<string, string>,
+  );
 };
-export const generateFields = (json: AssetMetadata): KeyValuePair[] => {
+export const generateFields = (
+  json: Record<string, string>,
+): KeyValuePair[] => {
   try {
     return Object.entries(json).map(([key, value]) => ({
       key,
