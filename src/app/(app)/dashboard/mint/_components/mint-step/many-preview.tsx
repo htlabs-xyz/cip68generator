@@ -14,6 +14,8 @@ import { AssetInput } from "@/types";
 import { shortenString } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Trash2Icon } from "lucide-react";
+import { assetName } from "@meshsdk/core";
+import CoppyButton from "@/components/common/coppy-button";
 
 export default function ManyPreview({
   stepper,
@@ -35,9 +37,11 @@ export default function ManyPreview({
               <TableRow>
                 <TableHead></TableHead>
                 <TableHead className="w-[300px] font-normal">
-                  AssetName
+                  AssetName/Metadata name
                 </TableHead>
-                <TableHead className="text-center font-normal">Name</TableHead>
+                <TableHead className="text-center font-normal">
+                  Receiver
+                </TableHead>
                 <TableHead className="text-center font-normal">
                   Metadata
                 </TableHead>
@@ -46,7 +50,7 @@ export default function ManyPreview({
             </TableHeader>
             <TableBody>
               {!isNil(assetInputToMint) && !isEmpty(assetInputToMint) ? (
-                assetInputToMint.map((item, index) => {
+                assetInputToMint.map((item: AssetInput, index: number) => {
                   const { name, image, mediaType } = item.metadata as Record<
                     string,
                     string
@@ -69,12 +73,29 @@ export default function ManyPreview({
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center space-x-2">
-                          {shortenString(item.assetName, 15)}
+                          <div>
+                            <div className="">
+                              {shortenString(item.assetName, 15)}
+                            </div>
+                            <div className="text-sm">
+                              {shortenString(name, 15)}
+                            </div>
+                          </div>
                         </div>
                       </TableCell>
 
                       <TableCell className="text-center">
-                        {shortenString(name, 15)}
+                        {!isEmpty(item.receiver) ? (
+                          <>
+                            {shortenString(item.receiver, 15)}
+                            <CoppyButton
+                              content={item.receiver || ""}
+                              className="text-center"
+                            />
+                          </>
+                        ) : (
+                          "Author"
+                        )}
                       </TableCell>
                       <TableCell className=" text-center">
                         <ViewMetadataContent json={item.metadata} />

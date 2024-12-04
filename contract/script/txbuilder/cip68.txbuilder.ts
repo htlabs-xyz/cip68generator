@@ -27,7 +27,7 @@ import {
 import { Plutus } from "../types";
 import { appNetwork, appNetworkId } from "@/constants";
 import { ICip68Contract } from "../interfaces/icip68.interface";
-import { isNil } from "lodash";
+import { isEmpty, isNil } from "lodash";
 
 export class Cip68Contract extends MeshAdapter implements ICip68Contract {
   protected pubKeyExchange: string =
@@ -85,6 +85,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       assetName: string;
       metadata: Record<string, string>;
       quantity: string;
+      receiver: string;
     }[],
   ) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
@@ -94,35 +95,37 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     //   MINT_REFERENCE_SCRIPT_HASH,
     // );
     const unsignedTx = this.meshTxBuilder.mintPlutusScriptV3();
-    params.forEach(async ({ assetName, metadata, quantity = "1" }) => {
-      unsignedTx
-        .mintPlutusScriptV3()
-        .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
-        // .mintTxInReference(utxoRef.input.txHash, utxoRef.input.outputIndex)
-        .mintingScript(this.mintScriptCbor)
-        .mintRedeemerValue(mConStr0([]))
+    params.forEach(
+      async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
+        unsignedTx
+          .mintPlutusScriptV3()
+          .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+          // .mintTxInReference(utxoRef.input.txHash, utxoRef.input.outputIndex)
+          .mintingScript(this.mintScriptCbor)
+          .mintRedeemerValue(mConStr0([]))
 
-        .mintPlutusScriptV3()
-        .mint("1", this.policyId, CIP68_100(stringToHex(assetName)))
-        // .mintTxInReference(utxoRef.input.txHash, utxoRef.input.outputIndex)
-        .mintingScript(this.mintScriptCbor)
-        .mintRedeemerValue(mConStr0([]))
+          .mintPlutusScriptV3()
+          .mint("1", this.policyId, CIP68_100(stringToHex(assetName)))
+          // .mintTxInReference(utxoRef.input.txHash, utxoRef.input.outputIndex)
+          .mintingScript(this.mintScriptCbor)
+          .mintRedeemerValue(mConStr0([]))
 
-        .txOut(walletAddress, [
-          {
-            unit: this.policyId + CIP68_222(stringToHex(assetName)),
-            quantity: quantity,
-          },
-        ])
+          .txOut(!isEmpty(receiver) ? receiver : walletAddress, [
+            {
+              unit: this.policyId + CIP68_222(stringToHex(assetName)),
+              quantity: quantity,
+            },
+          ])
 
-        .txOut(this.storeAddress, [
-          {
-            unit: this.policyId + CIP68_100(stringToHex(assetName)),
-            quantity: "1",
-          },
-        ])
-        .txOutInlineDatumValue(metadataToCip68(metadata));
-    });
+          .txOut(this.storeAddress, [
+            {
+              unit: this.policyId + CIP68_100(stringToHex(assetName)),
+              quantity: "1",
+            },
+          ])
+          .txOutInlineDatumValue(metadataToCip68(metadata));
+      },
+    );
 
     unsignedTx
       .txOut(EXCHANGE_FEE_ADDRESS, [
