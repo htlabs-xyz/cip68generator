@@ -300,7 +300,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     //   MINT_REFERENCE_SCRIPT_HASH,
     // );
     const unsignedTx = this.meshTxBuilder.mintPlutusScriptV3();
-    params.forEach(async ({ assetName, metadata, quantity }) => {
+    await Promise.all(params.map(async ({ assetName, metadata, quantity }) => {
       unsignedTx
         .mintPlutusScriptV3()
         .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
@@ -329,7 +329,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
           },
         ])
         .txOutInlineDatumValue(metadataToCip68(metadata));
-    });
+    }))
 
     unsignedTx
       .txOut(EXCHANGE_FEE_ADDRESS, [
@@ -364,14 +364,15 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     //   STORE_REFERENCE_SCRIPT_HASH,
     // );
     const unsignedTx = this.meshTxBuilder;
-    params.flatMap(async ({ assetName, metadata, txHash }) => {
+    await Promise.all(
+      params.map(async ({ assetName, metadata, txHash }) => {
       const storeUtxo = !isNil(txHash)
         ? await this.getUtxoForTx(this.storeAddress, txHash)
         : await this.getAddressUTXOAsset(
             this.storeAddress,
             this.policyId + CIP68_100(stringToHex(assetName)),
-          );
-      console.log(storeUtxo);
+        );
+      console.log(storeUtxo)
       if (!storeUtxo) throw new Error("Store UTXO not found");
       unsignedTx
         .spendingPlutusScriptV3()
@@ -387,7 +388,8 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
           },
         ])
         .txOutInlineDatumValue(metadataToCip68(metadata));
-    });
+    })
+    )
 
     unsignedTx
       .txOut(EXCHANGE_FEE_ADDRESS, [
@@ -405,7 +407,9 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
         collateral.output.amount,
         collateral.output.address,
       )
-      .setNetwork(appNetwork);
+      .setNetwork(appNetwork)
+      .removeDuplicateInputs()
+      // .addUtxosFromSelection();
 
     return unsignedTx.complete();
   };
@@ -434,7 +438,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
 
     const unsignedTx = this.meshTxBuilder;
 
-    params.flatMap(async ({ txHash, assetName, quantity }) => {
+    await Promise.all(params.map(async ({ txHash, assetName, quantity }) => {
       const storeUtxo = !isNil(txHash)
         ? await this.getUtxoForTx(this.storeAddress, txHash)
         : await this.getAddressUTXOAsset(
@@ -472,7 +476,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       //   storeUtxoRef.input.txHash,
       //   storeUtxoRef.input.outputIndex,
       // )
-    });
+    }))
 
     unsignedTx
       .txOut(EXCHANGE_FEE_ADDRESS, [
