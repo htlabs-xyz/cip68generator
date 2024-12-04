@@ -165,3 +165,9 @@ export type TxHistory = {
   status: string;
   action: string;
 };
+
+export type AssetInput = {
+  assetName: string;
+  quantity?: string;
+  metadata?: AssetMetadata;
+};
