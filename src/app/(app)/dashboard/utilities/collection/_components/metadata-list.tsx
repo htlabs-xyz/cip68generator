@@ -15,7 +15,7 @@ import FileDisplay from "@/components/common/file-display";
 import { isEmpty, isNil } from "lodash";
 import { Metadata } from "@prisma/client";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ViewMetadataContent } from "./view-json";
+import { ViewMetadataContent } from "../../../../../../components/common/view-json";
 import MetadataAction from "./metadata-action";
 
 export default function MetadataList() {

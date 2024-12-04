@@ -2,16 +2,16 @@
 
 import { createContext, useContext } from "react";
 import { toast } from "@/hooks/use-toast";
-import { isNil } from "lodash";
+import { isEmpty, isNil } from "lodash";
 import { submitTx } from "@/services/blockchain/submitTx";
 import { defineStepper } from "@stepperize/react";
 import useMintManyStore, { MintManyStore } from "./store";
 import { useBlockchainContext } from "@/components/providers/blockchain";
+import { convertObject } from "@/utils";
+import { createMintTransaction } from "@/services/contract/mint";
 
 const { useStepper: useMintManyStepper, steps: mintManySteps } = defineStepper(
-  { id: "template", title: "Template" },
-  { id: "basic", title: "Basic" },
-  { id: "metadata", title: "Metadata" },
+  { id: "upload", title: "Upload" },
   { id: "preview", title: "Preview" },
   { id: "transaction", title: "Transaction" },
   { id: "result", title: "Result" },
@@ -20,6 +20,7 @@ const { useStepper: useMintManyStepper, steps: mintManySteps } = defineStepper(
 type MintManyContextType = MintManyStore & {
   mintManyStepper: ReturnType<typeof useMintManyStepper>;
   mintManySteps: typeof mintManySteps;
+  uploadCsv: (input: { csvContent: string[][]; csvName: string }) => void;
   startMinting: () => void;
 };
 
@@ -31,7 +32,41 @@ export default function MintManyProvider({
 }) {
   const { signTx, address } = useBlockchainContext();
   const mintManyStepper = useMintManyStepper();
-  const { updateTaskState, setTxHash, resetTasks } = useMintManyStore();
+  const {
+    updateTaskState,
+    setTxHash,
+    resetTasks,
+    setLoading,
+    setAssetInputToMint,
+    assetInputToMint,
+  } = useMintManyStore();
+
+  const uploadCsv = async ({
+    csvContent,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    csvName,
+  }: {
+    csvContent: string[][];
+    csvName: string;
+  }) => {
+    setLoading(true);
+
+    try {
+      if (isNil(csvContent) || isEmpty(csvContent)) {
+        throw new Error("CSV content is empty");
+      }
+      setAssetInputToMint(convertObject(csvContent));
+    } catch (e) {
+      toast({
+        title: "Error",
+        description: e instanceof Error ? e.message : "Unknown error",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+      mintManyStepper.goTo("preview");
+    }
+  };
 
   const startMinting = async () => {
     resetTasks();
@@ -43,9 +78,9 @@ export default function MintManyProvider({
         throw new Error("Wallet not connected");
       }
 
-      // if (isNil(metadataToMint) && isEmpty(metadataToMint)) {
-      //   throw new Error("Metadata is required");
-      // }
+      if (isNil(assetInputToMint) && isEmpty(assetInputToMint)) {
+        throw new Error("Data is required");
+      }
 
       await new Promise((resolve) => setTimeout(resolve, 500));
 
@@ -54,11 +89,18 @@ export default function MintManyProvider({
         "create_transaction",
         "Creating Transaction",
       );
-      const { data: tx, result, message } = null!;
+
+      const {
+        data: tx,
+        result,
+        message,
+      } = await createMintTransaction({
+        address: address,
+        mintInput: assetInputToMint,
+      });
       if (!result || isNil(tx)) {
         throw new Error(message);
       }
-      // await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // wait for confirmation
       updateTaskState("inprogress", "sign_transaction", "Waiting for  sign Tx");
@@ -102,6 +144,7 @@ export default function MintManyProvider({
         ...useMintManyStore(),
         mintManyStepper,
         mintManySteps,
+        uploadCsv,
         startMinting,
       }}
     >

@@ -113,16 +113,17 @@ export default function MintOneProvider({
         result,
       } = await createMintTransaction({
         address: address,
-        mintInput: {
-          assetName: input.assetName,
-          metadata: input.metadata,
-          quantity: input.quantity,
-        },
+        mintInput: [
+          {
+            assetName: input.assetName,
+            metadata: input.metadata,
+            quantity: input.quantity,
+          },
+        ],
       });
       if (!result || isNil(tx)) {
         throw new Error(message);
       }
-      // await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // wait for confirmation
       updateTaskState("inprogress", "sign_transaction", "Waiting for  sign Tx");
