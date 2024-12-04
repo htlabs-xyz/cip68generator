@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useMintOneContext } from "@/contexts/mint-one";
 import Property from "../property";
 import { isEmpty, isNil } from "lodash";
 import {
@@ -18,17 +17,21 @@ import { getContractPolicyId } from "@/services/contract/get-policy-id";
 import CoppyButton from "@/components/common/coppy-button";
 import { SaveMetadata } from "../save-metadata";
 
-export default function PreviewStep() {
-  const {
-    stepper,
-    metadataToMint,
-    basicInfoToMint,
-    startMinting,
-    collectionToSave,
-    setCollectionToSave,
-  } = useMintOneContext();
-  // const [collectioToSave, setCollectioToSave] = useState<string>(null!);
-
+export default function PreviewStep({
+  stepper,
+  metadataToMint,
+  basicInfoToMint,
+  startMinting,
+  collectionToSave,
+  setCollectionToSave,
+}: {
+  stepper: { prev: () => void; isFirst: boolean };
+  metadataToMint: Record<string, string> | null;
+  basicInfoToMint: { assetName: string };
+  startMinting: () => void;
+  collectionToSave: string;
+  setCollectionToSave: (value: string) => void;
+}) {
   const [nftPolicyId, setNftPolicyId] = useState<string>("");
   const assetNameSort = basicInfoToMint?.assetName || "No name";
   const imgSrc = metadataToMint?.image || "";

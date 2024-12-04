@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useContext, useEffect } from "react";
-import { defineStepper } from "@stepperize/react";
 import useMintOneStore, { MintOneStore } from "./store";
 import { toast } from "@/hooks/use-toast";
 import { createMintTransaction } from "@/services/contract/mint";
@@ -10,8 +9,9 @@ import { isEmpty, isNil } from "lodash";
 import { submitTx } from "@/services/blockchain/submitTx";
 import { useQuery } from "@tanstack/react-query";
 import { addMetadata, getMetadataById } from "@/services/database/metadata";
+import { defineStepper } from "@stepperize/react";
 
-const { useStepper, steps } = defineStepper(
+const { useStepper: useMintOneStepper, steps: mintOneSteps } = defineStepper(
   { id: "template", title: "Template" },
   { id: "basic", title: "Basic" },
   { id: "metadata", title: "Metadata" },
@@ -19,10 +19,11 @@ const { useStepper, steps } = defineStepper(
   { id: "transaction", title: "Transaction" },
   { id: "result", title: "Result" },
 );
+
 type MintOneContextType = MintOneStore & {
   metadataTemplate: Record<string, string> | null;
-  stepper: ReturnType<typeof useStepper>;
-  steps: typeof steps;
+  mintOneStepper: ReturnType<typeof useMintOneStepper>;
+  mintOneSteps: typeof mintOneSteps;
   startMinting: () => void;
 };
 
@@ -34,7 +35,7 @@ export default function MintOneProvider({
   children: React.ReactNode;
 }) {
   const { signTx, address } = useBlockchainContext();
-  const stepper = useStepper();
+  const mintOneStepper = useMintOneStepper();
   const {
     metadataToMint,
     setMetadataToMint,
@@ -66,7 +67,7 @@ export default function MintOneProvider({
 
   const startMinting = async () => {
     resetTasks();
-    stepper.goTo("transaction");
+    mintOneStepper.goTo("transaction");
     try {
       updateTaskState("inprogress", "validate", "Validating Data");
 
@@ -143,7 +144,7 @@ export default function MintOneProvider({
       setTxHash(txHash);
       updateTaskState("success");
       // show result
-      stepper.goTo("result");
+      mintOneStepper.goTo("result");
       // create transaction
     } catch (e) {
       updateTaskState(
@@ -177,8 +178,8 @@ export default function MintOneProvider({
         startMinting,
         txhash,
         setTxHash,
-        stepper,
-        steps,
+        mintOneStepper,
+        mintOneSteps,
       }}
     >
       {children}

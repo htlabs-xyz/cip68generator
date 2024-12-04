@@ -1,14 +1,20 @@
 import JsonBuilder from "@/components/common/json-builder";
-import { useMintOneContext } from "@/contexts/mint-one";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { KeyValuePair } from "@/types";
 import { generateFields, generateJson } from "@/utils/json";
 
-export default function MetadataStep() {
-  const { stepper, setMetadataToMint, metadataTemplate } = useMintOneContext();
+export default function MetadataStep({
+  stepper,
+  setMetadataToMint,
+  metadataTemplate,
+}: {
+  stepper: { next: () => void; prev: () => void; isFirst: boolean };
+  setMetadataToMint: (metadata: Record<string, string>) => void;
+  metadataTemplate: Record<string, string> | null;
+}) {
   const [fields, setFields] = useState<KeyValuePair[]>(
-    generateFields(metadataTemplate),
+    generateFields(metadataTemplate || {}),
   );
   const handleNext = () => {
     setMetadataToMint(generateJson(fields));

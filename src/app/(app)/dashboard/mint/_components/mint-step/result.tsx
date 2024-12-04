@@ -1,10 +1,7 @@
-import { useMintOneContext } from "@/contexts/mint-one";
 import Link from "next/link";
 import { appNetwork } from "@/constants";
 
-export default function ResultStep() {
-  const { txhash } = useMintOneContext();
-
+export default function ResultStep({ txhash }: { txhash: string }) {
   return (
     <div className="h-full py-8 px-10 m-auto flex flex-col">
       <div className="flex flex-col items-center justify-center text-white">
