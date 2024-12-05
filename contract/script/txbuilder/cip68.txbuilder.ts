@@ -104,7 +104,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
             this.policyId + CIP68_100(stringToHex(assetName)),
           );
           if (existUtXOwithUnit) {
-              throw new Error(`${assetName} has been already exists`);
+            throw new Error(`${assetName} has been already exists`);
           }
           unsignedTx
             .mintPlutusScriptV3()
