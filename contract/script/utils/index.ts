@@ -10,7 +10,7 @@ import plutus from "../../plutus.json";
  * @returns - Compilecode
  */
 
-export const readValidator = function (title: string, version?: string): string {
+export const readValidator = function (title: string): string {
   const validator = plutus.validators.find(function (validator) {
     return validator.title === title;
   });

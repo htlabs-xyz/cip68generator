@@ -1,15 +1,9 @@
 /** @type {import('next').NextConfig} */
 
-const IPFS_GATEWAY = new URL(
-  process.env.NEXT_PUBLIC_IPFS_GATEWAY || "https://ipfs.io/",
-);
+const IPFS_GATEWAY = new URL(process.env.NEXT_PUBLIC_IPFS_GATEWAY || "https://ipfs.io/");
 
 const nextConfig = () => ({
-  serverExternalPackages: [
-    "@meshsdk/core",
-    "@meshsdk/core-cst",
-    "@meshsdk/react",
-  ],
+  serverExternalPackages: ["@meshsdk/core", "@meshsdk/core-cst", "@meshsdk/react"],
   experimental: {
     after: true,
     serverActions: {

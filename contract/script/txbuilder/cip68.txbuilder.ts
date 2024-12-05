@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   applyParamsToScript,
   PlutusScript,
@@ -10,9 +11,7 @@ import {
   metadataToCip68,
   mConStr1,
   deserializeAddress,
-  UTxO,
 } from "@meshsdk/core";
-import { getPkHash } from "@/utils";
 
 import { MeshAdapter } from "../adapters/mesh.adapter";
 import plutus from "../../plutus.json";
