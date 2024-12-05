@@ -14,8 +14,7 @@ export async function kudoUpload(formData: FormData) {
   }
   try {
     const response = await axios.post(
-      IPFS_ENDPOINT +
-        "/api/v0/add?stream-channels=true&pin=false&wrap-with-directory=false&progress=false",
+      IPFS_ENDPOINT + "/api/v0/add?stream-channels=true&pin=false&wrap-with-directory=false&progress=false",
       formData,
       {
         headers: {
@@ -42,9 +41,7 @@ export async function kudoUpload(formData: FormData) {
           create: {
             userId: userId,
             name: name,
-            type:
-              mimeTypes[name.split(".").pop()?.toLowerCase() ?? ""] ||
-              "unknown",
+            type: mimeTypes[name.split(".").pop()?.toLowerCase() ?? ""] || "unknown",
             url: `ipfs://${cid}`,
           },
         });
@@ -67,8 +64,7 @@ export async function kudoUpload(formData: FormData) {
               return {
                 userId: userId,
                 name: name,
-                type:
-                  mimeTypes[name.split(".").pop()?.toLowerCase()] || "unknown",
+                type: mimeTypes[name.split(".").pop()?.toLowerCase()] || "unknown",
                 url: `ipfs://${cid}`,
               };
             })
@@ -90,8 +86,7 @@ export async function kudoUpload(formData: FormData) {
 }
 
 async function cp(argCid: string, argName: string) {
-  const url =
-    IPFS_ENDPOINT + `/api/v0/files/cp?arg=/ipfs/${argCid}&arg=/${argName}`;
+  const url = IPFS_ENDPOINT + `/api/v0/files/cp?arg=/ipfs/${argCid}&arg=/${argName}`;
   try {
     const response = await axios.post(url, null, {
       headers: {
@@ -109,12 +104,7 @@ async function cp(argCid: string, argName: string) {
     };
   } catch (e) {
     if (axios.isAxiosError(e) && e.response) {
-      if (
-        e.response.status === 500 &&
-        e.response.data.Message.includes(
-          "directory already has entry by that name",
-        )
-      ) {
+      if (e.response.status === 500 && e.response.data.Message.includes("directory already has entry by that name")) {
         return {
           data: { cid: argCid, name: argName },
           result: true,

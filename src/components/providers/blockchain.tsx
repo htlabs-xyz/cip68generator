@@ -12,26 +12,13 @@ const BlockchainContext = createContext<BlockchainContextType>(null!);
 export const useBlockchainContext = function () {
   const context = useContext(BlockchainContext);
   if (!context) {
-    throw new Error(
-      "useBlockchainContext must be used within a BlockchainProvider",
-    );
+    throw new Error("useBlockchainContext must be used within a BlockchainProvider");
   }
   return context;
 };
 
 export default function BlockchainProvider({ children }: PropsWithChildren) {
-  const {
-    signIn,
-    connect,
-    wallet,
-    disconnect,
-    refresh,
-    browserWallet,
-    address,
-    getBalance,
-    signTx,
-    submitTx,
-  }: WalletStoreType = useWallet();
+  const { signIn, connect, wallet, disconnect, refresh, browserWallet, address, getBalance, signTx, submitTx }: WalletStoreType = useWallet();
   const { data: session, status } = useSession();
 
   const wallets = useWalletList();
@@ -46,13 +33,7 @@ export default function BlockchainProvider({ children }: PropsWithChildren) {
         return;
       }
       if (isNil(wallet)) {
-        const walletConnect = session?.user
-          ? wallets.find(
-              (w) =>
-                w.name.toLocaleLowerCase() ===
-                session.user?.wallet?.toLocaleLowerCase(),
-            )
-          : null;
+        const walletConnect = session?.user ? wallets.find((w) => w.name.toLocaleLowerCase() === session.user?.wallet?.toLocaleLowerCase()) : null;
         if (!walletConnect) {
           await signOut();
           return;

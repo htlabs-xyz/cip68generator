@@ -3,11 +3,7 @@ import { AssetInput } from "@/types";
 export function convertObject(data: string[][]): AssetInput[] {
   return data
     .slice(1) // Skip the header row
-    .filter((row) =>
-      row.some(
-        (value) => value !== null && value !== undefined && value.trim() !== "",
-      ),
-    ) // Check for non-empty rows
+    .filter((row) => row.some((value) => value !== null && value !== undefined && value.trim() !== "")) // Check for non-empty rows
     .map((row) =>
       row.reduce((acc, curr, index) => {
         const key = data[0][index];

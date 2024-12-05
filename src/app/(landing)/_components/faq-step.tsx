@@ -9,13 +9,7 @@ type Props = {
   bonus?: any[];
 };
 
-export default function GuideStep({
-  id,
-  title,
-  description,
-  description2,
-  bonus,
-}: Props) {
+export default function GuideStep({ id, title, description, description2, bonus }: Props) {
   return (
     <div className="mx-0 my-8 text-gray-400">
       <header className="flex flex-row items-center">

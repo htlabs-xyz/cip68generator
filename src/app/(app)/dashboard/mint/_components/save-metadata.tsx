@@ -5,18 +5,8 @@ import { Check, ChevronsUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Command,
-  CommandEmpty,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { cn } from "@/utils";
 import { getAllCollection } from "@/services/database/collection";
 import { useQuery } from "@tanstack/react-query";
@@ -61,17 +51,8 @@ export function SaveMetadata({
           {!isLoading && !error && data && data?.data.length > 0 && (
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  aria-expanded={open}
-                  className="w-full justify-between"
-                >
-                  {collectioToSave
-                    ? data?.data.find(
-                        (collection) => collection.id === collectioToSave,
-                      )?.name
-                    : "Select collection..."}
+                <Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between">
+                  {collectioToSave ? data?.data.find((collection) => collection.id === collectioToSave)?.name : "Select collection..."}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
@@ -87,20 +68,11 @@ export function SaveMetadata({
                         key={collection.id}
                         onSelect={(vallue) => {
                           console.log(vallue);
-                          setCollectionToSave(
-                            vallue === collectioToSave ? "" : vallue,
-                          );
+                          setCollectionToSave(vallue === collectioToSave ? "" : vallue);
                           setOpen(false);
                         }}
                       >
-                        <Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            collectioToSave === collection.id
-                              ? "opacity-100"
-                              : "opacity-0",
-                          )}
-                        />
+                        <Check className={cn("mr-2 h-4 w-4", collectioToSave === collection.id ? "opacity-100" : "opacity-0")} />
                         {collection.name}
                       </CommandItem>
                     ))}

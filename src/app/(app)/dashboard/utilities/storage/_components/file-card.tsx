@@ -24,22 +24,14 @@ export default function FileCard({ file }: { file: Media }) {
             checked={listSelected.includes(file)}
             onClick={() => handleSellect(file, !listSelected.includes(file))}
           />
-          <label
-            htmlFor="file-select"
-            className="cursor-pointer truncate text-sm"
-          >
+          <label htmlFor="file-select" className="cursor-pointer truncate text-sm">
             {file.name.length > 15 ? file.name.slice(0, 15) + "..." : file.name}
           </label>
         </div>
         <CoppyButton content={file.url} className=" h-10 px-4 py-2" />
       </div>
       <AspectRatio ratio={4 / 3} className="bg-muted">
-        <FileDisplay
-          src={file.url}
-          alt={file.name}
-          type={file.type}
-          className="h-full w-full rounded-lg border object-cover"
-        />
+        <FileDisplay src={file.url} alt={file.name} type={file.type} className="h-full w-full rounded-lg border object-cover" />
       </AspectRatio>
     </Card>
   );

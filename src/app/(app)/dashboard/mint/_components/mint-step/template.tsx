@@ -25,14 +25,8 @@ export default function TemplateStep({
     <div className="h-full m-auto flex flex-col">
       <div className="flex-wrap gap-3 space-y-5">
         <div className="mt-2 grid gap-4 grid-cols-3 max-md:grid-cols-2">
-          <Card
-            className="h-full cursor-pointer hover:bg-slate900"
-            onClick={stepper.next}
-          >
-            <AspectRatio
-              ratio={5 / 3}
-              className="bg-muted flex items-center justify-center opacity-70 border-dashed"
-            >
+          <Card className="h-full cursor-pointer hover:bg-slate900" onClick={stepper.next}>
+            <AspectRatio ratio={5 / 3} className="bg-muted flex items-center justify-center opacity-70 border-dashed">
               <svg viewBox="0 0 24 24" width="80" height="80">
                 <path
                   fillRule="evenodd"
@@ -43,12 +37,8 @@ export default function TemplateStep({
               </svg>
             </AspectRatio>
             <div className="flex flex-col items-center justify-start gap-3 self-stretch px-4 py-2">
-              <div className="font-semibol self-stretch text-center text-base">
-                Start from Scratch
-              </div>
-              <div className="font- self-stretch text-center text-sm text-secondary">
-                Begin your journey with a blank slate
-              </div>
+              <div className="font-semibol self-stretch text-center text-base">Start from Scratch</div>
+              <div className="font- self-stretch text-center text-sm text-secondary">Begin your journey with a blank slate</div>
             </div>
           </Card>
         </div>

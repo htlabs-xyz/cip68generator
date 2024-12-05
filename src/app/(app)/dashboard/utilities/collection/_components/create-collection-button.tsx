@@ -2,13 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,10 +17,7 @@ const formSchema = z.object({
   name: z
     .string()
     .min(1, "Name is required")
-    .regex(
-      /^[a-zA-Z_][a-zA-Z0-9_]*$/,
-      "Name must start with a letter or underscore and only contain letters, numbers, and underscores",
-    )
+    .regex(/^[a-zA-Z_][a-zA-Z0-9_]*$/, "Name must start with a letter or underscore and only contain letters, numbers, and underscores")
     .max(50, "Name must not exceed 50 characters"),
   description: z.string(),
 });
@@ -64,28 +55,19 @@ export function CreateCollectionButton() {
 
   return (
     <>
-      <Button
-        onClick={() => toggleCreateNewDialogOpen(true)}
-        className="bg-orange-500 text-white hover:bg-orange-600"
-      >
+      <Button onClick={() => toggleCreateNewDialogOpen(true)} className="bg-orange-500 text-white hover:bg-orange-600">
         <span>
           <Plus className="h-5 w-5" />
         </span>
         Create New
       </Button>
-      <Dialog
-        open={createNewDialogOpen}
-        onOpenChange={toggleCreateNewDialogOpen}
-      >
+      <Dialog open={createNewDialogOpen} onOpenChange={toggleCreateNewDialogOpen}>
         <DialogContent className="bg-card">
           <DialogTitle>Create New Collection</DialogTitle>
 
           <div className="w-full max-w-md rounded-l p-2">
             <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(handleSubmit)}
-                className="space-y-8 max-w-3xl mx-auto"
-              >
+              <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8 max-w-3xl mx-auto">
                 <FormField
                   control={form.control}
                   name="name"
@@ -105,11 +87,7 @@ export function CreateCollectionButton() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Textarea
-                          placeholder="Description..."
-                          className="resize-none"
-                          {...field}
-                        />
+                        <Textarea placeholder="Description..." className="resize-none" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

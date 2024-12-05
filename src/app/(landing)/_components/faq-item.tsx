@@ -16,12 +16,7 @@ export default function FaqItem({ title, Children, index }: Props) {
     setIsOpen(!isOpen);
   };
   return (
-    <div
-      className={cn(
-        "mb-5 w-full rounded-2xl bg-slate-900 shadow-xl",
-        isOpen && "shadow-2xl",
-      )}
-    >
+    <div className={cn("mb-5 w-full rounded-2xl bg-slate-900 shadow-xl", isOpen && "shadow-2xl")}>
       <header className="relative box-border flex w-full flex-col rounded-2xl px-5 py-3 filter">
         <section
           className={cn(
@@ -48,9 +43,7 @@ export default function FaqItem({ title, Children, index }: Props) {
           className='relative flex w-full cursor-pointer flex-wrap items-center justify-between text-left transition-all duration-300 ease-in-out before:absolute before:right-[-36px] before:top-0 before:z-10 before:h-full before:w-[60px] before:bg-transparent before:content-[""]'
           onClick={handleOpen}
         >
-          <h3 className="m-0 p-0 text-[18px] font-semibold leading-[40px] text-gray-300">
-            {title}
-          </h3>
+          <h3 className="m-0 p-0 text-[18px] font-semibold leading-[40px] text-gray-300">{title}</h3>
         </section>
         {isOpen && (
           <section className="flex flex-wrap items-center justify-between text-left">

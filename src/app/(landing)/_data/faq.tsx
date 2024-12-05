@@ -83,8 +83,7 @@ const guideConnectWallet = [
   },
   {
     id: 2,
-    title:
-      "Navigate to DEMARKET and click 'Connect Wallet' on the top right corner of the page",
+    title: "Navigate to DEMARKET and click 'Connect Wallet' on the top right corner of the page",
     description:
       "Visit the DEMARKET website at https://demarket-frontend.vercel.app/ . On the top right corner you will find the 'Connect Wallet' button. Click on it to initiate the wallet connection process.",
   },
@@ -168,8 +167,7 @@ const guideGetStarteds = [
   {
     id: 4,
     title: "Getting Started on DEMARKET",
-    description:
-      "To begin your journey with Cardano NFTs on DEMARKET, follow these simple steps: ",
+    description: "To begin your journey with Cardano NFTs on DEMARKET, follow these simple steps: ",
 
     bonus: [
       {
@@ -181,8 +179,7 @@ const guideGetStarteds = [
           " Step 2: Browse the marketplace: Discover unique NFTs created by talented artists and creators from around the world. You can filter your search based on categories, collections, and more.",
       },
       {
-        content:
-          " Step 3: Buy, sell, and trade NFTs: Interact with the vibrant DEMARKET community by buying, selling, and trading NFTs.",
+        content: " Step 3: Buy, sell, and trade NFTs: Interact with the vibrant DEMARKET community by buying, selling, and trading NFTs.",
       },
 
       {
@@ -198,8 +195,7 @@ const guideGetStarteds = [
 
     bonus: [
       {
-        content:
-          "Users participating as buyers can purchase assets on DEMARKET.",
+        content: "Users participating as buyers can purchase assets on DEMARKET.",
       },
       {
         content: "Users participating as sellers can sell or withdraw assets.",
@@ -208,8 +204,7 @@ const guideGetStarteds = [
         content: "Users will receive royalties if the NFT is minted by them.",
       },
       {
-        content:
-          "Users can register intellectual products by minting NFTs on DEMARKET.",
+        content: "Users can register intellectual products by minting NFTs on DEMARKET.",
       },
       {
         content: "Users can create intellectual product collections.",
@@ -218,8 +213,7 @@ const guideGetStarteds = [
         content: "Users can build an account to become a store page.",
       },
       {
-        content:
-          "The platform includes documentation on how to use it for beginners.",
+        content: "The platform includes documentation on how to use it for beginners.",
       },
       {
         content: "Users can tracking the history of transaction NFT.",
@@ -261,19 +255,16 @@ const createGuides = [
   {
     id: 4,
     title: "Step 4: Enter NFT details",
-    description:
-      "After uploading your file, complete the required fields to provide more information about your NFT:",
+    description: "After uploading your file, complete the required fields to provide more information about your NFT:",
     bonus: [
       {
         content: "Title : Give your NFT a unique and descriptive title.",
       },
       {
-        content:
-          "On-Chain Name : Enter a unique identifying name that is recorded on the block chain and used to identify your NFT.",
+        content: "On-Chain Name : Enter a unique identifying name that is recorded on the block chain and used to identify your NFT.",
       },
       {
-        content:
-          "Description : Provide a detailed description of your NFT, including any relevant background information, inspiration, or context.",
+        content: "Description : Provide a detailed description of your NFT, including any relevant background information, inspiration, or context.",
       },
     ],
   },
@@ -298,23 +289,19 @@ const smartContractGuides = [
     description: "",
     bonus: [
       {
-        content:
-          "My Assets: Query all NFTs in your wallet, so you can choose anyone to sell them.",
+        content: "My Assets: Query all NFTs in your wallet, so you can choose anyone to sell them.",
       },
       {
-        content:
-          "Sell NFTs: You can lock your assets in our platform, and then your assets will be put on our DEMARKET. ",
+        content: "Sell NFTs: You can lock your assets in our platform, and then your assets will be put on our DEMARKET. ",
       },
       {
         content: "When selling your assets, you have to sign your transaction.",
       },
       {
-        content:
-          "Buy NFTs: Connect your wallet and buy your assets. You have to sign your transaction.",
+        content: "Buy NFTs: Connect your wallet and buy your assets. You have to sign your transaction.",
       },
       {
-        content:
-          "Smart contracts will refund NFTs for users. And the seller receives your ADA. ",
+        content: "Smart contracts will refund NFTs for users. And the seller receives your ADA. ",
       },
     ],
   },
@@ -327,8 +314,7 @@ const smartContractGuides = [
           "If you don't want to sell your NFT, you can delete it on our platform. Therefore, your assets will refund to your wallet (including tsx fees, … )",
       },
       {
-        content:
-          "When having a transaction of NFTs, the author of NFTs will receive a little money.",
+        content: "When having a transaction of NFTs, the author of NFTs will receive a little money.",
       },
     ],
   },
@@ -342,9 +328,7 @@ const faqs: { title: string; Children: () => JSX.Element }[] = [
         <aside className={""}>
           <section className="guide__video">
             <iframe
-              className={cn(
-                "mt-4 block aspect-video w-full rounded-lg object-contain",
-              )}
+              className={cn("mt-4 block aspect-video w-full rounded-lg object-contain")}
               src="https://www.youtube.com/embed/bA_0YiNfma8?si=ZI3jimRKeZO133_2"
               title="YouTube video player"
               frameBorder={0}
@@ -354,27 +338,12 @@ const faqs: { title: string; Children: () => JSX.Element }[] = [
             />
           </section>
           <h2 className={cn("mt-6 text-white")}>
-            DEMARKET is developed based on Cardano, an ecosystem with a series
-            of outstanding advantages compared to other Blockchain platforms,
-            helping users to be assured of security, personal information will
-            never be compromised. violations, costs incurred are less
-            expensive,…
+            DEMARKET is developed based on Cardano, an ecosystem with a series of outstanding advantages compared to other Blockchain platforms,
+            helping users to be assured of security, personal information will never be compromised. violations, costs incurred are less expensive,…
           </h2>
           <div>
-            {guideGetStarteds.map(function (
-              { id, description, title, description2, bonus },
-              index,
-            ) {
-              return (
-                <GuideStep
-                  id={id}
-                  key={index}
-                  title={title}
-                  description={description}
-                  description2={description2}
-                  bonus={bonus}
-                />
-              );
+            {guideGetStarteds.map(function ({ id, description, title, description2, bonus }, index) {
+              return <GuideStep id={id} key={index} title={title} description={description} description2={description2} bonus={bonus} />;
             })}
           </div>
         </aside>
@@ -388,9 +357,7 @@ const faqs: { title: string; Children: () => JSX.Element }[] = [
         <aside className={cn("guide__content")}>
           <section className="guide__video">
             <iframe
-              className={cn(
-                "mt-4 block aspect-video w-full rounded-lg object-contain",
-              )}
+              className={cn("mt-4 block aspect-video w-full rounded-lg object-contain")}
               src="https://www.youtube.com/embed/KJ8BicG_heU?si=Otckt-u675iFiIqV"
               title="YouTube video player"
               frameBorder={0}
@@ -400,24 +367,11 @@ const faqs: { title: string; Children: () => JSX.Element }[] = [
             />
           </section>
           <h2 className={cn("mt-6 text-white")}>
-            To buy, mint or manage NFTs on DEMARKET, you&apos;ll first need to
-            connect your wallet. You can do so in just a few easy steps!
+            To buy, mint or manage NFTs on DEMARKET, you&apos;ll first need to connect your wallet. You can do so in just a few easy steps!
           </h2>
           <div>
-            {guideConnectWallet.map(function (
-              { id, description, title, description2, bonus },
-              index,
-            ) {
-              return (
-                <GuideStep
-                  key={index}
-                  id={id}
-                  title={title}
-                  description={description}
-                  description2={description2}
-                  bonus={bonus}
-                />
-              );
+            {guideConnectWallet.map(function ({ id, description, title, description2, bonus }, index) {
+              return <GuideStep key={index} id={id} title={title} description={description} description2={description2} bonus={bonus} />;
             })}
           </div>
         </aside>
@@ -431,9 +385,7 @@ const faqs: { title: string; Children: () => JSX.Element }[] = [
         <aside className={cn("guide__content")}>
           <section className="guide__video">
             <iframe
-              className={cn(
-                "mt-4 block aspect-video w-full rounded-lg object-contain",
-              )}
+              className={cn("mt-4 block aspect-video w-full rounded-lg object-contain")}
               src="https://www.youtube.com/embed/2pUNempKByo?si=5p6i-ujMnug3Kx89"
               title="YouTube video player"
               frameBorder={0}
@@ -443,25 +395,12 @@ const faqs: { title: string; Children: () => JSX.Element }[] = [
             />
           </section>
           <h2 className={cn("mt-6 text-white")}>
-            Minting an NFT on DEMARKET is a straightforward process. Follow
-            these detailed steps to create and list your NFT on the platform:
+            Minting an NFT on DEMARKET is a straightforward process. Follow these detailed steps to create and list your NFT on the platform:
           </h2>
 
           <div>
-            {createGuides.map(function (
-              { id, description, title, description2, bonus },
-              index,
-            ) {
-              return (
-                <GuideStep
-                  key={index}
-                  id={id}
-                  title={title}
-                  description={description}
-                  description2={description2}
-                  bonus={bonus}
-                />
-              );
+            {createGuides.map(function ({ id, description, title, description2, bonus }, index) {
+              return <GuideStep key={index} id={id} title={title} description={description} description2={description2} bonus={bonus} />;
             })}
           </div>
         </aside>
@@ -474,28 +413,15 @@ const faqs: { title: string; Children: () => JSX.Element }[] = [
       return (
         <aside className={cn("guide__content")}>
           <h2 className={cn("mt-6 text-white")}>
-            Smart contracts are executed on blockchain, which means that the
-            terms are stored in a distributed database and cannot be changed.
-            Transactions are also processed on the blockchain, which automates
-            payments and counterparties.
+            Smart contracts are executed on blockchain, which means that the terms are stored in a distributed database and cannot be changed.
+            Transactions are also processed on the blockchain, which automates payments and counterparties.
           </h2>
 
           <div>
             {/*  eslint-disable @typescript-eslint/no-explicit-any  */}
 
-            {smartContractGuides.map(function (
-              { id, title, description, bonus }: any,
-              index,
-            ) {
-              return (
-                <GuideStep
-                  key={index}
-                  id={id}
-                  title={title}
-                  description={description}
-                  bonus={bonus}
-                />
-              );
+            {smartContractGuides.map(function ({ id, title, description, bonus }: any, index) {
+              return <GuideStep key={index} id={id} title={title} description={description} bonus={bonus} />;
             })}
           </div>
         </aside>
@@ -509,9 +435,7 @@ const faqs: { title: string; Children: () => JSX.Element }[] = [
         <aside className={cn("guide__content")}>
           <section className="guide__video">
             <iframe
-              className={cn(
-                "mt-4 block aspect-video w-full rounded-lg object-contain",
-              )}
+              className={cn("mt-4 block aspect-video w-full rounded-lg object-contain")}
               src="https://www.youtube.com/embed/jt56Ek5rY08?si=_b5WnD5_UTQxoX8l"
               title="YouTube video player"
               frameBorder={0}
@@ -523,19 +447,8 @@ const faqs: { title: string; Children: () => JSX.Element }[] = [
           <h2 className={cn("mt-6 text-white")}>Selling an NFT on Demarket</h2>
           <div>
             {/*  eslint-disable @typescript-eslint/no-explicit-any  */}
-            {sellGuides.map(function (
-              { id, title, description, bonus }: any,
-              index,
-            ) {
-              return (
-                <GuideStep
-                  key={index}
-                  id={id}
-                  title={title}
-                  description={description}
-                  bonus={bonus}
-                />
-              );
+            {sellGuides.map(function ({ id, title, description, bonus }: any, index) {
+              return <GuideStep key={index} id={id} title={title} description={description} bonus={bonus} />;
             })}
           </div>
         </aside>
@@ -549,9 +462,7 @@ const faqs: { title: string; Children: () => JSX.Element }[] = [
         <aside className={cn("guide__content")}>
           <section className="guide__video">
             <iframe
-              className={cn(
-                "mt-4 block aspect-video w-full rounded-lg object-contain",
-              )}
+              className={cn("mt-4 block aspect-video w-full rounded-lg object-contain")}
               src="https://www.youtube.com/embed/nRssNP9Vrts?si=p6XUxmb-YZqGPjmR"
               title="YouTube video player"
               frameBorder={0}
@@ -563,14 +474,7 @@ const faqs: { title: string; Children: () => JSX.Element }[] = [
           <h2 className={cn("mt-6 text-white")}>Buying an NFT on Demarket</h2>
           <div>
             {buyGuides.map(function ({ id, title, description }, index) {
-              return (
-                <GuideStep
-                  key={index}
-                  id={id}
-                  title={title}
-                  description={description}
-                />
-              );
+              return <GuideStep key={index} id={id} title={title} description={description} />;
             })}
           </div>
         </aside>

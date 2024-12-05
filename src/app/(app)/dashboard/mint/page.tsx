@@ -18,12 +18,8 @@ export default function UtilitiesPage() {
                 <Images.mintOne className="h-full w-full rounded-t-lg object-cover" />
               </AspectRatio>
               <div className="flex flex-col items-center justify-start gap-3 self-stretch px-4 py-2">
-                <div className="font-semibol self-stretch text-center text-base">
-                  Mint Your Asset (Token/NFT) Now
-                </div>
-                <div className="font- self-stretch text-center text-sm text-secondary">
-                  Easily mint dynamic asset on Cardano!
-                </div>
+                <div className="font-semibol self-stretch text-center text-base">Mint Your Asset (Token/NFT) Now</div>
+                <div className="font- self-stretch text-center text-sm text-secondary">Easily mint dynamic asset on Cardano!</div>
               </div>
             </Card>
           </Link>
@@ -36,29 +32,18 @@ export default function UtilitiesPage() {
                 <Images.mintMany className="h-full w-full rounded-t-lg object-cover" />
               </AspectRatio>
               <div className="flex flex-col items-center justify-start gap-3 self-stretch px-4 py-2">
-                <div className="font-semibol self-stretch text-center text-base">
-                  Mint Many Asset
-                </div>
-                <div className="font- self-stretch text-center text-sm text-secondary">
-                  Comming Soon...
-                </div>
+                <div className="font-semibol self-stretch text-center text-base">Mint Many Asset</div>
+                <div className="font- self-stretch text-center text-sm text-secondary">Comming Soon...</div>
               </div>
             </Card>
           </Link>
           <Card className="h-full opacity-50">
-            <AspectRatio
-              ratio={5 / 3}
-              className="bg-muted flex items-center justify-center opacity-70 border-dashed"
-            >
+            <AspectRatio ratio={5 / 3} className="bg-muted flex items-center justify-center opacity-70 border-dashed">
               <Box className="h-20 w-20" />
             </AspectRatio>
             <div className="flex flex-col items-center justify-start gap-3 self-stretch px-4 py-2">
-              <div className="font-semibol self-stretch text-center text-base">
-                API Program
-              </div>
-              <div className="font- self-stretch text-center text-sm text-secondary">
-                Comming Soon
-              </div>
+              <div className="font-semibol self-stretch text-center text-base">API Program</div>
+              <div className="font- self-stretch text-center text-sm text-secondary">Comming Soon</div>
             </div>
           </Card>
         </div>

@@ -8,8 +8,7 @@ export type UploadCsvStore = {
 const useUploadCsvStore = create<UploadCsvStore>((set) => ({
   csvContent: null!,
   csvName: null!,
-  setCsvContent: ({ name, data }: { name: string; data: string[][] }) =>
-    set({ csvContent: data, csvName: name }),
+  setCsvContent: ({ name, data }: { name: string; data: string[][] }) => set({ csvContent: data, csvName: name }),
 }));
 
 export default useUploadCsvStore;

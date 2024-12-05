@@ -1,12 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Property from "../property";
 import { isEmpty, isNil } from "lodash";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import FileDisplay from "@/components/common/file-display";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,16 +9,12 @@ import { Copy } from "lucide-react";
 import { useUnitContext } from "@/contexts/unit";
 import { hexToString } from "@meshsdk/core";
 export default function PreviewStep() {
-  const { assetDetails, updateStepper, metadataToUpdate, startUpdating } =
-    useUnitContext();
+  const { assetDetails, updateStepper, metadataToUpdate, startUpdating } = useUnitContext();
 
-  const assetNameString = hexToString(
-    assetDetails?.asset_name.replace(/^000de140/, ""),
-  );
+  const assetNameString = hexToString(assetDetails?.asset_name.replace(/^000de140/, ""));
   const assetNameSort = assetNameString;
   const imgSrc = metadataToUpdate?.image || "";
-  const mediaType =
-    imgSrc == "" ? "text/plain" : metadataToUpdate?.mediaType || "image/png";
+  const mediaType = imgSrc == "" ? "text/plain" : metadataToUpdate?.mediaType || "image/png";
   const description = metadataToUpdate?.description || "";
 
   return (
@@ -87,30 +78,16 @@ export default function PreviewStep() {
               <div className="flex flex-col gap-8">
                 <div className="grid grid-cols-4 gap-y-5 gap-x-2">
                   {metadataToUpdate &&
-                    Object.entries(metadataToUpdate).map(
-                      ([name, value], index) => (
-                        <TooltipProvider key={index}>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Property
-                                image=""
-                                name={name}
-                                value={
-                                  isNil(value) || isEmpty(value)
-                                    ? "null"
-                                    : `${value}`
-                                }
-                              />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              {isNil(value) || isEmpty(value)
-                                ? "null"
-                                : `${value}`}
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      ),
-                    )}
+                    Object.entries(metadataToUpdate).map(([name, value], index) => (
+                      <TooltipProvider key={index}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Property image="" name={name} value={isNil(value) || isEmpty(value) ? "null" : `${value}`} />
+                          </TooltipTrigger>
+                          <TooltipContent>{isNil(value) || isEmpty(value) ? "null" : `${value}`}</TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    ))}
                 </div>
               </div>
             </Card>
@@ -120,11 +97,7 @@ export default function PreviewStep() {
       <div className="fixed right-0 bottom-0 z-10 max-h-16 w-full bg-section">
         <div className="mx-4 flex h-16 items-center sm:mx-8">
           <div className="flex flex-1 items-center justify-end space-x-2">
-            <Button
-              variant="secondary"
-              onClick={updateStepper.prev}
-              disabled={updateStepper.isFirst}
-            >
+            <Button variant="secondary" onClick={updateStepper.prev} disabled={updateStepper.isFirst}>
               Back
             </Button>
             <Button onClick={startUpdating}>Next</Button>

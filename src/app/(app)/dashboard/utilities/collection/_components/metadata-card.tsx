@@ -26,17 +26,10 @@ export default function MetadataCard({ metadata }: { metadata: Metadata }) {
           <Checkbox
             className="h-4 w-4 rounded-full"
             checked={listSelected.includes(metadata)}
-            onClick={() =>
-              handleSellect(metadata, !listSelected.includes(metadata))
-            }
+            onClick={() => handleSellect(metadata, !listSelected.includes(metadata))}
           />
-          <label
-            htmlFor="metadata-select"
-            className="cursor-pointer truncate text-sm"
-          >
-            {!isNil(name) && name.length > 15
-              ? name.slice(0, 15) + "..."
-              : name}
+          <label htmlFor="metadata-select" className="cursor-pointer truncate text-sm">
+            {!isNil(name) && name.length > 15 ? name.slice(0, 15) + "..." : name}
           </label>
         </div>
         <MetadataAction metadata={metadata} />

@@ -45,13 +45,7 @@ type UnitContextType = UnitStore & {
   startBurning: () => void;
 };
 
-export default function UnitProvider({
-  unit,
-  children,
-}: {
-  unit: string;
-  children: React.ReactNode;
-}) {
+export default function UnitProvider({ unit, children }: { unit: string; children: React.ReactNode }) {
   const { signTx, address } = useBlockchainContext();
 
   const updateStepper = useUpdateStepper();
@@ -105,12 +99,8 @@ export default function UnitProvider({
   const pubKeyHash = !isNil(address) && deserializeAddress(address)?.pubKeyHash;
 
   const isAuthor = !!(
-    (!isNil(assetData?.data?.onchain_metadata?._pk) &&
-      pubKeyHash &&
-      assetData?.data?.onchain_metadata?._pk.includes(pubKeyHash)) ||
-    (pubKeyHash &&
-      assetData?.data?.onchain_metadata?._pk &&
-      pubKeyHash.includes(assetData.data.onchain_metadata._pk))
+    (!isNil(assetData?.data?.onchain_metadata?._pk) && pubKeyHash && assetData?.data?.onchain_metadata?._pk.includes(pubKeyHash)) ||
+    (pubKeyHash && assetData?.data?.onchain_metadata?._pk && pubKeyHash.includes(assetData.data.onchain_metadata._pk))
   );
 
   const handleUpdate = () => {
@@ -133,20 +123,14 @@ export default function UnitProvider({
       // check assetName is unique
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const assetName = hexToString(
-        (assetData?.data?.asset_name ?? "").replace(/^000de140/, ""),
-      );
+      const assetName = hexToString((assetData?.data?.asset_name ?? "").replace(/^000de140/, ""));
 
       const input = {
         assetName: assetName,
         metadata: metadataToUpdate,
       };
 
-      updateTaskState(
-        "inprogress",
-        "create_transaction",
-        "Creating Transaction",
-      );
+      updateTaskState("inprogress", "create_transaction", "Creating Transaction");
       const {
         data: tx,
         message,
@@ -166,17 +150,9 @@ export default function UnitProvider({
       // wait for confirmation
       updateTaskState("inprogress", "sign_transaction", "Waiting for  sign Tx");
       const signedTx = await signTx(tx);
-      updateTaskState(
-        "inprogress",
-        "submit_transaction",
-        "Submitting Transaction",
-      );
+      updateTaskState("inprogress", "submit_transaction", "Submitting Transaction");
       // // submit transaction
-      const {
-        data: txHash,
-        result: txResult,
-        message: txMessage,
-      } = await submitTx(signedTx);
+      const { data: txHash, result: txResult, message: txMessage } = await submitTx(signedTx);
       if (!txResult || isNil(txHash)) {
         throw new Error(txMessage);
       }
@@ -186,11 +162,7 @@ export default function UnitProvider({
       updateStepper.goTo("result");
       // create transaction
     } catch (e) {
-      updateTaskState(
-        "error",
-        "",
-        e instanceof Error ? e.message : "unknown error",
-      );
+      updateTaskState("error", "", e instanceof Error ? e.message : "unknown error");
       toast({
         title: "Error",
         description: e instanceof Error ? e.message : "unknown error",
@@ -213,19 +185,13 @@ export default function UnitProvider({
       }
       // check assetName is unique
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      const assetName = hexToString(
-        (assetData?.data?.asset_name ?? "").replace(/^000de140/, ""),
-      );
+      const assetName = hexToString((assetData?.data?.asset_name ?? "").replace(/^000de140/, ""));
       const input = {
         assetName: assetName,
         quantity: "-1",
       };
 
-      updateTaskState(
-        "inprogress",
-        "create_transaction",
-        "Creating Transaction",
-      );
+      updateTaskState("inprogress", "create_transaction", "Creating Transaction");
 
       const {
         data: tx,
@@ -244,17 +210,9 @@ export default function UnitProvider({
       // wait for confirmation
       updateTaskState("inprogress", "sign_transaction", "Waiting for  sign Tx");
       const signedTx = await signTx(tx);
-      updateTaskState(
-        "inprogress",
-        "submit_transaction",
-        "Submitting Transaction",
-      );
+      updateTaskState("inprogress", "submit_transaction", "Submitting Transaction");
       // submit transaction
-      const {
-        data: txHash,
-        result: txResult,
-        message: txMessage,
-      } = await submitTx(signedTx);
+      const { data: txHash, result: txResult, message: txMessage } = await submitTx(signedTx);
       if (!txResult || isNil(txHash)) {
         throw new Error(txMessage);
       }
@@ -264,11 +222,7 @@ export default function UnitProvider({
       burnStepper.goTo("result");
       // create transaction
     } catch (e) {
-      updateTaskState(
-        "error",
-        "",
-        e instanceof Error ? e.message : "unknown error",
-      );
+      updateTaskState("error", "", e instanceof Error ? e.message : "unknown error");
       toast({
         title: "Error",
         description: e instanceof Error ? e.message : "unknown error",

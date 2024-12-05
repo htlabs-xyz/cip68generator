@@ -1,10 +1,4 @@
-import {
-  Sheet,
-  SheetHeader,
-  SheetContent,
-  SheetTrigger,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { Sheet, SheetHeader, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { SheetMenuList } from "./menu-list";
@@ -15,10 +9,7 @@ export function SheetMenu() {
     <Sheet>
       <SheetTrigger className="lg:hidden" asChild>
         <Button
-          className={cn(
-            "flex h-16 w-full flex-col items-center justify-center gap-1 border-none bg-transparent text-xs",
-            "text-muted-foreground",
-          )}
+          className={cn("flex h-16 w-full flex-col items-center justify-center gap-1 border-none bg-transparent text-xs", "text-muted-foreground")}
           variant="outline"
         >
           <Icons.menuIcon size={20} />

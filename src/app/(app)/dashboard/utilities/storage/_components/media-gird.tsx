@@ -21,11 +21,7 @@ export default function MediaGird() {
                       <Skeleton className="h-4 w-4 rounded-full" />
                       <Skeleton className="h-4 w-24" />
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="hover:bg-white/10"
-                    >
+                    <Button variant="ghost" size="icon" className="hover:bg-white/10">
                       <MoreVertical className="h-5 w-5" />
                     </Button>
                   </div>
@@ -34,9 +30,7 @@ export default function MediaGird() {
                   </AspectRatio>
                 </Card>
               ))
-            : listMedia.map((file, index) => (
-                <FileCard file={file} key={index} />
-              ))}
+            : listMedia.map((file, index) => <FileCard file={file} key={index} />)}
         </div>
       </div>
     </div>

@@ -20,15 +20,7 @@ export default function Sidebar({ className }: Props) {
       <nav className="py-[25px] px-[18px]">
         <ul>
           {publicRoutes.map(function ({ name, redirect }, index: number) {
-            return (
-              <NavLink
-                key={index}
-                isActive={false}
-                name={name}
-                redirect={redirect}
-                setSelected={setSelected}
-              />
-            );
+            return <NavLink key={index} isActive={false} name={name} redirect={redirect} setSelected={setSelected} />;
           })}
         </ul>
       </nav>

@@ -55,14 +55,7 @@ export default function FilePicker({
       >
         Upload File
       </label>
-      <input
-        id="file-upload"
-        type="file"
-        className="hidden"
-        accept={accept}
-        multiple={multiple}
-        onChange={handleFileUpload}
-      />
+      <input id="file-upload" type="file" className="hidden" accept={accept} multiple={multiple} onChange={handleFileUpload} />
     </div>
   );
 }

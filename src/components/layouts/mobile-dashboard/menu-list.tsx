@@ -5,12 +5,7 @@ import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/utils";
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-  TooltipProvider,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
 import { Icons } from "@/components/common/icons";
@@ -32,32 +27,18 @@ export function SheetMenuList() {
                 <TooltipProvider disableHoverableContent>
                   <Tooltip delayDuration={100}>
                     <TooltipTrigger asChild>
-                      <Button
-                        variant={active ? "secondary" : "ghost"}
-                        className="mb-1 h-10 w-full justify-start"
-                        asChild
-                        disabled={disabled}
-                      >
+                      <Button variant={active ? "secondary" : "ghost"} className="mb-1 h-10 w-full justify-start" asChild disabled={disabled}>
                         <Link href={href}>
                           <span className={cn(isOpen === false ? "" : "mr-4")}>
                             <Icon className={`size-5 flex-none`} />
                           </span>
-                          <p
-                            className={cn(
-                              "max-w-[200px] truncate",
-                              isOpen === false
-                                ? "-translate-x-96 opacity-0"
-                                : "translate-x-0 opacity-100",
-                            )}
-                          >
+                          <p className={cn("max-w-[200px] truncate", isOpen === false ? "-translate-x-96 opacity-0" : "translate-x-0 opacity-100")}>
                             {title}
                           </p>
                         </Link>
                       </Button>
                     </TooltipTrigger>
-                    {isOpen === false && (
-                      <TooltipContent side="right">{title}</TooltipContent>
-                    )}
+                    {isOpen === false && <TooltipContent side="right">{title}</TooltipContent>}
                   </Tooltip>
                 </TooltipProvider>
               </div>
@@ -65,31 +46,17 @@ export function SheetMenuList() {
           })}
           {/* <Separator className="my-4" /> */}
           <div className="flex w-full grow items-end">
-            <div
-              className={`${isOpen ? "flex-row justify-between" : "flex-col"} flex w-full items-center gap-4 border-t-2 py-2`}
-            >
-              <Link
-                href="https://facebook.com"
-                className="flex h-10 w-full items-center justify-center rounded hover:bg-gray-700"
-              >
+            <div className={`${isOpen ? "flex-row justify-between" : "flex-col"} flex w-full items-center gap-4 border-t-2 py-2`}>
+              <Link href="https://facebook.com" className="flex h-10 w-full items-center justify-center rounded hover:bg-gray-700">
                 <Facebook className="h-6 w-6" />
               </Link>
-              <Link
-                href="https://twitter.com"
-                className="flex h-10 w-full items-center justify-center rounded hover:bg-gray-700"
-              >
+              <Link href="https://twitter.com" className="flex h-10 w-full items-center justify-center rounded hover:bg-gray-700">
                 <Twitter className="h-6 w-6" />
               </Link>
-              <Link
-                href="https://instagram.com"
-                className="flex h-10 w-full items-center justify-center rounded hover:bg-gray-700"
-              >
+              <Link href="https://instagram.com" className="flex h-10 w-full items-center justify-center rounded hover:bg-gray-700">
                 <Instagram className="h-6 w-6" />
               </Link>
-              <Link
-                href="https://linkedin.com"
-                className="flex h-10 w-full items-center justify-center rounded hover:bg-gray-700"
-              >
+              <Link href="https://linkedin.com" className="flex h-10 w-full items-center justify-center rounded hover:bg-gray-700">
                 <Linkedin className="h-6 w-6" />
               </Link>
             </div>

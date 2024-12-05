@@ -1,9 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import {
-  Asset,
-  BlockfrostSupportedNetworks,
-  resolveRewardAddress,
-} from "@meshsdk/core";
+import { Asset, BlockfrostSupportedNetworks, resolveRewardAddress } from "@meshsdk/core";
 import { parseHttpError } from "@/utils";
 import { Transaction } from "@/types";
 
@@ -14,10 +10,7 @@ export class BlockfrostFetcher {
   constructor(baseUrl: string);
   constructor(projectId: string, version?: number);
   constructor(...args: unknown[]) {
-    if (
-      typeof args[0] === "string" &&
-      (args[0].startsWith("http") || args[0].startsWith("/"))
-    ) {
+    if (typeof args[0] === "string" && (args[0].startsWith("http") || args[0].startsWith("/"))) {
       this._axiosInstance = axios.create({ baseURL: args[0] });
       this._network = "mainnet";
     } else {
@@ -33,9 +26,7 @@ export class BlockfrostFetcher {
 
   async fetchAddressDetail(address: string) {
     try {
-      const { data, status } = await this._axiosInstance.get(
-        `/addresses/${address}/total`,
-      );
+      const { data, status } = await this._axiosInstance.get(`/addresses/${address}/total`);
 
       if (status === 200 || status == 202) return data;
       throw parseHttpError(data);
@@ -46,9 +37,7 @@ export class BlockfrostFetcher {
 
   async fetchSpecificAsset(asset: string) {
     try {
-      const { data, status } = await this._axiosInstance.get(
-        `/assets/${asset}`,
-      );
+      const { data, status } = await this._axiosInstance.get(`/assets/${asset}`);
 
       if (status === 200 || status == 202) return data;
       throw parseHttpError(data);
@@ -59,9 +48,7 @@ export class BlockfrostFetcher {
 
   async fetchAssetTransactions(asset: string) {
     try {
-      const { data, status } = await this._axiosInstance.get(
-        `/assets/${asset}/transactions?order=desc`,
-      );
+      const { data, status } = await this._axiosInstance.get(`/assets/${asset}/transactions?order=desc`);
 
       if (status === 200 || status == 202) return data;
       throw parseHttpError(data);
@@ -71,13 +58,9 @@ export class BlockfrostFetcher {
   }
 
   async fetchAssetsByAddress(address: string): Promise<Asset[]> {
-    const rewardAddress = address.startsWith("addr")
-      ? resolveRewardAddress(address)
-      : address;
+    const rewardAddress = address.startsWith("addr") ? resolveRewardAddress(address) : address;
     try {
-      const { data, status } = await this._axiosInstance.get(
-        `/accounts/${rewardAddress}/addresses/assets`,
-      );
+      const { data, status } = await this._axiosInstance.get(`/accounts/${rewardAddress}/addresses/assets`);
 
       if (status === 200 || status == 202) return data;
 
@@ -89,9 +72,7 @@ export class BlockfrostFetcher {
 
   async fetchTransactionsUTxO(txHash: string): Promise<Transaction> {
     try {
-      const { data, status } = await this._axiosInstance.get(
-        `/txs/${txHash}/utxos`,
-      );
+      const { data, status } = await this._axiosInstance.get(`/txs/${txHash}/utxos`);
 
       if (status === 200 || status == 202) return data;
       throw parseHttpError(data);
@@ -102,9 +83,7 @@ export class BlockfrostFetcher {
 
   async fetchDatum(datum: string) {
     try {
-      const { data, status } = await this._axiosInstance.get(
-        `/scripts/datum/${datum}`,
-      );
+      const { data, status } = await this._axiosInstance.get(`/scripts/datum/${datum}`);
 
       if (status === 200 || status == 202) return data;
       throw parseHttpError(data);

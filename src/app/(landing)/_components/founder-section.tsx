@@ -1,9 +1,6 @@
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
-import {
-  FaTwitter as TwitterIcon,
-  FaLinkedinIn as LinkedinIcon,
-} from "react-icons/fa";
+import { FaTwitter as TwitterIcon, FaLinkedinIn as LinkedinIcon } from "react-icons/fa";
 
 type Props = {
   id?: number;
@@ -17,15 +14,7 @@ type Props = {
   description: string;
   index: number;
 };
-const Founder = function ({
-  avatar,
-  firstName,
-  lastName,
-  role,
-  twitter,
-  linkedin,
-  description,
-}: Props) {
+const Founder = function ({ avatar, firstName, lastName, role, twitter, linkedin, description }: Props) {
   return (
     <div className="flex flex-col items-center gap-5 rounded-2xl bg-slate-900 p-7 transition-all duration-300 ease-in-out">
       <div className="bg-[rgba(0, 0, 0, 0.08)] relative h-[150px] w-[150px] overflow-hidden rounded-full transition-all duration-500">
@@ -56,15 +45,9 @@ const Founder = function ({
         </div>
       </div>
       <div className="flex flex-col gap-[10px]">
-        <div className="text-center text-[16px] font-medium leading-[120%] text-white">
-          {firstName + " " + lastName}
-        </div>
-        <div className="text-center text-[13px] font-medium leading-[120%] text-white">
-          {role}
-        </div>
-        <div className="text-center text-[10px] font-normal leading-[120%] text-white">
-          {description}
-        </div>
+        <div className="text-center text-[16px] font-medium leading-[120%] text-white">{firstName + " " + lastName}</div>
+        <div className="text-center text-[13px] font-medium leading-[120%] text-white">{role}</div>
+        <div className="text-center text-[10px] font-normal leading-[120%] text-white">{description}</div>
       </div>
     </div>
   );

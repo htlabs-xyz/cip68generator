@@ -57,15 +57,10 @@ export const useWallet = create<WalletStoreType>((set, get) => ({
   },
 
   connect: async (wallet: Wallet) => {
-    const browserWallet: BrowserWallet = await BrowserWallet.enable(
-      wallet.name.toLowerCase(),
-    );
+    const browserWallet: BrowserWallet = await BrowserWallet.enable(wallet.name.toLowerCase());
     const network = await browserWallet.getNetworkId();
     if (network !== appNetworkId) {
-      throw new Error(
-        "Invalid network,please switch to" +
-          `${appNetworkId == 0 ? " Testnet" : " Mainnet"}`,
-      );
+      throw new Error("Invalid network,please switch to" + `${appNetworkId == 0 ? " Testnet" : " Mainnet"}`);
     }
     const address = await browserWallet.getChangeAddress();
     if (!address) return;
@@ -78,9 +73,7 @@ export const useWallet = create<WalletStoreType>((set, get) => ({
 
   signIn: async (session: Session | null, wallet: Wallet) => {
     const { name } = wallet;
-    const browserWallet: BrowserWallet = await BrowserWallet.enable(
-      name.toLowerCase(),
-    );
+    const browserWallet: BrowserWallet = await BrowserWallet.enable(name.toLowerCase());
     if (!browserWallet) {
       throw new Error("Failed to connect wallet");
     }
@@ -129,10 +122,7 @@ export const useWallet = create<WalletStoreType>((set, get) => ({
 
     const network = await browserWallet.getNetworkId();
     if (network !== appNetworkId) {
-      throw new Error(
-        "Invalid network,please switch to " +
-          `${appNetworkId == 0 ? "Testnet" : "Mainnet"}`,
-      );
+      throw new Error("Invalid network,please switch to " + `${appNetworkId == 0 ? "Testnet" : "Mainnet"}`);
     }
     const address = await browserWallet.getChangeAddress();
     if (!address) return;

@@ -5,13 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { generateJson } from "@/utils/json";
 import { KeyValuePair } from "@/types";
 import { cn } from "@/utils";
@@ -31,11 +25,7 @@ export default function JsonBuilder({
     setFields([...fields, { key: "", value: "" }]);
   };
 
-  const updateField = (
-    index: number,
-    field: "key" | "value",
-    value: string,
-  ) => {
+  const updateField = (index: number, field: "key" | "value", value: string) => {
     const newFields = [...fields];
     newFields[index][field] = value;
     setFields(newFields);
@@ -50,9 +40,7 @@ export default function JsonBuilder({
     <div className={cn(className, "flex h-full bg-section p-5")}>
       <div className="w-1/2 p-4 space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg p-2 mb-4">
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Metadata Builder
-          </h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Metadata Builder</h1>
           <Select
             value={template}
             onValueChange={(newValue) => {
@@ -96,29 +84,15 @@ export default function JsonBuilder({
                 <Label htmlFor={`key-${index}`} className="sr-only">
                   Key
                 </Label>
-                <Input
-                  id={`key-${index}`}
-                  placeholder="Key"
-                  value={field.key}
-                  onChange={(e) => updateField(index, "key", e.target.value)}
-                />
+                <Input id={`key-${index}`} placeholder="Key" value={field.key} onChange={(e) => updateField(index, "key", e.target.value)} />
               </div>
               <div className="flex-1">
                 <Label htmlFor={`value-${index}`} className="sr-only">
                   Value
                 </Label>
-                <Input
-                  id={`value-${index}`}
-                  placeholder="Value"
-                  value={field.value}
-                  onChange={(e) => updateField(index, "value", e.target.value)}
-                />
+                <Input id={`value-${index}`} placeholder="Value" value={field.value} onChange={(e) => updateField(index, "value", e.target.value)} />
               </div>
-              <Button
-                variant="destructive"
-                className="text-white"
-                onClick={() => removeField(index)}
-              >
+              <Button variant="destructive" className="text-white" onClick={() => removeField(index)}>
                 Remove
               </Button>
             </div>
@@ -130,11 +104,7 @@ export default function JsonBuilder({
         </div>
       </div>
       <div className="w-1/2 p-4 ">
-        <Textarea
-          className="w-full h-full resize-none font-mono"
-          value={JSON.stringify(generateJson(fields), null, 2)}
-          readOnly
-        />
+        <Textarea className="w-full h-full resize-none font-mono" value={JSON.stringify(generateJson(fields), null, 2)} readOnly />
       </div>
     </div>
   );

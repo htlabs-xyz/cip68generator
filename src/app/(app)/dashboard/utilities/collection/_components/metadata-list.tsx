@@ -1,12 +1,5 @@
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { MoreVertical } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -20,8 +13,7 @@ import MetadataAction from "./metadata-action";
 import { shortenString } from "@/utils";
 
 export default function MetadataList() {
-  const { loading, listMetadata, setListSelected, listSelected } =
-    useMetadataContext();
+  const { loading, listMetadata, setListSelected, listSelected } = useMetadataContext();
 
   const handleSellect = (metadata: Metadata, checked: boolean) => {
     if (checked) {
@@ -38,12 +30,8 @@ export default function MetadataList() {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[300px] font-normal">NAME</TableHead>
-              <TableHead className="hidden font-normal md:table-cell">
-                CONTENT
-              </TableHead>
-              <TableHead className="hidden font-normal sm:table-cell">
-                DATE
-              </TableHead>
+              <TableHead className="hidden font-normal md:table-cell">CONTENT</TableHead>
+              <TableHead className="hidden font-normal sm:table-cell">DATE</TableHead>
               <TableHead className="text-right font-normal">ACTION</TableHead>
             </TableRow>
           </TableHeader>
@@ -85,18 +73,11 @@ export default function MetadataList() {
                           id={`checkbox-${index}`}
                           checked={listSelected.includes(item)}
                           className="rounded-full"
-                          onClick={() =>
-                            handleSellect(item, !listSelected.includes(item))
-                          }
+                          onClick={() => handleSellect(item, !listSelected.includes(item))}
                         />
                         <div className="h-10 w-10 overflow-hidden rounded-lg">
                           <AspectRatio ratio={10 / 10} className="bg-muted">
-                            <FileDisplay
-                              src={``}
-                              alt={name}
-                              type={"text/plain"}
-                              className="h-full w-full rounded-md object-cover"
-                            />
+                            <FileDisplay src={``} alt={name} type={"text/plain"} className="h-full w-full rounded-md object-cover" />
                           </AspectRatio>
                         </div>
                         <div>
@@ -110,9 +91,7 @@ export default function MetadataList() {
                         <ViewMetadataContent json={item.content} />
                       </div>
                     </TableCell>
-                    <TableCell className="hidden sm:table-cell">
-                      {item.createdAt.toLocaleDateString()}
-                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">{item.createdAt.toLocaleDateString()}</TableCell>
                     <TableCell className="rounded-r-lg text-right">
                       <MetadataAction metadata={item} />
                     </TableCell>

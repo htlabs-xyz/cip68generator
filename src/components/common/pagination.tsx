@@ -30,11 +30,7 @@ const Pagination = ({ totalPages, currentPage, setCurrentPage }: Props) => {
         disabled={currentPage === 1}
         onClick={() => setCurrentPage(1)}
       >
-        <Image
-          className="w-2 h-2 object-contain"
-          src={paginationIcon.arrowLeftPagination}
-          alt="First Page"
-        />
+        <Image className="w-2 h-2 object-contain" src={paginationIcon.arrowLeftPagination} alt="First Page" />
         <span className="mx-1">First</span>
       </Button>
       <Button
@@ -42,11 +38,7 @@ const Pagination = ({ totalPages, currentPage, setCurrentPage }: Props) => {
         disabled={currentPage === 1}
         onClick={handlePreviousPage}
       >
-        <Image
-          className="w-2 h-2 object-contain"
-          src={paginationIcon.arrowLeftPagination}
-          alt="Previous Page"
-        />
+        <Image className="w-2 h-2 object-contain" src={paginationIcon.arrowLeftPagination} alt="Previous Page" />
         <span className="mx-1">Previous</span>
       </Button>
       <span className="text-[16px] font-light leading-8 min-w-[110px] text-center">
@@ -58,11 +50,7 @@ const Pagination = ({ totalPages, currentPage, setCurrentPage }: Props) => {
         onClick={handleNextPage}
       >
         <span className="mx-1">Next</span>
-        <Image
-          className="w-2 h-2 object-contain"
-          src={paginationIcon.arrowRightPagination}
-          alt="Next Page"
-        />
+        <Image className="w-2 h-2 object-contain" src={paginationIcon.arrowRightPagination} alt="Next Page" />
       </Button>
       <Button
         className="bg-[#030711] border-0 rounded-[8px] text-white cursor-pointer flex items-center justify-center text-[16px] h-8 font-normal px-3 py-[1px] mx-2"
@@ -70,11 +58,7 @@ const Pagination = ({ totalPages, currentPage, setCurrentPage }: Props) => {
         onClick={() => setCurrentPage(totalPages)}
       >
         <span className="mx-1">Last</span>
-        <Image
-          className="w-2 h-2 object-contain"
-          src={paginationIcon.arrowRightPagination}
-          alt="Last Page"
-        />
+        <Image className="w-2 h-2 object-contain" src={paginationIcon.arrowRightPagination} alt="Last Page" />
       </Button>
     </div>
   );

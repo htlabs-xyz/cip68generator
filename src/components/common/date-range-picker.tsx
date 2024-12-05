@@ -8,11 +8,7 @@ import { DateRange } from "react-day-picker";
 import { cn } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 export function DatePickerWithRange({
   className,
@@ -27,20 +23,12 @@ export function DatePickerWithRange({
     <div className={cn("grid gap-2", className)}>
       <Popover>
         <PopoverTrigger asChild>
-          <Button
-            id="date"
-            variant={"outline"}
-            className={cn(
-              "w-[240px] justify-start text-left font-normal",
-              !range && "text-muted-foreground",
-            )}
-          >
+          <Button id="date" variant={"outline"} className={cn("w-[240px] justify-start text-left font-normal", !range && "text-muted-foreground")}>
             <CalendarIcon className="mr-2 h-4 w-4" />
             {range?.from ? (
               range.to ? (
                 <>
-                  {format(range.from, "LLL dd, y")} -{" "}
-                  {format(range.to, "LLL dd, y")}
+                  {format(range.from, "LLL dd, y")} - {format(range.to, "LLL dd, y")}
                 </>
               ) : (
                 format(range.from, "LLL dd, y")

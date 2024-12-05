@@ -28,14 +28,11 @@ export class MeshAdapter {
     const utxos = await this.wallet.getUtxos();
     const collaterals = await this.wallet.getCollateral();
     const walletAddress = await this.wallet.getChangeAddress();
-    if (!utxos || utxos.length === 0)
-      throw new Error("No UTXOs found in getWalletForTx method.");
+    if (!utxos || utxos.length === 0) throw new Error("No UTXOs found in getWalletForTx method.");
 
-    if (!collaterals || collaterals.length === 0)
-      throw new Error("No collateral found in getWalletForTx method.");
+    if (!collaterals || collaterals.length === 0) throw new Error("No collateral found in getWalletForTx method.");
 
-    if (!walletAddress)
-      throw new Error("No wallet address found in getWalletForTx method.");
+    if (!walletAddress) throw new Error("No wallet address found in getWalletForTx method.");
 
     return { utxos, collateral: collaterals[0], walletAddress };
   };

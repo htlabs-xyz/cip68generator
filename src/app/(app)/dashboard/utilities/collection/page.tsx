@@ -10,9 +10,7 @@ export default async function CollectionPage() {
     <div className="py-8 px-10 m-auto flex flex-col max-md:px-0">
       <div className="rounded-xl p-6 bg-section shadow-md flex-wrap gap-3 space-y-5">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-semibold leading-7">
-            Collection Metadata
-          </h1>
+          <h1 className="text-2xl font-semibold leading-7">Collection Metadata</h1>
           <CreateCollectionButton />
         </div>
         <div className="h-[60vh] w-full space-y-4 rounded-lg p-4">

@@ -2,11 +2,7 @@
 
 import { createContext, useContext } from "react";
 import useMetadataStore, { MetadataStore } from "./store";
-import {
-  addMetadata,
-  deleteMetadata,
-  getMetadata,
-} from "@/services/database/metadata";
+import { addMetadata, deleteMetadata, getMetadata } from "@/services/database/metadata";
 import { toast } from "@/hooks/use-toast";
 import { dashboardRoutes } from "@/constants/routers";
 import { useRouter } from "next/navigation";
@@ -20,22 +16,8 @@ type MetadataContextType = MetadataStore & {
   refetch: () => void;
 };
 
-export default function MetadataProvider({
-  collectionId,
-  children,
-}: {
-  collectionId: string;
-  children: React.ReactNode;
-}) {
-  const {
-    setListMetadata,
-    currentPage,
-    filter,
-    setFilter,
-    listSelected,
-    setListSelected,
-    setCurrentPage,
-  } = useMetadataStore();
+export default function MetadataProvider({ collectionId, children }: { collectionId: string; children: React.ReactNode }) {
+  const { setListMetadata, currentPage, filter, setFilter, listSelected, setListSelected, setCurrentPage } = useMetadataStore();
   const router = useRouter();
 
   const { data, isLoading, refetch } = useQuery({
@@ -60,11 +42,7 @@ export default function MetadataProvider({
         variant: "default",
         description: "Metadata created",
       });
-      router.push(
-        dashboardRoutes.utilities.children.collection.redirect +
-          "/" +
-          collectionId,
-      );
+      router.push(dashboardRoutes.utilities.children.collection.redirect + "/" + collectionId);
     } else {
       toast({
         title: "Error",
@@ -125,9 +103,7 @@ const MetadataContext = createContext<MetadataContextType>(null!);
 export const useMetadataContext = function () {
   const context = useContext(MetadataContext);
   if (!context) {
-    throw new Error(
-      "useMetadataContext must be used within a MetadataProvider",
-    );
+    throw new Error("useMetadataContext must be used within a MetadataProvider");
   }
   return context;
 };

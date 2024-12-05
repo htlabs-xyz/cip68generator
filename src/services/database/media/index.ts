@@ -98,9 +98,7 @@ export async function getMedia({
   }
 }
 
-export async function deleteMedia(
-  media: Media[],
-): Promise<{ message: string; result: boolean }> {
+export async function deleteMedia(media: Media[]): Promise<{ message: string; result: boolean }> {
   try {
     const session = await auth();
     const userId = session?.user?.id;

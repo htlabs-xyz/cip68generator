@@ -1,11 +1,7 @@
 import BottomTab from "./bottom-tab";
 import { Navbar } from "./navbar";
 
-export default function MobileDashboardlLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function MobileDashboardlLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="flex min-h-screen flex-col">

@@ -9,11 +9,7 @@ export type UnitStore = {
   setMetadataToUpdate: (metadata: Record<string, string>) => void;
   tasks: Task[];
   resetTasks: () => void;
-  updateTaskState: (
-    status: "todo" | "inprogress" | "success" | "error",
-    name?: string,
-    content?: string,
-  ) => void;
+  updateTaskState: (status: "todo" | "inprogress" | "success" | "error", name?: string, content?: string) => void;
   txhash: string;
   setTxHash: (txhash: string) => void;
   txCurrentPage: number;

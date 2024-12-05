@@ -20,8 +20,7 @@ export const founderData: {
     avatar: founderImage.tien,
     twitter: "https://t.me/tiennguyenanh",
     linkedin: "https://www.linkedin.com/in/tienna/",
-    description:
-      "Founder of the VILAI stake pool, former Experts at HPE; Blockchain Support Engineer",
+    description: "Founder of the VILAI stake pool, former Experts at HPE; Blockchain Support Engineer",
   },
   {
     id: 2,
@@ -31,8 +30,7 @@ export const founderData: {
     avatar: founderImage.hieu,
     twitter: "https://t.me/nvhieu1978",
     linkedin: "https://www.linkedin.com/in/nguyen-van-hieu-b4410121b/",
-    description:
-      "Founder of HADA stake pool, member of Plutus Pioneer Program, Researcher at VAST.",
+    description: "Founder of HADA stake pool, member of Plutus Pioneer Program, Researcher at VAST.",
   },
   {
     id: 3,
@@ -42,8 +40,7 @@ export const founderData: {
     avatar: founderImage.thanh,
     twitter: "https://t.me/tiennguyenanh",
     linkedin: "https://www.linkedin.com/in/tienna/",
-    description:
-      "More than 1 years of leading and managing the operations of the projects, organizations, and club.",
+    description: "More than 1 years of leading and managing the operations of the projects, organizations, and club.",
   },
   {
     id: 4,
@@ -53,8 +50,7 @@ export const founderData: {
     avatar: founderImage.khanh,
     twitter: "https://t.me/nvhieu1978",
     linkedin: "https://www.linkedin.com/in/nguyen-van-hieu-b4410121b/",
-    description:
-      "More than 2 years of building and operating on the Cardano platform.",
+    description: "More than 2 years of building and operating on the Cardano platform.",
   },
   {
     id: 4,
@@ -64,8 +60,7 @@ export const founderData: {
     avatar: founderImage.dung,
     twitter: "https://t.me/tidvn",
     linkedin: "https://www.linkedin.com/",
-    description:
-      "More than 2 years of building and operating on the Cardano platform.",
+    description: "More than 2 years of building and operating on the Cardano platform.",
   },
   {
     id: 4,
@@ -75,7 +70,6 @@ export const founderData: {
     avatar: founderImage.son,
     twitter: "https://t.me/tidvn",
     linkedin: "https://www.linkedin.com/",
-    description:
-      "More than 2 years of building and operating on the Cardano platform.",
+    description: "More than 2 years of building and operating on the Cardano platform.",
   },
 ];

@@ -29,8 +29,7 @@ export async function datumToJson(
           if (keyStr === "_pk") {
             return;
           }
-          obj[keyStr] =
-            keyStr !== "_pk" ? value.toString("utf-8") : value.toString("hex");
+          obj[keyStr] = keyStr !== "_pk" ? value.toString("utf-8") : value.toString("hex");
         });
         return obj;
       }
@@ -44,4 +43,15 @@ export async function datumToJson(
     console.error(error);
     return {};
   }
+}
+
+export async function getPkHash(datum: string) {
+  const cborDatum: Buffer = Buffer.from(datum, "hex");
+  const decoded = await cbor.decodeFirst(cborDatum);
+  for (const [key, value] of decoded.value[0]) {
+    if (key.toString("utf-8") === "_pk") {
+      return value.toString("hex");
+    }
+  }
+  return null;
 }

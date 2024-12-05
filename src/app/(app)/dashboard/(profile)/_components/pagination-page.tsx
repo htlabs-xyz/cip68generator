@@ -27,8 +27,7 @@ export default function PaginationPage() {
         <ChevronLeft className="h-4 w-4" />
       </Button>
       <span className="text-sm">
-        Page <span className="font-medium">{currentPage}</span> of{" "}
-        <span className="font-medium">{totalPages}</span>
+        Page <span className="font-medium">{currentPage}</span> of <span className="font-medium">{totalPages}</span>
       </span>
       <Button
         variant="ghost"

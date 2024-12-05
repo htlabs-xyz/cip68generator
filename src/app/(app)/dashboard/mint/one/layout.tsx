@@ -7,7 +7,5 @@ export default function Layout({ children }: Readonly<PropsWithChildren>) {
   const searchParams = useSearchParams();
   const template = searchParams.get("template");
 
-  return (
-    <MintOneProvider metadataTemplateId={template}>{children}</MintOneProvider>
-  );
+  return <MintOneProvider metadataTemplateId={template}>{children}</MintOneProvider>;
 }

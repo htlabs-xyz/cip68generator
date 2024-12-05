@@ -8,13 +8,7 @@ import { deleteMedia, getMedia } from "@/services/database/media";
 import { uploadIPFS } from "@/services/upload";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import useUploadStore, { UploadStore } from "./store";
 
 type UploadContextType = UploadStore & {
@@ -71,15 +65,7 @@ export default function UploadProvider({ children }: PropsWithChildren) {
         toast({
           title: "Sucess",
           variant: "default",
-          description: (
-            <Button
-              onClick={() =>
-                router.push(dashboardRoutes.utilities.children.storage.redirect)
-              }
-            >
-              Go to Storage
-            </Button>
-          ),
+          description: <Button onClick={() => router.push(dashboardRoutes.utilities.children.storage.redirect)}>Go to Storage</Button>,
         });
         setListFileToUpload([]);
       } else {

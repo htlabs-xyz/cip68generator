@@ -9,13 +9,8 @@ export default function MetadataStep() {
     <div className="h-full py-8 px-10 m-auto flex flex-col">
       <div className="rounded-md border border-dashed">
         <div className="flex flex-col space-y-2 text-left p-8">
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Are you absolutely sure?
-          </h1>
-          <p>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </p>
+          <h1 className="text-2xl font-semibold tracking-tight">Are you absolutely sure?</h1>
+          <p>This action cannot be undone. This will permanently delete your account and remove your data from our servers.</p>
         </div>
       </div>
       <div className="fixed right-0 bottom-0 z-10 max-h-16 w-full bg-section">
