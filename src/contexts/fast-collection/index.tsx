@@ -16,13 +16,7 @@ type UploadCsvContextType = {
 export default function UploadCSVProvider({ children }: PropsWithChildren) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const uploadCsv = async ({
-    csvContent,
-    csvName,
-  }: {
-    csvContent: string[][];
-    csvName: string;
-  }) => {
+  const uploadCsv = async ({ csvContent, csvName }: { csvContent: string[][]; csvName: string }) => {
     setLoading(true);
 
     try {
@@ -42,16 +36,7 @@ export default function UploadCSVProvider({ children }: PropsWithChildren) {
       toast({
         title: "Create Collection Success",
         description: (
-          <Button
-            onClick={() =>
-              router.push(
-                dashboardRoutes.utilities.children.collection.redirect +
-                  `/${data.id}`,
-              )
-            }
-          >
-            Go to Collection
-          </Button>
+          <Button onClick={() => router.push(dashboardRoutes.utilities.children.collection.redirect + `/${data.id}`)}>Go to Collection</Button>
         ),
       });
     } catch (e) {
@@ -81,9 +66,7 @@ const UploadCsvContext = createContext<UploadCsvContextType>(null!);
 export const useUploadCsvContext = function () {
   const context = useContext(UploadCsvContext);
   if (!context) {
-    throw new Error(
-      "useUploadCsvContext must be used within a UploadCSVProvider",
-    );
+    throw new Error("useUploadCsvContext must be used within a UploadCSVProvider");
   }
   return context;
 };

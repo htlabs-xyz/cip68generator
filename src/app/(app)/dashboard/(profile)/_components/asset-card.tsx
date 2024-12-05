@@ -19,17 +19,10 @@ export default function AssetCard({ data }: { data: AssetDetails }) {
       <div className="rounded-lg shadow-none transition-shadow duration-300 hover:shadow-md hover:shadow-slate-800">
         <Card className="h-full p-2">
           <AspectRatio ratio={4 / 3} className="bg-muted">
-            <FileDisplay
-              src={imgSrc}
-              alt={"image"}
-              type={mediaType}
-              className="h-full w-full rounded-t-lg object-cover"
-            />
+            <FileDisplay src={imgSrc} alt={"image"} type={mediaType} className="h-full w-full rounded-t-lg object-cover" />
           </AspectRatio>
           <div className="flex flex-col items-center justify-start gap-2 self-stretch px-4 py-2">
-            <div className="font-semibold self-stretch text-center text-base text-ellipsis overflow-hidden whitespace-nowrap">
-              {assetNameString}
-            </div>
+            <div className="font-semibold self-stretch text-center text-base text-ellipsis overflow-hidden whitespace-nowrap">{assetNameString}</div>
             <div className="font-medium self-stretch text-center text-sm text-secondary text-ellipsis overflow-hidden whitespace-nowrap">
               {fingerprint}
             </div>

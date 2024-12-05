@@ -5,11 +5,7 @@ import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
 import { Sidebar } from "./sidebar";
 import { Navbar } from "./navbar";
 
-export default function DesktopDashboardlLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DesktopDashboardlLayout({ children }: { children: React.ReactNode }) {
   const sidebar = useSidebarToggle();
 
   if (!sidebar) return null;

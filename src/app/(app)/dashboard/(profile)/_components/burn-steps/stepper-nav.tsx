@@ -14,30 +14,20 @@ export default function BurnStepperNav() {
             <li className="flex items-center gap-4 flex-shrink-0">
               <div
                 role="tab"
-                aria-current={
-                  burnStepper.current.id === step.id ? "step" : undefined
-                }
+                aria-current={burnStepper.current.id === step.id ? "step" : undefined}
                 aria-posinset={index + 1}
                 aria-setsize={burnSteps.length}
                 aria-selected={burnStepper.current.id === step.id}
                 className={cn(
                   "flex size-10 items-center justify-center rounded-full",
-                  index <= burnStepper.current.index
-                    ? "bg-primary text-white"
-                    : "bg-muted text-muted",
+                  index <= burnStepper.current.index ? "bg-primary text-white" : "bg-muted text-muted",
                 )}
               >
                 {index + 1}
               </div>
               <span className="text-sm font-medium">{step.title}</span>
             </li>
-            {index < array.length - 1 && (
-              <Separator
-                className={`flex-1 ${
-                  index < burnStepper.current.index ? "bg-primary" : "bg-muted"
-                }`}
-              />
-            )}
+            {index < array.length - 1 && <Separator className={`flex-1 ${index < burnStepper.current.index ? "bg-primary" : "bg-muted"}`} />}
           </React.Fragment>
         ))}
       </ol>

@@ -11,9 +11,7 @@ export const generateJson = (fields: KeyValuePair[]) => {
     {} as Record<string, string>,
   );
 };
-export const generateFields = (
-  json: Record<string, string>,
-): KeyValuePair[] => {
+export const generateFields = (json: Record<string, string>): KeyValuePair[] => {
   try {
     return Object.entries(json).map(([key, value]) => ({
       key,

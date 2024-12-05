@@ -7,13 +7,7 @@ import { Metadata } from "@prisma/client";
 import { isEmpty, isNil } from "lodash";
 import { DateRange } from "react-day-picker";
 
-export async function addMetadata({
-  collectionId,
-  listMetadata,
-}: {
-  collectionId: string;
-  listMetadata: Record<string, string>[];
-}) {
+export async function addMetadata({ collectionId, listMetadata }: { collectionId: string; listMetadata: Record<string, string>[] }) {
   try {
     const session = await auth();
     const userId = session?.user?.id;
@@ -47,8 +41,7 @@ export async function addMetadata({
   } catch (e: unknown) {
     return {
       result: false,
-      message:
-        e instanceof Error ? e.message : "Cant create metadata,unknown error",
+      message: e instanceof Error ? e.message : "Cant create metadata,unknown error",
     };
   }
 }
@@ -198,13 +191,7 @@ export async function getMetadataById({ metadataId }: { metadataId: string }) {
   }
 }
 
-export async function deleteMetadata({
-  collectionId,
-  listMetadata,
-}: {
-  collectionId: string;
-  listMetadata: Metadata[];
-}) {
+export async function deleteMetadata({ collectionId, listMetadata }: { collectionId: string; listMetadata: Metadata[] }) {
   try {
     const session = await auth();
     const userId = session?.user?.id;
@@ -246,13 +233,7 @@ export async function deleteMetadata({
   }
 }
 
-export async function updateMetadata({
-  collectionId,
-  metadata,
-}: {
-  collectionId: string;
-  metadata: Metadata;
-}) {
+export async function updateMetadata({ collectionId, metadata }: { collectionId: string; metadata: Metadata }) {
   try {
     const session = await auth();
     const userId = session?.user?.id;

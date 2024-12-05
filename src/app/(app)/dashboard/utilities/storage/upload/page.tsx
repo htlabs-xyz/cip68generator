@@ -6,8 +6,7 @@ import MediaGirdtoUpload from "../_components/media-gird-to-upload";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/utils";
 export default function UploadFilePage() {
-  const { loading, listFileToUpload, setListFileToUpload, uploadFiles } =
-    useUploadContext();
+  const { loading, listFileToUpload, setListFileToUpload, uploadFiles } = useUploadContext();
   return (
     <div className="py-8 px-10 m-auto flex flex-col max-md:px-0">
       <div className="rounded-xl p-6 bg-section shadow-md flex-wrap gap-3 space-y-5">
@@ -16,9 +15,7 @@ export default function UploadFilePage() {
           <div>
             {loading ? (
               <div className="grid h-full place-content-center px-4">
-                <Loader2
-                  className={cn("my-28 h-16 w-16 animate-spin text-primary/60")}
-                />
+                <Loader2 className={cn("my-28 h-16 w-16 animate-spin text-primary/60")} />
               </div>
             ) : listFileToUpload.length > 0 ? (
               <div>

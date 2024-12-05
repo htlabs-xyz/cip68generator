@@ -17,12 +17,8 @@ export default function UtilitiesPage() {
                 <Images.metadata className="h-full w-full rounded-t-lg object-cover" />
               </AspectRatio>
               <div className="flex flex-col items-center justify-start gap-3 self-stretch px-4 py-2">
-                <div className="font-semibol self-stretch text-center text-base">
-                  Collection Metadata
-                </div>
-                <div className="font- self-stretch text-center text-sm text-secondary">
-                  Have images but need JSON? We got you covered!
-                </div>
+                <div className="font-semibol self-stretch text-center text-base">Collection Metadata</div>
+                <div className="font- self-stretch text-center text-sm text-secondary">Have images but need JSON? We got you covered!</div>
               </div>
             </Card>
           </Link>
@@ -36,12 +32,8 @@ export default function UtilitiesPage() {
                 <Images.storegae className="h-full w-full rounded-t-lg object-cover" />
               </AspectRatio>
               <div className="flex flex-col items-center justify-start gap-3 self-stretch px-4 py-2">
-                <div className="font-semibol self-stretch text-center text-base">
-                  Stogare
-                </div>
-                <div className="font- self-stretch text-center text-sm text-secondary">
-                  Upload and manage your media
-                </div>
+                <div className="font-semibol self-stretch text-center text-base">Stogare</div>
+                <div className="font- self-stretch text-center text-sm text-secondary">Upload and manage your media</div>
               </div>
             </Card>
           </Link>
@@ -54,12 +46,8 @@ export default function UtilitiesPage() {
                 <Images.collection className="h-full w-full rounded-t-lg object-cover" />
               </AspectRatio>
               <div className="flex flex-col items-center justify-start gap-3 self-stretch px-4 py-2">
-                <div className="font-semibol self-stretch text-center text-base">
-                  Fast collection
-                </div>
-                <div className="font- self-stretch text-center text-sm text-secondary">
-                  Create collection using csv file
-                </div>
+                <div className="font-semibol self-stretch text-center text-base">Fast collection</div>
+                <div className="font- self-stretch text-center text-sm text-secondary">Create collection using csv file</div>
               </div>
             </Card>
           </Link>

@@ -4,25 +4,14 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Media } from "@prisma/client";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { filterDefault } from "@/constants";
 import { getMedia } from "@/services/database/media";
 import FileDisplay from "../file-display";
 import { KeyValuePair } from "@/types";
 
-export function FilePick({
-  fields,
-  setFields,
-}: {
-  fields: KeyValuePair[];
-  setFields: (fields: KeyValuePair[]) => void;
-}) {
+export function FilePick({ fields, setFields }: { fields: KeyValuePair[]; setFields: (fields: KeyValuePair[]) => void }) {
   const [query, setQuery] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -74,13 +63,7 @@ export function FilePick({
             </DialogHeader>
             <div className="flex-1 overflow-y-auto px-6 py-4">
               <div className="mb-4">
-                <Input
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search images..."
-                  className="w-full"
-                />
+                <Input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search images..." className="w-full" />
               </div>
               {isLoading ? (
                 <div className="text-center py-4">Loading...</div>
@@ -106,9 +89,7 @@ export function FilePick({
                       </div>
                       <div className="w-full text-left">
                         <p className="text-sm truncate">{file.name}</p>
-                        <p className="text-xs text-gray-400 truncate">
-                          {file.url}
-                        </p>
+                        <p className="text-xs text-gray-400 truncate">{file.url}</p>
                       </div>
                     </Button>
                   ))}

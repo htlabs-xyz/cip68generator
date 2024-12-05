@@ -49,15 +49,8 @@ export default function CSVReader({
               {acceptedFile ? (
                 <div className="flex w-full max-w-md items-center justify-between rounded-lg bg-gray-800 p-2">
                   <div className="flex flex-grow items-center">
-                    <FileDisplay
-                      src={""}
-                      alt={acceptedFile.name}
-                      type={acceptedFile.type}
-                      className="mr-4 h-20 w-20 rounded object-cover"
-                    />
-                    <span className="truncate text-lg text-white">
-                      {acceptedFile.name}
-                    </span>
+                    <FileDisplay src={""} alt={acceptedFile.name} type={acceptedFile.type} className="mr-4 h-20 w-20 rounded object-cover" />
+                    <span className="truncate text-lg text-white">{acceptedFile.name}</span>
                   </div>
                   <Button
                     {...getRemoveFileProps()}
@@ -84,10 +77,7 @@ export default function CSVReader({
                 </div>
               ) : (
                 <div className="flex items-center justify-center flex-col gap-4">
-                  <Link
-                    href={"/csv/example.csv"}
-                    className="font-normal self-stretch text-center text-sm text-[16px] "
-                  >
+                  <Link href={"/csv/example.csv"} className="font-normal self-stretch text-center text-sm text-[16px] ">
                     Download Example CSV
                   </Link>
                   <div {...getRootProps()}>

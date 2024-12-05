@@ -3,13 +3,7 @@ import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { UnauthorizedException } from "@/utils/http/http-exceptions";
 
-export async function createCollection({
-  name,
-  description,
-}: {
-  name: string;
-  description?: string;
-}) {
+export async function createCollection({ name, description }: { name: string; description?: string }) {
   try {
     const session = await auth();
     const userId = session?.user?.id;
@@ -33,8 +27,7 @@ export async function createCollection({
   } catch (e: unknown) {
     return {
       result: false,
-      message:
-        e instanceof Error ? e.message : "Cant create collection,unknown error",
+      message: e instanceof Error ? e.message : "Cant create collection,unknown error",
     };
   }
 }
@@ -63,10 +56,7 @@ export async function getAllCollection() {
     return {
       result: false,
       data: [],
-      message:
-        error instanceof Error
-          ? error.message
-          : "Cant get collection ,Unknown error",
+      message: error instanceof Error ? error.message : "Cant get collection ,Unknown error",
     };
   }
 }
@@ -94,23 +84,12 @@ export async function deleteCollection(collectionId: string) {
     console.log(e);
     return {
       result: false,
-      message:
-        e instanceof Error
-          ? e.message
-          : "Cant delete collection, unknown error",
+      message: e instanceof Error ? e.message : "Cant delete collection, unknown error",
     };
   }
 }
 
-export async function updateCollection({
-  collectionId,
-  name,
-  description,
-}: {
-  collectionId: string;
-  name: string;
-  description?: string;
-}) {
+export async function updateCollection({ collectionId, name, description }: { collectionId: string; name: string; description?: string }) {
   try {
     const session = await auth();
     const userId = session?.user?.id;
@@ -136,10 +115,7 @@ export async function updateCollection({
   } catch (e: unknown) {
     return {
       result: false,
-      message:
-        e instanceof Error
-          ? e.message
-          : "Cant update collection, unknown error",
+      message: e instanceof Error ? e.message : "Cant update collection, unknown error",
     };
   }
 }
@@ -184,10 +160,7 @@ export async function createCollectionWithData({
     return {
       data: null,
       result: false,
-      message:
-        error instanceof Error
-          ? error.message
-          : "Cant create collection with data, unknown error",
+      message: error instanceof Error ? error.message : "Cant create collection with data, unknown error",
     };
   }
 }

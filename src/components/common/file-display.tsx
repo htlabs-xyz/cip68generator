@@ -14,13 +14,7 @@ type FileDisplayProps = {
   className?: string;
 };
 
-export default function FileDisplay({
-  src,
-  alt,
-  type,
-  objectFit = "cover",
-  className = "",
-}: FileDisplayProps) {
+export default function FileDisplay({ src, alt, type, objectFit = "cover", className = "" }: FileDisplayProps) {
   const [error, setError] = useState(false);
 
   const getFileType = (mimeType: string): "image" | "text" | "other" => {
@@ -37,11 +31,7 @@ export default function FileDisplay({
         if (src.startsWith("ipfs://"))
           return (
             <Image
-              src={
-                error
-                  ? "/images/common/placeholder.svg"
-                  : src.replace("ipfs://", IPFS_GATEWAY + "ipfs/")
-              }
+              src={error ? "/images/common/placeholder.svg" : src.replace("ipfs://", IPFS_GATEWAY + "ipfs/")}
               alt={alt}
               fill
               style={{ objectFit }}
@@ -55,10 +45,7 @@ export default function FileDisplay({
           <img
             src={src}
             alt={alt}
-            className={cn(
-              className,
-              `rounded-md absolute inset-0 w-full h-full`,
-            )}
+            className={cn(className, `rounded-md absolute inset-0 w-full h-full`)}
             style={{ objectFit }}
             onError={() => setError(true)}
           />

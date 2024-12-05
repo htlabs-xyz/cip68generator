@@ -2,11 +2,7 @@
 import { isEmpty } from "lodash";
 
 export function convertEmpty(value: any): any {
-  if (
-    value === null ||
-    (Array.isArray(value) && isEmpty(value)) ||
-    (typeof value === "object" && isEmpty(value))
-  ) {
+  if (value === null || (Array.isArray(value) && isEmpty(value)) || (typeof value === "object" && isEmpty(value))) {
     return "";
   }
 
@@ -15,9 +11,7 @@ export function convertEmpty(value: any): any {
   }
 
   if (value && typeof value === "object") {
-    return Object.fromEntries(
-      Object.entries(value).map(([key, val]) => [key, convertEmpty(val)]),
-    );
+    return Object.fromEntries(Object.entries(value).map(([key, val]) => [key, convertEmpty(val)]));
   }
 
   return value;

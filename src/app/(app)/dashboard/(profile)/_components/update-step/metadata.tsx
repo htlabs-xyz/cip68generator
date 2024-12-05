@@ -6,12 +6,9 @@ import { generateFields, generateJson } from "@/utils/json";
 import { useEffect, useState } from "react";
 
 export default function MetadataStep() {
-  const { metadataToUpdate, updateStepper, setMetadataToUpdate } =
-    useUnitContext();
+  const { metadataToUpdate, updateStepper, setMetadataToUpdate } = useUnitContext();
 
-  const [fields, setFields] = useState<KeyValuePair[]>(
-    generateFields(metadataToUpdate || {}),
-  );
+  const [fields, setFields] = useState<KeyValuePair[]>(generateFields(metadataToUpdate || {}));
 
   useEffect(() => {
     setFields(generateFields(metadataToUpdate || {}));
@@ -34,11 +31,7 @@ export default function MetadataStep() {
       <div className="fixed right-0 bottom-0 z-10 max-h-16 w-full bg-section">
         <div className="mx-4 flex h-16 items-center sm:mx-8">
           <div className="flex flex-1 items-center justify-end space-x-2">
-            <Button
-              variant="secondary"
-              onClick={updateStepper.prev}
-              disabled={updateStepper.isFirst}
-            >
+            <Button variant="secondary" onClick={updateStepper.prev} disabled={updateStepper.isFirst}>
               Back
             </Button>
             <Button onClick={handleNext}>Next</Button>

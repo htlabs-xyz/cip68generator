@@ -16,17 +16,13 @@ export function JsonDiffViewer({ oldJson, newJson }: JsonDiffViewerProps) {
         <div>
           <h3 className="text-lg font-semibold mb-2">Old Version</h3>
           <ScrollArea className="h-[400px] rounded-md border">
-            <pre className="text-sm p-4">
-              {renderJsonDiff(diffResult, "old")}
-            </pre>
+            <pre className="text-sm p-4">{renderJsonDiff(diffResult, "old")}</pre>
           </ScrollArea>
         </div>
         <div>
           <h3 className="text-lg font-semibold mb-2">New Version</h3>
           <ScrollArea className="h-[400px] rounded-md border">
-            <pre className="text-sm p-4">
-              {renderJsonDiff(diffResult, "new")}
-            </pre>
+            <pre className="text-sm p-4">{renderJsonDiff(diffResult, "new")}</pre>
           </ScrollArea>
         </div>
       </div>
@@ -34,10 +30,7 @@ export function JsonDiffViewer({ oldJson, newJson }: JsonDiffViewerProps) {
   );
 }
 
-function renderJsonDiff(
-  diffResult: DiffResult[],
-  version: "old" | "new",
-): JSX.Element {
+function renderJsonDiff(diffResult: DiffResult[], version: "old" | "new"): JSX.Element {
   const jsonLines: JSX.Element[] = [<span key="start">{"{"}</span>];
 
   diffResult.forEach((item, index) => {

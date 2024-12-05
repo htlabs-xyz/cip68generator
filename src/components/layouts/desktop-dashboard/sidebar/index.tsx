@@ -20,23 +20,13 @@ export function Sidebar() {
       )}
     >
       <SidebarToggle isOpen={sidebar?.isOpen} toggle={sidebar?.toggle} />
-      <div
-        className={cn(
-          "relative flex h-full flex-col overflow-y-auto px-3 py-4 shadow-md ",
-        )}
-      >
+      <div className={cn("relative flex h-full flex-col overflow-y-auto px-3 py-4 shadow-md ")}>
         <Button
-          className={cn(
-            "mb-1 transition-transform duration-300 ease-in-out",
-            sidebar?.isOpen === false ? "translate-x-1" : "translate-x-0",
-          )}
+          className={cn("mb-1 transition-transform duration-300 ease-in-out", sidebar?.isOpen === false ? "translate-x-1" : "translate-x-0")}
           variant="link"
           asChild
         >
-          <Link
-            className="relative flex items-center decoration-transparent justify-center gap-1"
-            href={"/"}
-          >
+          <Link className="relative flex items-center decoration-transparent justify-center gap-1" href={"/"}>
             <Image
               className={cn("h-[35px] w-[35px] object-cover", {
                 " absolute": !sidebar.isOpen,
@@ -47,9 +37,7 @@ export function Sidebar() {
             <p
               className={cn(
                 "ml-2 whitespace-nowrap text-2xl font-medium transition-[transform,opacity,display] duration-300 ease-in-out text-gray-200",
-                sidebar?.isOpen === false
-                  ? "hidden -translate-x-96 opacity-0"
-                  : "translate-x-0 opacity-100",
+                sidebar?.isOpen === false ? "hidden -translate-x-96 opacity-0" : "translate-x-0 opacity-100",
               )}
             >
               Generator

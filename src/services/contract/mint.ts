@@ -6,13 +6,7 @@ import { AssetInput } from "@/types";
 import { deserializeAddress, MeshTxBuilder, MeshWallet } from "@meshsdk/core";
 import { isEmpty, isNil } from "lodash";
 
-export const createMintTransaction = async ({
-  address,
-  mintInput,
-}: {
-  address: string;
-  mintInput: AssetInput[];
-}) => {
+export const createMintTransaction = async ({ address, mintInput }: { address: string; mintInput: AssetInput[] }) => {
   try {
     if (isEmpty(mintInput)) {
       throw new Error("No assets to mint");

@@ -10,10 +10,7 @@ import plutus from "../../plutus.json";
  * @returns - Compilecode
  */
 
-export const readValidator = function (
-  title: string,
-  version?: string,
-): string {
+export const readValidator = function (title: string, version?: string): string {
   const validator = plutus.validators.find(function (validator) {
     return validator.title === title;
   });
@@ -33,13 +30,9 @@ export const readValidator = function (
  * @returns - Asset name unique
  */
 export const getUniqueAssetName = async function (utxo: UTxO): Promise<string> {
-  const hash = new Uint8Array(
-    await crypto.subtle.digest("SHA3-256", fromHex(utxo.input.txHash)),
-  );
+  const hash = new Uint8Array(await crypto.subtle.digest("SHA3-256", fromHex(utxo.input.txHash)));
 
-  return (
-    toHex(new Uint8Array([utxo.input.outputIndex])) + toHex(hash.slice(0, 27))
-  );
+  return toHex(new Uint8Array([utxo.input.outputIndex])) + toHex(hash.slice(0, 27));
 };
 
 /**
@@ -72,9 +65,7 @@ function fromHex(hex: string): Uint8Array {
  * @returns - Asset name unique
  */
 function toHex(uint8Array: Uint8Array): string {
-  return Array.from(uint8Array, (byte) =>
-    byte.toString(16).padStart(2, "0"),
-  ).join("");
+  return Array.from(uint8Array, (byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
 /**
@@ -84,11 +75,7 @@ function toHex(uint8Array: Uint8Array): string {
  * @param utxo - UTxO used to generate unique asset name
  * @returns - Asset name unique
  */
-export async function fetchUtxo(
-  provider: BlockfrostProvider,
-  address: string,
-  txHash: string,
-) {
+export async function fetchUtxo(provider: BlockfrostProvider, address: string, txHash: string) {
   const utxos = await provider.fetchAddressUTxOs(address);
   return utxos.find((utxo) => {
     return utxo.input.txHash == txHash;

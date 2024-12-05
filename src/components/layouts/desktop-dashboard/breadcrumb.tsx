@@ -1,11 +1,4 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { shortenString } from "@/utils";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -42,13 +35,7 @@ export function BreadcrumbDashboard() {
           return (
             <React.Fragment key={path}>
               <BreadcrumbItem>
-                {isLast ? (
-                  <BreadcrumbPage>{segmentCapitalized}</BreadcrumbPage>
-                ) : (
-                  <BreadcrumbLink href={path}>
-                    {segmentCapitalized}
-                  </BreadcrumbLink>
-                )}
+                {isLast ? <BreadcrumbPage>{segmentCapitalized}</BreadcrumbPage> : <BreadcrumbLink href={path}>{segmentCapitalized}</BreadcrumbLink>}
               </BreadcrumbItem>
               {!isLast && <BreadcrumbSeparator />}
             </React.Fragment>

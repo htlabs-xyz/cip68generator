@@ -1,11 +1,7 @@
 "use client";
 import * as React from "react";
 import { useUnitContext } from "@/contexts/unit";
-import {
-  AlertStep,
-  ResultStep,
-  TransactionStep,
-} from "../../_components/burn-steps";
+import { AlertStep, ResultStep, TransactionStep } from "../../_components/burn-steps";
 // import StepperNav from "../../_components/bun-steps/stepper-nav";
 
 export default function Page() {

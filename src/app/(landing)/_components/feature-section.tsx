@@ -16,21 +16,11 @@ const Feature = function ({ title, slogan, description }: Props) {
         <div className="flip-card-front group-hover:rotate-y-180 absolute inset-0 flex items-center justify-center rounded-lg bg-slate-900 p-6 transition-transform duration-700 ease-in-out">
           <div className="flex flex-col items-center md:flex-row">
             <div className="mb-4 max-md:mb-1 inline-block h-14 w-14 flex-shrink-0 text-gray-600 md:mb-0">
-              <Image
-                className="object-contain"
-                src={appImage.logo}
-                alt={"Service Image"}
-                width={52}
-                height={52}
-              />
+              <Image className="object-contain" src={appImage.logo} alt={"Service Image"} width={52} height={52} />
             </div>
             <div className="text-center md:ml-6 md:text-left">
-              <h3 className="truncate text-xl font-normal text-white max-md:text-base">
-                {title}
-              </h3>
-              <p className="line-clamp-4 text-sm font-normal text-white max-md:text-xs">
-                {slogan}
-              </p>
+              <h3 className="truncate text-xl font-normal text-white max-md:text-base">{title}</h3>
+              <p className="line-clamp-4 text-sm font-normal text-white max-md:text-xs">{slogan}</p>
             </div>
           </div>
         </div>

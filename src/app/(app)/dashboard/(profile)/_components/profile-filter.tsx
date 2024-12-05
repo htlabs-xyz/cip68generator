@@ -5,13 +5,7 @@ import { FilterType } from "@/types";
 import { Search } from "lucide-react";
 import { useState } from "react";
 
-export default function ProfileFilter({
-  filter,
-  setFilter,
-}: {
-  filter: FilterType;
-  setFilter: (filter: FilterType) => void;
-}) {
+export default function ProfileFilter({ filter, setFilter }: { filter: FilterType; setFilter: (filter: FilterType) => void }) {
   const [temp, setTemp] = useState<FilterType>(filter);
 
   const handleSearch = () => {
@@ -45,10 +39,7 @@ export default function ProfileFilter({
             Search
           </Button>
         ) : (
-          <Button
-            onClick={resetFilter}
-            className="rounded-md bg-blue-500 w-20 px-4 py-2 font-semibold transition duration-300 ease-in-out"
-          >
+          <Button onClick={resetFilter} className="rounded-md bg-blue-500 w-20 px-4 py-2 font-semibold transition duration-300 ease-in-out">
             Reset
           </Button>
         )}

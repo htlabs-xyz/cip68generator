@@ -1,14 +1,7 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useUploadContext } from "@/contexts/storage";
 import { Media } from "@prisma/client";
@@ -18,8 +11,7 @@ import { isEmpty } from "lodash";
 import CoppyButton from "@/components/common/coppy-button";
 
 export default function MediaList() {
-  const { loading, listMedia, listSelected, setListSelected } =
-    useUploadContext();
+  const { loading, listMedia, listSelected, setListSelected } = useUploadContext();
 
   const handleSellect = (media: Media, checked: boolean) => {
     if (checked) {
@@ -36,12 +28,8 @@ export default function MediaList() {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[300px] font-normal">NAME</TableHead>
-              <TableHead className="hidden font-normal md:table-cell">
-                CID
-              </TableHead>
-              <TableHead className="hidden font-normal sm:table-cell">
-                DATE
-              </TableHead>
+              <TableHead className="hidden font-normal md:table-cell">CID</TableHead>
+              <TableHead className="hidden font-normal sm:table-cell">DATE</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -75,27 +63,16 @@ export default function MediaList() {
                           id={`checkbox-${index}`}
                           checked={listSelected.includes(file)}
                           className="rounded-full"
-                          onClick={() =>
-                            handleSellect(file, !listSelected.includes(file))
-                          }
+                          onClick={() => handleSellect(file, !listSelected.includes(file))}
                         />
 
                         <div className="h-10 w-10 overflow-hidden rounded-lg">
                           <AspectRatio ratio={10 / 10} className="bg-muted">
-                            <FileDisplay
-                              src={file.url}
-                              alt={file.name}
-                              type={file.type}
-                              className="h-full w-full rounded-md object-cover"
-                            />
+                            <FileDisplay src={file.url} alt={file.name} type={file.type} className="h-full w-full rounded-md object-cover" />
                           </AspectRatio>
                         </div>
                         <div>
-                          <div className="font-bold">
-                            {file.name.length > 30
-                              ? file.name.slice(0, 30) + "..."
-                              : file.name}
-                          </div>
+                          <div className="font-bold">{file.name.length > 30 ? file.name.slice(0, 30) + "..." : file.name}</div>
                           <div className="text-sm font-light">{file.type}</div>
                         </div>
                       </div>
@@ -106,9 +83,7 @@ export default function MediaList() {
                         <CoppyButton content={file.url} />
                       </div>
                     </TableCell>
-                    <TableCell className="hidden sm:table-cell">
-                      {file.createdAt.toLocaleDateString()}
-                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">{file.createdAt.toLocaleDateString()}</TableCell>
                   </TableRow>
                 ))}
           </TableBody>

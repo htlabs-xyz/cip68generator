@@ -27,13 +27,7 @@ type MintOneContextType = MintOneStore & {
   startMinting: () => void;
 };
 
-export default function MintOneProvider({
-  metadataTemplateId,
-  children,
-}: {
-  metadataTemplateId: string | null;
-  children: React.ReactNode;
-}) {
+export default function MintOneProvider({ metadataTemplateId, children }: { metadataTemplateId: string | null; children: React.ReactNode }) {
   const { signTx, address } = useBlockchainContext();
   const mintOneStepper = useMintOneStepper();
   const {
@@ -82,11 +76,7 @@ export default function MintOneProvider({
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       if (!isNil(collectionToSave) && !isEmpty(collectionToSave)) {
-        updateTaskState(
-          "inprogress",
-          "save_metadata",
-          "Save Metadata to Database",
-        );
+        updateTaskState("inprogress", "save_metadata", "Save Metadata to Database");
         const { result, message } = await addMetadata({
           collectionId: collectionToSave,
           listMetadata: [metadataToMint!],
@@ -102,11 +92,7 @@ export default function MintOneProvider({
         metadata: metadataToMint!,
       };
 
-      updateTaskState(
-        "inprogress",
-        "create_transaction",
-        "Creating Transaction",
-      );
+      updateTaskState("inprogress", "create_transaction", "Creating Transaction");
       const {
         data: tx,
         message,
@@ -128,17 +114,9 @@ export default function MintOneProvider({
       // wait for confirmation
       updateTaskState("inprogress", "sign_transaction", "Waiting for  sign Tx");
       const signedTx = await signTx(tx);
-      updateTaskState(
-        "inprogress",
-        "submit_transaction",
-        "Submitting Transaction",
-      );
+      updateTaskState("inprogress", "submit_transaction", "Submitting Transaction");
       // submit transaction
-      const {
-        data: txHash,
-        result: txResult,
-        message: txMessage,
-      } = await submitTx(signedTx);
+      const { data: txHash, result: txResult, message: txMessage } = await submitTx(signedTx);
       if (!txResult || isNil(txHash)) {
         throw new Error(txMessage);
       }
@@ -148,11 +126,7 @@ export default function MintOneProvider({
       mintOneStepper.goTo("result");
       // create transaction
     } catch (e) {
-      updateTaskState(
-        "error",
-        "",
-        e instanceof Error ? e.message : "unknown error",
-      );
+      updateTaskState("error", "", e instanceof Error ? e.message : "unknown error");
       toast({
         title: "Error",
         description: e instanceof Error ? e.message : "unknown error",

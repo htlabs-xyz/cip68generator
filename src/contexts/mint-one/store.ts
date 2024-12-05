@@ -13,17 +13,10 @@ export type MintOneStore = {
     assetName: string;
     quantity: string;
   };
-  setBasicInfoToMint: (basicInfo: {
-    assetName: string;
-    quantity: string;
-  }) => void;
+  setBasicInfoToMint: (basicInfo: { assetName: string; quantity: string }) => void;
   tasks: Task[];
   resetTasks: () => void;
-  updateTaskState: (
-    status: "todo" | "inprogress" | "success" | "error",
-    name?: string,
-    content?: string,
-  ) => void;
+  updateTaskState: (status: "todo" | "inprogress" | "success" | "error", name?: string, content?: string) => void;
   txhash: string;
   setTxHash: (txhash: string) => void;
 };

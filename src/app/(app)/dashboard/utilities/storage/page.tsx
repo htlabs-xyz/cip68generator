@@ -13,8 +13,7 @@ import { useUploadContext } from "@/contexts/storage";
 import Pagination from "@/components/common/pagination";
 import StorageAction from "./_components/storage-action";
 export default function StogarePage() {
-  const { totalPages, currentPage, setCurrentPage, refetch } =
-    useUploadContext();
+  const { totalPages, currentPage, setCurrentPage, refetch } = useUploadContext();
 
   useEffect(() => {
     refetch();
@@ -25,33 +24,19 @@ export default function StogarePage() {
       <div className="rounded-xl p-6 bg-section shadow-md flex-wrap gap-3 space-y-5">
         <h1 className="text-2xl font-medium leading-7">Storage</h1>
         <div className="mt-5 flex flex-col h-full">
-          <Tabs
-            defaultValue="list"
-            className="px-4 min-h-[70vh] flex-grow overflow-y-auto"
-          >
+          <Tabs defaultValue="list" className="px-4 min-h-[70vh] flex-grow overflow-y-auto">
             <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg p-2">
               <TabsList>
-                <TabsTrigger
-                  value="list"
-                  className="data-[state=active]:bg-gray-600"
-                >
+                <TabsTrigger value="list" className="data-[state=active]:bg-gray-600">
                   <Icons.squareMenu className="h-5 w-5" />
                 </TabsTrigger>
-                <TabsTrigger
-                  value="grid"
-                  className="data-[state=active]:bg-gray-600"
-                >
+                <TabsTrigger value="grid" className="data-[state=active]:bg-gray-600">
                   <Icons.layoutGrid className="h-5 w-5" />
                 </TabsTrigger>
               </TabsList>
               <div className="flex items-center space-x-2">
                 <StorageAction />
-                <Link
-                  href={
-                    dashboardRoutes.utilities.children.storage.children.upload
-                      .redirect
-                  }
-                >
+                <Link href={dashboardRoutes.utilities.children.storage.children.upload.redirect}>
                   <Button> Upload New</Button>
                 </Link>
               </div>
@@ -65,11 +50,7 @@ export default function StogarePage() {
             </TabsContent>
           </Tabs>
 
-          <Pagination
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            totalPages={totalPages}
-          />
+          <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
         </div>
       </div>
     </div>

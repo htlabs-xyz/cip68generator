@@ -24,14 +24,6 @@
       "@/contract": ["./contract/index.ts"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "src/types/**/*.ts",
-    "next.config.mjs",
-    "eslint.config.mjs"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/types/**/*.ts", "next.config.mjs", "eslint.config.mjs"],
   "exclude": ["node_modules"]
 }

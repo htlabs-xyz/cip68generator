@@ -5,11 +5,4 @@ import TransactionStep from "./transaction";
 import PreviewStep from "./preview";
 import ResultStep from "./result";
 
-export {
-  TemplateStep,
-  BasicStep,
-  MetadataStep,
-  TransactionStep,
-  PreviewStep,
-  ResultStep,
-};
+export { TemplateStep, BasicStep, MetadataStep, TransactionStep, PreviewStep, ResultStep };

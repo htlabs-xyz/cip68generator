@@ -29,8 +29,7 @@ export async function datumToJson(
           if (keyStr === "_pk") {
             return;
           }
-          obj[keyStr] =
-            keyStr !== "_pk" ? value.toString("utf-8") : value.toString("hex");
+          obj[keyStr] = keyStr !== "_pk" ? value.toString("utf-8") : value.toString("hex");
         });
         return obj;
       }

@@ -19,10 +19,8 @@ declare const globalThis: {
   koiosFetcherGlobal: ReturnType<typeof koiosFetcherSingleton>;
 } & typeof global;
 
-const blockfrostFetcher =
-  globalThis.blockfrostFetcherGlobal ?? blockfrostFetcherSingleton();
-const blockfrostProvider =
-  globalThis.blockfrostProviderGlobal ?? blockfrostProviderSingleton();
+const blockfrostFetcher = globalThis.blockfrostFetcherGlobal ?? blockfrostFetcherSingleton();
+const blockfrostProvider = globalThis.blockfrostProviderGlobal ?? blockfrostProviderSingleton();
 const koiosFetcher = globalThis.koiosFetcherGlobal ?? koiosFetcherSingleton();
 
 if (process.env.NODE_ENV !== "production") {

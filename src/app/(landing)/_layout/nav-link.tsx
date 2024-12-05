@@ -10,13 +10,7 @@ type Props = {
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function NavLink({
-  redirect,
-  name,
-  isActive,
-  className,
-  setOpen,
-}: Props) {
+export default function NavLink({ redirect, name, isActive, className, setOpen }: Props) {
   return (
     <li className="">
       <Link

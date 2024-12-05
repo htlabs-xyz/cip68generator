@@ -4,20 +4,12 @@ import { Card } from "@/components/ui/card";
 import { Collection } from "@prisma/client";
 import Link from "next/link";
 import { dashboardRoutes } from "@/constants/routers";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import {
-  deleteCollection,
-  updateCollection,
-} from "@/services/database/collection";
+import { deleteCollection, updateCollection } from "@/services/database/collection";
 import { toast } from "@/hooks/use-toast";
 import {
   AlertDialog,
@@ -87,17 +79,12 @@ export default function FolderCard({ collection }: { collection: Collection }) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your
-              Collection and Metadata from our servers.
+              This action cannot be undone. This will permanently delete your Collection and Metadata from our servers.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setDialogDelete(false)}>
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete}>
-              Yes, Delete It
-            </AlertDialogAction>
+            <AlertDialogCancel onClick={() => setDialogDelete(false)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete}>Yes, Delete It</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -113,29 +100,16 @@ export default function FolderCard({ collection }: { collection: Collection }) {
                 // onBlur={handleRename}
                 className="text-sm h-9 mr-1"
               />
-              <Button
-                onClick={handleRename}
-                variant="ghost"
-                className="hover:bg-white/10 hover:text-green-500"
-              >
+              <Button onClick={handleRename} variant="ghost" className="hover:bg-white/10 hover:text-green-500">
                 <CircleCheck className="h-4 w-4" />
               </Button>
             </div>
           ) : (
             <>
               <div className="flex items-center justify-between">
-                <Link
-                  href={
-                    dashboardRoutes.utilities.children.collection.redirect +
-                    `/${collection.id}`
-                  }
-                  className="flex items-center space-x-3"
-                >
+                <Link href={dashboardRoutes.utilities.children.collection.redirect + `/${collection.id}`} className="flex items-center space-x-3">
                   <FolderIcon className="h-5 w-5 text-yellow-400" />
-                  <label
-                    htmlFor="file-select"
-                    className="cursor-pointer truncate text-sm"
-                  >
+                  <label htmlFor="file-select" className="cursor-pointer truncate text-sm">
                     {collection.name}
                   </label>
                 </Link>

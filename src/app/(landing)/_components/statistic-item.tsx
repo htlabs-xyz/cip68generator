@@ -8,9 +8,7 @@ export default function StatisticItem({ title, value }: Props) {
       <p className="mb-[10px] text-[42px] font-normal leading-[50px] text-[#fff] max-md:text-[20px] max-md:leading-[24px] max-md:mt-[10px]">
         {value}
       </p>
-      <span className="block text-[16px] leading-[20px] max-md:mt-[3px] max-md:leading-1 max-md:text-[12px]">
-        {title}
-      </span>
+      <span className="block text-[16px] leading-[20px] max-md:mt-[3px] max-md:leading-1 max-md:text-[12px]">{title}</span>
     </div>
   );
 }

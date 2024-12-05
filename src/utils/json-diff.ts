@@ -7,10 +7,7 @@ export interface DiffResult {
   status: "added" | "removed" | "changed" | "unchanged";
 }
 
-export function compareJson(
-  oldJson: JsonRecord,
-  newJson: JsonRecord,
-): DiffResult[] {
+export function compareJson(oldJson: JsonRecord, newJson: JsonRecord): DiffResult[] {
   const oldKeys = oldJson ? Object.keys(oldJson) : [];
   const newKeys = newJson ? Object.keys(newJson) : [];
   const allKeys = new Set([...oldKeys, ...newKeys]);

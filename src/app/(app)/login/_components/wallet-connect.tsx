@@ -1,11 +1,5 @@
 "use client";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useWalletList } from "@meshsdk/react";
 import WalletItem from "./wallet-item";
 import { useSession } from "next-auth/react";
@@ -43,10 +37,7 @@ export default function WalletConnect() {
       <div className="h-screenflex items-center justify-center">
         <div className=" text-white text-center py-6 px-8  max-w-md w-full">
           <h2 className="text-2xl font-semibold mb-4">Important Notice!</h2>
-          <p className="text-lg">
-            The application is not optimized for mobile devices yet. Please use
-            a desktop for the best experience.
-          </p>
+          <p className="text-lg">The application is not optimized for mobile devices yet. Please use a desktop for the best experience.</p>
         </div>
       </div>
     );
@@ -55,17 +46,11 @@ export default function WalletConnect() {
     <Card className="w-full mx-auto">
       <CardHeader>
         <CardTitle>Connect Wallet</CardTitle>
-        <CardDescription>
-          Connect a wallet on {appNetwork} to continue
-        </CardDescription>
+        <CardDescription>Connect a wallet on {appNetwork} to continue</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
         {wallets.map((wallet) => (
-          <WalletItem
-            key={wallet.name}
-            wallet={wallet}
-            onConnectWallet={handleConnectWallet}
-          />
+          <WalletItem key={wallet.name} wallet={wallet} onConnectWallet={handleConnectWallet} />
         ))}
       </CardContent>
     </Card>

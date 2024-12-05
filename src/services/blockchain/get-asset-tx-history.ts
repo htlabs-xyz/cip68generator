@@ -4,27 +4,16 @@ import { blockfrostFetcher } from "@/lib/cardano";
 import { SpecialTransaction, Transaction, TransactionAsset } from "@/types";
 import { isNil } from "lodash";
 
-export async function getAssetTxHistory({
-  unit,
-  page = 1,
-  limit = 12,
-}: {
-  unit: string;
-  page?: number;
-  limit?: number;
-}) {
+export async function getAssetTxHistory({ unit, page = 1, limit = 12 }: { unit: string; page?: number; limit?: number }) {
   try {
-    const assetTxs: TransactionAsset[] =
-      await blockfrostFetcher.fetchAssetTransactions(unit);
+    const assetTxs: TransactionAsset[] = await blockfrostFetcher.fetchAssetTransactions(unit);
     const total = assetTxs.length;
     const assetsSlice = assetTxs.slice((page - 1) * limit, page * limit);
 
     const assetHistories = await Promise.all(
       assetsSlice.map(async function (assetTx) {
-        const specialTransaction: SpecialTransaction =
-          await blockfrostFetcher.fetchSpecialTransaction(assetTx.tx_hash);
-        const assetTxUTxO: Transaction =
-          await blockfrostFetcher.fetchTransactionsUTxO(assetTx.tx_hash);
+        const specialTransaction: SpecialTransaction = await blockfrostFetcher.fetchSpecialTransaction(assetTx.tx_hash);
+        const assetTxUTxO: Transaction = await blockfrostFetcher.fetchTransactionsUTxO(assetTx.tx_hash);
         const assetInput = assetTxUTxO.inputs.find(function (input) {
           const asset = input.amount.find(function (amt) {
             return amt.unit === unit;

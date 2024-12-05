@@ -2,12 +2,7 @@
 import JsonBuilder from "@/components/common/json-builder";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { dashboardRoutes } from "@/constants/routers";
 import { useMetadataContext } from "@/contexts/metadata";
 import { toast } from "@/hooks/use-toast";
@@ -23,9 +18,7 @@ export default function MetadataAction({ metadata }: { metadata: Metadata }) {
   const router = useRouter();
   const [openDialog, setOpenDialog] = useState(false);
   const { refetch } = useMetadataContext();
-  const [fields, setFields] = useState<KeyValuePair[]>(
-    generateFields((metadata.content as Record<string, string>) ?? {}),
-  );
+  const [fields, setFields] = useState<KeyValuePair[]>(generateFields((metadata.content as Record<string, string>) ?? {}));
 
   const handleUpdate = async () => {
     try {
@@ -58,11 +51,7 @@ export default function MetadataAction({ metadata }: { metadata: Metadata }) {
         <DialogContent className="max-w-full sm:max-w-[80vw] w-screen h-screen sm:h-[80vh] p-0 flex flex-col">
           <div className="flex-grow flex flex-col overflow-hidden">
             <div className="rounded-xl bg-section shadow-md flex flex-col gap-3 h-full overflow-auto">
-              <JsonBuilder
-                fields={fields}
-                setFields={setFields}
-                className="h-full w-full sm:w-[90%]"
-              />
+              <JsonBuilder fields={fields} setFields={setFields} className="h-full w-full sm:w-[90%]" />
             </div>
           </div>
           <DialogFooter className="p-4">
@@ -78,15 +67,7 @@ export default function MetadataAction({ metadata }: { metadata: Metadata }) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-32">
-          <DropdownMenuItem
-            onClick={() =>
-              router.push(
-                dashboardRoutes.mint.children.mintOne.redirect +
-                  "?template=" +
-                  metadata.id,
-              )
-            }
-          >
+          <DropdownMenuItem onClick={() => router.push(dashboardRoutes.mint.children.mintOne.redirect + "?template=" + metadata.id)}>
             <span>Mint This</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpenDialog(true)}>

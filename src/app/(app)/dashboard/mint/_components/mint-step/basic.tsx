@@ -6,14 +6,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
 import { toast } from "@/hooks/use-toast";
@@ -90,9 +83,7 @@ export default function BasicStep({
                 <div className="lg:p-8">
                   <div className="mx-auto flex w-full flex-col  space-y-6">
                     <div className="flex flex-col space-y-2 text-left">
-                      <h1 className="text-2xl font-semibold tracking-tight">
-                        Basic Information
-                      </h1>
+                      <h1 className="text-2xl font-semibold tracking-tight">Basic Information</h1>
                     </div>
                     <div className="space-y-6">
                       <div className="border-none p-0 outline-none gap-2">
@@ -134,11 +125,7 @@ export default function BasicStep({
           <div className="fixed right-0 bottom-0 z-10 max-h-16 w-full bg-section">
             <div className="mx-4 flex h-16 items-center sm:mx-8">
               <div className="flex flex-1 items-center justify-end space-x-2">
-                <Button
-                  variant="secondary"
-                  onClick={stepper.prev}
-                  disabled={stepper.isFirst}
-                >
+                <Button variant="secondary" onClick={stepper.prev} disabled={stepper.isFirst}>
                   Back
                 </Button>
                 <Button type="submit">Next</Button>

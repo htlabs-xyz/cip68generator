@@ -7,7 +7,5 @@ export default function Layout({ children }: Readonly<PropsWithChildren>) {
   const searchParams = useSearchParams();
   const collection = searchParams.get("collection");
 
-  return (
-    <MintManyProvider collectionId={collection}>{children}</MintManyProvider>
-  );
+  return <MintManyProvider collectionId={collection}>{children}</MintManyProvider>;
 }

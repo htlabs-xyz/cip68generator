@@ -13,9 +13,7 @@ export default function MetadataStep({
   setMetadataToMint: (metadata: Record<string, string>) => void;
   metadataTemplate: Record<string, string> | null;
 }) {
-  const [fields, setFields] = useState<KeyValuePair[]>(
-    generateFields(metadataTemplate || {}),
-  );
+  const [fields, setFields] = useState<KeyValuePair[]>(generateFields(metadataTemplate || {}));
   const handleNext = () => {
     setMetadataToMint(generateJson(fields));
     stepper.next();
@@ -33,11 +31,7 @@ export default function MetadataStep({
       <div className="fixed right-0 bottom-0 z-10 max-h-16 w-full bg-section">
         <div className="mx-4 flex h-16 items-center sm:mx-8">
           <div className="flex flex-1 items-center justify-end space-x-2">
-            <Button
-              variant="secondary"
-              onClick={stepper.prev}
-              disabled={stepper.isFirst}
-            >
+            <Button variant="secondary" onClick={stepper.prev} disabled={stepper.isFirst}>
               Back
             </Button>
             <Button onClick={handleNext}>Next</Button>

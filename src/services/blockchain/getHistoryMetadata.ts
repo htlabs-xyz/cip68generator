@@ -4,16 +4,9 @@ import { blockfrostFetcher } from "@/lib/cardano";
 import { SpecialTransaction } from "@/types";
 import { datumToJson } from "@/utils";
 
-export const getHistoryMetadata = async function ({
-  unit,
-  txHash,
-}: {
-  unit: string;
-  txHash: string;
-}) {
+export const getHistoryMetadata = async function ({ unit, txHash }: { unit: string; txHash: string }) {
   try {
-    const specialTransaction: SpecialTransaction =
-      await blockfrostFetcher.fetchSpecialTransaction(txHash);
+    const specialTransaction: SpecialTransaction = await blockfrostFetcher.fetchSpecialTransaction(txHash);
     const transaction = await blockfrostFetcher.fetchTransactionsUTxO(txHash);
 
     const assetInput = transaction.inputs.find(function (input) {

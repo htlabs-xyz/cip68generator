@@ -1,37 +1,19 @@
 import Pagination from "@/components/common/pagination";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
-  Table,
-} from "@/components/ui/table";
+import { TableHeader, TableRow, TableHead, TableBody, TableCell, Table } from "@/components/ui/table";
 import { appNetwork, decialPlace } from "@/constants";
 import { useUnitContext } from "@/contexts/unit";
 import { TxHistory } from "@/types";
 import { shortenString } from "@/utils";
 import Link from "next/link";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
 import { getHistoryMetadata } from "@/services/blockchain/getHistoryMetadata";
 import { JsonDiffViewer } from "./json-diff-viewer";
 import { Button } from "@/components/ui/button";
 
 export default function TransactionHistory() {
-  const {
-    assetTxHistory,
-    unit,
-    txCurrentPage,
-    txTotalPages,
-    setTxCurrentPage,
-  } = useUnitContext();
+  const { assetTxHistory, unit, txCurrentPage, txTotalPages, setTxCurrentPage } = useUnitContext();
 
   const [dialog, setDialog] = useState<{
     open: boolean;
@@ -76,10 +58,7 @@ export default function TransactionHistory() {
         <DialogContent className="max-w-full sm:max-w-[80vw] w-screen h-screen sm:h-[80vh] p-0">
           <div className="py-8 px-10 m-auto flex flex-col">
             <div className="rounded-xl p-6 bg-section shadow-md flex flex-col gap-3">
-              <JsonDiffViewer
-                oldJson={dialog.oldMetadata}
-                newJson={dialog.newMetadata}
-              />
+              <JsonDiffViewer oldJson={dialog.oldMetadata} newJson={dialog.newMetadata} />
             </div>
           </div>
         </DialogContent>
@@ -102,10 +81,7 @@ export default function TransactionHistory() {
             </TableHeader>
             <TableBody>
               {assetTxHistory?.map((transaction: TxHistory, index) => (
-                <TableRow
-                  key={index}
-                  className={index % 2 === 0 ? "bg-[#0d0e12]" : ""}
-                >
+                <TableRow key={index} className={index % 2 === 0 ? "bg-[#0d0e12]" : ""}>
                   <TableCell className="h-14 py-5 px-4 text-center">
                     <Link
                       href={`https://${appNetwork}.cexplorer.io/tx/${transaction.txHash}`}
@@ -120,10 +96,7 @@ export default function TransactionHistory() {
                   </TableCell>
                   <TableCell className="h-14 py-5 px-4 text-center">
                     <h3 className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-white text-[14px] font-medium leading-[20px]">
-                      {((Number(transaction.fee) || 0) / decialPlace).toFixed(
-                        3,
-                      )}{" "}
-                      ₳
+                      {((Number(transaction.fee) || 0) / decialPlace).toFixed(3)} ₳
                     </h3>
                     <p className="text-[#5b6372] max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-[12px] font-medium leading-4">
                       {transaction.action}
@@ -133,10 +106,7 @@ export default function TransactionHistory() {
                     <h3 className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-white text-[14px] font-medium leading-[20px]">
                       {transaction.status}
                     </h3>
-                    <Button
-                      onClick={() => openMetadataChanges(transaction.txHash)}
-                      variant={"ghost"}
-                    >
+                    <Button onClick={() => openMetadataChanges(transaction.txHash)} variant={"ghost"}>
                       <p className="text-[#5b6372] underline max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-[12px] font-medium leading-4">
                         View Metadata Changes
                       </p>
@@ -147,11 +117,7 @@ export default function TransactionHistory() {
             </TableBody>
           </Table>
           <>
-            <Pagination
-              currentPage={txCurrentPage}
-              setCurrentPage={setTxCurrentPage}
-              totalPages={txTotalPages}
-            />
+            <Pagination currentPage={txCurrentPage} setCurrentPage={setTxCurrentPage} totalPages={txTotalPages} />
           </>
         </CardContent>
       </Card>

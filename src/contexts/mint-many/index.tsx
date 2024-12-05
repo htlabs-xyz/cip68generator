@@ -24,22 +24,10 @@ type MintManyContextType = MintManyStore & {
   startMinting: () => void;
 };
 
-export default function MintManyProvider({
-  children,
-}: {
-  collectionId: string | null;
-  children: React.ReactNode;
-}) {
+export default function MintManyProvider({ children }: { collectionId: string | null; children: React.ReactNode }) {
   const { signTx, address } = useBlockchainContext();
   const mintManyStepper = useMintManyStepper();
-  const {
-    updateTaskState,
-    setTxHash,
-    resetTasks,
-    setLoading,
-    setAssetInputToMint,
-    assetInputToMint,
-  } = useMintManyStore();
+  const { updateTaskState, setTxHash, resetTasks, setLoading, setAssetInputToMint, assetInputToMint } = useMintManyStore();
 
   const uploadCsv = async ({
     csvContent,
@@ -84,11 +72,7 @@ export default function MintManyProvider({
 
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      updateTaskState(
-        "inprogress",
-        "create_transaction",
-        "Creating Transaction",
-      );
+      updateTaskState("inprogress", "create_transaction", "Creating Transaction");
 
       const {
         data: tx,
@@ -105,17 +89,9 @@ export default function MintManyProvider({
       // wait for confirmation
       updateTaskState("inprogress", "sign_transaction", "Waiting for  sign Tx");
       const signedTx = await signTx(tx);
-      updateTaskState(
-        "inprogress",
-        "submit_transaction",
-        "Submitting Transaction",
-      );
+      updateTaskState("inprogress", "submit_transaction", "Submitting Transaction");
       // submit transaction
-      const {
-        data: txHash,
-        result: txResult,
-        message: txMessage,
-      } = await submitTx(signedTx);
+      const { data: txHash, result: txResult, message: txMessage } = await submitTx(signedTx);
       if (!txResult || isNil(txHash)) {
         throw new Error(txMessage);
       }
@@ -125,11 +101,7 @@ export default function MintManyProvider({
       mintManyStepper.goTo("result");
       // create transaction
     } catch (e) {
-      updateTaskState(
-        "error",
-        "",
-        e instanceof Error ? e.message : "unknown error",
-      );
+      updateTaskState("error", "", e instanceof Error ? e.message : "unknown error");
       toast({
         title: "Error",
         description: e instanceof Error ? e.message : "unknown error",
@@ -157,9 +129,7 @@ const MintManyContext = createContext<MintManyContextType>(null!);
 export const useMintManyContext = function () {
   const context = useContext(MintManyContext);
   if (!context) {
-    throw new Error(
-      "useMintManyContext must be used within a MintManyProvider",
-    );
+    throw new Error("useMintManyContext must be used within a MintManyProvider");
   }
   return context;
 };
