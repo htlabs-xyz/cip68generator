@@ -36,7 +36,7 @@ export default function MetadataGird() {
               return <MetadataCard metadata={item} key={index} />;
             })
           ) : (
-            <div className="text-center">No metadata found</div>
+            <div className="text-center col-span-full">No metadata found</div>
           )}
         </div>
       </div>
