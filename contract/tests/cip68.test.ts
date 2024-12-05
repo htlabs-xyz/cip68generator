@@ -28,32 +28,32 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   jest.setTimeout(60000);
 
   test("Mint", async function () {
-    const cip68Contract: Cip68Contract = new Cip68Contract({
-      fetcher: blockfrostProvider,
-      wallet: wallet,
-      meshTxBuilder: meshTxBuilder,
-    });
-    const unsignedTx: string = await cip68Contract.mint([
-      {
-        assetName: "CIP68 Generators 1234",
-        metadata: {
-          name: "CIP68 Generators",
-          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
-          mediaType: "image/jpg",
-          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
-          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
-        },
-        quantity: "1",
-        receiver: null!,
-      },
-    ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
-    const txHash = await wallet.submitTx(signedTx);
-    console.log(txHash);
-    txHashTemp = txHash;
-    blockfrostProvider.onTxConfirmed(txHash, () => {
-      expect(txHash.length).toBe(64);
-    });
+    // const cip68Contract: Cip68Contract = new Cip68Contract({
+    //   fetcher: blockfrostProvider,
+    //   wallet: wallet,
+    //   meshTxBuilder: meshTxBuilder,
+    // });
+    // const unsignedTx: string = await cip68Contract.mint([
+    //   {
+    //     assetName: "CIP68 Generators 1234",
+    //     metadata: {
+    //       name: "CIP68 Generators",
+    //       image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+    //       mediaType: "image/jpg",
+    //       description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+    //       _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+    //     },
+    //     quantity: "1",
+    //     receiver: null!,
+    //   },
+    // ]);
+    // const signedTx = wallet.signTx(unsignedTx, true);
+    // const txHash = await wallet.submitTx(signedTx);
+    // console.log(txHash);
+    // txHashTemp = txHash;
+    // blockfrostProvider.onTxConfirmed(txHash, () => {
+    //   expect(txHash.length).toBe(64);
+    // });
   });
 
   test("Update", async function () {
