@@ -11,11 +11,12 @@ import { filterDefault } from "@/constants";
 import { FilterType } from "@/types";
 
 export const Filter = () => {
-  const { filter, setFilter } = useUploadContext();
+  const { filter, setFilter, setCurrentPage } = useUploadContext();
   const [temp, setTemp] = useState<FilterType>(filter);
 
   const handleSearch = () => {
     if (temp) {
+      setCurrentPage(1);
       setFilter(temp);
     }
   };
