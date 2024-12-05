@@ -36,7 +36,7 @@ export default function AssetCard({ data }: { data: AssetDetails }) {
           </AspectRatio>
           <div className="flex flex-col items-center justify-start gap-2 self-stretch px-4 py-2">
             <div className="font-semibol self-stretch text-center text-base">
-              {"(222) " + assetNameSort}
+              {assetNameSort}
             </div>
             <div className="font- self-stretch text-center text-sm text-secondary">
               {fingerprintSort}
