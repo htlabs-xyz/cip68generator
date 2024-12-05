@@ -80,7 +80,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       params.map(async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
         const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (existUtXOwithUnit) {
-          throw new Error(`${assetName} has been already exists`);
+          throw new Error(`AssetName ${assetName} has already been minted`);
         }
         unsignedTx
           .mintPlutusScriptV3()
