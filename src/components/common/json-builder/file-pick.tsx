@@ -10,6 +10,7 @@ import { filterDefault } from "@/constants";
 import { getMedia } from "@/services/database/media";
 import FileDisplay from "../file-display";
 import { KeyValuePair } from "@/types";
+import Link from "next/link";
 
 export function FilePick({ fields, setFields }: { fields: KeyValuePair[]; setFields: (fields: KeyValuePair[]) => void }) {
   const [query, setQuery] = useState("");
@@ -68,7 +69,13 @@ export function FilePick({ fields, setFields }: { fields: KeyValuePair[]; setFie
               {isLoading ? (
                 <div className="text-center py-4">Loading...</div>
               ) : listMedia.length === 0 ? (
-                <div className="text-center py-4">No Media found</div>
+                <div className="text-center py-4">
+                  No Media found, go to{" "}
+                  <Link className="underline" href="/dashboard/utilities/storage">
+                    Storage
+                  </Link>{" "}
+                  to upload new media
+                </div>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
                   {listMedia.map((file) => (
