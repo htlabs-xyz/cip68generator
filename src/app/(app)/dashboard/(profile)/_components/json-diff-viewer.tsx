@@ -15,13 +15,13 @@ export function JsonDiffViewer({ oldJson, newJson }: JsonDiffViewerProps) {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <h3 className="text-lg font-semibold mb-2">Old Version</h3>
-          <ScrollArea className="h-[400px] rounded-md border">
+          <ScrollArea className=" h-[70vh] rounded-md border">
             <pre className="text-sm p-4">{renderJsonDiff(diffResult, "old")}</pre>
           </ScrollArea>
         </div>
         <div>
           <h3 className="text-lg font-semibold mb-2">New Version</h3>
-          <ScrollArea className="h-[400px] rounded-md border">
+          <ScrollArea className=" h-[70vh] rounded-md border">
             <pre className="text-sm p-4">{renderJsonDiff(diffResult, "new")}</pre>
           </ScrollArea>
         </div>

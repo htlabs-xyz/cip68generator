@@ -55,11 +55,11 @@ export default function TransactionHistory() {
         <DialogHeader>
           <DialogTitle></DialogTitle>
         </DialogHeader>
-        <DialogContent className="max-w-full sm:max-w-[80vw] w-screen h-screen sm:h-[80vh] p-0">
-          <div className="py-8 px-10 m-auto flex flex-col">
-            <div className="rounded-xl p-6 bg-section shadow-md flex flex-col gap-3">
-              <JsonDiffViewer oldJson={dialog.oldMetadata} newJson={dialog.newMetadata} />
-            </div>
+        <DialogContent className="max-w-[80vw] w-screen h-[80vh] p-0">
+          <div className="rounded-xl p-6 bg-section">
+            {/* <div className="rounded-xl p-6 bg-section shadow-md flex flex-col gap-3"> */}
+            <JsonDiffViewer oldJson={dialog.oldMetadata} newJson={dialog.newMetadata} />
+            {/* </div> */}
           </div>
         </DialogContent>
       </Dialog>
