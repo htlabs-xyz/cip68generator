@@ -1,6 +1,7 @@
 "use server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { AssetInput } from "@/types";
 import { UnauthorizedException } from "@/utils/http/http-exceptions";
 
 export async function createCollection({ name, description }: { name: string; description?: string }) {
@@ -120,13 +121,7 @@ export async function updateCollection({ collectionId, name, description }: { co
   }
 }
 
-export async function createCollectionWithData({
-  collectionName,
-  listMetadata,
-}: {
-  collectionName: string;
-  listMetadata: { [key: string]: string | number | boolean | null }[];
-}) {
+export async function createCollectionWithData({ collectionName, listAssetInput }: { collectionName: string; listAssetInput: AssetInput[] }) {
   try {
     const session = await auth();
     const userId = session?.user?.id;
@@ -140,8 +135,9 @@ export async function createCollectionWithData({
         name: collectionName,
         userId: userId,
         Metadata: {
-          create: listMetadata.map((metadata) => ({
-            content: metadata,
+          create: listAssetInput.map((asset) => ({
+            assetName: asset.assetName,
+            content: asset.metadata,
             nftReference: [],
           })),
         },
@@ -156,7 +152,8 @@ export async function createCollectionWithData({
       message: "success",
       data: result,
     };
-  } catch (error: unknown) {
+  } catch (error) {
+    console.log(error);
     return {
       data: null,
       result: false,
