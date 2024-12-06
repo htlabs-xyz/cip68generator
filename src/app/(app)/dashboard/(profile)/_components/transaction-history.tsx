@@ -9,7 +9,7 @@ import Link from "next/link";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
 import { getHistoryMetadata } from "@/services/blockchain/getHistoryMetadata";
-import { JsonDiffViewer } from "./json-diff-viewer";
+import ReactDiffViewer from "react-diff-viewer";
 import { Button } from "@/components/ui/button";
 
 export default function TransactionHistory() {
@@ -55,11 +55,14 @@ export default function TransactionHistory() {
         <DialogHeader>
           <DialogTitle></DialogTitle>
         </DialogHeader>
-        <DialogContent className="max-w-[80vw] w-screen h-[80vh] p-0">
-          <div className="rounded-xl p-6 bg-section">
-            {/* <div className="rounded-xl p-6 bg-section shadow-md flex flex-col gap-3"> */}
-            <JsonDiffViewer oldJson={dialog.oldMetadata} newJson={dialog.newMetadata} />
-            {/* </div> */}
+        <DialogContent className=" max-w-[80vw] w-screen h-[80vh] p-0">
+          <div className="rounded-xl p-10">
+            <ReactDiffViewer
+              oldValue={JSON.stringify(dialog.oldMetadata, null, 2)}
+              newValue={JSON.stringify(dialog.newMetadata, null, 2)}
+              splitView
+              useDarkTheme
+            />
           </div>
         </DialogContent>
       </Dialog>
