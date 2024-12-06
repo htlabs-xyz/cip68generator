@@ -80,10 +80,20 @@ export async function getMetadata({
 
     const whereConditions: {
       collectionId: string;
-      content?: {
-        contains: string;
-        mode: "insensitive";
-      };
+      OR?: Array<
+        | {
+            assetName?: {
+              contains: string;
+              mode?: "insensitive";
+            };
+          }
+        | {
+            content?: {
+              contains: string;
+              mode?: "insensitive";
+            };
+          }
+      >;
       createdAt?: {
         gte?: Date;
         lte?: Date;
@@ -93,10 +103,20 @@ export async function getMetadata({
     };
 
     if (!isNil(query) && !isEmpty(query)) {
-      whereConditions.content = {
-        contains: query,
-        mode: "insensitive",
-      };
+      whereConditions.OR = [
+        {
+          assetName: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+        {
+          content: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+      ];
     }
 
     if (!isNil(range)) {
@@ -116,13 +136,15 @@ export async function getMetadata({
       where: whereConditions,
     });
 
-    const parsedMetadata = metadata.map((item) => ({
+    const parsedMetadata: PMetadata[] = metadata.map((item) => ({
       ...item,
       content: JSON.parse(item.content),
     }));
 
+    console.log(parsedMetadata);
+
     return {
-      data: parsedMetadata as PMetadata[],
+      data: parsedMetadata,
       totalItems,
       totalPages: Math.ceil(totalItems / limit),
       currentPage: page,
