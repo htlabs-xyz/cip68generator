@@ -61,27 +61,6 @@ export default function Account() {
             <p className="text-sm text-gray-400 capitalize"> {appNetwork}</p>
           </div>
         </div>
-        {/* <div className={cn("flex items-center gap-2")}>
-          <div className={cn("h-10 w-10")}>
-            <Image
-              className={cn("h-full w-full object-cover p-1")}
-              src={wallet?.icon || ""}
-              alt={`${wallet?.name} icon`}
-              width={32}
-              height={32}
-            />
-          </div>
-          <div className="">
-            <h2 className={"text-[18px] font-medium capitalize"}>
-             
-            </h2>
-            <div className="flex items-center gap-2">
-              <p className={"select-none text-[12px] text-gray-500 capitalize"}>
-               
-              </p>
-            </div>
-          </div>
-        </div> */}
         <Separator className="my-4 bg-slate-500" />
         <div className="space-y-4">
           <div className="flex items-center justify-between">
@@ -103,55 +82,6 @@ export default function Account() {
             </Button>
           </div>
         </div>
-
-        {/* <div className={"relative flex items-center gap-[5px]"}>
-          <p className="whitespace-nowrap text-[13px] text-gray-400">
-            Stake Address
-          </p>
-          <p className="flex items-center gap-[6px] whitespace-nowrap">
-            <span className="inline-block max-w-[140px] overflow-hidden text-ellipsis whitespace-nowrap text-[14px] text-gray-200">
-              {shortenString(stakeAddress || "", 8)}
-            </span>
-            <span className="ml-auto">
-              <CoppyButton content={stakeAddress || ""} />
-            </span>
-          </p>
-        </div>
-
-        <div className={"relative flex items-center gap-[5px]"}>
-          <p className="whitespace-nowrap text-[13px] text-gray-400">
-            Change Address
-          </p>
-          <p className="flex items-center gap-[6px] whitespace-nowrap">
-            <span className="inline-block max-w-[140px] overflow-hidden text-ellipsis whitespace-nowrap text-[14px] text-gray-200">
-              {shortenString(address || "", 8)}
-            </span>
-            <span className="ml-auto">
-              <CoppyButton content={address || ""} />
-            </span>
-          </p>
-        </div> */}
-
-        {/* <div className={"relative flex items-center gap-[5px]"}>
-          <p className="whitespace-nowrap text-[13px] text-gray-400">
-            Metadatas
-          </p>
-          <p className="flex items-center gap-[6px] whitespace-nowrap">
-            <span className="inline-block max-w-[180px] overflow-hidden text-ellipsis whitespace-nowrap text-[14px] text-gray-200">
-              20
-            </span>
-          </p>
-        </div>
-        <div className={"relative flex items-center gap-[5px]"}>
-          <p className="whitespace-nowrap text-[13px] text-gray-400">
-            Storages
-          </p>
-          <p className="flex items-center gap-[6px] whitespace-nowrap">
-            <span className="inline-block max-w-[180px] overflow-hidden text-ellipsis whitespace-nowrap text-[14px] text-gray-200">
-              10
-            </span>
-          </p>
-        </div> */}
         <div className={cn("leading-0 h-[1px] overflow-hidden bg-slate-500")} />
         <div className={cn("relative flex items-center")}>
           <Link className="flex cursor-pointer items-center gap-1 text-gray-300" href={"/"}>
@@ -174,9 +104,6 @@ export default function Account() {
           >
             Log out
           </Button>
-          {/* <div className={cn("text-[15px] text-[rgb(153,153,153)]")}>
-            V4.5.6_beta
-          </div> */}
         </div>
       </PopoverContent>
     </Popover>

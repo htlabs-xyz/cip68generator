@@ -7,7 +7,6 @@ import { AssetInput } from "@/types";
 import { shortenString } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Trash2Icon } from "lucide-react";
-import { assetName } from "@meshsdk/core";
 import CoppyButton from "@/components/common/coppy-button";
 
 export default function ManyPreview({

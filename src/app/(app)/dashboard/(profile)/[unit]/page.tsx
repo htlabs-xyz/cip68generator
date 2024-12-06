@@ -4,10 +4,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FileDisplay from "@/components/common/file-display";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import { isEmpty, isNil } from "lodash";
+import { isNil } from "lodash";
 import { useUnitContext } from "@/contexts/unit";
 import Loading from "@/app/(loading)/loading";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import Property from "../_components/property";
 import { hexToString } from "@meshsdk/core";
 import CoppyButton from "@/components/common/coppy-button";
@@ -20,12 +19,6 @@ export default function DetailsPage() {
   const { asset_name, policy_id, onchain_metadata, fingerprint } = assetDetails;
 
   const assetNameString = hexToString(asset_name.replace(/^000de140/, ""));
-
-  const assetNameSort = assetNameString.length > 20 ? assetNameString.slice(0, 10) + "..." + assetNameString.slice(-10) : assetNameString;
-
-  const policyIdSort = policy_id.slice(0, 10) + "..." + policy_id.slice(-15);
-
-  const fingerprintSort = fingerprint.slice(0, 10) + "..." + fingerprint.slice(-15);
 
   const imgSrc = onchain_metadata?.image || "";
 
@@ -56,26 +49,19 @@ export default function DetailsPage() {
               {/* Title and Verification */}
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <h1 className="text-2xl font-bold">{assetNameSort}</h1>
+                  <h1 className="text-2xl font-bold overflow-hidden whitespace-nowrap">{assetNameString}</h1>
                   <span className="text-blue-400">✓</span>
                 </div>
-                {/* <div className="flex items-center gap-2 text-sm text-gray-400">
-                  <span>Owned by</span>
-                  <span className="text-blue-400">legend</span>
-                </div> */}
               </div>
 
               {/* Policy and Asset IDs */}
               <div className="space-y-2 ">
                 <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg">
-                  <span className="text-sm text-gray-400">Policy ID: {policyIdSort}</span>
-                  {/* <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <Copy className="h-4 w-4" />
-                  </Button> */}
+                  <span className="text-sm text-gray-400 text-ellipsis overflow-hidden whitespace-nowrap">Policy ID: {policy_id}</span>
                   <CoppyButton content={policy_id} className="h-8 w-8" />
                 </div>
                 <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg">
-                  <span className="text-sm text-gray-400">Asset ID: {fingerprintSort}</span>
+                  <span className="text-sm text-gray-400 overflow-hidden whitespace-nowrap">Asset ID: {fingerprint}</span>
                   <CoppyButton content={fingerprint} className="h-8 w-8" />
                 </div>
               </div>
@@ -107,18 +93,9 @@ export default function DetailsPage() {
           <TabsContent value="properties" className="mt-4">
             <Card className="p-5 border-none rounded-lg flex flex-col gap-8">
               <div className="flex flex-col gap-8">
-                <div className="grid grid-cols-4 gap-y-5 gap-x-2">
+                <div className="grid grid-cols-3 gap-y-5 gap-x-2">
                   {metadataToUpdate &&
-                    Object.entries(metadataToUpdate).map(([name, value], index) => (
-                      <TooltipProvider key={index}>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Property image="" name={name} value={isNil(value) || isEmpty(value) ? "null" : `${value}`} />
-                          </TooltipTrigger>
-                          <TooltipContent>{isNil(value) || isEmpty(value) ? "null" : `${value}`}</TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    ))}
+                    Object.entries(metadataToUpdate).map(([name, value], index) => <Property key={index} name={name} value={value} />)}
                 </div>
               </div>
             </Card>

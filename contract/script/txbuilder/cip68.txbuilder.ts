@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   applyParamsToScript,
   PlutusScript,
@@ -10,9 +11,7 @@ import {
   metadataToCip68,
   mConStr1,
   deserializeAddress,
-  UTxO,
 } from "@meshsdk/core";
-import { getPkHash } from "@/utils";
 
 import { MeshAdapter } from "../adapters/mesh.adapter";
 import plutus from "../../plutus.json";
@@ -81,7 +80,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       params.map(async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
         const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (existUtXOwithUnit) {
-          throw new Error(`${assetName} has been already exists`);
+          throw new Error(`AssetName ${assetName} has already been minted`);
         }
         unsignedTx
           .mintPlutusScriptV3()
@@ -233,141 +232,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
           quantity: "1000000",
         },
       ])
-      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
-      .changeAddress(walletAddress)
-      .selectUtxosFrom(utxos)
-      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
-      .setNetwork(appNetwork);
-
-    return unsignedTx.complete();
-  };
-
-  updateMany = async (
-    params: {
-      assetName: string;
-      metadata: Record<string, string>;
-      txHash?: string;
-    }[],
-  ) => {
-    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
-    // const utxoRef: UTxO = await this.getUtxoForTx(
-    //   STORE_REFERENCE_SCRIPT_ADDRESS,
-    //   STORE_REFERENCE_SCRIPT_HASH,
-    // );
-    const unsignedTx = this.meshTxBuilder;
-    await Promise.all(
-      params.map(async ({ assetName, metadata, txHash }) => {
-        const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
-          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
-        console.log(storeUtxo);
-        if (!storeUtxo) throw new Error("Store UTXO not found");
-        unsignedTx
-          .spendingPlutusScriptV3()
-          .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
-          .txInInlineDatumPresent()
-          .txInRedeemerValue(mConStr0([]))
-          // .spendingTxInReference(utxoRef.input.txHash, utxoRef.input.outputIndex)
-          .txInScript(this.storeScriptCbor)
-          .txOut(this.storeAddress, [
-            {
-              unit: this.policyId + CIP68_100(stringToHex(assetName)),
-              quantity: "1",
-            },
-          ])
-          .txOutInlineDatumValue(metadataToCip68(metadata));
-      }),
-    );
-
-    unsignedTx
-      .txOut(EXCHANGE_FEE_ADDRESS, [
-        {
-          unit: "lovelace",
-          quantity: "1000000",
-        },
-      ])
-      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
-      .changeAddress(walletAddress)
-      .selectUtxosFrom(utxos)
-      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
-      .setNetwork(appNetwork)
-      .removeDuplicateInputs();
-    // .addUtxosFromSelection();
-
-    return unsignedTx.complete();
-  };
-
-  /**
-   *
-   */
-  burnMany = async (
-    params: {
-      assetName: string;
-      quantity: string;
-      txHash?: string;
-    }[],
-  ) => {
-    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
-
-    // const mintUtxoRef: UTxO = await this.getUtxoForTx(
-    //   MINT_REFERENCE_SCRIPT_ADDRESS,
-    //   MINT_REFERENCE_SCRIPT_HASH,
-    // );
-
-    // const storeUtxoRef: UTxO = await this.getUtxoForTx(
-    //   STORE_REFERENCE_SCRIPT_ADDRESS,
-    //   STORE_REFERENCE_SCRIPT_HASH,
-    // );
-
-    const unsignedTx = this.meshTxBuilder;
-
-    await Promise.all(
-      params.map(async ({ txHash, assetName, quantity }) => {
-        const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
-          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
-        console.log(storeUtxo);
-
-        if (!storeUtxo) throw new Error("Store UTXO not found");
-        unsignedTx
-          .mintPlutusScriptV3()
-          .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
-          .mintRedeemerValue(mConStr1([]))
-          .mintingScript(this.mintScriptCbor)
-          // .mintTxInReference(
-          //   mintUtxoRef.input.txHash,
-          //   mintUtxoRef.input.outputIndex,
-          // )
-
-          .mintPlutusScriptV3()
-          .mint(quantity, this.policyId, CIP68_100(stringToHex(assetName)))
-          .mintingScript(this.mintScriptCbor)
-          // .mintTxInReference(
-          //   mintUtxoRef.input.txHash,
-          //   mintUtxoRef.input.outputIndex,
-          // )
-          .mintRedeemerValue(mConStr1([]))
-
-          .spendingPlutusScriptV3()
-          .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
-          .txInInlineDatumPresent()
-          .txInRedeemerValue(mConStr1([]))
-          .txInScript(this.storeScriptCbor);
-        // .spendingTxInReference(
-        //   storeUtxoRef.input.txHash,
-        //   storeUtxoRef.input.outputIndex,
-        // )
-      }),
-    );
-
-    unsignedTx
-      .txOut(EXCHANGE_FEE_ADDRESS, [
-        {
-          unit: "lovelace",
-          quantity: "1000000",
-        },
-      ])
-
       .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
       .changeAddress(walletAddress)
       .selectUtxosFrom(utxos)

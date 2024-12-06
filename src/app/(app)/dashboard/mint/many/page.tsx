@@ -13,7 +13,7 @@ export default function Page() {
   return (
     <div className="pt-8 pb-20 px-10 m-auto flex flex-col">
       <div className="rounded-xl p-6 bg-section shadow-md flex flex-col gap-3">
-        <h1 className="text-2xl font-medium leading-7 text-center">Mint Step</h1>
+        <h1 className="text-2xl font-medium leading-7 text-center">Mint Steps</h1>
 
         <StepperNav stepper={mintManyStepper} steps={mintManySteps} />
         <div className="space-y-4">

@@ -10,6 +10,8 @@ import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from "@
 import { cn } from "@/utils";
 import { getAllCollection } from "@/services/database/collection";
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
+import { dashboardRoutes } from "@/constants/routers";
 
 export function SaveMetadata({
   collectioToSave,
@@ -41,14 +43,14 @@ export function SaveMetadata({
             setSaveToDatabase(value);
           }}
         />
-        <h2 className="text-lg font-semibold">Save To Database</h2>
+        <h2 className="text-lg font-semibold">Save Metadata Template To Database</h2>
       </div>
 
       {saveToDatabase && (
         <>
           {isLoading && <p>Loading collections...</p>}
           {error && <p className="text-red-500">{error.message}</p>}
-          {!isLoading && !error && data && data?.data.length > 0 && (
+          {!isLoading && !error && data && data?.data.length > 0 ? (
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
                 <Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between">
@@ -81,6 +83,14 @@ export function SaveMetadata({
                 </Command>
               </PopoverContent>
             </Popover>
+          ) : (
+            <p>
+              No collection found, create it on{" "}
+              <Link className="underline" href={dashboardRoutes.utilities.children.collection.redirect}>
+                Collection
+              </Link>{" "}
+              page
+            </p>
           )}
         </>
       )}

@@ -1,8 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import Property from "../property";
-import { isEmpty, isNil } from "lodash";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import FileDisplay from "@/components/common/file-display";
 import { Card, CardContent } from "@/components/ui/card";
@@ -31,7 +29,6 @@ export default function PreviewStep({
   const assetNameSort = basicInfoToMint?.assetName || "No name";
   const imgSrc = metadataToMint?.image || "";
   const mediaType = imgSrc == "" ? "text/plain" : metadataToMint?.mediaType || "image/png";
-  // const description = metadataToMint?.description || "";
 
   useEffect(() => {
     getContractPolicyId().then(setNftPolicyId);
@@ -77,8 +74,6 @@ export default function PreviewStep({
                   </div>
                 </div>
                 <SaveMetadata collectioToSave={collectionToSave} setCollectionToSave={setCollectionToSave} />
-                {/* Description */}
-                {/* <p className="text-gray-400">{123}</p> */}
               </CardContent>
             </Card>
           </div>
@@ -87,18 +82,8 @@ export default function PreviewStep({
           <div className="w-full mt-5">
             <Card className="p-5 border-none rounded-lg flex flex-col gap-8">
               <div className="flex flex-col gap-8">
-                <div className="grid grid-cols-2 gap-y-5 gap-x-2">
-                  {metadataToMint &&
-                    Object.entries(metadataToMint).map(([name, value], index) => (
-                      <TooltipProvider key={index}>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Property image="" name={name} value={isNil(value) || isEmpty(value) ? "null" : `${value}`} />
-                          </TooltipTrigger>
-                          <TooltipContent>{isNil(value) || isEmpty(value) ? "null" : `${value}`}</TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    ))}
+                <div className="grid grid-cols-3 gap-y-5 gap-x-2">
+                  {metadataToMint && Object.entries(metadataToMint).map(([name, value], index) => <Property key={index} name={name} value={value} />)}
                 </div>
               </div>
             </Card>

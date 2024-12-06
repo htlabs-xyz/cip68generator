@@ -1,15 +1,15 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card } from "@/components/ui/card";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import { Metadata } from "@prisma/client";
 import { useMetadataContext } from "@/contexts/metadata";
 import Image from "next/image";
 import { isNil } from "lodash";
 import MetadataAction from "./metadata-action";
+import { PMetadata } from "@/types";
 
-export default function MetadataCard({ metadata }: { metadata: Metadata }) {
+export default function MetadataCard({ metadata }: { metadata: PMetadata }) {
   const { listSelected, setListSelected } = useMetadataContext();
-  const handleSellect = (metadata: Metadata, checked: boolean) => {
+  const handleSellect = (metadata: PMetadata, checked: boolean) => {
     if (checked) {
       setListSelected([...listSelected, metadata]);
     } else {

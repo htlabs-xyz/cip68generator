@@ -24,11 +24,10 @@ export default function UploadCSVProvider({ children }: PropsWithChildren) {
         throw new Error("CSV content is empty");
       }
       const listAssetInput = convertObject(csvContent);
-      const listMetadata = listAssetInput.map((item) => item.metadata);
 
       const { result, message, data } = await createCollectionWithData({
         collectionName: csvName,
-        listMetadata: listMetadata,
+        listAssetInput,
       });
       if (!result || isNil(data)) {
         throw new Error(message);

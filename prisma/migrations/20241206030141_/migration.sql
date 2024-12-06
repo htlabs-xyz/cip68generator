@@ -38,7 +38,8 @@ CREATE TABLE "metadata" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "collection_id" TEXT NOT NULL,
-    "content" JSONB NOT NULL,
+    "asset_name" TEXT,
+    "content" TEXT NOT NULL,
     "nft_reference" TEXT[],
 
     CONSTRAINT "metadata_pkey" PRIMARY KEY ("id")
