@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useMetadataContext } from "@/contexts/metadata";
 import MetadataList from "../_components/metadata-list";
 import MetadataGird from "../_components/metadata-gird";
-// import { Filter } from "../_components/filter";
+import { Filter } from "../_components/filter";
 import CollectionAction from "../_components/collection-action";
 import Pagination from "@/components/common/pagination";
 
@@ -35,7 +35,7 @@ export default function MetadataPage() {
               </Link>
             </div>
           </div>
-          {/* <Filter /> */}
+          <Filter />
           <TabsContent value="list">
             <MetadataList />
           </TabsContent>

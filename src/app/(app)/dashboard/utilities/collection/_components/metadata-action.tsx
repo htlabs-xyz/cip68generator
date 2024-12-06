@@ -7,18 +7,17 @@ import { dashboardRoutes } from "@/constants/routers";
 import { useMetadataContext } from "@/contexts/metadata";
 import { toast } from "@/hooks/use-toast";
 import { updateMetadata } from "@/services/database/metadata";
-import { KeyValuePair } from "@/types";
+import { KeyValuePair, PMetadata } from "@/types";
 import { generateFields, generateJson } from "@/utils/json";
-import { Metadata } from "@prisma/client";
 import { MoreVertical } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function MetadataAction({ metadata }: { metadata: Metadata }) {
+export default function MetadataAction({ metadata }: { metadata: PMetadata }) {
   const router = useRouter();
   const [openDialog, setOpenDialog] = useState(false);
   const { refetch } = useMetadataContext();
-  const [fields, setFields] = useState<KeyValuePair[]>(generateFields((metadata.content as Record<string, string>) ?? {}));
+  const [fields, setFields] = useState<KeyValuePair[]>(generateFields(metadata.content));
 
   const handleUpdate = async () => {
     try {

@@ -55,7 +55,7 @@ model Metadata {
   updatedAt    DateTime   @updatedAt @map(name: "updated_at")
   collectionId String     @map(name: "collection_id")
   assetName    String?     @map(name: "asset_name")
-  content      Json       @map(name: "content")
+  content      String       @map(name: "content")
   nftReference String[]   @map(name: "nft_reference")
   collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
 

@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { JsonValue } from "@prisma/client/runtime/library";
 import ReactDiffViewer from "react-diff-viewer";
 
-export function ViewMetadataContent({ json }: { json: JsonValue }) {
+export function ViewMetadataContent({ json }: { json: Record<string, string> }) {
   return (
     <Dialog>
       <DialogTrigger asChild>

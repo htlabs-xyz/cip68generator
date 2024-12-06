@@ -137,7 +137,7 @@ export async function createCollectionWithData({ collectionName, listAssetInput 
         Metadata: {
           create: listAssetInput.map((asset) => ({
             assetName: asset.assetName,
-            content: asset.metadata,
+            content: JSON.stringify(asset.metadata),
             nftReference: [],
           })),
         },

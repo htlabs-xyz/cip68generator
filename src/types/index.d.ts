@@ -46,6 +46,16 @@ export interface NavItem {
   icon?: keyof typeof Icons;
 }
 
+export type PMetadata = {
+  id: string;
+  collectionId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  assetName: string | null;
+  content: Record<string, string>;
+  nftReference?: string[];
+};
+
 export type AssetType = {
   address: string;
   policy_id: string;

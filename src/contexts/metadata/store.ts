@@ -1,13 +1,12 @@
 import { create } from "zustand";
-import { Metadata } from "@prisma/client";
-import { FilterType } from "@/types";
+import { FilterType, PMetadata } from "@/types";
 import { filterDefault } from "@/constants";
 
 export type MetadataStore = {
-  listMetadata: Metadata[];
-  setListMetadata: (media: Metadata[]) => void;
-  listSelected: Metadata[];
-  setListSelected: (media: Metadata[]) => void;
+  listMetadata: PMetadata[];
+  setListMetadata: (media: PMetadata[]) => void;
+  listSelected: PMetadata[];
+  setListSelected: (media: PMetadata[]) => void;
   currentPage: number;
   totalPages: number;
   setCurrentPage: (page: number) => void;
@@ -23,8 +22,8 @@ const useMetadataStore = create<MetadataStore>((set) => ({
   filter: filterDefault,
   setFilter: (filter: FilterType) => set({ filter }),
   setCurrentPage: (page: number) => set({ currentPage: page }),
-  setListMetadata: (media: Metadata[]) => set({ listMetadata: media }),
-  setListSelected: (media: Metadata[]) => set({ listSelected: media }),
+  setListMetadata: (media: PMetadata[]) => set({ listMetadata: media }),
+  setListSelected: (media: PMetadata[]) => set({ listSelected: media }),
 }));
 
 export default useMetadataStore;

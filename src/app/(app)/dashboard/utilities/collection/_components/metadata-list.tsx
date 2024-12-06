@@ -6,16 +6,16 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useMetadataContext } from "@/contexts/metadata";
 import FileDisplay from "@/components/common/file-display";
 import { isEmpty, isNil } from "lodash";
-import { Metadata } from "@prisma/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ViewMetadataContent } from "../../../../../../components/common/view-json";
 import MetadataAction from "./metadata-action";
 import { shortenString } from "@/utils";
+import { PMetadata } from "@/types";
 
 export default function MetadataList() {
   const { loading, listMetadata, setListSelected, listSelected } = useMetadataContext();
 
-  const handleSellect = (metadata: Metadata, checked: boolean) => {
+  const handleSellect = (metadata: PMetadata, checked: boolean) => {
     if (checked) {
       setListSelected([...listSelected, metadata]);
     } else {

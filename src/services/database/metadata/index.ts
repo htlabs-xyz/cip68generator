@@ -2,8 +2,8 @@
 
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { PMetadata } from "@/types";
 import { UnauthorizedException } from "@/utils/http/http-exceptions";
-import { Metadata } from "@prisma/client";
 import { isEmpty, isNil } from "lodash";
 import { DateRange } from "react-day-picker";
 
@@ -30,7 +30,7 @@ export async function addMetadata({ collectionId, listMetadata }: { collectionId
     await prisma.metadata.createMany({
       data: listMetadata.map((metadata) => ({
         collectionId,
-        content: metadata,
+        content: JSON.stringify(metadata),
       })),
     });
 
@@ -80,22 +80,10 @@ export async function getMetadata({
 
     const whereConditions: {
       collectionId: string;
-      OR?: Array<
-        | {
-            content: {
-              path: string[];
-              string_contains: string;
-              mode: "insensitive";
-            };
-          }
-        | {
-            content: {
-              path: string[];
-              string_contains: string;
-              mode: "insensitive";
-            };
-          }
-      >;
+      content?: {
+        contains: string;
+        mode: "insensitive";
+      };
       createdAt?: {
         gte?: Date;
         lte?: Date;
@@ -105,22 +93,10 @@ export async function getMetadata({
     };
 
     if (!isNil(query) && !isEmpty(query)) {
-      whereConditions.OR = [
-        {
-          content: {
-            path: ["name"],
-            string_contains: query,
-            mode: "insensitive",
-          },
-        },
-        {
-          content: {
-            path: ["description"],
-            string_contains: query,
-            mode: "insensitive",
-          },
-        },
-      ];
+      whereConditions.content = {
+        contains: query,
+        mode: "insensitive",
+      };
     }
 
     if (!isNil(range)) {
@@ -140,8 +116,13 @@ export async function getMetadata({
       where: whereConditions,
     });
 
+    const parsedMetadata = metadata.map((item) => ({
+      ...item,
+      content: JSON.parse(item.content),
+    }));
+
     return {
-      data: metadata,
+      data: parsedMetadata as PMetadata[],
       totalItems,
       totalPages: Math.ceil(totalItems / limit),
       currentPage: page,
@@ -168,6 +149,8 @@ export async function getMetadataById({ metadataId }: { metadataId: string }) {
         id: metadataId,
       },
     });
+    const parsedMetadata: PMetadata = metadata ? { ...metadata, content: JSON.parse(metadata.content) } : null!;
+
     const collection = await prisma.collection.findFirst({
       where: {
         id: metadata?.collectionId,
@@ -180,7 +163,7 @@ export async function getMetadataById({ metadataId }: { metadataId: string }) {
     }
 
     return {
-      data: metadata,
+      data: parsedMetadata,
       message: "success",
     };
   } catch (e) {
@@ -191,7 +174,7 @@ export async function getMetadataById({ metadataId }: { metadataId: string }) {
   }
 }
 
-export async function deleteMetadata({ collectionId, listMetadata }: { collectionId: string; listMetadata: Metadata[] }) {
+export async function deleteMetadata({ collectionId, listMetadata }: { collectionId: string; listMetadata: PMetadata[] }) {
   try {
     const session = await auth();
     const userId = session?.user?.id;
@@ -233,7 +216,7 @@ export async function deleteMetadata({ collectionId, listMetadata }: { collectio
   }
 }
 
-export async function updateMetadata({ collectionId, metadata }: { collectionId: string; metadata: Metadata }) {
+export async function updateMetadata({ collectionId, metadata }: { collectionId: string; metadata: PMetadata }) {
   try {
     const session = await auth();
     const userId = session?.user?.id;
@@ -258,7 +241,7 @@ export async function updateMetadata({ collectionId, metadata }: { collectionId:
         id: metadata.id,
       },
       data: {
-        content: metadata.content ?? {},
+        content: JSON.stringify(metadata.content),
       },
     });
 
