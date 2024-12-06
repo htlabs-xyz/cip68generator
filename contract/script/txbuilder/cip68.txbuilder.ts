@@ -28,6 +28,7 @@ import { Plutus } from "../types";
 import { appNetwork, appNetworkId } from "@/constants";
 import { ICip68Contract } from "../interfaces/icip68.interface";
 import { isEmpty, isNil } from "lodash";
+import { getPkHash } from "@/utils";
 
 export class Cip68Contract extends MeshAdapter implements ICip68Contract {
   protected pubKeyExchange: string = deserializeAddress(EXCHANGE_FEE_ADDRESS).pubKeyHash;
@@ -79,36 +80,70 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     await Promise.all(
       params.map(async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
         const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
-        if (existUtXOwithUnit) {
-          throw new Error(`AssetName ${assetName} has already been minted`);
+       
+        console.log(existUtXOwithUnit)
+        if (existUtXOwithUnit?.output?.plutusData ) {
+          const pk = await getPkHash(existUtXOwithUnit?.output?.plutusData as string);
+          if (pk !== deserializeAddress(walletAddress).pubKeyHash) {
+            throw new Error(`${assetName} has been exist`)
+          }
+          unsignedTx
+            .spendingPlutusScriptV3()
+            .txIn(existUtXOwithUnit.input.txHash, existUtXOwithUnit.input.outputIndex)
+            .txInInlineDatumPresent()
+            .txInRedeemerValue(mConStr0([]))
+            // .spendingTxInReference(utxoRef.input.txHash, utxoRef.input.outputIndex)
+            .txInScript(this.storeScriptCbor)
+            .txOut(this.storeAddress, [
+              {
+                unit: this.policyId + CIP68_100(stringToHex(assetName)),
+                quantity: "1",
+              },
+            ])
+            .txOutInlineDatumValue(metadataToCip68(metadata))
+
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            // .mintTxInReference(utxoRef.input.txHash, utxoRef.input.outputIndex)
+            .mintingScript(this.mintScriptCbor)
+            .mintRedeemerValue(mConStr0([]))
+
+            .txOut(!isEmpty(receiver) ? receiver : walletAddress, [
+              {
+                unit: this.policyId + CIP68_222(stringToHex(assetName)),
+                quantity: quantity,
+              },
+            ]);
+          
+         
+        } else {
+          unsignedTx
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            // .mintTxInReference(utxoRef.input.txHash, utxoRef.input.outputIndex)
+            .mintingScript(this.mintScriptCbor)
+            .mintRedeemerValue(mConStr0([]))
+
+            .mintPlutusScriptV3()
+            .mint("1", this.policyId, CIP68_100(stringToHex(assetName)))
+            // .mintTxInReference(utxoRef.input.txHash, utxoRef.input.outputIndex)
+            .mintingScript(this.mintScriptCbor)
+            .mintRedeemerValue(mConStr0([]))
+            .txOut(!isEmpty(receiver) ? receiver : walletAddress, [
+              {
+                unit: this.policyId + CIP68_222(stringToHex(assetName)),
+                quantity: quantity,
+              },
+            ])
+
+            .txOut(this.storeAddress, [
+              {
+                unit: this.policyId + CIP68_100(stringToHex(assetName)),
+                quantity: "1",
+              },
+            ])
+            .txOutInlineDatumValue(metadataToCip68(metadata));
         }
-        unsignedTx
-          .mintPlutusScriptV3()
-          .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
-          // .mintTxInReference(utxoRef.input.txHash, utxoRef.input.outputIndex)
-          .mintingScript(this.mintScriptCbor)
-          .mintRedeemerValue(mConStr0([]))
-
-          .mintPlutusScriptV3()
-          .mint("1", this.policyId, CIP68_100(stringToHex(assetName)))
-          // .mintTxInReference(utxoRef.input.txHash, utxoRef.input.outputIndex)
-          .mintingScript(this.mintScriptCbor)
-          .mintRedeemerValue(mConStr0([]))
-
-          .txOut(!isEmpty(receiver) ? receiver : walletAddress, [
-            {
-              unit: this.policyId + CIP68_222(stringToHex(assetName)),
-              quantity: quantity,
-            },
-          ])
-
-          .txOut(this.storeAddress, [
-            {
-              unit: this.policyId + CIP68_100(stringToHex(assetName)),
-              quantity: "1",
-            },
-          ])
-          .txOutInlineDatumValue(metadataToCip68(metadata));
       }),
     );
 

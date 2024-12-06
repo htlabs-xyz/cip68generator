@@ -52,7 +52,7 @@ validator store(exchange: VerificationKeyHash, exchange_fee: Int) {
         let check_author = author_input == author_output
         and {
           utils.check_output_utxo(validator_output, extra_signatories)?,
-          list.length(outputs) == 3,
+          // list.length(outputs) == 3,
           output_utxo_exchange != None,
           check_author,
         }

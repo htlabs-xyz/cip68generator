@@ -3,7 +3,7 @@ use aiken/crypto.{VerificationKeyHash}
 use aiken/primitive/bytearray
 use cardano/address.{Address}
 use cardano/assets.{AssetName, PolicyId, flatten, lovelace_of, without_lovelace}
-use cardano/transaction.{InlineDatum, Output}
+use cardano/transaction.{InlineDatum, Input, Output}
 use cardano/tx
 use types/cip68.{CIP68}
 
@@ -23,8 +23,6 @@ pub fn check_output_utxo(output: Output, vks: List<VerificationKeyHash>) -> Bool
     // bytearray.length(name) > 0,
     // bytearray.length(image) > 0,
     // bytearray.length(media_type) > 0,
-    // True,
-    // True,
     tx.verify_signature(vks, author),
     list.length(output_value) == 1,
   }
@@ -190,4 +188,43 @@ pub fn check_output_utxo_reference_token(output: Output) -> Bool {
       |> flatten()
   // Check no other token is present in the utxo containing reference nft
   list.length(output_value) == 1
+}
+
+// search reference asset exist input
+pub fn find_input_reference_asset(
+  inputs: List<Input>,
+  vks: List<VerificationKeyHash>,
+) -> List<(PolicyId, AssetName, Int)> {
+  list.filter_map(
+    inputs,
+    fn(input) {
+      when input.output.datum is {
+        InlineDatum(data) -> {
+          expect metadatum: CIP68 = data
+          expect author: VerificationKeyHash = cip68.get(metadatum, "_pk")
+          if tx.verify_signature(vks, author) {
+            let reference_asset =
+              input.output.value
+                |> without_lovelace()
+                |> assets.flatten()
+            let exist =
+              list.find(
+                reference_asset,
+                fn((_policy_id, asset_name, _amount)) {
+                  bytearray.starts_with(asset_name, cip68.prefix_100)
+                },
+              )
+            when exist is {
+              Some((policy_id, asset_name, amount)) ->
+                Some((policy_id, asset_name, amount))
+              None -> None
+            }
+          } else {
+            None
+          }
+        }
+        _ -> None
+      }
+    },
+  )
 }
