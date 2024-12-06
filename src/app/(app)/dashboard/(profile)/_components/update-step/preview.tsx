@@ -15,7 +15,6 @@ export default function PreviewStep() {
   const assetNameSort = assetNameString;
   const imgSrc = metadataToUpdate?.image || "";
   const mediaType = imgSrc == "" ? "text/plain" : metadataToUpdate?.mediaType || "image/png";
-  const description = metadataToUpdate?.description || "";
 
   return (
     <div className="h-full py-8 px-10 m-auto flex flex-col">
@@ -44,10 +43,6 @@ export default function PreviewStep() {
                     <h1 className="text-2xl font-bold">{assetNameSort}</h1>
                     <span className="text-blue-400">✓</span>
                   </div>
-                  {/* <div className="flex items-center gap-2 text-sm text-gray-400">
-                  <span>Owned by</span>
-                  <span className="text-blue-400">legend</span>
-                </div> */}
                 </div>
 
                 {/* Policy and Asset IDs */}
@@ -65,9 +60,6 @@ export default function PreviewStep() {
                     </Button>
                   </div>
                 </div>
-
-                {/* Description */}
-                <p className="text-gray-400">{description}</p>
               </CardContent>
             </Card>
           </div>
@@ -82,7 +74,7 @@ export default function PreviewStep() {
                       <TooltipProvider key={index}>
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <Property image="" name={name} value={isNil(value) || isEmpty(value) ? "null" : `${value}`} />
+                            <Property name={name} value={value} />
                           </TooltipTrigger>
                           <TooltipContent>{isNil(value) || isEmpty(value) ? "null" : `${value}`}</TooltipContent>
                         </Tooltip>
