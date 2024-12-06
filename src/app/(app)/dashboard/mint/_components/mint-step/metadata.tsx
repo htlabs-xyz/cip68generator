@@ -7,13 +7,13 @@ import { generateFields, generateJson } from "@/utils/json";
 export default function MetadataStep({
   stepper,
   setMetadataToMint,
-  metadataTemplate,
+  metadataToMint,
 }: {
   stepper: { next: () => void; prev: () => void; isFirst: boolean };
   setMetadataToMint: (metadata: Record<string, string>) => void;
-  metadataTemplate: Record<string, string> | null;
+  metadataToMint: Record<string, string> | null;
 }) {
-  const [fields, setFields] = useState<KeyValuePair[]>(generateFields(metadataTemplate || {}));
+  const [fields, setFields] = useState<KeyValuePair[]>(generateFields(metadataToMint || {}));
   const handleNext = () => {
     setMetadataToMint(generateJson(fields));
     stepper.next();
