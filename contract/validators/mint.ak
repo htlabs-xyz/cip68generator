@@ -22,7 +22,8 @@ validator mint(
   store: ScriptHash,
 ) {
   mint(redeemer: MintRedeemer, policy_id: PolicyId, transaction: Transaction) {
-    let Transaction { outputs, extra_signatories, mint, .. } = transaction
+    let Transaction { inputs, outputs, extra_signatories, mint, .. } =
+      transaction
     let mint_flatten =
       mint
         |> without_lovelace()
@@ -39,39 +40,84 @@ validator mint(
       // - amount_tx_output: number of utxo output = 4 where 1 utxo for exchange_fee address, 1 utxo for store validator address and 2 utxo recipient address where 1 utxo contains CIP222 Token.
       // - check_store_address: Check that the asset (CIP100) sent to an address must be the store validator's address
       Mint -> {
-        let check_reference_token =
-          utils.check_pairs_with_fold(
-            mint_flatten,
-            cip68.prefix_100,
-            cip68.prefix_222,
-            fn(reference_asset_name, user_asset_name, amount) -> Bool {
-              let reference_value =
-                assets.from_asset(policy_id, reference_asset_name, 1)
-              let output_utxo_store =
-                find.output_by_addr_value(
-                  outputs,
-                  store_address,
-                  reference_value,
-                )
-              and {
-                utils.check_output_utxo(output_utxo_store, extra_signatories)?,
-                minting.exact(mint_flatten, policy_id, reference_asset_name, 1)?,
-                minting.by_prefix(
-                  mint_flatten,
-                  policy_id,
-                  cip68.prefix_222,
-                  amount - 1,
-                )?,
-                bytearray.compare(
-                  bytearray.drop(reference_asset_name, 4),
-                  bytearray.drop(user_asset_name, 4),
-                ) == Equal,
-              }
-            },
-          )
-        and {
-          check_reference_token?,
-          output_utxo_exchange != None,
+        let reference_asset =
+          utils.find_input_reference_asset(inputs, extra_signatories)
+
+        if list.length(reference_asset) > 0 {
+          let mint_concat = list.concat(reference_asset, mint_flatten)
+          let check_reference_token =
+            utils.check_pairs_with_fold(
+              mint_concat,
+              cip68.prefix_100,
+              cip68.prefix_222,
+              fn(reference_asset_name, user_asset_name, amount) -> Bool {
+                let reference_value =
+                  assets.from_asset(policy_id, reference_asset_name, 1)
+                let output_utxo_store =
+                  find.output_by_addr_value(
+                    outputs,
+                    store_address,
+                    reference_value,
+                  )
+                and {
+                  utils.check_output_utxo(output_utxo_store, extra_signatories)?,
+                  minting.by_prefix(
+                    mint_flatten,
+                    policy_id,
+                    cip68.prefix_222,
+                    amount - 1,
+                  )?,
+                  bytearray.compare(
+                    bytearray.drop(reference_asset_name, 4),
+                    bytearray.drop(user_asset_name, 4),
+                  ) == Equal,
+                }
+              },
+            )
+          and {
+            check_reference_token?,
+            output_utxo_exchange != None,
+          }
+        } else {
+          let check_reference_token =
+            utils.check_pairs_with_fold(
+              mint_flatten,
+              cip68.prefix_100,
+              cip68.prefix_222,
+              fn(reference_asset_name, user_asset_name, amount) -> Bool {
+                let reference_value =
+                  assets.from_asset(policy_id, reference_asset_name, 1)
+                let output_utxo_store =
+                  find.output_by_addr_value(
+                    outputs,
+                    store_address,
+                    reference_value,
+                  )
+                and {
+                  utils.check_output_utxo(output_utxo_store, extra_signatories)?,
+                  minting.exact(
+                    mint_flatten,
+                    policy_id,
+                    reference_asset_name,
+                    1,
+                  )?,
+                  minting.by_prefix(
+                    mint_flatten,
+                    policy_id,
+                    cip68.prefix_222,
+                    amount - 1,
+                  )?,
+                  bytearray.compare(
+                    bytearray.drop(reference_asset_name, 4),
+                    bytearray.drop(user_asset_name, 4),
+                  ) == Equal,
+                }
+              },
+            )
+          and {
+            check_reference_token?,
+            output_utxo_exchange != None,
+          }
         }
       }
       // @action: Burn - Conditions for burning assets (NFT/Token)
