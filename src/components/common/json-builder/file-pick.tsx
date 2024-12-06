@@ -54,7 +54,7 @@ export function FilePick({ fields, setFields }: { fields: KeyValuePair[]; setFie
   return (
     <>
       <Button onClick={() => setDialogOpen(!dialogOpen)} variant="outline">
-        Add Media
+        Add Image
       </Button>
       <Dialog onOpenChange={setDialogOpen} open={dialogOpen}>
         <DialogContent className="max-w-[90vw] w-full max-h-[90vh] h-full overflow-y-auto p-0">
