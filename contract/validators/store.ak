@@ -1,4 +1,3 @@
-use aiken/collection/list
 use aiken/crypto.{VerificationKeyHash}
 use cardano/address
 use cardano/assets.{lovelace_of, without_lovelace}
@@ -47,8 +46,10 @@ validator store(exchange: VerificationKeyHash, exchange_fee: Int) {
         expect InlineDatum(datum_input) = validator_output.datum
         let meradatum_output: CIP68 = datum_output
         expect metadatum_input: CIP68 = datum_input
-        expect author_input: ByteArray = cip68.get(metadatum_input, "_pk")
-        expect author_output: ByteArray = cip68.get(meradatum_output, "_pk")
+        expect author_input: ByteArray =
+          cip68.get(metadatum_input, types.author_key)
+        expect author_output: ByteArray =
+          cip68.get(meradatum_output, types.author_key)
         let check_author = author_input == author_output
         and {
           utils.check_output_utxo(validator_output, extra_signatories)?,
@@ -64,7 +65,8 @@ validator store(exchange: VerificationKeyHash, exchange_fee: Int) {
       Remove -> {
         expect InlineDatum(datum_input) = input.output.datum
         expect metadatum_input: CIP68 = datum_input
-        expect author_input: ByteArray = cip68.get(metadatum_input, "_pk")
+        expect author_input: ByteArray =
+          cip68.get(metadatum_input, types.author_key)
         let author_address = address.from_verification_key(author_input)
         let output_utxo_author =
           utils.find_output(
@@ -74,7 +76,6 @@ validator store(exchange: VerificationKeyHash, exchange_fee: Int) {
           )
         and {
           tx.verify_signature(extra_signatories, author_input),
-          list.length(outputs) >= 2,
           output_utxo_author != None,
           output_utxo_exchange != None,
         }
