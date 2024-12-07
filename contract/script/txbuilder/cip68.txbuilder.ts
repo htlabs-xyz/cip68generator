@@ -80,12 +80,12 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     await Promise.all(
       params.map(async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
         const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
-       
-        console.log(existUtXOwithUnit)
-        if (existUtXOwithUnit?.output?.plutusData ) {
+
+        console.log(existUtXOwithUnit);
+        if (existUtXOwithUnit?.output?.plutusData) {
           const pk = await getPkHash(existUtXOwithUnit?.output?.plutusData as string);
           if (pk !== deserializeAddress(walletAddress).pubKeyHash) {
-            throw new Error(`${assetName} has been exist`)
+            throw new Error(`${assetName} has been exist`);
           }
           unsignedTx
             .spendingPlutusScriptV3()
@@ -114,8 +114,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
                 quantity: quantity,
               },
             ]);
-          
-         
         } else {
           unsignedTx
             .mintPlutusScriptV3()
@@ -174,42 +172,124 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     //   STORE_REFERENCE_SCRIPT_ADDRESS,
     //   STORE_REFERENCE_SCRIPT_HASH,
     // );
+    const userUtxos = await this.getAddressUTXOAssets(walletAddress, this.policyId + CIP68_222(stringToHex(assetName)));
 
+    const amount = userUtxos.reduce((amount, utxos) => {
+      return (
+        amount +
+        utxos.output.amount.reduce((amt, utxo) => {
+          if (utxo.unit === this.policyId + CIP68_222(stringToHex(assetName))) {
+            return amt + Number(utxo.quantity);
+          }
+          return amt;
+        }, 0)
+      );
+    }, 0);
+    console.log(amount);
     const storeUtxo = !isNil(txHash)
       ? await this.getUtxoForTx(this.storeAddress, txHash)
       : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
 
     if (!storeUtxo) throw new Error("Store UTXO not found");
 
-    const unsignedTx = this.meshTxBuilder
-      .mintPlutusScriptV3()
-      .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
-      .mintRedeemerValue(mConStr1([]))
-      .mintingScript(this.mintScriptCbor)
-      // .mintTxInReference(
-      //   mintUtxoRef.input.txHash,
-      //   mintUtxoRef.input.outputIndex,
-      // )
+    const unsignedTx = this.meshTxBuilder;
+    if (-Number(quantity) === amount) {
+      unsignedTx
+        .mintPlutusScriptV3()
+        .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+        .mintRedeemerValue(mConStr1([]))
+        .mintingScript(this.mintScriptCbor)
+        // .mintTxInReference(
+        //   mintUtxoRef.input.txHash,
+        //   mintUtxoRef.input.outputIndex,
+        // )
 
-      .mintPlutusScriptV3()
-      .mint(quantity, this.policyId, CIP68_100(stringToHex(assetName)))
-      .mintRedeemerValue(mConStr1([]))
-      .mintingScript(this.mintScriptCbor)
-      // .mintTxInReference(
-      //   mintUtxoRef.input.txHash,
-      //   mintUtxoRef.input.outputIndex,
-      // )
+        .mintPlutusScriptV3()
+        .mint("-1", this.policyId, CIP68_100(stringToHex(assetName)))
+        .mintRedeemerValue(mConStr1([]))
+        .mintingScript(this.mintScriptCbor)
+        // .mintTxInReference(
+        //   mintUtxoRef.input.txHash,
+        //   mintUtxoRef.input.outputIndex,
+        // )
 
-      .spendingPlutusScriptV3()
-      .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
-      .txInInlineDatumPresent()
-      .txInRedeemerValue(mConStr1([]))
-      .txInScript(this.storeScriptCbor)
-      // .spendingTxInReference(
-      //   storeUtxoRef.input.txHash,
-      //   storeUtxoRef.input.outputIndex,
-      // )
+        .spendingPlutusScriptV3()
+        .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+        .txInInlineDatumPresent()
+        .txInRedeemerValue(mConStr1([]))
+        .txInScript(this.storeScriptCbor);
+    } else {
+      unsignedTx
+        .mintPlutusScriptV3()
+        .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+        .mintRedeemerValue(mConStr1([]))
+        .mintingScript(this.mintScriptCbor)
+        // .mintTxInReference(
+        //   mintUtxoRef.input.txHash,
+        //   mintUtxoRef.input.outputIndex,
+        // )
 
+        .txOut(walletAddress, [
+          {
+            unit: this.policyId + CIP68_222(stringToHex(assetName)),
+            quantity: String(amount + Number(quantity)),
+          },
+        ]);
+    }
+
+    // .spendingTxInReference(
+    //   storeUtxoRef.input.txHash,
+    //   storeUtxoRef.input.outputIndex,
+    // )
+    // if (Number(quantity) === amount) {
+    //   unsignedTx
+    //     .mintPlutusScriptV3()
+    //     .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+    //     .mintRedeemerValue(mConStr1([]))
+    //     .mintingScript(this.mintScriptCbor)
+    //     // .mintTxInReference(
+    //     //   mintUtxoRef.input.txHash,
+    //     //   mintUtxoRef.input.outputIndex,
+    //     // )
+
+    //     .mintPlutusScriptV3()
+    //     .mint("-1", this.policyId, CIP68_100(stringToHex(assetName)))
+    //     .mintRedeemerValue(mConStr1([]))
+    //     .mintingScript(this.mintScriptCbor)
+    //     // .mintTxInReference(
+    //     //   mintUtxoRef.input.txHash,
+    //     //   mintUtxoRef.input.outputIndex,
+    //     // )
+
+    //     .spendingPlutusScriptV3()
+    //     .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+    //     .txInInlineDatumPresent()
+    //     .txInRedeemerValue(mConStr1([]))
+    //     .txInScript(this.storeScriptCbor);
+    //   // .spendingTxInReference(
+    //   //   storeUtxoRef.input.txHash,
+    //   //   storeUtxoRef.input.outputIndex,
+    //   // )
+    // } else {
+    //   unsignedTx
+    //     .mintPlutusScriptV3()
+    //     .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+    //     .mintRedeemerValue(mConStr1([]))
+    //     .mintingScript(this.mintScriptCbor)
+    //     // .mintTxInReference(
+    //     //   mintUtxoRef.input.txHash,
+    //     //   mintUtxoRef.input.outputIndex,
+    //     // )
+
+    //     .txOut(walletAddress, [
+    //       {
+    //         unit: this.policyId + CIP68_222(stringToHex(assetName)),
+    //         quantity: String(amount + Number(quantity)),
+    //       },
+    //     ]);
+    // }
+
+    unsignedTx
       .txOut(EXCHANGE_FEE_ADDRESS, [
         {
           unit: "lovelace",

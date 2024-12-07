@@ -128,17 +128,57 @@ validator mint(
       // - ada_attacked: Check where the ADA attached to the reference token will go (to the wallet the user currently owns).
       // - check_amount_burn: The author will burn both NFTs (User Token, Reference Token) with the given amount.
       Burn -> {
-        let amount_mint_token: Int = list.length(mint_flatten)
-        and {
-          output_utxo_exchange != None,
-          minting.by_prefix(
-            mint_flatten,
-            policy_id,
-            cip68.prefix_222,
-            -(amount_mint_token - 1),
-          )?,
-          list.length(outputs) >= 2,
-          minting.by_prefix(mint_flatten, policy_id, cip68.prefix_100, -1)?,
+        let reference_asset =
+          utils.find_input_reference_asset_burn(inputs, extra_signatories)
+
+        if list.length(reference_asset) > 0 {
+          let mint_concat = list.concat(reference_asset, mint_flatten)
+          let check_reference_token =
+            utils.check_pairs_with_fold(
+              mint_concat,
+              cip68.prefix_100,
+              cip68.prefix_222,
+              fn(reference_asset_name, user_asset_name, amount) -> Bool { and {
+                  minting.exact(
+                    mint_flatten,
+                    policy_id,
+                    reference_asset_name,
+                    -1,
+                  )?,
+                  minting.by_prefix(
+                    mint_flatten,
+                    policy_id,
+                    cip68.prefix_222,
+                    amount + 1,
+                  )?,
+                  bytearray.compare(
+                    bytearray.drop(reference_asset_name, 4),
+                    bytearray.drop(user_asset_name, 4),
+                  ) == Equal,
+                } },
+            )
+          and {
+            check_reference_token?,
+            output_utxo_exchange != None,
+          }
+        } else {
+          let user_asset =
+            utils.check_pairs_with_fold_with_prefix(
+              mint_flatten,
+              cip68.prefix_222,
+              fn(_user_asset_name, amount) -> Bool {
+                minting.by_prefix(
+                  mint_flatten,
+                  policy_id,
+                  cip68.prefix_222,
+                  -amount,
+                )?
+              },
+            )
+          and {
+            user_asset?,
+            output_utxo_exchange != None,
+          }
         }
       }
     }
