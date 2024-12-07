@@ -28,24 +28,6 @@ pub fn check_output_utxo(output: Output, vks: List<VerificationKeyHash>) -> Bool
   }
 }
 
-// get asset name from mint flatten
-pub fn token_prefix(
-  flat: List<(PolicyId, AssetName, Int)>,
-  prefix: ByteArray,
-) -> Option<AssetName> {
-  let exist =
-    list.find(
-      flat,
-      fn((_policy_id, asset_name, _amount)) {
-        bytearray.starts_with(asset_name, prefix)
-      },
-    )
-  when exist is {
-    Some((_policy_id, asset_name, _amount)) -> Some(asset_name)
-    None -> None
-  }
-}
-
 // filter flatten and return pair of asset names
 pub fn filter_and_pair(
   flat: List<(PolicyId, AssetName, Int)>,
@@ -97,6 +79,24 @@ pub fn filter_and_pair(
   )
 }
 
+pub fn filter_prefix(
+  flatten: List<(PolicyId, AssetName, Int)>,
+  prefix: ByteArray,
+) -> List<(AssetName, Int)> {
+  let filtered =
+    list.filter(
+      flatten,
+      fn((_policy_id, asset_name, _amount)) {
+        bytearray.starts_with(asset_name, prefix)
+      },
+    )
+
+  list.map(
+    filtered,
+    fn((_policy_id, asset_name, amount)) { (asset_name, -amount) },
+  )
+}
+
 // check assets pairs with fold
 pub fn check_pairs_with_fold(
   flat: List<(PolicyId, AssetName, Int)>,
@@ -114,6 +114,27 @@ pub fn check_pairs_with_fold(
         False
       } else {
         check_fn(asset1, asset2, amount)
+      }
+    },
+  )
+}
+
+// check assets pairs with prefix pairs
+pub fn check_pairs_with_fold_with_prefix(
+  flat: List<(PolicyId, AssetName, Int)>,
+  prefix: ByteArray,
+  check_fn: fn(AssetName, Int) -> Bool,
+) -> Bool {
+  let pairs = filter_prefix(flat, prefix)
+
+  list.foldl(
+    pairs,
+    True,
+    fn((asset_name, amount), acc) {
+      if !acc {
+        False
+      } else {
+        check_fn(asset_name, amount)
       }
     },
   )
@@ -217,6 +238,44 @@ pub fn find_input_reference_asset(
             when exist is {
               Some((policy_id, asset_name, amount)) ->
                 Some((policy_id, asset_name, amount))
+              None -> None
+            }
+          } else {
+            None
+          }
+        }
+        _ -> None
+      }
+    },
+  )
+}
+
+pub fn find_input_reference_asset_burn(
+  inputs: List<Input>,
+  vks: List<VerificationKeyHash>,
+) -> List<(PolicyId, AssetName, Int)> {
+  list.filter_map(
+    inputs,
+    fn(input) {
+      when input.output.datum is {
+        InlineDatum(data) -> {
+          expect metadatum: CIP68 = data
+          expect author: VerificationKeyHash = cip68.get(metadatum, "_pk")
+          if tx.verify_signature(vks, author) {
+            let reference_asset =
+              input.output.value
+                |> without_lovelace()
+                |> assets.flatten()
+            let exist =
+              list.find(
+                reference_asset,
+                fn((_policy_id, asset_name, _amount)) {
+                  bytearray.starts_with(asset_name, cip68.prefix_100)
+                },
+              )
+            when exist is {
+              Some((policy_id, asset_name, amount)) ->
+                Some((policy_id, asset_name, -amount))
               None -> None
             }
           } else {

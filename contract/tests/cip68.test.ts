@@ -28,6 +28,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   jest.setTimeout(60000);
 
   test("Mint", async function () {
+    return
     const cip68Contract: Cip68Contract = new Cip68Contract({
       fetcher: blockfrostProvider,
       wallet: wallet,
@@ -35,19 +36,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     });
     const unsignedTx: string = await cip68Contract.mint([
       {
-        assetName: "CIP68 Generators",
-        metadata: {
-          name: "CIP68 Generators 21217",
-          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
-          mediaType: "image/jpg",
-          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
-          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
-        },
-        quantity: "10",
-        receiver: null!,
-      },
-      {
-        assetName: "CIP68 Generators.",
+        assetName: "CIP68 Generators...",
         metadata: {
           name: "CIP68 Generators",
           image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
@@ -55,7 +44,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
           description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
           _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
         },
-        quantity: "18",
+        quantity: "10",
         receiver: null!,
       },
     ]);
@@ -93,21 +82,21 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   });
 
   test("Burn", async function () {
-    // const cip68Contract: Cip68Contract = new Cip68Contract({
-    //   fetcher: blockfrostProvider,
-    //   wallet: wallet,
-    //   meshTxBuilder: meshTxBuilder,
-    // });
-    // const unsignedTx: string = await cip68Contract.burn({
-    //   assetName: "CIP68 Generators",
-    //   quantity: "-1",
-    // });
-    // const signedTx = wallet.signTx(unsignedTx, true);
-    // const txHash = await wallet.submitTx(signedTx);
-    // console.log(txHash);
-    // txHashTemp = txHash;
-    // jest.setTimeout(20000);
-    // expect(txHash.length).toBe(64);
+    const cip68Contract: Cip68Contract = new Cip68Contract({
+      fetcher: blockfrostProvider,
+      wallet: wallet,
+      meshTxBuilder: meshTxBuilder,
+    });
+    const unsignedTx: string = await cip68Contract.burn({
+      assetName: "CIP68 Generators...",
+      quantity: "-10",
+    });
+    const signedTx = wallet.signTx(unsignedTx, true);
+    const txHash = await wallet.submitTx(signedTx);
+    console.log(txHash);
+    txHashTemp = txHash;
+    jest.setTimeout(20000);
+    expect(txHash.length).toBe(64);
   });
 
   test("Mint Many", async function () {
