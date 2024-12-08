@@ -58,7 +58,9 @@ export default function UploadProvider({ children }: PropsWithChildren) {
     if (listFileToUpload) {
       const formData = new FormData();
       Array.from(listFileToUpload).forEach((file) => {
-        formData.append("file", file);
+        const cleanedFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, "");
+        const renamedFile = new File([file], cleanedFileName, { type: file.type });
+        formData.append("file", renamedFile);
       });
       const { result, message } = await uploadIPFS(formData);
       if (result) {
