@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect } from "react";
 import { defineStepper } from "@stepperize/react";
 import { toast } from "@/hooks/use-toast";
 import { useBlockchainContext } from "@/components/providers/blockchain";
-import { isEmpty, isNil } from "lodash";
+import { isEmpty, isNil, set } from "lodash";
 import { useQuery } from "@tanstack/react-query";
 import { getAssetInfo } from "@/services/blockchain/getAssetInfo";
 import { AssetDetailsWithTransactionHistory, TxHistory } from "@/types";
@@ -95,6 +95,7 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
       setMetadataToUpdate(metadata);
     } else {
       setMetadataToUpdate({});
+      setQuantityToBurn({ quantity: 1 });
     }
   }, [assetData, isLoading]);
 
@@ -190,9 +191,10 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
       // check assetName is unique
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const assetName = hexToString((assetData?.data?.asset_name ?? "").replace(/^000de140/, ""));
+      const quantityInput = quantityToBurn >= Number(assetData.data.quantity) ? assetData.data.quantity : quantityToBurn;
       const input = {
         assetName: assetName,
-        quantity: `-${quantityToBurn}`,
+        quantity: `-${quantityInput}`,
       };
 
       updateTaskState("inprogress", "create_transaction", "Creating Transaction");
