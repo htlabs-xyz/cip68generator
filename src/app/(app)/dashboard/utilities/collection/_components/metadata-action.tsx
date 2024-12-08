@@ -9,6 +9,7 @@ import { useMetadataContext } from "@/contexts/metadata";
 import { toast } from "@/hooks/use-toast";
 import { updateMetadata } from "@/services/database/metadata";
 import { PMetadata } from "@/types";
+import { isEmpty, isNil } from "lodash";
 import { MoreVertical } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -17,7 +18,7 @@ export default function MetadataAction({ metadata }: { metadata: PMetadata }) {
   const router = useRouter();
   const [openDialog, setOpenDialog] = useState(false);
   const { refetch } = useMetadataContext();
-  const { init, getJsonResult } = useJsonBuilderStore();
+  const { init, getJsonResult, setErrors, error } = useJsonBuilderStore();
 
   useEffect(() => {
     init(metadata.content);
@@ -25,6 +26,12 @@ export default function MetadataAction({ metadata }: { metadata: PMetadata }) {
 
   const handleUpdate = async () => {
     try {
+      const json = getJsonResult();
+
+      if (isEmpty(json) || isNil(json) || Object.values(json).some((value) => value === null)) {
+        setErrors("Please fill all fields");
+      }
+
       const newMetadata = { ...metadata, content: getJsonResult() };
       const { result, message } = await updateMetadata({
         collectionId: metadata.collectionId,
@@ -58,7 +65,9 @@ export default function MetadataAction({ metadata }: { metadata: PMetadata }) {
             </div>
           </div>
           <DialogFooter className="p-4">
-            <Button onClick={handleUpdate}>Update</Button>
+            <Button onClick={handleUpdate} disabled={!isEmpty(error)}>
+              Update
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

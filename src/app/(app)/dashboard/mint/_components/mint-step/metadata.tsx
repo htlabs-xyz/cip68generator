@@ -2,6 +2,7 @@ import JsonBuilder from "@/components/common/json-builder";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { useJsonBuilderStore } from "@/components/common/json-builder/store";
+import { isEmpty, isNil } from "lodash";
 
 export default function MetadataStep({
   stepper,
@@ -12,14 +13,24 @@ export default function MetadataStep({
   setMetadataToMint: (metadata: Record<string, string>) => void;
   metadataToMint: Record<string, string> | null;
 }) {
-  const { init, getJsonResult } = useJsonBuilderStore();
+  const { init, getJsonResult, setErrors } = useJsonBuilderStore();
 
   useEffect(() => {
     init(metadataToMint || {});
   }, [init, metadataToMint]);
 
   const handleNext = () => {
-    setMetadataToMint(getJsonResult());
+    const json = getJsonResult();
+
+    if (Object.values(json).some((value) => value === null)) {
+      setErrors("Please fill all fields");
+    }
+
+    if (isEmpty(json) || isNil(json)) {
+      return;
+    }
+
+    setMetadataToMint(json);
     stepper.next();
   };
   return (

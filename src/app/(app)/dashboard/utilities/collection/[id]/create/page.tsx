@@ -8,18 +8,23 @@ import { useEffect } from "react";
 
 export default function MetadataStep() {
   const { createMetadata } = useMetadataContext();
-  const { init, getJsonResult, error } = useJsonBuilderStore();
+  const { init, getJsonResult, error, setErrors } = useJsonBuilderStore();
 
   useEffect(() => {
     init(null!);
   }, [init]);
 
   const handleNext = () => {
-    const metadata = getJsonResult();
-    if (isEmpty(metadata) || isNil(metadata)) {
+    const json = getJsonResult();
+
+    if (Object.values(json).some((value) => value === null)) {
+      setErrors("Please fill all fields");
+    }
+
+    if (isEmpty(json) || isNil(json)) {
       return;
     }
-    createMetadata(metadata);
+    createMetadata(json);
   };
 
   return (

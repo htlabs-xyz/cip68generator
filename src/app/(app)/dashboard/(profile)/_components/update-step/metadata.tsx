@@ -2,19 +2,28 @@ import JsonBuilder from "@/components/common/json-builder";
 import { useJsonBuilderStore } from "@/components/common/json-builder/store";
 import { Button } from "@/components/ui/button";
 import { useUnitContext } from "@/contexts/unit";
-import { isEmpty } from "lodash";
+import { isEmpty, isNil } from "lodash";
 import { useEffect } from "react";
 
 export default function MetadataStep() {
   const { metadataToUpdate, updateStepper, setMetadataToUpdate } = useUnitContext();
-  const { init, getJsonResult, error } = useJsonBuilderStore();
+  const { init, getJsonResult, error, setErrors } = useJsonBuilderStore();
 
   useEffect(() => {
     init(metadataToUpdate || {});
   }, [init, metadataToUpdate]);
 
   const handleNext = () => {
-    setMetadataToUpdate(getJsonResult());
+    const json = getJsonResult();
+
+    if (Object.values(json).some((value) => value === null)) {
+      setErrors("Please fill all fields");
+    }
+
+    if (isEmpty(json) || isNil(json)) {
+      return;
+    }
+    setMetadataToUpdate(json);
     updateStepper.next();
   };
   return (

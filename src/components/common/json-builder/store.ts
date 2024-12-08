@@ -1,4 +1,3 @@
-import js from "@eslint/js";
 import { Media } from "@prisma/client";
 import { isEmpty } from "lodash";
 import { create } from "zustand";
@@ -17,6 +16,7 @@ interface IJsonBuilderStore {
   updateField?: (index: number, field: "key" | "value", value: string) => void;
   removeField?: (index: number) => void;
   setTemplate: (template: string) => void;
+  setErrors: (error: string) => void;
 }
 
 export const useJsonBuilderStore = create<IJsonBuilderStore>((set, get) => ({
@@ -125,5 +125,8 @@ export const useJsonBuilderStore = create<IJsonBuilderStore>((set, get) => ({
           };
       }
     });
+  },
+  setErrors: (error) => {
+    set({ error });
   },
 }));
