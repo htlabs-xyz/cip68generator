@@ -77,7 +77,7 @@ export default function CSVReader({
                 </div>
               ) : (
                 <div className="flex items-center justify-center flex-col gap-4">
-                  <Link href={"/csv/demo.csv"} className="font-normal self-stretch text-center text-sm text-[16px] underline">
+                  <Link href={"/demo.csv"} className="font-normal self-stretch text-center text-sm text-[16px] underline">
                     Download Example CSV
                   </Link>
                   <div {...getRootProps()}>
