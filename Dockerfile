@@ -6,6 +6,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json ./
+COPY stack.env .env
 RUN npm install -force
 RUN npm install -g prisma
 
