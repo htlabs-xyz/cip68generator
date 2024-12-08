@@ -3,7 +3,7 @@ import { appNetworkId } from "@/constants";
 import { Cip68Contract } from "@/contract";
 import { blockfrostProvider } from "@/lib/cardano";
 import { AssetInput } from "@/types";
-import { deserializeAddress, MeshTxBuilder, MeshWallet } from "@meshsdk/core";
+import { deserializeAddress, MeshWallet } from "@meshsdk/core";
 import { isNil } from "lodash";
 
 export const createUpdateTransaction = async ({ address, input }: { address: string; input: AssetInput[] }) => {
@@ -20,14 +20,8 @@ export const createUpdateTransaction = async ({ address, input }: { address: str
         address: address,
       },
     });
-    const txBuilder = new MeshTxBuilder({
-      fetcher: blockfrostProvider,
-      evaluator: blockfrostProvider,
-    });
     const cip68Contract: Cip68Contract = new Cip68Contract({
-      fetcher: blockfrostProvider,
       wallet: wallet,
-      meshTxBuilder: txBuilder,
     });
     const walletPk = deserializeAddress(wallet.getChangeAddress()).pubKeyHash;
     const updateInput = input.map((asset) => ({

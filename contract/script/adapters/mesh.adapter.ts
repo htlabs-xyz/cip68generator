@@ -16,6 +16,7 @@ import { EXCHANGE_FEE_ADDRESS, title } from "../constants";
 import plutus from "../../plutus.json";
 import { appNetworkId } from "@/constants";
 import { getPkHash } from "@/utils";
+import { blockfrostProvider } from "@/lib/cardano";
 
 export class MeshAdapter {
   protected meshTxBuilder: MeshTxBuilder;
@@ -37,18 +38,13 @@ export class MeshAdapter {
   protected mintScript: PlutusScript;
   public policyId;
 
-  constructor({
-    meshTxBuilder = null!,
-    fetcher = null!,
-    wallet = null!,
-  }: {
-    meshTxBuilder?: MeshTxBuilder;
-    fetcher?: IFetcher;
-    wallet?: MeshWallet;
-  }) {
-    this.meshTxBuilder = meshTxBuilder;
+  constructor({ wallet = null! }: { wallet?: MeshWallet }) {
     this.wallet = wallet;
-    this.fetcher = fetcher;
+    this.fetcher = blockfrostProvider;
+    this.meshTxBuilder = new MeshTxBuilder({
+      fetcher: this.fetcher,
+      evaluator: blockfrostProvider,
+    });
 
     this.pubKeyExchange = deserializeAddress(EXCHANGE_FEE_ADDRESS).pubKeyHash;
     this.mintCompileCode = this.readValidator(plutus as Plutus, title.mint);
@@ -121,6 +117,7 @@ export class MeshAdapter {
   };
 
   public checkAssetNameAvailable = async ({ assetName, walletAddress }: { assetName: string; walletAddress: string }) => {
+    console.log("checkAssetNameAvailable", assetName, walletAddress);
     const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
     if (existUtXOwithUnit?.output?.plutusData) {
       const pk = await getPkHash(existUtXOwithUnit?.output?.plutusData as string);
