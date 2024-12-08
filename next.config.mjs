@@ -19,7 +19,7 @@ const nextConfig = () => ({
       },
     ],
   },
-  // output: "standalone",
+  output: "standalone",
   reactStrictMode: true,
   webpack: function (config) {
     config.experiments = {
