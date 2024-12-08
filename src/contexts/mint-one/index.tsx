@@ -12,7 +12,6 @@ import { addMetadata, getMetadataById } from "@/services/database/metadata";
 import { defineStepper } from "@stepperize/react";
 
 const { useStepper: useMintOneStepper, steps: mintOneSteps } = defineStepper(
-  // { id: "template", title: "Template" },
   { id: "basic", title: "Basic" },
   { id: "metadata", title: "Metadata" },
   { id: "preview", title: "Preview" },

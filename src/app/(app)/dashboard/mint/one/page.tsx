@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { useMintOneContext } from "@/contexts/mint-one";
-import { BasicStep, MetadataStep, PreviewStep, ResultStep, TemplateStep, TransactionStep } from "../_components/mint-step";
+import { BasicStep, MetadataStep, PreviewStep, ResultStep, TransactionStep } from "../_components/mint-step";
 import StepperNav from "../_components/stepper-nav";
 import { useEffect } from "react";
 import { isNil } from "lodash";
@@ -36,7 +36,6 @@ export default function Page() {
         <StepperNav stepper={mintOneStepper} steps={mintOneSteps} />
         <div className="space-y-4">
           {mintOneStepper.switch({
-            // template: () => <TemplateStep stepper={mintOneStepper} metadataTemplate={metadataTemplate} />,
             basic: () => <BasicStep stepper={mintOneStepper} setBasicInfoToMint={setBasicInfoToMint} />,
             metadata: () => <MetadataStep stepper={mintOneStepper} setMetadataToMint={setMetadataToMint} metadataToMint={metadataToMint} />,
             preview: () => (
