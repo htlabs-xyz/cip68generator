@@ -11,7 +11,6 @@ export interface WalletStoreType {
   address: string | null;
   browserWallet: BrowserWallet | null;
   getBalance: () => Promise<number>;
-  connect: (wallet: Wallet) => Promise<void>;
   signTx: (message: string) => Promise<string>;
   submitTx: (signedTx: string) => Promise<string>;
   refresh: () => Promise<void>;
@@ -54,21 +53,6 @@ export const useWallet = create<WalletStoreType>((set, get) => ({
       throw new Error("Failed to submit transaction");
     }
     return txHash;
-  },
-
-  connect: async (wallet: Wallet) => {
-    const browserWallet: BrowserWallet = await BrowserWallet.enable(wallet.name.toLowerCase());
-    const network = await browserWallet.getNetworkId();
-    if (network !== appNetworkId) {
-      throw new Error("Invalid network,please switch to" + `${appNetworkId == 0 ? " Testnet" : " Mainnet"}`);
-    }
-    const address = await browserWallet.getChangeAddress();
-    if (!address) return;
-    set({
-      browserWallet: browserWallet,
-      wallet: wallet,
-      address: address,
-    });
   },
 
   signIn: async (session: Session | null, wallet: Wallet) => {

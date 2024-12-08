@@ -18,7 +18,7 @@ export const useBlockchainContext = function () {
 };
 
 export default function BlockchainProvider({ children }: PropsWithChildren) {
-  const { signIn, connect, wallet, disconnect, refresh, browserWallet, address, getBalance, signTx, submitTx }: WalletStoreType = useWallet();
+  const { signIn, wallet, disconnect, refresh, browserWallet, address, getBalance, signTx, submitTx }: WalletStoreType = useWallet();
   const { data: session, status } = useSession();
 
   const wallets = useWalletList();
@@ -32,24 +32,19 @@ export default function BlockchainProvider({ children }: PropsWithChildren) {
         disconnect();
         return;
       }
-      if (isNil(wallet)) {
-        const walletConnect = session?.user ? wallets.find((w) => w.name.toLocaleLowerCase() === session.user?.wallet?.toLocaleLowerCase()) : null;
-        if (!walletConnect) {
-          await signOut();
-          return;
-        }
-        signIn(session, walletConnect);
+      const walletConnect = session?.user ? wallets.find((w) => w.name.toLocaleLowerCase() === session.user?.wallet?.toLocaleLowerCase()) : null;
+      if (isNil(walletConnect)) {
+        await signOut();
         return;
       }
+      signIn(session, walletConnect);
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wallets]);
+  }, [disconnect, session, signIn, status, wallet, wallets, browserWallet, address]);
 
   return (
     <BlockchainContext.Provider
       value={{
         signIn,
-        connect,
         disconnect,
         refresh,
         wallet,
