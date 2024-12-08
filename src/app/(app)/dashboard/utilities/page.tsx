@@ -32,7 +32,7 @@ export default function UtilitiesPage() {
                 <Images.storegae className="h-full w-full rounded-t-lg object-cover" />
               </AspectRatio>
               <div className="flex flex-col items-center justify-start gap-3 self-stretch px-4 py-2">
-                <div className="font-semibol self-stretch text-center text-base">Stogare</div>
+                <div className="font-semibol self-stretch text-center text-base">Storage</div>
                 <div className="font- self-stretch text-center text-sm text-secondary">Upload and manage your media</div>
               </div>
             </Card>

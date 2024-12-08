@@ -38,7 +38,7 @@ export default function MetadataProvider({ collectionId, children }: { collectio
     });
     if (result) {
       toast({
-        title: "Sucess",
+        title: "success",
         variant: "default",
         description: "Metadata created",
       });
@@ -60,7 +60,7 @@ export default function MetadataProvider({ collectionId, children }: { collectio
     });
     if (result) {
       toast({
-        title: "Sucess",
+        title: "success",
         variant: "default",
         description: "Metadata deleted",
       });

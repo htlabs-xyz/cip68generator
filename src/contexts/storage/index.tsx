@@ -63,7 +63,7 @@ export default function UploadProvider({ children }: PropsWithChildren) {
       const { result, message } = await uploadIPFS(formData);
       if (result) {
         toast({
-          title: "Sucess",
+          title: "success",
           variant: "default",
           description: <Button onClick={() => router.push(dashboardRoutes.utilities.children.storage.redirect)}>Go to Storage</Button>,
         });
@@ -83,8 +83,8 @@ export default function UploadProvider({ children }: PropsWithChildren) {
     const result = await deleteMedia(listSelected);
     if (result.result) {
       toast({
-        title: "Sucess",
-        description: "Delete media sucess",
+        title: "success",
+        description: "Delete media success",
         variant: "default",
       });
       setListSelected([]);
