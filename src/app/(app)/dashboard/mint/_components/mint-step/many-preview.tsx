@@ -68,9 +68,7 @@ export default function ManyPreview({
                           "Author"
                         )}
                       </TableCell>
-                      <TableCell className=" text-center">
-                        <ViewMetadataContent json={item.metadata} />
-                      </TableCell>
+                      <TableCell className=" text-center">{item.metadata && <ViewMetadataContent json={item.metadata} />}</TableCell>
                       <TableCell className=" text-right">
                         <Button variant="destructive" onClick={() => setAssetInputToMint(assetInputToMint.filter((i) => i !== item))}>
                           <Trash2Icon />

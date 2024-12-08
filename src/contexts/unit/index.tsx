@@ -137,10 +137,12 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
         result,
       } = await createUpdateTransaction({
         address: address,
-        input: {
-          assetName: input.assetName,
-          metadata: input.metadata ?? {},
-        },
+        input: [
+          {
+            assetName: input.assetName,
+            metadata: input.metadata ?? {},
+          },
+        ],
       });
       if (!result || isNil(tx)) {
         throw new Error(message);
@@ -199,7 +201,7 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
         result,
       } = await createBurnTransaction({
         address: address,
-        input: input,
+        input: [input],
       });
 
       if (!result || isNil(tx)) {
