@@ -19,6 +19,7 @@ export default function MetadataStep() {
 
     if (Object.values(json).some((value) => isEmpty(value))) {
       setErrors("Please fill all fields");
+      return;
     }
 
     if (isEmpty(json) || isNil(json)) {

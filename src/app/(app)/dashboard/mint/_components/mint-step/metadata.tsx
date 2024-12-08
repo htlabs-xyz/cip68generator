@@ -22,11 +22,8 @@ export default function MetadataStep({
   const handleNext = () => {
     const json = getJsonResult();
 
-    if (Object.values(json).some((value) => isEmpty(value))) {
+    if (isEmpty(json) || isNil(json) || Object.values(json).some((value) => isEmpty(value))) {
       setErrors("Please fill all fields");
-    }
-
-    if (isEmpty(json) || isNil(json)) {
       return;
     }
 
