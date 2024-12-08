@@ -16,15 +16,15 @@ export default function DetailsPage() {
   const { assetDetails, handleBurn, handleUpdate, isAuthor, metadataToUpdate } = useUnitContext();
 
   if (isNil(assetDetails)) return <Loading />;
-  const { asset_name, policy_id, onchain_metadata, fingerprint } = assetDetails;
+  const { asset_name, policy_id, onchain_metadata, fingerprint, quantity } = assetDetails;
 
   const assetNameString = hexToString(asset_name.replace(/^000de140/, ""));
 
   const imgSrc = onchain_metadata?.image || "";
 
-  const mediaType = onchain_metadata?.type || "image/png";
+  const mediaType = onchain_metadata?.mediaType || "image/png";
 
-  const description = onchain_metadata?.description || "";
+  const totalSupply = quantity || "1";
 
   return (
     <div className="py-8 px-10 m-auto flex flex-col">
@@ -64,10 +64,14 @@ export default function DetailsPage() {
                   <span className="text-sm text-gray-400 overflow-hidden whitespace-nowrap">Asset ID: {fingerprint}</span>
                   <CoppyButton content={fingerprint} className="h-8 w-8" />
                 </div>
+                <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg">
+                  <span className="text-sm text-gray-400 overflow-hidden whitespace-nowrap">Total Supply: {totalSupply}</span>
+                  <CoppyButton content={totalSupply} className="h-8 w-8" />
+                </div>
               </div>
 
               {/* Description */}
-              <p className="text-gray-400">{description}</p>
+              {/* <p className="text-gray-400">{description}</p> */}
               <div className="space-y-4">
                 {isAuthor && (
                   <div className="flex gap-4">
