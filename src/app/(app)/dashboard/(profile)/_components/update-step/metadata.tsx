@@ -2,11 +2,12 @@ import JsonBuilder from "@/components/common/json-builder";
 import { useJsonBuilderStore } from "@/components/common/json-builder/store";
 import { Button } from "@/components/ui/button";
 import { useUnitContext } from "@/contexts/unit";
+import { isEmpty } from "lodash";
 import { useEffect } from "react";
 
 export default function MetadataStep() {
   const { metadataToUpdate, updateStepper, setMetadataToUpdate } = useUnitContext();
-  const { init, getJsonResult } = useJsonBuilderStore();
+  const { init, getJsonResult, error } = useJsonBuilderStore();
 
   useEffect(() => {
     init(metadataToUpdate || {});
@@ -32,7 +33,9 @@ export default function MetadataStep() {
             <Button variant="secondary" onClick={updateStepper.prev} disabled={updateStepper.isFirst}>
               Back
             </Button>
-            <Button onClick={handleNext}>Next</Button>
+            <Button onClick={handleNext} disabled={!isEmpty(error)}>
+              Next
+            </Button>
           </div>
         </div>
       </div>

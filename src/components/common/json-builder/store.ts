@@ -8,21 +8,20 @@ interface IJsonBuilderStore {
     value: string;
   }[];
   template: string;
-  error: string | null;
+  error: string;
   init: (json: Record<string, string>) => void;
   getJsonResult: () => Record<string, string>;
   addField: () => void;
   addMediaField?: (file: Media) => void;
   updateField?: (index: number, field: "key" | "value", value: string) => void;
   removeField?: (index: number) => void;
-  setError: (error: string | null) => void;
   setTemplate: (template: string) => void;
 }
 
 export const useJsonBuilderStore = create<IJsonBuilderStore>((set, get) => ({
   fields: [],
   template: "",
-  error: null,
+  error: null!,
   init: (json) => {
     if (isEmpty(json)) {
       return set({ fields: [] });
@@ -73,28 +72,26 @@ export const useJsonBuilderStore = create<IJsonBuilderStore>((set, get) => ({
   updateField: (index, field, value) => {
     set((state) => {
       const newFields = [...state.fields];
-
+      newFields[index][field] = value;
       if (field === "key") {
         const isValidKey = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(value);
         const isDuplicateKey = newFields.some((f, i) => i !== index && f.key === value);
-        if (!isValidKey || isDuplicateKey) {
-          return { error: "Invalid key: " + value };
+        if (!isValidKey) {
+          return { fields: newFields, error: "Invalid key: " + value };
+        }
+        if (isDuplicateKey) {
+          return { fields: newFields, error: "Duplicate key: " + value };
         }
       }
 
       if (field === "value" && (typeof value !== "string" || value === "")) {
-        return { error: "Invalid value: " + value };
+        return { fields: newFields, error: "Invalid value: " + value };
       }
-
-      newFields[index][field] = value;
-      return { fields: newFields };
+      return { fields: newFields, error: null! };
     });
   },
   removeField: (index) => {
     set((state) => ({ fields: state.fields.filter((_, i) => i !== index) }));
-  },
-  setError: (error) => {
-    set({ error });
   },
   setTemplate: (template) => {
     set(() => {
