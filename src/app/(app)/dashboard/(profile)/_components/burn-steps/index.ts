@@ -1,5 +1,5 @@
-import AlertStep from "./alert";
+import BasicStep from "./basic";
 import TransactionStep from "./transaction";
 import ResultStep from "./result";
 
-export { AlertStep, TransactionStep, ResultStep };
+export { BasicStep, TransactionStep, ResultStep };

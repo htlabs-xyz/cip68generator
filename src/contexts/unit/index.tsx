@@ -25,7 +25,7 @@ const { useStepper: useUpdateStepper, steps: updateSteps } = defineStepper(
 );
 
 const { useStepper: useBurnStepper, steps: burnSteps } = defineStepper(
-  { id: "alert", title: "Alert" },
+  { id: "basic", title: "basic" },
   { id: "transaction", title: "Transaction" },
   { id: "result", title: "Result" },
 );
@@ -63,6 +63,8 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
     txTotalPages,
     setTxCurrentPage,
     resetTasks,
+    quantityToBurn,
+    setQuantityToBurn,
   } = useUnitStore();
 
   const { data: assetData, isLoading } = useQuery({
@@ -190,7 +192,7 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
       const assetName = hexToString((assetData?.data?.asset_name ?? "").replace(/^000de140/, ""));
       const input = {
         assetName: assetName,
-        quantity: "-1",
+        quantity: `-${quantityToBurn}`,
       };
 
       updateTaskState("inprogress", "create_transaction", "Creating Transaction");
@@ -244,6 +246,8 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
         setLoading,
         metadataToUpdate,
         setMetadataToUpdate,
+        quantityToBurn,
+        setQuantityToBurn,
         tasks,
         resetTasks,
         updateTaskState,
