@@ -7,6 +7,8 @@ export type UnitStore = {
   setLoading: (loading: boolean) => void;
   metadataToUpdate: Record<string, string> | null;
   setMetadataToUpdate: (metadata: Record<string, string>) => void;
+  quantityToBurn: number;
+  setQuantityToBurn: (data: { quantity: number }) => void;
   tasks: Task[];
   resetTasks: () => void;
   updateTaskState: (status: "todo" | "inprogress" | "success" | "error", name?: string, content?: string) => void;
@@ -25,6 +27,8 @@ const useUnitStore = create<UnitStore>((set) => ({
   resetTasks: () => set({ tasks: [] }),
   txCurrentPage: 1,
   txTotalPages: 1,
+  quantityToBurn: 1,
+  setQuantityToBurn: (data) => set({ quantityToBurn: data.quantity }),
   setTxCurrentPage: (page) => set({ txCurrentPage: page }),
   setTxHash: (txhash) => set({ txhash }),
   setLoading: (loading) => set({ loading }),

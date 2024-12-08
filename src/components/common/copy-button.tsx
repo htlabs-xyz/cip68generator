@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { copyToClipboard } from "@/utils/copy-to-clipboard";
 import { cn } from "@/utils";
 
-export default function CoppyButton({ content, className = "" }: { content: string; className?: string }) {
+export default function CopyButton({ content, className = "" }: { content: string; className?: string }) {
   const [copied, setCopied] = React.useState(false);
   const handleCopy = async () => {
     await copyToClipboard(content);

@@ -4,7 +4,7 @@ import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { Media } from "@prisma/client";
 import { useUploadContext } from "@/contexts/storage";
 import FileDisplay from "@/components/common/file-display";
-import CoppyButton from "@/components/common/coppy-button";
+import CopyButton from "@/components/common/copy-button";
 
 export default function FileCard({ file }: { file: Media }) {
   const { listSelected, setListSelected } = useUploadContext();
@@ -28,7 +28,7 @@ export default function FileCard({ file }: { file: Media }) {
             {file.name.length > 15 ? file.name.slice(0, 15) + "..." : file.name}
           </label>
         </div>
-        <CoppyButton content={file.url} className=" h-10 px-4 py-2" />
+        <CopyButton content={file.url} className=" h-10 px-4 py-2" />
       </div>
       <AspectRatio ratio={4 / 3} className="bg-muted">
         <FileDisplay src={file.url} alt={file.name} type={file.type} className="h-full w-full rounded-lg border object-cover" />

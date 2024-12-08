@@ -2,7 +2,6 @@
 
 import AssetCard from "./_components/asset-card";
 import { useProfileContext } from "@/contexts/profile";
-import { IoLocation } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { appImage, walletImage } from "@/public/images";
@@ -19,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { dashboardRoutes } from "@/constants/routers";
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import CopyButton from "@/components/common/copy-button";
 
 export default function ProfilePage() {
   const { wallet, address, getBalance, browserWallet } = useBlockchainContext();
@@ -52,16 +52,9 @@ export default function ProfilePage() {
                   {shortenString(stakeAddress || "Cardano", 10)}
                 </h3>
                 <div className="flex items-center justify-center py-1 px-2 rounded-lg bg-[#282c34] text-gray-400 shadow-md gap-1">
-                  <IoLocation className="text-[20px] max-md:text-[14px] font-bold text-gray-200" />
+                  {/* <IoLocation className="text-[20px] max-md:text-[14px] font-bold text-gray-200" /> */}
                   <span className="max-md:text-[12px]">{shortenString(address || "", 8)}</span>
-                  <svg viewBox="0 0 24 24" width="12" height="12">
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M12.643 6.5H8V6a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4h-.5v-4.643A4.857 4.857 0 0 0 12.643 6.5ZM12 22H6a4 4 0 0 1-4-4v-6a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4Z"
-                      fill="currentColor"
-                    ></path>
-                  </svg>
+                  <CopyButton content={address || ""} />
                 </div>
               </div>
             </section>

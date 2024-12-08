@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import { useUploadContext } from "@/contexts/storage";
 import Pagination from "@/components/common/pagination";
 import StorageAction from "./_components/storage-action";
-export default function StogarePage() {
+export default function StoragePage() {
   const { totalPages, currentPage, setCurrentPage, refetch } = useUploadContext();
 
   useEffect(() => {
