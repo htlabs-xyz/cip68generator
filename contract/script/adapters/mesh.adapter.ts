@@ -17,6 +17,7 @@ import plutus from "../../plutus.json";
 import { appNetworkId } from "@/constants";
 import { getPkHash } from "@/utils";
 import { blockfrostProvider } from "@/lib/cardano";
+import { console } from "inspector";
 
 export class MeshAdapter {
   protected meshTxBuilder: MeshTxBuilder;
@@ -117,15 +118,14 @@ export class MeshAdapter {
   };
 
   public checkAssetNameAvailable = async ({ assetName, walletAddress }: { assetName: string; walletAddress: string }) => {
-    console.log("checkAssetNameAvailable", assetName, walletAddress);
     const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
     if (existUtXOwithUnit?.output?.plutusData) {
       const pk = await getPkHash(existUtXOwithUnit?.output?.plutusData as string);
-      const walletPk = await getPkHash(walletAddress);
-      if (pk.includes(walletPk) || walletPk.includes(pk)) {
-        return true;
+      const walletPk = deserializeAddress(walletAddress).pubKeyHash;
+      if (pk !== walletPk) {
+        return false;
       }
-      return false;
     }
+    return true;
   };
 }

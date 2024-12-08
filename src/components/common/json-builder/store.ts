@@ -1,4 +1,5 @@
 import { Media } from "@prisma/client";
+import { isEmpty } from "lodash";
 import { create } from "zustand";
 
 interface IJsonBuilderStore {
@@ -8,12 +9,8 @@ interface IJsonBuilderStore {
   }[];
   template: string;
   error: string | null;
-  init: (
-    fields: {
-      key: string;
-      value: string;
-    }[],
-  ) => void;
+  init: (json: Record<string, string>) => void;
+  getJsonResult: () => Record<string, string>;
   addField: () => void;
   addMediaField?: (file: Media) => void;
   updateField?: (index: number, field: "key" | "value", value: string) => void;
@@ -22,12 +19,31 @@ interface IJsonBuilderStore {
   setTemplate: (template: string) => void;
 }
 
-export const useJsonBuilderStore = create<IJsonBuilderStore>((set) => ({
+export const useJsonBuilderStore = create<IJsonBuilderStore>((set, get) => ({
   fields: [],
   template: "",
   error: null,
-  init: (fields) => {
+  init: (json) => {
+    if (isEmpty(json)) {
+      return set({ fields: [] });
+    }
+    const fields = Object.entries(json).map(([key, value]) => ({
+      key,
+      value: value as string,
+    }));
     set({ fields });
+  },
+  getJsonResult: () => {
+    const fields = get().fields;
+    return fields.reduce(
+      (acc, { key, value }) => {
+        if (key) {
+          acc[key] = value;
+        }
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
   },
   addField: () => {
     set((state) => ({ fields: [...state.fields, { key: "", value: "" }] }));

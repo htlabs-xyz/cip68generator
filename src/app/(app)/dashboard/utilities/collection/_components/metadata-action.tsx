@@ -9,7 +9,6 @@ import { useMetadataContext } from "@/contexts/metadata";
 import { toast } from "@/hooks/use-toast";
 import { updateMetadata } from "@/services/database/metadata";
 import { PMetadata } from "@/types";
-import { generateFields, generateJson } from "@/utils/json";
 import { MoreVertical } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -18,15 +17,15 @@ export default function MetadataAction({ metadata }: { metadata: PMetadata }) {
   const router = useRouter();
   const [openDialog, setOpenDialog] = useState(false);
   const { refetch } = useMetadataContext();
-  const { fields, init } = useJsonBuilderStore();
+  const { init, getJsonResult } = useJsonBuilderStore();
 
   useEffect(() => {
-    init(generateFields(metadata.content));
+    init(metadata.content);
   }, [init, metadata.content]);
 
   const handleUpdate = async () => {
     try {
-      const newMetadata = { ...metadata, content: generateJson(fields) };
+      const newMetadata = { ...metadata, content: getJsonResult() };
       const { result, message } = await updateMetadata({
         collectionId: metadata.collectionId,
         metadata: newMetadata,

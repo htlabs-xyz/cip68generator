@@ -1,7 +1,6 @@
 import JsonBuilder from "@/components/common/json-builder";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
-import { generateFields, generateJson } from "@/utils/json";
 import { useJsonBuilderStore } from "@/components/common/json-builder/store";
 
 export default function MetadataStep({
@@ -13,14 +12,14 @@ export default function MetadataStep({
   setMetadataToMint: (metadata: Record<string, string>) => void;
   metadataToMint: Record<string, string> | null;
 }) {
-  const { fields, init } = useJsonBuilderStore();
+  const { init, getJsonResult } = useJsonBuilderStore();
 
   useEffect(() => {
-    init(generateFields(metadataToMint || {}));
+    init(metadataToMint || {});
   }, [init, metadataToMint]);
 
   const handleNext = () => {
-    setMetadataToMint(generateJson(fields));
+    setMetadataToMint(getJsonResult());
     stepper.next();
   };
   return (

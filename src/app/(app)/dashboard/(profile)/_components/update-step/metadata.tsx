@@ -2,19 +2,18 @@ import JsonBuilder from "@/components/common/json-builder";
 import { useJsonBuilderStore } from "@/components/common/json-builder/store";
 import { Button } from "@/components/ui/button";
 import { useUnitContext } from "@/contexts/unit";
-import { generateFields, generateJson } from "@/utils/json";
 import { useEffect } from "react";
 
 export default function MetadataStep() {
   const { metadataToUpdate, updateStepper, setMetadataToUpdate } = useUnitContext();
-  const { fields, init } = useJsonBuilderStore();
+  const { init, getJsonResult } = useJsonBuilderStore();
 
   useEffect(() => {
-    init(generateFields(metadataToUpdate || {}));
+    init(metadataToUpdate || {});
   }, [init, metadataToUpdate]);
 
   const handleNext = () => {
-    setMetadataToUpdate(generateJson(fields));
+    setMetadataToUpdate(getJsonResult());
     updateStepper.next();
   };
   return (
