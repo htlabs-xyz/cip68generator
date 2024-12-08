@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { useBlockchainContext } from "@/components/providers/blockchain";
 import { Wallet } from "@meshsdk/core";
 import { appNetwork } from "@/constants";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import Loading from "@/app/(loading)/loading";
 import { useEffect } from "react";
 
@@ -22,13 +22,15 @@ export default function WalletConnect() {
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/dashboard");
+      redirect("/dashboard");
     }
   }, [status, router]);
 
   if (status === "loading") {
     return <Loading />;
   }
+
+  console.log(status);
 
   return (
     <Card className="w-full mx-auto">

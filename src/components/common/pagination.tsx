@@ -23,6 +23,10 @@ const Pagination = ({ totalPages, currentPage, setCurrentPage }: Props) => {
       setCurrentPage(currentPage + 1);
     }
   };
+
+  if (totalPages <= 1) {
+    return null;
+  }
   return (
     <div className={`flex justify-center items-center mt-6 text-white `}>
       <Button

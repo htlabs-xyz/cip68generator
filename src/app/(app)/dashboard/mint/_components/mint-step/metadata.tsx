@@ -1,8 +1,8 @@
 import JsonBuilder from "@/components/common/json-builder";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { KeyValuePair } from "@/types";
+import { useEffect } from "react";
 import { generateFields, generateJson } from "@/utils/json";
+import { useJsonBuilderStore } from "@/components/common/json-builder/store";
 
 export default function MetadataStep({
   stepper,
@@ -13,7 +13,12 @@ export default function MetadataStep({
   setMetadataToMint: (metadata: Record<string, string>) => void;
   metadataToMint: Record<string, string> | null;
 }) {
-  const [fields, setFields] = useState<KeyValuePair[]>(generateFields(metadataToMint || {}));
+  const { fields, init } = useJsonBuilderStore();
+
+  useEffect(() => {
+    init(generateFields(metadataToMint || {}));
+  }, [init, metadataToMint]);
+
   const handleNext = () => {
     setMetadataToMint(generateJson(fields));
     stepper.next();
@@ -26,7 +31,7 @@ export default function MetadataStep({
             Metadata Build
           </h1>
         </div> */}
-        <JsonBuilder fields={fields} setFields={setFields} />
+        <JsonBuilder />
       </div>
       <div className="fixed right-0 bottom-0 z-10 max-h-16 w-full bg-section">
         <div className="mx-4 flex h-16 items-center sm:mx-8">

@@ -9,10 +9,12 @@ import { Input } from "@/components/ui/input";
 import { filterDefault } from "@/constants";
 import { getMedia } from "@/services/database/media";
 import FileDisplay from "../file-display";
-import { KeyValuePair } from "@/types";
 import Link from "next/link";
+import { useJsonBuilderStore } from "./store";
 
-export function FilePick({ fields, setFields }: { fields: KeyValuePair[]; setFields: (fields: KeyValuePair[]) => void }) {
+export function FilePick() {
+  const { addMediaField } = useJsonBuilderStore() || {};
+
   const [query, setQuery] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -30,24 +32,9 @@ export function FilePick({ fields, setFields }: { fields: KeyValuePair[]; setFie
   const listMedia = data?.data || [];
 
   const handleSelectImage = (file: Media) => {
-    const updatedFields = fields.map((field) => {
-      if (field.key === "image") {
-        return { ...field, value: file.url };
-      }
-      if (field.key === "mediaType") {
-        return { ...field, value: file.type };
-      }
-      return field;
-    });
-
-    if (!fields.some((field) => field.key === "image")) {
-      updatedFields.push({ key: "image", value: file.url });
+    if (addMediaField) {
+      addMediaField(file);
     }
-    if (!fields.some((field) => field.key === "mediaType")) {
-      updatedFields.push({ key: "mediaType", value: file.type });
-    }
-
-    setFields(updatedFields);
     setDialogOpen(false);
   };
 
