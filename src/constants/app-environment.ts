@@ -3,7 +3,7 @@ import { Network } from "@meshsdk/core";
 const BLOCKFROST_API_KEY = process.env.BLOCKFROST_API_KEY || "";
 const KOIOS_TOKEN = process.env.KOIOS_TOKEN || "";
 
-const appNetwork: Network = (process.env.NEXT_PUBLIC_APP_NETWORK?.toLowerCase().slice(0, 7) as Network) || "preprod";
+const appNetwork: Network = (process.env.NEXT_PUBLIC_APP_NETWORK?.toLowerCase() as Network) || "preprod";
 
 const appNetworkId = appNetwork === "mainnet" ? 1 : 0;
 const IPFS_ENDPOINT = process.env.IPFS_ENDPOINT || "";

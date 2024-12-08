@@ -1,23 +1,70 @@
-import { IFetcher, MeshTxBuilder, MeshWallet, UTxO } from "@meshsdk/core";
+import {
+  applyParamsToScript,
+  CIP68_100,
+  deserializeAddress,
+  IFetcher,
+  MeshTxBuilder,
+  MeshWallet,
+  PlutusScript,
+  resolveScriptHash,
+  serializePlutusScript,
+  stringToHex,
+  UTxO,
+} from "@meshsdk/core";
 import { Plutus } from "../types";
-
+import { EXCHANGE_FEE_ADDRESS, title } from "../constants";
+import plutus from "../../plutus.json";
+import { appNetworkId } from "@/constants";
+import { getPkHash } from "@/utils";
+import { blockfrostProvider } from "@/lib/cardano";
 export class MeshAdapter {
   protected meshTxBuilder: MeshTxBuilder;
   protected wallet: MeshWallet;
   protected fetcher: IFetcher;
 
-  constructor({
-    meshTxBuilder = null!,
-    fetcher = null!,
-    wallet = null!,
-  }: {
-    meshTxBuilder?: MeshTxBuilder;
-    fetcher?: IFetcher;
-    wallet?: MeshWallet;
-  }) {
-    this.meshTxBuilder = meshTxBuilder;
+  protected pubKeyExchange: string;
+  protected mintCompileCode: string;
+  protected storeCompileCode: string;
+
+  protected storeScriptCbor: string;
+
+  protected storeScript: PlutusScript;
+
+  public storeAddress: string;
+
+  protected storeScriptHash: string;
+  protected mintScriptCbor: string;
+  protected mintScript: PlutusScript;
+  public policyId;
+
+  constructor({ wallet = null! }: { wallet?: MeshWallet }) {
     this.wallet = wallet;
-    this.fetcher = fetcher;
+    this.fetcher = blockfrostProvider;
+    this.meshTxBuilder = new MeshTxBuilder({
+      fetcher: this.fetcher,
+      evaluator: blockfrostProvider,
+    });
+
+    this.pubKeyExchange = deserializeAddress(EXCHANGE_FEE_ADDRESS).pubKeyHash;
+    this.mintCompileCode = this.readValidator(plutus as Plutus, title.mint);
+    this.storeCompileCode = this.readValidator(plutus as Plutus, title.store);
+
+    this.storeScriptCbor = applyParamsToScript(this.storeCompileCode, [this.pubKeyExchange, BigInt(1)]);
+
+    this.storeScript = {
+      code: this.storeScriptCbor,
+      version: "V3",
+    };
+
+    this.storeAddress = serializePlutusScript(this.storeScript, undefined, appNetworkId, false).address;
+
+    this.storeScriptHash = deserializeAddress(this.storeAddress).scriptHash;
+    this.mintScriptCbor = applyParamsToScript(this.mintCompileCode, [this.pubKeyExchange, BigInt(1), this.storeScriptHash]);
+    this.mintScript = {
+      code: this.mintScriptCbor,
+      version: "V3",
+    };
+    this.policyId = resolveScriptHash(this.mintScriptCbor, "V3");
   }
 
   protected getWalletForTx = async (): Promise<{
@@ -66,5 +113,17 @@ export class MeshAdapter {
 
   protected getAddressUTXOAssets = async (address: string, unit: string) => {
     return await this.fetcher.fetchAddressUTxOs(address, unit);
+  };
+
+  public checkAssetNameAvailable = async ({ assetName, walletAddress }: { assetName: string; walletAddress: string }) => {
+    const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+    if (existUtXOwithUnit?.output?.plutusData) {
+      const pk = await getPkHash(existUtXOwithUnit?.output?.plutusData as string);
+      const walletPk = deserializeAddress(walletAddress).pubKeyHash;
+      if (pk !== walletPk) {
+        return false;
+      }
+    }
+    return true;
   };
 }

@@ -13,6 +13,12 @@ import { shortenString } from "@/utils";
 import AssetCardSkeleton from "./_components/asset-card-skeleton";
 import Pagination from "@/components/common/pagination";
 import ProfileFilter from "./_components/profile-filter";
+import { isEmpty } from "lodash";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { dashboardRoutes } from "@/constants/routers";
+import Link from "next/link";
+import { Plus } from "lucide-react";
 
 export default function ProfilePage() {
   const { wallet, address, getBalance, browserWallet } = useBlockchainContext();
@@ -73,29 +79,49 @@ export default function ProfilePage() {
               </div>
             </section>
           </div>
-          <div></div>
         </section>
-        <ProfileFilter filter={filter} setFilter={setFilter} />
-        {loading && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {Array.from({ length: 9 }).map((_, index) => (
-              <AssetCardSkeleton key={index} />
-            ))}
-          </div>
-        )}
-        {!loading && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {listNft.map((data, index) => (
-              <AssetCard data={data} key={index} />
-            ))}
-          </div>
-        )}
+        <section>
+          {loading && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {Array.from({ length: 9 }).map((_, index) => (
+                <AssetCardSkeleton key={index} />
+              ))}
+            </div>
+          )}
+          {!loading && !isEmpty(listNft) ? (
+            <>
+              <ProfileFilter filter={filter} setFilter={setFilter} />
 
-        {!loading && (
-          <div>
-            <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
-          </div>
-        )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {listNft.map((data, index) => (
+                  <AssetCard data={data} key={index} />
+                ))}
+              </div>
+              <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
+            </>
+          ) : (
+            !loading &&
+            isEmpty(listNft) && (
+              <div className="h-[60vh] w-full space-y-4 rounded-lg p-4">
+                <Card className="w-full rounded-lg border ">
+                  <CardHeader className="pt-8">
+                    <CardTitle className="text-2xl font-medium text-white text-center">You don't have any cip68 NFTs</CardTitle>
+                  </CardHeader>
+
+                  <CardContent className="flex flex-col items-center gap-6 pb-8">
+                    <p className="text-gray-400 text-center">To get started you'll need your prepared assets, we'll help guide you along your way.</p>
+                    <Link href={dashboardRoutes.mint.redirect}>
+                      <Button variant="secondary" className="bg-white hover:bg-white/90 text-black">
+                        <Plus className="mr-2 h-4 w-4" />
+                        Mint Now
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </div>
+            )
+          )}
+        </section>
       </div>
     </div>
   );

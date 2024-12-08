@@ -18,21 +18,13 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         words: process.env.APP_MNEMONIC?.split(" ") || [],
       },
     });
-
-    meshTxBuilder = new MeshTxBuilder({
-      fetcher: blockfrostProvider,
-      evaluator: blockfrostProvider,
-      submitter: blockfrostProvider,
-    });
   });
   jest.setTimeout(60000);
 
   test("Mint", async function () {
     return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
-      fetcher: blockfrostProvider,
       wallet: wallet,
-      meshTxBuilder: meshTxBuilder,
     });
     const unsignedTx: string = await cip68Contract.mint([
       {
@@ -72,9 +64,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   test("Update", async function () {
     return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
-      fetcher: blockfrostProvider,
       wallet: wallet,
-      meshTxBuilder: meshTxBuilder,
     });
     const unsignedTx: string = await cip68Contract.update([
       {
@@ -97,11 +87,9 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   });
 
   test("Burn", async function () {
-    // return;
+    return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
-      fetcher: blockfrostProvider,
       wallet: wallet,
-      meshTxBuilder: meshTxBuilder,
     });
     const unsignedTx: string = await cip68Contract.burn([
       {

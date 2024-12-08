@@ -1,5 +1,6 @@
 "use client";
 import JsonBuilder from "@/components/common/json-builder";
+import { useJsonBuilderStore } from "@/components/common/json-builder/store";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -7,21 +8,32 @@ import { dashboardRoutes } from "@/constants/routers";
 import { useMetadataContext } from "@/contexts/metadata";
 import { toast } from "@/hooks/use-toast";
 import { updateMetadata } from "@/services/database/metadata";
-import { KeyValuePair, PMetadata } from "@/types";
-import { generateFields, generateJson } from "@/utils/json";
+import { PMetadata } from "@/types";
+import { isEmpty, isNil } from "lodash";
 import { MoreVertical } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function MetadataAction({ metadata }: { metadata: PMetadata }) {
   const router = useRouter();
   const [openDialog, setOpenDialog] = useState(false);
   const { refetch } = useMetadataContext();
-  const [fields, setFields] = useState<KeyValuePair[]>(generateFields(metadata.content));
+  const { init, getJsonResult, setErrors, error } = useJsonBuilderStore();
+
+  useEffect(() => {
+    init(metadata.content);
+  }, [init, metadata.content]);
 
   const handleUpdate = async () => {
     try {
-      const newMetadata = { ...metadata, content: generateJson(fields) };
+      const json = getJsonResult();
+
+      if (isEmpty(json) || isNil(json) || Object.values(json).some((value) => isEmpty(value))) {
+        setErrors("Please fill all fields");
+        return;
+      }
+
+      const newMetadata = { ...metadata, content: getJsonResult() };
       const { result, message } = await updateMetadata({
         collectionId: metadata.collectionId,
         metadata: newMetadata,
@@ -50,11 +62,13 @@ export default function MetadataAction({ metadata }: { metadata: PMetadata }) {
         <DialogContent className="max-w-full sm:max-w-[80vw] w-screen h-screen sm:h-[80vh] p-0 flex flex-col">
           <div className="flex-grow flex flex-col overflow-hidden">
             <div className="rounded-xl bg-section shadow-md flex flex-col gap-3 h-full overflow-auto">
-              <JsonBuilder fields={fields} setFields={setFields} className="h-full w-full" />
+              <JsonBuilder className="h-full w-full" />
             </div>
           </div>
           <DialogFooter className="p-4">
-            <Button onClick={handleUpdate}>Update</Button>
+            <Button onClick={handleUpdate} disabled={!isEmpty(error)}>
+              Update
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

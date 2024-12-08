@@ -1,73 +1,23 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { generateJson } from "@/utils/json";
-import { KeyValuePair } from "@/types";
 import { cn } from "@/utils";
 import { FilePick } from "./file-pick";
+import { useJsonBuilderStore } from "./store";
+import { isEmpty } from "lodash";
 
-export default function JsonBuilder({
-  fields,
-  setFields,
-  className,
-}: {
-  fields: KeyValuePair[];
-  setFields: (fields: KeyValuePair[]) => void;
-  className?: string;
-}) {
-  const [template, setTemplate] = useState<string>("");
-  const addField = () => {
-    setFields([...fields, { key: "", value: "" }]);
-  };
-
-  const updateField = (index: number, field: "key" | "value", value: string) => {
-    const newFields = [...fields];
-    newFields[index][field] = value;
-    setFields(newFields);
-  };
-
-  const removeField = (index: number) => {
-    const newFields = fields.filter((_, i) => i !== index);
-    setFields(newFields);
-  };
-
+export default function JsonBuilder({ className }: { className?: string }) {
+  const { fields, addField, removeField, updateField, error, template, setTemplate, getJsonResult } = useJsonBuilderStore();
   return (
     <div className={cn(className, "flex h-full bg-section p-5")}>
       <div className="w-1/2 p-4 space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg p-2 mb-4">
           <h1 className="text-2xl font-semibold tracking-tight">Metadata Builder</h1>
-          <Select
-            value={template}
-            onValueChange={(newValue) => {
-              switch (newValue) {
-                case "Minimal":
-                  setTemplate("Minimal");
-                  setFields([
-                    { key: "name", value: "Asset Name" },
-                    { key: "description", value: "Asset Description" },
-                  ]);
-                  break;
-                case "Image":
-                  setTemplate("Image");
-                  setFields([
-                    { key: "name", value: "Image NFT" },
-                    { key: "description", value: "Asset Description" },
-                    { key: "image", value: "ipfs://..." },
-                    { key: "mediaType", value: "image/png" },
-                  ]);
-                  break;
-                default:
-                  setTemplate("");
-                  setFields([]);
-                  break;
-              }
-            }}
-          >
+          <Select value={template} onValueChange={setTemplate}>
             <SelectTrigger className="w-1/3 bg-section">
               <SelectValue placeholder="Select Asset Type" />
             </SelectTrigger>
@@ -77,34 +27,46 @@ export default function JsonBuilder({
             </SelectContent>
           </Select>
         </div>
+        {error && <p className="text-red-500">{error}</p>}
         <div>
-          {fields.map((field, index) => (
-            <div key={index} className="flex items-center space-x-2 mb-4">
-              <div className="flex-1">
-                <Label htmlFor={`key-${index}`} className="sr-only">
-                  Key
-                </Label>
-                <Input id={`key-${index}`} placeholder="Key" value={field.key} onChange={(e) => updateField(index, "key", e.target.value)} />
+          {!isEmpty(fields) &&
+            fields.map((field, index) => (
+              <div key={index} className="flex items-center space-x-2 mb-4">
+                <div className="flex-1">
+                  <Label htmlFor={`key-${index}`} className="sr-only">
+                    Key
+                  </Label>
+                  <Input
+                    id={`key-${index}`}
+                    placeholder="Key"
+                    value={field.key}
+                    onChange={(e) => updateField && updateField(index, "key", e.target.value)}
+                  />
+                </div>
+                <div className="flex-1">
+                  <Label htmlFor={`value-${index}`} className="sr-only">
+                    Value
+                  </Label>
+                  <Input
+                    id={`value-${index}`}
+                    placeholder="Value"
+                    value={field.value}
+                    onChange={(e) => updateField && updateField(index, "value", e.target.value)}
+                  />
+                </div>
+                <Button variant="destructive" className="text-white" onClick={() => removeField && removeField(index)}>
+                  Remove
+                </Button>
               </div>
-              <div className="flex-1">
-                <Label htmlFor={`value-${index}`} className="sr-only">
-                  Value
-                </Label>
-                <Input id={`value-${index}`} placeholder="Value" value={field.value} onChange={(e) => updateField(index, "value", e.target.value)} />
-              </div>
-              <Button variant="destructive" className="text-white" onClick={() => removeField(index)}>
-                Remove
-              </Button>
-            </div>
-          ))}
+            ))}
           <div className="flex items-center justify-start space-x-4">
             <Button onClick={addField}>Add Field</Button>
-            <FilePick fields={fields} setFields={setFields} />
+            <FilePick />
           </div>
         </div>
       </div>
       <div className="w-1/2 p-4 ">
-        <Textarea className="w-full h-full resize-none font-mono" value={JSON.stringify(generateJson(fields), null, 2)} readOnly />
+        <Textarea className="w-full h-full resize-none font-mono" value={JSON.stringify(getJsonResult(), null, 2)} readOnly />
       </div>
     </div>
   );

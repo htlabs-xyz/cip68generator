@@ -1,8 +1,8 @@
 import JsonBuilder from "@/components/common/json-builder";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { KeyValuePair } from "@/types";
-import { generateFields, generateJson } from "@/utils/json";
+import { useEffect } from "react";
+import { useJsonBuilderStore } from "@/components/common/json-builder/store";
+import { isEmpty, isNil } from "lodash";
 
 export default function MetadataStep({
   stepper,
@@ -13,9 +13,21 @@ export default function MetadataStep({
   setMetadataToMint: (metadata: Record<string, string>) => void;
   metadataToMint: Record<string, string> | null;
 }) {
-  const [fields, setFields] = useState<KeyValuePair[]>(generateFields(metadataToMint || {}));
+  const { init, getJsonResult, setErrors } = useJsonBuilderStore();
+
+  useEffect(() => {
+    init(metadataToMint || {});
+  }, [init, metadataToMint]);
+
   const handleNext = () => {
-    setMetadataToMint(generateJson(fields));
+    const json = getJsonResult();
+
+    if (isEmpty(json) || isNil(json) || Object.values(json).some((value) => isEmpty(value))) {
+      setErrors("Please fill all fields");
+      return;
+    }
+
+    setMetadataToMint(json);
     stepper.next();
   };
   return (
@@ -26,7 +38,7 @@ export default function MetadataStep({
             Metadata Build
           </h1>
         </div> */}
-        <JsonBuilder fields={fields} setFields={setFields} />
+        <JsonBuilder />
       </div>
       <div className="fixed right-0 bottom-0 z-10 max-h-16 w-full bg-section">
         <div className="mx-4 flex h-16 items-center sm:mx-8">
