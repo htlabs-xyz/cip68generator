@@ -10,6 +10,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 
 import { toast } from "@/hooks/use-toast";
+import { checkAssetNameAvailable } from "@/services/contract/check-asset name-available";
+import { useBlockchainContext } from "@/components/providers/blockchain";
+import { isNil } from "lodash";
 
 const nftFormSchema = z.object({
   assetName: z
@@ -40,6 +43,7 @@ export default function BasicStep({
   stepper: any;
   setBasicInfoToMint: (data: { assetName: string; quantity: string }) => void;
 }) {
+  const { address } = useBlockchainContext();
   const defaultValues: Partial<NftFormValues> = {
     assetQuantity: "1",
     assetName: "",
@@ -59,6 +63,19 @@ export default function BasicStep({
       if (data.assetName.length < 2) {
         throw new Error("Name must be at least 2 characters.");
       }
+
+      if (isNil(address)) {
+        throw new Error("Wallet not connected");
+      }
+      const { result, message } = await checkAssetNameAvailable({
+        assetName: data.assetName,
+        walletAddress: address,
+      });
+
+      if (!result) {
+        throw new Error(message);
+      }
+
       setBasicInfoToMint({
         assetName: data.assetName,
         quantity: data.assetQuantity,
@@ -101,7 +118,7 @@ export default function BasicStep({
                             </FormItem>
                           )}
                         />
-                        {/* <FormField
+                        <FormField
                           control={form.control}
                           name="assetQuantity"
                           render={({ field }) => (
@@ -114,7 +131,7 @@ export default function BasicStep({
                               <FormMessage />
                             </FormItem>
                           )}
-                        /> */}
+                        />
                       </div>
                     </div>
                   </div>

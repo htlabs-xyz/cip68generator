@@ -2,19 +2,11 @@
 import { appNetworkId } from "@/constants";
 import { Cip68Contract } from "@/contract";
 import { blockfrostProvider } from "@/lib/cardano";
+import { AssetInput } from "@/types";
 import { deserializeAddress, MeshTxBuilder, MeshWallet } from "@meshsdk/core";
 import { isNil } from "lodash";
 
-export const createUpdateTransaction = async ({
-  address,
-  input,
-}: {
-  address: string;
-  input: {
-    assetName: string;
-    metadata: Record<string, string>;
-  };
-}) => {
+export const createUpdateTransaction = async ({ address, input }: { address: string; input: AssetInput[] }) => {
   try {
     if (isNil(address)) {
       throw new Error("User not found");
@@ -37,13 +29,14 @@ export const createUpdateTransaction = async ({
       wallet: wallet,
       meshTxBuilder: txBuilder,
     });
-    const updateInput = {
-      assetName: input.assetName,
+    const walletPk = deserializeAddress(wallet.getChangeAddress()).pubKeyHash;
+    const updateInput = input.map((asset) => ({
+      assetName: asset.assetName,
       metadata: {
-        ...input.metadata,
-        _pk: deserializeAddress(await wallet.getChangeAddress()).pubKeyHash,
+        ...asset.metadata,
+        _pk: walletPk,
       },
-    };
+    }));
     const tx = await cip68Contract.update(updateInput);
     return {
       result: true,

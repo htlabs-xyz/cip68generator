@@ -2,19 +2,11 @@
 import { appNetworkId } from "@/constants";
 import { Cip68Contract } from "@/contract";
 import { blockfrostProvider } from "@/lib/cardano";
+import { AssetInput } from "@/types";
 import { MeshTxBuilder, MeshWallet } from "@meshsdk/core";
 import { isNil } from "lodash";
 
-export const createBurnTransaction = async ({
-  address,
-  input,
-}: {
-  address: string;
-  input: {
-    assetName: string;
-    quantity: string;
-  };
-}) => {
+export const createBurnTransaction = async ({ address, input }: { address: string; input: AssetInput[] }) => {
   try {
     if (isNil(address)) {
       throw new Error("User not found");
@@ -37,11 +29,16 @@ export const createBurnTransaction = async ({
       wallet: wallet,
       meshTxBuilder: txBuilder,
     });
-    const burnInput = {
-      assetName: input.assetName,
-      quantity: input.quantity,
-    };
-    const tx = await cip68Contract.burn(burnInput);
+    // const burnInput = {
+    //   assetName: input.assetName,
+    //   quantity: input.quantity,
+    // };
+    const tx = await cip68Contract.burn(
+      input.map((asset) => ({
+        ...asset,
+        quantity: asset.quantity ?? "1",
+      })),
+    );
     return {
       result: true,
       data: tx,

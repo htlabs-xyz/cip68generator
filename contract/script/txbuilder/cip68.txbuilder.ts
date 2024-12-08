@@ -1,57 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  applyParamsToScript,
-  PlutusScript,
-  serializePlutusScript,
-  resolveScriptHash,
-  CIP68_222,
-  stringToHex,
-  mConStr0,
-  CIP68_100,
-  metadataToCip68,
-  mConStr1,
-  deserializeAddress,
-} from "@meshsdk/core";
+import { CIP68_222, stringToHex, mConStr0, CIP68_100, metadataToCip68, mConStr1, deserializeAddress } from "@meshsdk/core";
 
 import { MeshAdapter } from "../adapters/mesh.adapter";
-import plutus from "../../plutus.json";
-import {
-  MINT_REFERENCE_SCRIPT_HASH,
-  STORE_REFERENCE_SCRIPT_HASH,
-  MINT_REFERENCE_SCRIPT_ADDRESS,
-  STORE_REFERENCE_SCRIPT_ADDRESS,
-  title,
-  EXCHANGE_FEE_ADDRESS,
-  EXCHANGE_FEE_PRICE,
-} from "../constants";
-import { Plutus } from "../types";
-import { appNetwork, appNetworkId } from "@/constants";
+import { MINT_REFERENCE_SCRIPT_ADDRESS, STORE_REFERENCE_SCRIPT_ADDRESS, EXCHANGE_FEE_ADDRESS, EXCHANGE_FEE_PRICE } from "../constants";
+import { appNetwork } from "@/constants";
 import { ICip68Contract } from "../interfaces/icip68.interface";
 import { isEmpty, isNil } from "lodash";
 import { getPkHash } from "@/utils";
 
 export class Cip68Contract extends MeshAdapter implements ICip68Contract {
-  protected pubKeyExchange: string = deserializeAddress(EXCHANGE_FEE_ADDRESS).pubKeyHash;
-  protected mintCompileCode: string = this.readValidator(plutus as Plutus, title.mint);
-  protected storeCompileCode: string = this.readValidator(plutus as Plutus, title.store);
-
-  protected storeScriptCbor = applyParamsToScript(this.storeCompileCode, [this.pubKeyExchange, BigInt(1)]);
-
-  protected storeScript: PlutusScript = {
-    code: this.storeScriptCbor,
-    version: "V3",
-  };
-
-  public storeAddress = serializePlutusScript(this.storeScript, undefined, appNetworkId, false).address;
-
-  protected storeScriptHash = deserializeAddress(this.storeAddress).scriptHash;
-  protected mintScriptCbor = applyParamsToScript(this.mintCompileCode, [this.pubKeyExchange, BigInt(1), this.storeScriptHash]);
-  protected mintScript: PlutusScript = {
-    code: this.mintScriptCbor,
-    version: "V3",
-  };
-  public policyId = resolveScriptHash(this.mintScriptCbor, "V3");
-
   /**
    * @method Mint
    * @description Mint Asset (NFT/Token) with CIP68
@@ -80,8 +36,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     await Promise.all(
       params.map(async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
         const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
-
-        console.log(existUtXOwithUnit);
         if (existUtXOwithUnit?.output?.plutusData) {
           const pk = await getPkHash(existUtXOwithUnit?.output?.plutusData as string);
           if (pk !== deserializeAddress(walletAddress).pubKeyHash) {
