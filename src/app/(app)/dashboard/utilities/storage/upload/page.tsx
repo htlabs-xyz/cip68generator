@@ -30,8 +30,8 @@ export default function UploadFilePage() {
               </div>
             ) : (
               <FilePicker
-                title=" Provide the images youd like to use. Make sure each image name is
-          unique, starting from 0 and going up."
+                title=" Provide the file youd like to use. Make sure each name is
+          unique, and not contain any special characters."
                 setFiles={setListFileToUpload}
               />
             )}
