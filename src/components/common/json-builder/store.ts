@@ -1,3 +1,4 @@
+import js from "@eslint/js";
 import { Media } from "@prisma/client";
 import { isEmpty } from "lodash";
 import { create } from "zustand";
@@ -34,15 +35,18 @@ export const useJsonBuilderStore = create<IJsonBuilderStore>((set, get) => ({
   },
   getJsonResult: () => {
     const fields = get().fields;
-    return fields.reduce(
+    const json = fields.reduce(
       (acc, { key, value }) => {
         if (key) {
-          acc[key] = value;
+          if (/^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(key)) {
+            acc[key] = value;
+          }
         }
         return acc;
       },
       {} as Record<string, string>,
     );
+    return json;
   },
   addField: () => {
     set((state) => ({ fields: [...state.fields, { key: "", value: "" }] }));
