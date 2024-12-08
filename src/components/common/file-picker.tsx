@@ -45,7 +45,7 @@ export default function FilePicker({
   };
 
   return (
-    <div className="w-full  h-[30vh] flex items-center flex-col justify-center bg-transparent border-dashed border-gray-700 border-[1px] rounded-lg gap-4 text-center ">
+    <div className="w-full h-[30vh] flex items-center flex-col justify-center bg-transparent border-dashed border-gray-700 border-[1px] rounded-lg gap-4 text-center ">
       <p className="font-normal flex items-center justify-center self-stretch  text-sm text-[16px] text-center">
         <span className="max-w-[480px]">{title}</span>
       </p>
