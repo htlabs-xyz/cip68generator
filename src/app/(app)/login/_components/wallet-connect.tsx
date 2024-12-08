@@ -6,9 +6,9 @@ import { useSession } from "next-auth/react";
 import { useBlockchainContext } from "@/components/providers/blockchain";
 import { Wallet } from "@meshsdk/core";
 import { appNetwork } from "@/constants";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Loading from "@/app/(loading)/loading";
+import { useEffect } from "react";
 
 export default function WalletConnect() {
   const router = useRouter();
@@ -21,12 +21,12 @@ export default function WalletConnect() {
   };
 
   useEffect(() => {
-    if (status == "authenticated") {
+    if (status === "authenticated") {
       router.push("/dashboard");
     }
   }, [status, router]);
 
-  if (status != "unauthenticated") {
+  if (status === "loading") {
     return <Loading />;
   }
 
