@@ -12,7 +12,7 @@ import { useBlockchainContext } from "@/components/providers/blockchain";
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { appNetwork, decialPlace } from "@/constants";
-import CoppyButton from "../coppy-button";
+import CopyButton from "../copy-button";
 import { Separator } from "@/components/ui/separator";
 export default function Account() {
   const { wallet, address, getBalance, browserWallet } = useBlockchainContext();
@@ -69,7 +69,7 @@ export default function Account() {
               <span className="text-sm">{shortenString(stakeAddress || "", 11)}</span>
             </div>
             <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white">
-              <CoppyButton className="h-4 w-4" content={stakeAddress || ""} />
+              <CopyButton className="h-4 w-4" content={stakeAddress || ""} />
             </Button>
           </div>
           <div className="flex items-center justify-between">
@@ -78,7 +78,7 @@ export default function Account() {
               <span className="text-sm">{shortenString(address || "", 10)}</span>
             </div>
             <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white">
-              <CoppyButton className="h-4 w-4" content={stakeAddress || ""} />
+              <CopyButton className="h-4 w-4" content={stakeAddress || ""} />
             </Button>
           </div>
         </div>

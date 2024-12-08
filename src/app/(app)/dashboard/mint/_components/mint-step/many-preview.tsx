@@ -7,7 +7,7 @@ import { AssetInput } from "@/types";
 import { shortenString } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Trash2Icon } from "lucide-react";
-import CoppyButton from "@/components/common/coppy-button";
+import CopyButton from "@/components/common/copy-button";
 
 export default function ManyPreview({
   stepper,
@@ -62,7 +62,7 @@ export default function ManyPreview({
                         {!isEmpty(item.receiver) ? (
                           <>
                             {shortenString(item.receiver, 15)}
-                            <CoppyButton content={item.receiver || ""} className="text-center" />
+                            <CopyButton content={item.receiver || ""} className="text-center" />
                           </>
                         ) : (
                           "Author"

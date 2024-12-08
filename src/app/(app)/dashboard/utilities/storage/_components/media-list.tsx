@@ -8,7 +8,7 @@ import { Media } from "@prisma/client";
 import FileDisplay from "@/components/common/file-display";
 import { Skeleton } from "@/components/ui/skeleton";
 import { isEmpty } from "lodash";
-import CoppyButton from "@/components/common/coppy-button";
+import CopyButton from "@/components/common/copy-button";
 
 export default function MediaList() {
   const { loading, listMedia, listSelected, setListSelected } = useUploadContext();
@@ -80,7 +80,7 @@ export default function MediaList() {
                   <TableCell className="hidden md:table-cell">
                     <div className="flex items-center space-x-2">
                       <span className="">{file.url}</span>
-                      <CoppyButton content={file.url} />
+                      <CopyButton content={file.url} />
                     </div>
                   </TableCell>
                   <TableCell className="hidden sm:table-cell">{file.createdAt.toLocaleDateString()}</TableCell>

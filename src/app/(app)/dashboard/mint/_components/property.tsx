@@ -1,4 +1,4 @@
-import CoppyButton from "@/components/common/coppy-button";
+import CopyButton from "@/components/common/copy-button";
 
 type Props = {
   name: string;
@@ -10,7 +10,7 @@ export default function Property({ name, value }: Props) {
     <div className="gap-6 p-4 bg-[#030711] rounded-lg">
       <div className="flex items-center justify-between gap-2 self-stretch">
         <div className="font-semibold text-start text-base text-ellipsis overflow-hidden whitespace-nowrap">{name}</div>
-        <CoppyButton content={value?.toString() || ""} />
+        <CopyButton content={value?.toString() || ""} />
       </div>
       <div className="font-medium text-start text-sm text-secondary text-ellipsis overflow-hidden whitespace-nowrap">{value?.toString()}</div>
     </div>
