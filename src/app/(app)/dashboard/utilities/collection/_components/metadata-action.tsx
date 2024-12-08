@@ -28,7 +28,7 @@ export default function MetadataAction({ metadata }: { metadata: PMetadata }) {
     try {
       const json = getJsonResult();
 
-      if (isEmpty(json) || isNil(json) || Object.values(json).some((value) => value === null)) {
+      if (isEmpty(json) || isNil(json) || Object.values(json).some((value) => isEmpty(value))) {
         setErrors("Please fill all fields");
       }
 

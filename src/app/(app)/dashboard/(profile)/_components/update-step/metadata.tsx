@@ -16,7 +16,7 @@ export default function MetadataStep() {
   const handleNext = () => {
     const json = getJsonResult();
 
-    if (Object.values(json).some((value) => value === null)) {
+    if (Object.values(json).some((value) => isEmpty(value))) {
       setErrors("Please fill all fields");
     }
 
