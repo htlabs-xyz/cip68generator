@@ -72,12 +72,12 @@ export default function PreviewStep({
                     <CopyButton content={nftPolicyId} />
                   </div>
                   <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg">
-                    <span className="text-sm text-gray-400  text-ellipsis overflow-hidden whitespace-nowrap h-10 py-2">
+                    <span className="text-sm text-gray-400 text-ellipsis overflow-hidden whitespace-nowrap h-10 py-2">
                       Asset ID: (will show affter mint)
                     </span>
                   </div>
                   <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg ">
-                    <span className="text-sm text-gray-400  text-ellipsis overflow-hidden whitespace-nowrap h-10 py-2">
+                    <span className="text-sm text-gray-400 text-ellipsis overflow-hidden whitespace-nowrap h-10 py-2">
                       Total Supply: {totalSupply}
                     </span>
                   </div>
