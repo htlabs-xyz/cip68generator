@@ -27,7 +27,7 @@ export default function JsonBuilder({ className }: { className?: string }) {
             </SelectContent>
           </Select>
         </div>
-        {error && <p className="text-red-500">{error}</p>}
+        <div className="h-4"> {error && <p className="text-red-500">{error}</p>}</div>
         <div>
           {!isEmpty(fields) &&
             fields.map((field, index) => (

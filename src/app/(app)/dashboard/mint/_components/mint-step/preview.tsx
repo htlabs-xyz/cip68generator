@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { getContractPolicyId } from "@/services/contract/get-policy-id";
 import CopyButton from "@/components/common/copy-button";
 import { SaveMetadata } from "../save-metadata";
+import { Info } from "lucide-react";
 
 export default function PreviewStep({
   stepper,
@@ -67,16 +68,19 @@ export default function PreviewStep({
                 {/* Policy and Asset IDs */}
                 <div className="space-y-2 ">
                   <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg">
-                    <span className="text-sm text-gray-400">Policy ID: {shortenString(nftPolicyId, 10)}</span>
+                    <span className="text-sm text-gray-400 text-ellipsis overflow-hidden whitespace-nowrap">Policy ID: {nftPolicyId}</span>
                     <CopyButton content={nftPolicyId} />
                   </div>
                   <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg">
-                    <span className="text-sm text-gray-400">Asset ID: (will show affter mint)</span>
+                    <span className="text-sm text-gray-400  text-ellipsis overflow-hidden whitespace-nowrap h-10 py-2">
+                      Asset ID: (will show affter mint)
+                    </span>
                   </div>
-                </div>
-                <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg">
-                  <span className="text-sm text-gray-400 overflow-hidden whitespace-nowrap">Total Supply: {totalSupply}</span>
-                  <CopyButton content={totalSupply} className="h-8 w-8" />
+                  <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg ">
+                    <span className="text-sm text-gray-400  text-ellipsis overflow-hidden whitespace-nowrap h-10 py-2">
+                      Total Supply: {totalSupply}
+                    </span>
+                  </div>
                 </div>
                 <SaveMetadata collectioToSave={collectionToSave} setCollectionToSave={setCollectionToSave} />
               </CardContent>

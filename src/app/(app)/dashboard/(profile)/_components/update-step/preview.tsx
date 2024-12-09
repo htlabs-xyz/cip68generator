@@ -52,20 +52,16 @@ export default function PreviewStep() {
                 {/* Policy and Asset IDs */}
                 <div className="space-y-2 ">
                   <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg">
-                    <span className="text-sm text-gray-400">Policy ID: {nftPolicyId}</span>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <CopyButton content={nftPolicyId} />
-                    </Button>
+                    <span className="text-sm text-gray-400 text-ellipsis overflow-hidden whitespace-nowrap">Policy ID: {nftPolicyId}</span>
+                    <CopyButton content={nftPolicyId} />
                   </div>
                   <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg">
                     <span className="text-sm text-gray-400">Asset ID: {fingerprint}</span>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <CopyButton content={fingerprint} />
-                    </Button>
+                    <CopyButton content={fingerprint} />
                   </div>
                   <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg">
                     <span className="text-sm text-gray-400 overflow-hidden whitespace-nowrap">Total Supply: {totalSupply}</span>
-                    <CopyButton content={totalSupply} className="h-8 w-8" />
+                    <CopyButton content={totalSupply} />
                   </div>
                 </div>
               </CardContent>
