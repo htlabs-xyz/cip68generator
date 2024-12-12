@@ -181,3 +181,19 @@ export type AssetInput = {
   quantity?: string;
   receiver?: string;
 };
+
+export interface Amount {
+  unit: string;
+  quantity: string;
+}
+// @typescript-eslint/no-explicit-any
+export interface UtXO {
+  address: string;
+  tx_hash: string;
+  output_index: number;
+  amount: Amount[];
+  block: string;
+  data_hash: string | null;
+  inline_datum: string | null;
+  reference_script_hash: string | null;
+}

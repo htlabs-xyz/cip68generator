@@ -7,10 +7,12 @@ export const getAppStatistic = async () => {
   try {
     const storedAddress = new Cip68Contract({}).storeAddress;
     const response = await blockfrostFetcher.fetchAddressDetail(storedAddress);
+    const storeUtxos = await blockfrostFetcher.fetchUtxoByAddress(storedAddress);
+    const totalUpdate = storeUtxos.length;
+
     const totalTransaction = response.tx_count;
     const totalMint = response.received_sum.length - 1;
     const totalBurn = response.received_sum.length - response.sent_sum.length;
-    const totalUpdate = totalTransaction - totalMint - totalBurn;
     const data = {
       transaction: totalTransaction,
       mint: totalMint,

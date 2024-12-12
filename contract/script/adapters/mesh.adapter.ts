@@ -21,22 +21,16 @@ export class MeshAdapter {
   protected meshTxBuilder: MeshTxBuilder;
   protected wallet: MeshWallet;
   protected fetcher: IFetcher;
-
   protected pubKeyExchange: string;
   protected mintCompileCode: string;
   protected storeCompileCode: string;
-
   protected storeScriptCbor: string;
-
   protected storeScript: PlutusScript;
-
   public storeAddress: string;
-
   protected storeScriptHash: string;
   protected mintScriptCbor: string;
   protected mintScript: PlutusScript;
   public policyId;
-
   constructor({ wallet = null! }: { wallet?: MeshWallet }) {
     this.wallet = wallet;
     this.fetcher = blockfrostProvider;
