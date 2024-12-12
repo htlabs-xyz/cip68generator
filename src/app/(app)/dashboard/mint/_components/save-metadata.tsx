@@ -69,7 +69,6 @@ export function SaveMetadata({
                         value={collection.id}
                         key={collection.id}
                         onSelect={(vallue) => {
-                          console.log(vallue);
                           setCollectionToSave(vallue === collectioToSave ? "" : vallue);
                           setOpen(false);
                         }}

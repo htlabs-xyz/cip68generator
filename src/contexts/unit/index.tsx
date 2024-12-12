@@ -229,10 +229,10 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
       burnStepper.goTo("result");
       // create transaction
     } catch (e) {
-      updateTaskState("error", "", e instanceof Error ? e.message : "unknown error");
+      updateTaskState("error", "", parseError(e));
       toast({
         title: "Error",
-        description: e instanceof Error ? e.message : "unknown error",
+        description: parseError(e),
         variant: "destructive",
       });
     }

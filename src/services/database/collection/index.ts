@@ -83,10 +83,9 @@ export async function deleteCollection(collectionId: string) {
       message: "delete collection successfull",
     };
   } catch (e) {
-    console.log(e);
     return {
       result: false,
-      message: e instanceof Error ? e.message : "Cant delete collection, unknown error",
+      message: parseError(e),
     };
   }
 }
