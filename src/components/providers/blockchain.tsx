@@ -32,12 +32,14 @@ export default function BlockchainProvider({ children }: PropsWithChildren) {
         disconnect();
         return;
       }
-      const walletConnect = session?.user ? wallets.find((w) => w.name.toLocaleLowerCase() === session.user?.wallet?.toLocaleLowerCase()) : null;
-      if (!walletConnect) {
-        await signOut();
-        return;
+      if (isNil(wallet)) {
+        const walletConnect = session?.user ? wallets.find((w) => w.name.toLocaleLowerCase() === session.user?.wallet?.toLocaleLowerCase()) : null;
+        if (!walletConnect) {
+          await signOut();
+          return;
+        }
+        signIn(session, walletConnect);
       }
-      signIn(session, walletConnect);
     })();
   }, [disconnect, session, signIn, status, wallet, wallets, browserWallet, address]);
 
