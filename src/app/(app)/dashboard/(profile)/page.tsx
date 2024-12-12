@@ -25,13 +25,10 @@ export default function ProfilePage() {
   const { listNft, filter, setFilter, loading, totalPages, currentPage, setCurrentPage } = useProfileContext();
 
   const [balance, setBalance] = useState<number>(0);
-  // const [stakeAddress, setStakeAddress] = useState<string>("");
 
   useEffect(() => {
     (async () => {
       if (wallet && browserWallet) {
-        // const stakeAddress = await browserWallet.getRewardAddresses();
-        // setStakeAddress(stakeAddress[0]);
         const balance = await getBalance();
         setBalance(balance);
       }
