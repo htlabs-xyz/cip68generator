@@ -112,7 +112,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       .selectUtxosFrom(utxos)
       .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
       .setNetwork(appNetwork);
-    return unsignedTx.complete();
+    return await unsignedTx.complete();
   };
 
   burn = async (params: { assetName: string; quantity: string; txHash?: string }[]) => {
@@ -190,7 +190,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
       .setNetwork(appNetwork);
 
-    return unsignedTx.complete();
+    return await unsignedTx.complete();
   };
 
   /**
@@ -242,7 +242,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
       .setNetwork(appNetwork);
 
-    return unsignedTx.complete();
+    return await unsignedTx.complete();
   };
 
   /**
@@ -269,7 +269,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       .selectUtxosFrom(utxos)
       .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address);
 
-    return unsignedTx.complete();
+    return await unsignedTx.complete();
   };
 
   /**
@@ -294,6 +294,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       .selectUtxosFrom(utxos)
       .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address);
 
-    return unsignedTx.complete();
+    return await unsignedTx.complete();
   };
 }
