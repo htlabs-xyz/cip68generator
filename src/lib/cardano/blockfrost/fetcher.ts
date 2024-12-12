@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import { Asset, BlockfrostSupportedNetworks, resolveRewardAddress } from "@meshsdk/core";
 import { parseHttpError } from "@/utils";
-import { Transaction } from "@/types";
+import { Transaction, UtXO } from "@/types";
 
 export class BlockfrostFetcher {
   private readonly _axiosInstance: AxiosInstance;
@@ -64,6 +64,16 @@ export class BlockfrostFetcher {
 
       if (status === 200 || status == 202) return data;
 
+      throw parseHttpError(data);
+    } catch (error) {
+      throw parseHttpError(error);
+    }
+  }
+
+  async fetchUtxoByAddress(address: string): Promise<Array<UtXO>> {
+    try {
+      const { data, status } = await this._axiosInstance.get(`/addresses/${address}/utxos`);
+      if (status === 200 || status == 202) return data;
       throw parseHttpError(data);
     } catch (error) {
       throw parseHttpError(error);
