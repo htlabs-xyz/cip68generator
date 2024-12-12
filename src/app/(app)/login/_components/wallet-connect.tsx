@@ -7,14 +7,13 @@ import { useBlockchainContext } from "@/components/providers/blockchain";
 import { Wallet } from "@meshsdk/core";
 import { appNetwork } from "@/constants";
 import { redirect, useRouter } from "next/navigation";
-import Loading from "@/app/(loading)/loading";
 import { useEffect } from "react";
 
 export default function WalletConnect() {
   const router = useRouter();
   const wallets = useWalletList();
   const { data: session, status } = useSession();
-  const { signIn } = useBlockchainContext();
+  const { signIn, wallet } = useBlockchainContext();
 
   const handleConnectWallet = async function (wallet: Wallet) {
     await signIn(session, wallet);
@@ -26,12 +25,6 @@ export default function WalletConnect() {
     }
   }, [status, router]);
 
-  if (status === "loading") {
-    return <Loading />;
-  }
-
-  console.log(status);
-
   return (
     <Card className="w-full mx-auto">
       <CardHeader>
@@ -39,8 +32,8 @@ export default function WalletConnect() {
         <CardDescription>Connect a wallet on {appNetwork} to continue</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
-        {wallets.map((wallet) => (
-          <WalletItem key={wallet.name} wallet={wallet} onConnectWallet={handleConnectWallet} />
+        {wallets.map((item) => (
+          <WalletItem key={item.name} item={item} wallet={wallet} onConnectWallet={handleConnectWallet} />
         ))}
       </CardContent>
     </Card>
