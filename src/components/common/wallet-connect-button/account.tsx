@@ -15,16 +15,16 @@ import { appNetwork, decialPlace } from "@/constants";
 import CopyButton from "../copy-button";
 import { Separator } from "@/components/ui/separator";
 export default function Account() {
-  const { wallet, address, getBalance, browserWallet } = useBlockchainContext();
-  const [stakeAddress, setStakeAddress] = useState<string>("");
+  const { wallet, address, getBalance, browserWallet, stakeAddress } = useBlockchainContext();
+  // const [stakeAddress, setStakeAddress] = useState<string>("");
   const [balance, setBalance] = useState<number>(0);
 
   useEffect(() => {
     (async () => {
       if (wallet && browserWallet) {
         const balance = await getBalance();
-        const stakeAddress = await browserWallet.getRewardAddresses();
-        setStakeAddress(stakeAddress[0]);
+        // const stakeAddress = await browserWallet.getRewardAddresses();
+        // setStakeAddress(stakeAddress[0]);
         setBalance(balance);
       }
     })();
