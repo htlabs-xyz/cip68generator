@@ -62,9 +62,9 @@ export default async function LandingPage() {
             {statistic && (
               <>
                 <StatisticItem value={statistic.transaction} title="Transactions" />
-                <StatisticItem value={statistic.mint} title="Minting" />
-                <StatisticItem value={statistic.update} title="Updating" />
-                <StatisticItem value={statistic.burn} title="Burning" />
+                <StatisticItem value={statistic.update} title="Assets Active" />
+                <StatisticItem value={statistic.mint} title="Minting Assets" />
+                <StatisticItem value={statistic.burn} title="Burning Assets" />
               </>
             )}
           </div>
