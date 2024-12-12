@@ -110,7 +110,8 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
-    const unsignedTx: string = await cip68Contract.createReferenceScriptMint();
+    const ref_address = "";
+    const unsignedTx: string = await cip68Contract.createReferenceScriptMint(ref_address);
     const signedTx = wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
@@ -122,7 +123,8 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
-    const unsignedTx: string = await cip68Contract.createReferenceScriptStore();
+    const ref_address = "";
+    const unsignedTx: string = await cip68Contract.createReferenceScriptStore(ref_address);
     const signedTx = wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);

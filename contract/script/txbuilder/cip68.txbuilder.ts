@@ -1,14 +1,7 @@
 import { CIP68_222, stringToHex, mConStr0, CIP68_100, metadataToCip68, mConStr1, deserializeAddress, UTxO } from "@meshsdk/core";
 
 import { MeshAdapter } from "../adapters/mesh.adapter";
-import {
-  MINT_REFERENCE_SCRIPT_ADDRESS,
-  MINT_REFERENCE_SCRIPT_HASH,
-  STORE_REFERENCE_SCRIPT_ADDRESS,
-  EXCHANGE_FEE_ADDRESS,
-  EXCHANGE_FEE_PRICE,
-  STORE_REFERENCE_SCRIPT_HASH,
-} from "../constants";
+import { MINT_REFERENCE_SCRIPT_HASH, EXCHANGE_FEE_ADDRESS, EXCHANGE_FEE_PRICE, STORE_REFERENCE_SCRIPT_HASH } from "../constants";
 import { appNetwork } from "@/constants";
 import { ICip68Contract } from "../interfaces/icip68.interface";
 import { isEmpty, isNil } from "lodash";
@@ -34,9 +27,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     }[],
   ) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
-
-    const utxoRef: UTxO = await this.getUtxoForTx(MINT_REFERENCE_SCRIPT_ADDRESS, MINT_REFERENCE_SCRIPT_HASH);
-    console.log(utxoRef);
+    const utxoRef: UTxO = (await this.fetcher.fetchUTxOs(MINT_REFERENCE_SCRIPT_HASH))[0];
     const unsignedTx = this.meshTxBuilder.mintPlutusScriptV3();
     await Promise.all(
       params.map(async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
@@ -117,9 +108,8 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
 
   burn = async (params: { assetName: string; quantity: string; txHash?: string }[]) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
-
-    const mintUtxoRef: UTxO = await this.getUtxoForTx(MINT_REFERENCE_SCRIPT_ADDRESS, MINT_REFERENCE_SCRIPT_HASH);
-    const storeUtxoRef: UTxO = await this.getUtxoForTx(STORE_REFERENCE_SCRIPT_ADDRESS, STORE_REFERENCE_SCRIPT_HASH);
+    const mintUtxoRef: UTxO = (await this.fetcher.fetchUTxOs(MINT_REFERENCE_SCRIPT_HASH))[0];
+    const storeUtxoRef: UTxO = (await this.fetcher.fetchUTxOs(STORE_REFERENCE_SCRIPT_HASH))[0];
 
     const unsignedTx = this.meshTxBuilder;
     await Promise.all(
@@ -202,7 +192,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
    * @returns
    */
   update = async (params: { assetName: string; metadata: Record<string, string>; txHash?: string }[]) => {
-    const utxoRef: UTxO = await this.getUtxoForTx(STORE_REFERENCE_SCRIPT_ADDRESS, STORE_REFERENCE_SCRIPT_HASH);
+    const utxoRef: UTxO = (await this.fetcher.fetchUTxOs(STORE_REFERENCE_SCRIPT_HASH))[0];
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
     const unsignedTx = this.meshTxBuilder;
     await Promise.all(
@@ -210,7 +200,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
         const storeUtxo = !isNil(txHash)
           ? await this.getUtxoForTx(this.storeAddress, txHash)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
-        console.log(storeUtxo);
         if (!storeUtxo) throw new Error("Store UTXO not found");
         unsignedTx
           .spendingPlutusScriptV3()
@@ -251,7 +240,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
    *
    * @returns unsigned transaction
    */
-  createReferenceScriptMint = async () => {
+  createReferenceScriptMint = async (MINT_REFERENCE_SCRIPT_ADDRESS: string) => {
     const { walletAddress, utxos, collateral } = await this.getWalletForTx();
 
     const unsignedTx = this.meshTxBuilder
@@ -277,7 +266,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
    * @description Create reference script for store transaction
    * @returns unsigned transaction
    */
-  createReferenceScriptStore = async () => {
+  createReferenceScriptStore = async (STORE_REFERENCE_SCRIPT_ADDRESS: string) => {
     const { walletAddress, utxos, collateral } = await this.getWalletForTx();
     const unsignedTx = this.meshTxBuilder
       .txIn(collateral.input.txHash, collateral.input.outputIndex)
