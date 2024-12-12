@@ -32,6 +32,7 @@ validator mint(
     let exchange_address = address.from_verification_key(exchange)
     let output_utxo_exchange =
       utils.find_output(outputs, exchange_fee, exchange_address)
+    let check_output_exchange = output_utxo_exchange != None
     when redeemer is {
       // @action: Mint -  Conditions for minting assets (NFT/Token)
       // - check_signed_by_author: When a user mints an asset, the datum of the store validator contains an author field and the user must provide a signature to identify that this is the author who minted the asset. This condition is fulfilled by comparing the signature entered in the datum of the store validator. 
@@ -42,7 +43,6 @@ validator mint(
       Mint -> {
         let reference_asset =
           utils.find_input_reference_asset(inputs, extra_signatories)
-
         if list.length(reference_asset) > 0 {
           let mint_concat = list.concat(reference_asset, mint_flatten)
           let check_reference_token =
@@ -76,7 +76,7 @@ validator mint(
             )
           and {
             check_reference_token?,
-            output_utxo_exchange != None,
+            check_output_exchange?,
           }
         } else {
           let check_reference_token =
@@ -116,7 +116,7 @@ validator mint(
             )
           and {
             check_reference_token?,
-            output_utxo_exchange != None,
+            check_output_exchange?,
           }
         }
       }
@@ -159,7 +159,7 @@ validator mint(
             )
           and {
             check_reference_token?,
-            output_utxo_exchange != None,
+            check_output_exchange?,
           }
         } else {
           let user_asset =
@@ -177,7 +177,7 @@ validator mint(
             )
           and {
             user_asset?,
-            output_utxo_exchange != None,
+            check_output_exchange?,
           }
         }
       }
