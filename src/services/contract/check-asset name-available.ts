@@ -1,6 +1,7 @@
 "use server";
 
 import { Cip68Contract } from "@/contract";
+import { parseError } from "@/utils/error/parse-error";
 
 export const checkAssetNameAvailable = async ({ assetName, walletAddress }: { assetName: string; walletAddress: string }) => {
   try {
@@ -15,7 +16,7 @@ export const checkAssetNameAvailable = async ({ assetName, walletAddress }: { as
   } catch (e) {
     return {
       result: false,
-      message: e instanceof Error ? e.message : "unknown error",
+      message: parseError(e),
     };
   }
 };

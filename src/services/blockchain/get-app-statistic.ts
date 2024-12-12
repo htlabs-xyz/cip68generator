@@ -2,6 +2,7 @@
 
 import { Cip68Contract } from "@/contract";
 import { blockfrostFetcher } from "@/lib/cardano";
+import { parseError } from "@/utils/error/parse-error";
 
 export const getAppStatistic = async () => {
   try {
@@ -25,7 +26,7 @@ export const getAppStatistic = async () => {
   } catch (e) {
     return {
       data: null,
-      message: e instanceof Error ? e.message : "Unknown error",
+      message: parseError(e),
     };
   }
 };

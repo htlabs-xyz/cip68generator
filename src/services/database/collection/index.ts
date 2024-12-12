@@ -2,6 +2,7 @@
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { AssetInput } from "@/types";
+import { parseError } from "@/utils/error/parse-error";
 import { UnauthorizedException } from "@/utils/http/http-exceptions";
 
 export async function createCollection({ name, description }: { name: string; description?: string }) {
@@ -25,10 +26,10 @@ export async function createCollection({ name, description }: { name: string; de
       result: true,
       message: "create collection successfull",
     };
-  } catch (e: unknown) {
+  } catch (e) {
     return {
       result: false,
-      message: e instanceof Error ? e.message : "Cant create collection,unknown error",
+      message: parseError(e),
     };
   }
 }
@@ -53,11 +54,11 @@ export async function getAllCollection() {
       message: "get all collection successfull",
       data: collections,
     };
-  } catch (error: unknown) {
+  } catch (e) {
     return {
       result: false,
       data: [],
-      message: error instanceof Error ? error.message : "Cant get collection ,Unknown error",
+      message: parseError(e),
     };
   }
 }
@@ -113,10 +114,10 @@ export async function updateCollection({ collectionId, name, description }: { co
       result: true,
       message: "update collection successfull",
     };
-  } catch (e: unknown) {
+  } catch (e) {
     return {
       result: false,
-      message: e instanceof Error ? e.message : "Cant update collection, unknown error",
+      message: parseError(e),
     };
   }
 }
@@ -152,12 +153,11 @@ export async function createCollectionWithData({ collectionName, listAssetInput 
       message: "success",
       data: result,
     };
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
     return {
       data: null,
       result: false,
-      message: error instanceof Error ? error.message : "Cant create collection with data, unknown error",
+      message: parseError(e),
     };
   }
 }

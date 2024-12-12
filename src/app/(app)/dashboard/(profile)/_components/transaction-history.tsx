@@ -36,9 +36,8 @@ export default function TransactionHistory() {
         oldMetadata: data?.metadata?.from as Record<string, string>,
         newMetadata: data?.metadata?.to as Record<string, string>,
       });
-    } catch (error) {
+    } catch {
       setDialog({ open: false, oldMetadata: {}, newMetadata: {} });
-      console.error(error);
     }
   };
 

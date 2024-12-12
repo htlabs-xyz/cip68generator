@@ -8,6 +8,7 @@ import { Loader2, Trash2 } from "lucide-react";
 import FileDisplay from "@/components/common/file-display";
 import { isEmpty, isNil } from "lodash";
 import Link from "next/link";
+import { parseError } from "@/utils/error/parse-error";
 
 export default function CSVReader({
   loading,
@@ -39,7 +40,7 @@ export default function CSVReader({
                 data: result.data,
               });
             } catch (e) {
-              setError(e instanceof Error ? e.message : "unknown error");
+              setError(parseError(e));
             }
           }}
         >
