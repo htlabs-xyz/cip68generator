@@ -25,7 +25,6 @@ export const createMintTransaction = async ({ address, mintInput }: { address: s
         address: address,
       },
     });
-
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
