@@ -2,12 +2,9 @@
 
 import AssetCard from "./_components/asset-card";
 import { useProfileContext } from "@/contexts/profile";
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import { appImage, walletImage } from "@/public/images";
+import { appImage } from "@/public/images";
 import { useBlockchainContext } from "@/components/providers/blockchain";
-import CountUp from "react-countup";
-import { decialPlace } from "@/constants";
 import { shortenString } from "@/utils";
 import AssetCardSkeleton from "./_components/asset-card-skeleton";
 import Pagination from "@/components/common/pagination";
@@ -19,21 +16,20 @@ import { dashboardRoutes } from "@/constants/routers";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import CopyButton from "@/components/common/copy-button";
+import { useQuery } from "@tanstack/react-query";
+import getUserStatistics from "@/services/user/get-statistic";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProfilePage() {
-  const { wallet, address, getBalance, stakeAddress, browserWallet } = useBlockchainContext();
-  const { listNft, filter, setFilter, loading, totalPages, currentPage, setCurrentPage } = useProfileContext();
+  const { address, stakeAddress } = useBlockchainContext();
+  const { listNft, filter, setFilter, loading, totalPages, currentPage, totalItem, setCurrentPage } = useProfileContext();
 
-  const [balance, setBalance] = useState<number>(0);
-
-  useEffect(() => {
-    (async () => {
-      if (wallet && browserWallet) {
-        const balance = await getBalance();
-        setBalance(balance);
-      }
-    })();
-  }, [wallet, getBalance, browserWallet]);
+  const { data: userStatistics, isLoading: statisticLoading } = useQuery({
+    queryKey: ["getUserStatistics"],
+    queryFn: () => getUserStatistics(),
+  });
+  const isLoading = loading || statisticLoading;
+  const { collection, media, metadata } = userStatistics?.data || {};
 
   return (
     <div className="py-8 px-10 m-auto flex flex-col">
@@ -55,21 +51,59 @@ export default function ProfilePage() {
                 </div>
               </div>
             </section>
-            <section className="flex flex-wrap py-2 px-3 items-center gap-5 rounded-lg bg-[linear-gradient(270deg,_rgba(174,193,197,0)_0.07%,_rgba(174,193,197,0.19)_92.8%,_rgba(174,193,197,0.2)_99.14%)] max-md:py-1 max-md:px-2">
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 max-md:w-5 max-md:h-5">
-                  <Image src={wallet?.icon || walletImage.eternl} alt="Wallet" width={28} height={28} className="w-full h-full object-cover" />
-                </div>
-                <div className="flex flex-col justify-center">
-                  <p className="text-[10px]">Balance</p>
-                  <p className="text-[14px] font-semibold">
-                    <CountUp start={0} end={Number((balance / decialPlace).toFixed(6))} decimals={6} /> ₳
-                  </p>
-                </div>
-              </div>
-            </section>
           </div>
         </section>
+        <div className="grid gap-4 grid-cols-4 w-full p-4">
+          {isLoading ? (
+            [...Array(4)].map((_, index) => (
+              <Card key={index}>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    <Skeleton className="h-4 w-[100px]" />
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className="h-8 w-[60px]" />
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">TOTAL ASSETS</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{totalItem}</div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">COLLECTION</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{collection}</div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">STORAGE</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{media}</div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">METADATA</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{metadata}</div>
+                </CardContent>
+              </Card>
+            </>
+          )}
+        </div>
         <section>
           {loading && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -78,7 +112,7 @@ export default function ProfilePage() {
               ))}
             </div>
           )}
-          {!loading && !isEmpty(listNft) ? (
+          {!isLoading && !isEmpty(listNft) ? (
             <>
               <ProfileFilter filter={filter} setFilter={setFilter} />
 

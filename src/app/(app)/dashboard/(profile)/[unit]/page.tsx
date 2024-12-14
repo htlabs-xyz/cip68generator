@@ -16,13 +16,13 @@ export default function DetailsPage() {
   const { assetDetails, handleBurn, handleUpdate, isAuthor, metadataToUpdate } = useUnitContext();
 
   if (isNil(assetDetails)) return <Loading />;
-  const { asset_name, policy_id, onchain_metadata, fingerprint, quantity } = assetDetails;
+  const { asset_name, policy_id, metadata, fingerprint, quantity } = assetDetails;
 
   const assetNameString = hexToString(asset_name.replace(/^000de140/, ""));
 
-  const imgSrc = onchain_metadata?.image || "";
+  const imgSrc = metadata?.image || "";
 
-  const mediaType = onchain_metadata?.mediaType || "image/png";
+  const mediaType = metadata?.mediaType || "image/png";
 
   const totalSupply = quantity || "1";
 

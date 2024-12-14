@@ -5,6 +5,7 @@ import { filterDefault } from "@/constants";
 export type ProfileStore = {
   listNft: AssetDetails[];
   filter: FilterType;
+  totalItem: number;
   currentPage: number;
   totalPages: number;
   setCurrentPage: (page: number) => void;
@@ -14,6 +15,7 @@ export type ProfileStore = {
 const useProfileStore = create<ProfileStore>((set) => ({
   listNft: [],
   filter: filterDefault,
+  totalItem: 0,
   currentPage: 1,
   totalPages: 0,
   setCurrentPage: (page) => set({ currentPage: page }),

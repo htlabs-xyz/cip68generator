@@ -4,12 +4,10 @@ import Property from "../property";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import FileDisplay from "@/components/common/file-display";
 import { Card, CardContent } from "@/components/ui/card";
-import { shortenString } from "@/utils";
 import { useEffect, useState } from "react";
 import { getContractPolicyId } from "@/services/contract/get-policy-id";
 import CopyButton from "@/components/common/copy-button";
 import { SaveMetadata } from "../save-metadata";
-import { Info } from "lucide-react";
 
 export default function PreviewStep({
   stepper,

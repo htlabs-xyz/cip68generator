@@ -112,4 +112,15 @@ export class BlockfrostFetcher {
       throw parseHttpError(error);
     }
   }
+
+  async fetchAddressUTXOsAsset(address: string, asset: string) {
+    try {
+      const { data, status } = await this._axiosInstance.get(`/addresses/${address}/utxos/${asset}`);
+
+      if (status === 200 || status == 202) return data;
+      throw parseHttpError(data);
+    } catch (error) {
+      throw parseHttpError(error);
+    }
+  }
 }
