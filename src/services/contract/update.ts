@@ -3,6 +3,7 @@ import { appNetworkId } from "@/constants";
 import { Cip68Contract } from "@/contract";
 import { blockfrostProvider } from "@/lib/cardano";
 import { AssetInput } from "@/types";
+import { parseError } from "@/utils/error/parse-error";
 import { deserializeAddress, MeshWallet } from "@meshsdk/core";
 import { isNil } from "lodash";
 
@@ -41,7 +42,7 @@ export const createUpdateTransaction = async ({ address, input }: { address: str
     return {
       result: false,
       data: null,
-      message: e instanceof Error ? e.message : "unknown error",
+      message: parseError(e),
     };
   }
 };

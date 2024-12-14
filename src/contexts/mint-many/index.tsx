@@ -9,6 +9,7 @@ import useMintManyStore, { MintManyStore } from "./store";
 import { useBlockchainContext } from "@/components/providers/blockchain";
 import { convertObject } from "@/utils";
 import { createMintTransaction } from "@/services/contract/mint";
+import { parseError } from "@/utils/error/parse-error";
 
 const { useStepper: useMintManyStepper, steps: mintManySteps } = defineStepper(
   { id: "upload", title: "Upload" },
@@ -47,7 +48,7 @@ export default function MintManyProvider({ children }: { collectionId: string | 
     } catch (e) {
       toast({
         title: "Error",
-        description: e instanceof Error ? e.message : "Unknown error",
+        description: parseError(e),
         variant: "destructive",
       });
     } finally {
@@ -101,10 +102,10 @@ export default function MintManyProvider({ children }: { collectionId: string | 
       mintManyStepper.goTo("result");
       // create transaction
     } catch (e) {
-      updateTaskState("error", "", e instanceof Error ? e.message : "unknown error");
+      updateTaskState("error", "", parseError(e));
       toast({
         title: "Error",
-        description: e instanceof Error ? e.message : "unknown error",
+        description: parseError(e),
         variant: "destructive",
       });
     }

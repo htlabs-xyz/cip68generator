@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { parseError } from "@/utils/error/parse-error";
 import { generateNonce } from "@meshsdk/core";
 import { isNil } from "lodash";
 
@@ -40,7 +41,7 @@ export const getNonceByAddress = async (address: string) => {
     return {
       data: null,
       result: false,
-      message: e instanceof Error ? e.message : "unknown error",
+      message: parseError(e),
     };
   }
 };

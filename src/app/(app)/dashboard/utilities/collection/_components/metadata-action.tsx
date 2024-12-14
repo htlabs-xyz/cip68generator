@@ -9,6 +9,7 @@ import { useMetadataContext } from "@/contexts/metadata";
 import { toast } from "@/hooks/use-toast";
 import { updateMetadata } from "@/services/database/metadata";
 import { PMetadata } from "@/types";
+import { parseError } from "@/utils/error/parse-error";
 import { isEmpty, isNil } from "lodash";
 import { MoreVertical } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -49,7 +50,7 @@ export default function MetadataAction({ metadata }: { metadata: PMetadata }) {
     } catch (e) {
       toast({
         title: "Failed to update metadata",
-        description: e instanceof Error ? e.message : "unknown error",
+        description: parseError(e),
         variant: "destructive",
       });
     } finally {

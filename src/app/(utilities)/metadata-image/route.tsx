@@ -1,3 +1,4 @@
+import { parseError } from "@/utils/error/parse-error";
 import { ImageResponse } from "next/og";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -11,7 +12,7 @@ export async function GET(request: Request) {
   try {
     metadata = JSON.parse(jsonString);
   } catch (e) {
-    return new Response(e instanceof Error ? e.message : "unknown error", {
+    return new Response(parseError(e), {
       status: 400,
     });
   }

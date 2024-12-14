@@ -13,6 +13,7 @@ import { toast } from "@/hooks/use-toast";
 import { checkAssetNameAvailable } from "@/services/contract/check-asset name-available";
 import { useBlockchainContext } from "@/components/providers/blockchain";
 import { isNil } from "lodash";
+import { parseError } from "@/utils/error/parse-error";
 
 const nftFormSchema = z.object({
   assetName: z
@@ -88,7 +89,7 @@ export default function BasicStep({
     } catch (e) {
       toast({
         title: "Error",
-        description: e instanceof Error ? e.message : "unknown error",
+        description: parseError(e),
         variant: "destructive",
       });
     }

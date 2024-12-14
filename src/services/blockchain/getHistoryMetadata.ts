@@ -3,6 +3,7 @@
 import { blockfrostFetcher } from "@/lib/cardano";
 import { SpecialTransaction } from "@/types";
 import { datumToJson } from "@/utils";
+import { parseError } from "@/utils/error/parse-error";
 
 export const getHistoryMetadata = async function ({ unit, txHash }: { unit: string; txHash: string }) {
   try {
@@ -67,7 +68,7 @@ export const getHistoryMetadata = async function ({ unit, txHash }: { unit: stri
   } catch (e) {
     return {
       data: null,
-      message: e instanceof Error ? e.message : "Unknown error",
+      message: parseError(e),
     };
   }
 };

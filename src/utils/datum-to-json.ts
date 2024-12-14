@@ -39,8 +39,7 @@ export async function datumToJson(
       return data;
     };
     return convertToJSON(decoded.value[0]);
-  } catch (error) {
-    console.error(error);
+  } catch {
     return {};
   }
 }

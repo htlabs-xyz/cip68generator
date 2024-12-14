@@ -3,6 +3,7 @@ import { IPFS_ENDPOINT } from "@/constants";
 import mimeTypes from "@/constants/mime-types";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { parseError } from "@/utils/error/parse-error";
 import { UnauthorizedException } from "@/utils/http/http-exceptions";
 import axios from "axios";
 
@@ -79,7 +80,7 @@ export async function kudoUpload(formData: FormData) {
     };
   } catch (e) {
     return {
-      message: e instanceof Error ? e.message : "Unknown error",
+      message: parseError(e),
       result: false,
     };
   }
@@ -115,7 +116,7 @@ async function cp(argCid: string, argName: string) {
     return {
       data: { cid: argCid, name: argName },
       result: false,
-      message: e instanceof Error ? e.message : "Unknown error",
+      message: parseError(e),
     };
   }
 }

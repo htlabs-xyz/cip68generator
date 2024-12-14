@@ -3,6 +3,7 @@
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { PMetadata } from "@/types";
+import { parseError } from "@/utils/error/parse-error";
 import { UnauthorizedException } from "@/utils/http/http-exceptions";
 import { isEmpty, isNil } from "lodash";
 import { DateRange } from "react-day-picker";
@@ -38,10 +39,10 @@ export async function addMetadata({ collectionId, listMetadata }: { collectionId
       result: true,
       message: "success",
     };
-  } catch (e: unknown) {
+  } catch (e) {
     return {
       result: false,
-      message: e instanceof Error ? e.message : "Cant create metadata,unknown error",
+      message: parseError(e),
     };
   }
 }
@@ -150,7 +151,7 @@ export async function getMetadata({
   } catch (e) {
     return {
       data: [],
-      message: e instanceof Error ? e.message : "unknown error",
+      message: parseError(e),
     };
   }
 }
@@ -189,7 +190,7 @@ export async function getMetadataById({ metadataId }: { metadataId: string }) {
   } catch (e) {
     return {
       data: null,
-      message: e instanceof Error ? e.message : "unknown error",
+      message: parseError(e),
     };
   }
 }
@@ -231,7 +232,7 @@ export async function deleteMetadata({ collectionId, listMetadata }: { collectio
   } catch (e) {
     return {
       result: false,
-      message: e instanceof Error ? e.message : "unknown error",
+      message: parseError(e),
     };
   }
 }
@@ -272,7 +273,7 @@ export async function updateMetadata({ collectionId, metadata }: { collectionId:
   } catch (e) {
     return {
       result: false,
-      message: e instanceof Error ? e.message : "unknown error",
+      message: parseError(e),
     };
   }
 }

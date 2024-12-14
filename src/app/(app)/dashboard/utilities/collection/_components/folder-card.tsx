@@ -21,6 +21,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { parseError } from "@/utils/error/parse-error";
 
 export default function FolderCard({ collection }: { collection: Collection }) {
   const router = useRouter();
@@ -38,7 +39,7 @@ export default function FolderCard({ collection }: { collection: Collection }) {
     } catch (e) {
       toast({
         title: "Error",
-        description: e instanceof Error ? e.message : "Unknown error",
+        description: parseError(e),
         variant: "destructive",
       });
     } finally {
@@ -63,7 +64,7 @@ export default function FolderCard({ collection }: { collection: Collection }) {
     } catch (e) {
       toast({
         title: "Error",
-        description: e instanceof Error ? e.message : "Unknown error",
+        description: parseError(e),
         variant: "destructive",
       });
     } finally {

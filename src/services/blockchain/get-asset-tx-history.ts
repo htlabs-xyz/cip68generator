@@ -2,6 +2,7 @@
 
 import { blockfrostFetcher } from "@/lib/cardano";
 import { SpecialTransaction, Transaction, TransactionAsset } from "@/types";
+import { parseError } from "@/utils/error/parse-error";
 import { isNil } from "lodash";
 
 export async function getAssetTxHistory({ unit, page = 1, limit = 12 }: { unit: string; page?: number; limit?: number }) {
@@ -71,7 +72,7 @@ export async function getAssetTxHistory({ unit, page = 1, limit = 12 }: { unit: 
   } catch (e) {
     return {
       data: [],
-      message: e instanceof Error ? e.message : "Unknown error",
+      message: parseError(e),
     };
   }
 }

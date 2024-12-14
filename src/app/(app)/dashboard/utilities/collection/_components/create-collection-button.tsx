@@ -12,6 +12,7 @@ import { createCollection } from "@/services/database/collection";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { parseError } from "@/utils/error/parse-error";
 
 const formSchema = z.object({
   name: z
@@ -43,7 +44,7 @@ export function CreateCollectionButton() {
     } catch (e) {
       toast({
         title: "Error",
-        description: e instanceof Error ? e.message : "Unknown error",
+        description: parseError(e),
         variant: "destructive",
       });
     } finally {

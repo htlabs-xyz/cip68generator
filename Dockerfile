@@ -1,19 +1,21 @@
-FROM node:20-alpine AS base
+FROM node:20-alpine3.20 AS base
 
-# Install dependencies only when needed
+# Install dependencies
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache \
+    libc6-compat \
+    openssl
 WORKDIR /app
 
-COPY package.json ./
-RUN npm install -force
+COPY package.json ./ 
+RUN npm install --force
 RUN npm install -g prisma
 
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY . . 
 COPY stack.env .env
 
 RUN npx prisma generate

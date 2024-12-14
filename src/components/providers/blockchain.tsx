@@ -18,7 +18,7 @@ export const useBlockchainContext = function () {
 };
 
 export default function BlockchainProvider({ children }: PropsWithChildren) {
-  const { signIn, wallet, disconnect, refresh, browserWallet, address, getBalance, signTx, submitTx }: WalletStoreType = useWallet();
+  const { signIn, wallet, disconnect, browserWallet, address, stakeAddress, getBalance, signTx, submitTx }: WalletStoreType = useWallet();
   const { data: session, status } = useSession();
 
   const wallets = useWalletList();
@@ -39,7 +39,6 @@ export default function BlockchainProvider({ children }: PropsWithChildren) {
           return;
         }
         signIn(session, walletConnect);
-        return;
       }
     })();
   }, [disconnect, session, signIn, status, wallet, wallets, browserWallet, address]);
@@ -49,8 +48,8 @@ export default function BlockchainProvider({ children }: PropsWithChildren) {
       value={{
         signIn,
         disconnect,
-        refresh,
         wallet,
+        stakeAddress,
         browserWallet,
         address,
         getBalance,
