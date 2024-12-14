@@ -32,6 +32,7 @@ export default function ProfileProvider({ children }: PropsWithChildren) {
       value={{
         currentPage,
         setCurrentPage,
+        totalItem: data?.totalItem || 0,
         totalPages: data?.totalPages || 1,
         loading: isLoading,
         listNft: data?.data || [],
