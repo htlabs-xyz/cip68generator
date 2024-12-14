@@ -90,9 +90,9 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
   }, [isLoading]);
 
   useEffect(() => {
-    if (assetData?.data && !isNil(assetData.data.onchain_metadata)) {
+    if (assetData?.data && !isNil(assetData.data.metadata)) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { _pk, ...metadata } = assetData.data.onchain_metadata;
+      const { _pk, ...metadata } = assetData.data.metadata;
       setMetadataToUpdate(metadata);
     } else {
       setMetadataToUpdate({});
@@ -103,8 +103,8 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
   const pubKeyHash = !isNil(address) && deserializeAddress(address)?.pubKeyHash;
 
   const isAuthor = !!(
-    (!isNil(assetData?.data?.onchain_metadata?._pk) && pubKeyHash && assetData?.data?.onchain_metadata?._pk.includes(pubKeyHash)) ||
-    (pubKeyHash && assetData?.data?.onchain_metadata?._pk && pubKeyHash.includes(assetData.data.onchain_metadata._pk))
+    (!isNil(assetData?.data?.metadata?._pk) && pubKeyHash && assetData?.data?.metadata?._pk.includes(pubKeyHash)) ||
+    (pubKeyHash && assetData?.data?.metadata?._pk && pubKeyHash.includes(assetData.data.metadata._pk))
   );
 
   const handleUpdate = () => {
