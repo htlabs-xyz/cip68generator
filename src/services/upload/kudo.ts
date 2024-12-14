@@ -13,7 +13,16 @@ export async function kudoUpload(formData: FormData) {
   if (!userId) {
     throw new UnauthorizedException();
   }
+
   try {
+    const mediaCount = await prisma.media.count({
+      where: { userId },
+    });
+
+    if (mediaCount >= 50) {
+      throw new Error("You have reached the maximum limit of 50 media.");
+    }
+
     const response = await axios.post(
       IPFS_ENDPOINT + "/api/v0/add?stream-channels=true&pin=false&wrap-with-directory=false&progress=false",
       formData,
@@ -27,13 +36,25 @@ export async function kudoUpload(formData: FormData) {
     if (!response.data) {
       throw new Error("Empty response data from upload");
     }
+
     if (typeof response.data === "object") {
       const { Hash, Name } = response.data;
+
       await cp(Hash, Name).then(async ({ data, result, message }) => {
         if (!result) {
           throw new Error(message);
         }
+
         const { cid, name } = data;
+
+        const currentMediaCount = await prisma.media.count({
+          where: { userId },
+        });
+
+        if (currentMediaCount >= 50) {
+          throw new Error("You have reached the maximum limit of 50 media.");
+        }
+
         return await prisma.media.upsert({
           where: {
             url: `ipfs://${cid}`,
@@ -48,7 +69,7 @@ export async function kudoUpload(formData: FormData) {
         });
       });
     } else {
-      Promise.all(
+      const results = await Promise.all(
         response.data
           .trim()
           .split("\n")
@@ -56,24 +77,33 @@ export async function kudoUpload(formData: FormData) {
             const { Hash, Name } = JSON.parse(line);
             return cp(Hash, Name);
           }),
-      ).then(async (result) => {
-        return await prisma.media.createMany({
-          data: result
-            .map((item) => {
-              if (!item.result) return null;
-              const { cid, name } = item.data;
-              return {
-                userId: userId,
-                name: name,
-                type: mimeTypes[name.split(".").pop()?.toLowerCase()] || "unknown",
-                url: `ipfs://${cid}`,
-              };
-            })
-            .filter((item) => item !== null),
-          skipDuplicates: true,
-        });
+      );
+      const currentMediaCount = await prisma.media.count({
+        where: { userId },
+      });
+
+      const availableSlots = 50 - currentMediaCount;
+
+      if (availableSlots <= 0) {
+        throw new Error("You have reached the maximum limit of 50 media.");
+      }
+
+      const filteredResults = results.filter((item) => item.result).slice(0, availableSlots);
+
+      await prisma.media.createMany({
+        data: filteredResults.map((item) => {
+          const { cid, name } = item.data;
+          return {
+            userId: userId,
+            name: name,
+            type: mimeTypes[name.split(".").pop()?.toLowerCase()] || "unknown",
+            url: `ipfs://${cid}`,
+          };
+        }),
+        skipDuplicates: true,
       });
     }
+
     return {
       message: "success",
       result: true,
