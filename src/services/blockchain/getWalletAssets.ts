@@ -2,6 +2,7 @@
 import { Cip68Contract } from "@/contract";
 import { blockfrostFetcher, koiosFetcher } from "@/lib/cardano";
 import { AssetDetails, AssetType } from "@/types";
+import { parseError } from "@/utils/error/parse-error";
 import { hexToString } from "@meshsdk/core";
 
 export async function getWalletAssets({
@@ -40,7 +41,7 @@ export async function getWalletAssets({
   } catch (e) {
     return {
       data: [],
-      message: e instanceof Error ? e.message : "Unknown error",
+      message: parseError(e),
     };
   }
 }

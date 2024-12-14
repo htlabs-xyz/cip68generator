@@ -10,6 +10,7 @@ import { submitTx } from "@/services/blockchain/submitTx";
 import { useQuery } from "@tanstack/react-query";
 import { addMetadata, getMetadataById } from "@/services/database/metadata";
 import { defineStepper } from "@stepperize/react";
+import { parseError } from "@/utils/error/parse-error";
 
 const { useStepper: useMintOneStepper, steps: mintOneSteps } = defineStepper(
   { id: "basic", title: "Basic" },
@@ -125,10 +126,10 @@ export default function MintOneProvider({ metadataTemplateId, children }: { meta
       mintOneStepper.goTo("result");
       // create transaction
     } catch (e) {
-      updateTaskState("error", "", e instanceof Error ? e.message : "unknown error");
+      updateTaskState("error", "", parseError(e));
       toast({
         title: "Error",
-        description: e instanceof Error ? e.message : "unknown error",
+        description: parseError(e),
         variant: "destructive",
       });
     }

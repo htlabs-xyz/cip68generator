@@ -21,17 +21,14 @@ import { Plus } from "lucide-react";
 import CopyButton from "@/components/common/copy-button";
 
 export default function ProfilePage() {
-  const { wallet, address, getBalance, browserWallet } = useBlockchainContext();
+  const { wallet, address, getBalance, stakeAddress, browserWallet } = useBlockchainContext();
   const { listNft, filter, setFilter, loading, totalPages, currentPage, setCurrentPage } = useProfileContext();
 
   const [balance, setBalance] = useState<number>(0);
-  const [stakeAddress, setStakeAddress] = useState<string>("");
 
   useEffect(() => {
     (async () => {
       if (wallet && browserWallet) {
-        const stakeAddress = await browserWallet.getRewardAddresses();
-        setStakeAddress(stakeAddress[0]);
         const balance = await getBalance();
         setBalance(balance);
       }
@@ -49,7 +46,7 @@ export default function ProfilePage() {
               </div>
               <div className="min-w-0 grid gap-1 justify-start ">
                 <h3 className="max-w-full overflow-hidden text-ellipsis whitespace-nowrap justify-stretch text-2xl max-md:text-[24px] max-md:leading-7">
-                  {shortenString(stakeAddress || "Cardano", 10)}
+                  {shortenString(stakeAddress || "", 10)}
                 </h3>
                 <div className="flex items-center justify-center py-1 px-2 rounded-lg bg-[#282c34] text-gray-400 shadow-md gap-1">
                   {/* <IoLocation className="text-[20px] max-md:text-[14px] font-bold text-gray-200" /> */}

@@ -2,6 +2,7 @@
 
 import { blockfrostFetcher } from "@/lib/cardano";
 import { AssetDetails, AssetDetailsWithTransactionHistory, TransactionHistory } from "@/types";
+import { parseError } from "@/utils/error/parse-error";
 import { isNil } from "lodash";
 
 export const getAssetInfo = async (unit: string) => {
@@ -24,7 +25,7 @@ export const getAssetInfo = async (unit: string) => {
   } catch (e) {
     return {
       data: null,
-      message: e instanceof Error ? e.message : "Unknown error",
+      message: parseError(e),
     };
   }
 };

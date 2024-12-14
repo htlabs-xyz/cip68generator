@@ -1,6 +1,7 @@
 "use server";
 
 import { blockfrostProvider } from "@/lib/cardano";
+import { parseError } from "@/utils/error/parse-error";
 
 export async function submitTx(tx: string): Promise<{
   data: string | null;
@@ -18,7 +19,7 @@ export async function submitTx(tx: string): Promise<{
     return {
       data: null,
       result: false,
-      message: e instanceof Error ? e.message : "Unknown error",
+      message: parseError(e),
     };
   }
 }

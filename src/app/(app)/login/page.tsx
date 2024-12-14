@@ -4,6 +4,7 @@ import WalletConnect from "./_components/wallet-connect";
 import Image from "next/image";
 import { appImage } from "@/public/images";
 import routers from "@/constants/routers";
+
 export const metadata: Metadata = {
   title: "Authentication",
   description: "Authentication",

@@ -18,7 +18,7 @@ export default function UtilitiesPage() {
               </AspectRatio>
               <div className="flex flex-col items-center justify-start gap-3 self-stretch px-4 py-2">
                 <div className="font-semibol self-stretch text-center text-base">Collection Metadata</div>
-                <div className="font- self-stretch text-center text-sm text-secondary">Have images but need JSON? We got you covered!</div>
+                <div className="font- self-stretch text-center text-sm text-secondary">Have data but need JSON? We got you covered!</div>
               </div>
             </Card>
           </Link>

@@ -16,6 +16,7 @@ import { deserializeAddress, hexToString } from "@meshsdk/core";
 import { createUpdateTransaction } from "@/services/contract/update";
 import { getAssetTxHistory } from "@/services/blockchain/get-asset-tx-history";
 import { submitTx } from "@/services/blockchain/submitTx";
+import { parseError } from "@/utils/error/parse-error";
 
 const { useStepper: useUpdateStepper, steps: updateSteps } = defineStepper(
   { id: "metadata", title: "Metadata" },
@@ -167,10 +168,10 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
       updateStepper.goTo("result");
       // create transaction
     } catch (e) {
-      updateTaskState("error", "", e instanceof Error ? e.message : "unknown error");
+      updateTaskState("error", "", parseError(e));
       toast({
         title: "Error",
-        description: e instanceof Error ? e.message : "unknown error",
+        description: parseError(e),
         variant: "destructive",
       });
     }
@@ -228,10 +229,10 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
       burnStepper.goTo("result");
       // create transaction
     } catch (e) {
-      updateTaskState("error", "", e instanceof Error ? e.message : "unknown error");
+      updateTaskState("error", "", parseError(e));
       toast({
         title: "Error",
-        description: e instanceof Error ? e.message : "unknown error",
+        description: parseError(e),
         variant: "destructive",
       });
     }

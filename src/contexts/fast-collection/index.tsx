@@ -7,6 +7,7 @@ import { convertObject } from "@/utils";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { dashboardRoutes } from "@/constants/routers";
+import { parseError } from "@/utils/error/parse-error";
 
 type UploadCsvContextType = {
   loading: boolean;
@@ -41,7 +42,7 @@ export default function UploadCSVProvider({ children }: PropsWithChildren) {
     } catch (e) {
       toast({
         title: "Error",
-        description: e instanceof Error ? e.message : "Unknown error",
+        description: parseError(e),
         variant: "destructive",
       });
     } finally {

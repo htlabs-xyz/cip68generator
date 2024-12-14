@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { parseError } from "@/utils/error/parse-error";
 import { UnauthorizedException } from "@/utils/http/http-exceptions";
 import { Media } from "@prisma/client";
 import { isEmpty, isNil } from "lodash";
@@ -90,10 +90,10 @@ export async function getMedia({
       totalPages: Math.ceil(totalItems / limit),
       currentPage: page,
     };
-  } catch (error: any) {
+  } catch (e) {
     return {
       data: [],
-      message: error.message,
+      message: parseError(e),
     };
   }
 }
@@ -120,9 +120,9 @@ export async function deleteMedia(media: Media[]): Promise<{ message: string; re
       message: "success",
       result: true,
     };
-  } catch (error: any) {
+  } catch (e) {
     return {
-      message: error.message,
+      message: parseError(e),
       result: false,
     };
   }
