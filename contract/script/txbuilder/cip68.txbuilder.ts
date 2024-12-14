@@ -218,7 +218,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
           .txInInlineDatumPresent()
           .txInRedeemerValue(mConStr0([]))
           .spendingTxInReference(utxoRef.input.txHash, utxoRef.input.outputIndex)
-          // .txInScript(this.storeScriptCbor)
           .txOut(this.storeAddress, [
             {
               unit: this.policyId + CIP68_100(stringToHex(assetName)),
@@ -264,7 +263,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       ])
 
       .txOutReferenceScript(this.mintScriptCbor, "V3")
-      .txOutInlineDatumValue("")
+      .txOutDatumHashValue("")
       .changeAddress(walletAddress)
       .selectUtxosFrom(utxos)
       .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address);
@@ -289,7 +288,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       ])
 
       .txOutReferenceScript(this.storeScriptCbor, "V3")
-      .txOutInlineDatumValue("")
+      .txOutDatumHashValue("")
       .changeAddress(walletAddress)
       .selectUtxosFrom(utxos)
       .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address);

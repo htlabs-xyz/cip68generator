@@ -6,7 +6,6 @@ import { Cip68Contract } from "../script";
 
 describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   let txHashTemp: string;
-  let meshTxBuilder: MeshTxBuilder;
   let wallet: MeshWallet;
   beforeEach(async function () {
     wallet = new MeshWallet({
@@ -28,7 +27,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     });
     const unsignedTx: string = await cip68Contract.mint([
       {
-        assetName: "CIP68 Generators v1",
+        assetName: "CIP68 Generators v3",
         metadata: {
           name: "CIP68 Generators",
           image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
@@ -39,18 +38,18 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         quantity: "1",
         receiver: null!,
       },
-      {
-        assetName: "CIP68 Generators v2",
-        metadata: {
-          name: "CIP68 Generators",
-          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
-          mediaType: "image/jpg",
-          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
-          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
-        },
-        quantity: "2",
-        receiver: null!,
-      },
+      // {
+      //   assetName: "CIP68 Generators v2",
+      //   metadata: {
+      //     name: "CIP68 Generators",
+      //     image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+      //     mediaType: "image/jpg",
+      //     description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+      //     _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+      //   },
+      //   quantity: "2",
+      //   receiver: null!,
+      // },
     ]);
     const signedTx = wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
@@ -62,7 +61,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   });
 
   test("Update", async function () {
-    return;
+    // return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });

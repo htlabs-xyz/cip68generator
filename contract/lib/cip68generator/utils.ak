@@ -162,7 +162,7 @@ pub fn check_none_output(
   output_store: Option<Output>,
   output_exchange: Option<Output>,
 ) -> Bool {
-  // If one of the 3 outputs does not exist, the function will return False
+  // If one of the 2 outputs does not exist, the function will return False
   if output_store == None || output_exchange == None {
     False
   } else {
