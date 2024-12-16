@@ -12,7 +12,7 @@ import {
   UTxO,
 } from "@meshsdk/core";
 import { Plutus } from "../types";
-import { EXCHANGE_FEE_ADDRESS, title } from "../constants";
+import { APP_WALLET_ADDRESS, title } from "../constants";
 import plutus from "../../plutus.json";
 import { appNetworkId } from "@/constants";
 import { getPkHash } from "@/utils";
@@ -39,7 +39,7 @@ export class MeshAdapter {
       evaluator: blockfrostProvider,
     });
 
-    this.pubKeyExchange = deserializeAddress(EXCHANGE_FEE_ADDRESS).pubKeyHash;
+    this.pubKeyExchange = deserializeAddress(APP_WALLET_ADDRESS).pubKeyHash;
     this.mintCompileCode = this.readValidator(plutus as Plutus, title.mint);
     this.storeCompileCode = this.readValidator(plutus as Plutus, title.store);
 

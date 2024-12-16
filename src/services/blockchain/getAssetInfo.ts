@@ -20,7 +20,9 @@ export const getAssetInfo = async (unit: string) => {
 
     const data: AssetDetailsWithTransactionHistory = {
       ...assetDetails,
-      metadata: (await datumToJson(utxo.inline_datum)) as Record<string, string>,
+      metadata: (await datumToJson(utxo.inline_datum, {
+        contain_pk: true,
+      })) as Record<string, string>,
       transaction_history: assetTransactions,
     };
 
