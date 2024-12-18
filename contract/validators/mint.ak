@@ -1,14 +1,11 @@
 use aiken/collection/list
 use aiken/crypto.{ScriptHash, VerificationKeyHash}
-use aiken/primitive/bytearray
 use cardano/address
 use cardano/assets.{PolicyId, without_lovelace}
-use cardano/minting
 use cardano/transaction.{Transaction}
 use cip68generator/types.{Burn, Mint, MintRedeemer}
 use cip68generator/utils
 use types/cip68
-use validation/find
 
 // @validator: Mint
 // @title: Open source dynamic assets (Token/NFT) generator (CIP68)
@@ -20,6 +17,7 @@ validator mint(
   exchange: VerificationKeyHash,
   exchange_fee: Int,
   store: ScriptHash,
+  _issuer: VerificationKeyHash,
 ) {
   mint(redeemer: MintRedeemer, policy_id: PolicyId, transaction: Transaction) {
     let Transaction { inputs, outputs, extra_signatories, mint, .. } =
@@ -45,77 +43,35 @@ validator mint(
           utils.find_input_reference_asset(inputs, extra_signatories)
         if list.length(reference_asset) > 0 {
           let mint_concat = list.concat(reference_asset, mint_flatten)
-          let check_reference_token =
-            utils.check_pairs_with_fold(
+          let check_asset_mint =
+            utils.check_asset_mint(
               mint_concat,
+              policy_id,
               cip68.prefix_100,
               cip68.prefix_222,
-              fn(reference_asset_name, user_asset_name, amount) -> Bool {
-                let reference_value =
-                  assets.from_asset(policy_id, reference_asset_name, 1)
-                let output_utxo_store =
-                  find.output_by_addr_value(
-                    outputs,
-                    store_address,
-                    reference_value,
-                  )
-                and {
-                  utils.check_output_utxo(output_utxo_store, extra_signatories)?,
-                  minting.by_prefix(
-                    mint_flatten,
-                    policy_id,
-                    cip68.prefix_222,
-                    amount - 1,
-                  )?,
-                  bytearray.compare(
-                    bytearray.drop(reference_asset_name, 4),
-                    bytearray.drop(user_asset_name, 4),
-                  ) == Equal,
-                }
-              },
+              outputs,
+              store_address,
+              extra_signatories,
+              True,
             )
           and {
-            check_reference_token?,
+            check_asset_mint?,
             check_output_exchange?,
           }
         } else {
-          let check_reference_token =
-            utils.check_pairs_with_fold(
+          let check_asset_mint =
+            utils.check_asset_mint(
               mint_flatten,
+              policy_id,
               cip68.prefix_100,
               cip68.prefix_222,
-              fn(reference_asset_name, user_asset_name, amount) -> Bool {
-                let reference_value =
-                  assets.from_asset(policy_id, reference_asset_name, 1)
-                let output_utxo_store =
-                  find.output_by_addr_value(
-                    outputs,
-                    store_address,
-                    reference_value,
-                  )
-                and {
-                  utils.check_output_utxo(output_utxo_store, extra_signatories)?,
-                  minting.exact(
-                    mint_flatten,
-                    policy_id,
-                    reference_asset_name,
-                    1,
-                  )?,
-                  minting.by_prefix(
-                    mint_flatten,
-                    policy_id,
-                    cip68.prefix_222,
-                    amount - 1,
-                  )?,
-                  bytearray.compare(
-                    bytearray.drop(reference_asset_name, 4),
-                    bytearray.drop(user_asset_name, 4),
-                  ) == Equal,
-                }
-              },
+              outputs,
+              store_address,
+              extra_signatories,
+              False,
             )
           and {
-            check_reference_token?,
+            check_asset_mint?,
             check_output_exchange?,
           }
         }
@@ -133,50 +89,22 @@ validator mint(
 
         if list.length(reference_asset) > 0 {
           let mint_concat = list.concat(reference_asset, mint_flatten)
-          let check_reference_token =
-            utils.check_pairs_with_fold(
+          let check_asset_burn =
+            utils.check_asset_burn(
               mint_concat,
+              policy_id,
               cip68.prefix_100,
               cip68.prefix_222,
-              fn(reference_asset_name, user_asset_name, amount) -> Bool { and {
-                  minting.exact(
-                    mint_flatten,
-                    policy_id,
-                    reference_asset_name,
-                    -1,
-                  )?,
-                  minting.by_prefix(
-                    mint_flatten,
-                    policy_id,
-                    cip68.prefix_222,
-                    amount + 1,
-                  )?,
-                  bytearray.compare(
-                    bytearray.drop(reference_asset_name, 4),
-                    bytearray.drop(user_asset_name, 4),
-                  ) == Equal,
-                } },
             )
           and {
-            check_reference_token?,
+            check_asset_burn?,
             check_output_exchange?,
           }
         } else {
-          let user_asset =
-            utils.check_pairs_with_fold_with_prefix(
-              mint_flatten,
-              cip68.prefix_222,
-              fn(_user_asset_name, amount) -> Bool {
-                minting.by_prefix(
-                  mint_flatten,
-                  policy_id,
-                  cip68.prefix_222,
-                  -amount,
-                )?
-              },
-            )
+          let check_asset_burn =
+            utils.check_assets_prefix(mint_flatten, policy_id, cip68.prefix_222)
           and {
-            user_asset?,
+            check_asset_burn?,
             check_output_exchange?,
           }
         }
