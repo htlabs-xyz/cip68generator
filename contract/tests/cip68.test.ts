@@ -6,7 +6,6 @@ import { Cip68Contract } from "../script";
 
 describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   let txHashTemp: string;
-  let meshTxBuilder: MeshTxBuilder;
   let wallet: MeshWallet;
   beforeEach(async function () {
     wallet = new MeshWallet({
@@ -75,6 +74,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
           mediaType: "image/jpg",
           description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
           owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
           _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
         },
       },
@@ -93,7 +93,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     });
     const unsignedTx: string = await cip68Contract.burn([
       {
-        assetName: "CIP68 Generators v1",
+        assetName: "CIP68 Generators v12",
         quantity: "-1",
       },
     ]);
