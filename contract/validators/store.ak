@@ -15,7 +15,11 @@ use validation/find.{output_by_addr_value}
 // @description: Validator is used to update and remove tokens (nft, token) according to CIP68
 // @params - exchange: The address when users operate with the platform, they will have to pay a platform maintenance fee.
 // @params - exchange_fee: The minimum amount a user must pay to the exchange when interacting with the exchange.
-validator store(exchange: VerificationKeyHash, exchange_fee: Int) {
+validator store(
+  exchange: VerificationKeyHash,
+  exchange_fee: Int,
+  _issuer: VerificationKeyHash,
+) {
   spend(
     datum: Option<CIP68>,
     redeemer: StoreRedeemer,
