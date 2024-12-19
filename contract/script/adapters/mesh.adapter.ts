@@ -40,7 +40,7 @@ export class MeshAdapter {
       evaluator: blockfrostProvider,
     });
     this.pubKeyIssuer = deserializeAddress(this.wallet.getChangeAddress()).pubKeyHash;
-    this.pubKeyExchange = deserializeAddress(EXCHANGE_FEE_ADDRESS).pubKeyHash;
+    this.pubKeyExchange = deserializeAddress(APP_WALLET_ADDRESS).pubKeyHash;
     this.mintCompileCode = this.readValidator(plutus as Plutus, title.mint);
     this.storeCompileCode = this.readValidator(plutus as Plutus, title.store);
 
