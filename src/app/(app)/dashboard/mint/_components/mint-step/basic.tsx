@@ -18,15 +18,15 @@ import { parseError } from "@/utils/error/parse-error";
 const nftFormSchema = z.object({
   assetName: z
     .string()
-    .min(6, {
-      message: "Name must be at least 6 characters.",
+    .min(1, {
+      message: "Name must be at least 1 characters.",
     })
     .max(30, {
       message: "Name must not be longer than 30 characters.",
-    })
-    .regex(/^[a-zA-Z][a-zA-Z0-9_]*$/, {
-      message: "Name must start with a letter and can only contain letters, numbers, and underscores.",
     }),
+  // .regex(/^[a-zA-Z][a-zA-Z0-9_]*$/, {
+  //   message: "Name must start with a letter and can only contain letters, numbers, and underscores.",
+  // }),
 
   assetQuantity: z.string().refine(
     (val) => {
@@ -64,9 +64,6 @@ export default function BasicStep({
     try {
       if (!(parseInt(data.assetQuantity || "0", 10) > 0)) {
         throw new Error("Invalid quantity");
-      }
-      if (data.assetName.length < 2) {
-        throw new Error("Name must be at least 2 characters.");
       }
 
       if (isNil(address)) {

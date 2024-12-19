@@ -35,7 +35,7 @@ export const createMintTransaction = async ({ address, mintInput }: { address: s
         receiver: mint.receiver ?? address,
         metadata: {
           ...mint.metadata,
-          _pk: deserializeAddress(await wallet.getChangeAddress()).pubKeyHash,
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
         },
       })),
     );
