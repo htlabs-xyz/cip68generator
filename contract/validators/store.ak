@@ -18,7 +18,7 @@ use validation/find.{output_by_addr_value}
 validator store(
   exchange: VerificationKeyHash,
   exchange_fee: Int,
-  _issuer: VerificationKeyHash,
+  issuer: VerificationKeyHash,
 ) {
   spend(
     datum: Option<CIP68>,
@@ -48,16 +48,15 @@ validator store(
         let validator_output =
           output_by_addr_value(outputs, script_address, reference_token)
         expect InlineDatum(datum_input) = validator_output.datum
-        let meradatum_output: CIP68 = datum_output
+        let metadatum_output: CIP68 = datum_output
         expect metadatum_input: CIP68 = datum_input
         expect author_input: ByteArray =
           cip68.get(metadatum_input, types.author_key)
         expect author_output: ByteArray =
-          cip68.get(meradatum_output, types.author_key)
+          cip68.get(metadatum_output, types.author_key)
         let check_author = author_input == author_output
         and {
-          utils.check_output_utxo(validator_output, extra_signatories)?,
-          // list.length(outputs) == 3,
+          utils.check_output_utxo(validator_output, issuer, extra_signatories)?,
           output_utxo_exchange != None,
           check_author,
         }

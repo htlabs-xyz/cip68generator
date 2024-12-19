@@ -21,7 +21,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   jest.setTimeout(60000);
 
   test("Mint", async function () {
-    return;
+    // return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
@@ -92,9 +92,13 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       wallet: wallet,
     });
     const unsignedTx: string = await cip68Contract.burn([
+      // {
+      //   assetName: "CIP68 Generators v1",
+      //   quantity: "-1",
+      // },
       {
-        assetName: "CIP68 Generators v12",
-        quantity: "-1",
+        assetName: "CIP68 Generators v2",
+        quantity: "-2",
       },
     ]);
     const signedTx = wallet.signTx(unsignedTx, true);
