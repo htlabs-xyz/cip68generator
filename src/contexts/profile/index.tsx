@@ -3,7 +3,7 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useBlockchainContext } from "@/components/providers/blockchain";
-import { getWalletAssets } from "@/services/blockchain/getWalletAssets";
+import { getWalletAssets } from "@/services/contract/getWalletAssets";
 import useProfileStore, { ProfileStore } from "./store";
 
 type ProfileContextType = ProfileStore & {
