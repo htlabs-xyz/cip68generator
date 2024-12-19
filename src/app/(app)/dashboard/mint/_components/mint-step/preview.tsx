@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { getContractPolicyId } from "@/services/contract/get-policy-id";
 import CopyButton from "@/components/common/copy-button";
 import { SaveMetadata } from "../save-metadata";
+import { useBlockchainContext } from "@/components/providers/blockchain";
 
 export default function PreviewStep({
   stepper,
@@ -24,6 +25,7 @@ export default function PreviewStep({
   collectionToSave: string;
   setCollectionToSave: (value: string) => void;
 }) {
+  const { address } = useBlockchainContext();
   const [nftPolicyId, setNftPolicyId] = useState<string>("");
   const assetNameSort = basicInfoToMint?.assetName || "No name";
   const totalSupply = basicInfoToMint?.quantity || "1";
@@ -31,8 +33,9 @@ export default function PreviewStep({
   const mediaType = imgSrc == "" ? "text/plain" : metadataToMint?.mediaType || "image/png";
 
   useEffect(() => {
-    getContractPolicyId().then(setNftPolicyId);
-  }, []);
+    if (!address) return;
+    getContractPolicyId({ address }).then(setNftPolicyId);
+  }, [address]);
 
   return (
     <div className="h-full py-8 px-10 m-auto flex flex-col">
