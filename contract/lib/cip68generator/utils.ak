@@ -11,7 +11,11 @@ use types/cip68.{CIP68}
 use validation/find
 
 // check the output utxos containing the reference nft
-pub fn check_output_utxo(output: Output, vks: List<VerificationKeyHash>) -> Bool {
+pub fn check_output_utxo(
+  output: Output,
+  issuer: VerificationKeyHash,
+  vks: List<VerificationKeyHash>,
+) -> Bool {
   expect InlineDatum(data) = output.datum
   expect metadatum: CIP68 = data
   // expect name: ByteArray = cip68.get(metadatum, "name")
@@ -26,10 +30,24 @@ pub fn check_output_utxo(output: Output, vks: List<VerificationKeyHash>) -> Bool
     // bytearray.length(name) > 0,
     // bytearray.length(image) > 0,
     // bytearray.length(media_type) > 0,
-    // author == issuer,
+    author == issuer,
     tx.verify_signature(vks, author),
     list.length(output_value) == 1,
   }
+}
+
+// find output with lovelace and address
+pub fn find_output(
+  outputs: List<Output>,
+  price: Int,
+  address: Address,
+) -> Option<Output> {
+  list.find(
+    outputs,
+    fn(output) {
+      lovelace_of(output.value) >= price && output.address.payment_credential == address.payment_credential
+    },
+  )
 }
 
 // filter flatten and return pair of asset names
@@ -38,14 +56,14 @@ pub fn filter_and_pair(
   prefix100: ByteArray,
   prefix222: ByteArray,
 ) -> List<(AssetName, AssetName, Int)> {
-  let filtered100 =
+  let filter100 =
     list.filter(
       flat,
       fn((_policy_id, asset_name, _amount)) {
         bytearray.starts_with(asset_name, prefix100)
       },
     )
-  let filtered222 =
+  let filter222 =
     list.filter(
       flat,
       fn((_policy_id, asset_name, _amount)) {
@@ -54,12 +72,12 @@ pub fn filter_and_pair(
     )
   let asset_names_amounts100 =
     list.map(
-      filtered100,
+      filter100,
       fn((_policy_id, asset_name, amount)) { (asset_name, amount) },
     )
   let asset_names_amounts222 =
     list.map(
-      filtered222,
+      filter222,
       fn((_policy_id, asset_name, amount)) { (asset_name, amount) },
     )
 
@@ -118,20 +136,6 @@ pub fn check_assets_prefix(
   )
 }
 
-// find output with lovelace and address
-pub fn find_output(
-  outputs: List<Output>,
-  price: Int,
-  address: Address,
-) -> Option<Output> {
-  list.find(
-    outputs,
-    fn(output) {
-      lovelace_of(output.value) >= price && output.address.payment_credential == address.payment_credential
-    },
-  )
-}
-
 // search reference asset exist input
 pub fn find_input_reference_asset(
   inputs: List<Input>,
@@ -172,45 +176,6 @@ pub fn find_input_reference_asset(
   )
 }
 
-pub fn find_input_reference_asset_burn(
-  inputs: List<Input>,
-  vks: List<VerificationKeyHash>,
-) -> List<(PolicyId, AssetName, Int)> {
-  list.filter_map(
-    inputs,
-    fn(input) {
-      when input.output.datum is {
-        InlineDatum(data) -> {
-          expect metadatum: CIP68 = data
-          expect author: VerificationKeyHash =
-            cip68.get(metadatum, types.author_key)
-          if tx.verify_signature(vks, author) {
-            let reference_asset =
-              input.output.value
-                |> without_lovelace()
-                |> assets.flatten()
-            let exist =
-              list.find(
-                reference_asset,
-                fn((_policy_id, asset_name, _amount)) {
-                  bytearray.starts_with(asset_name, cip68.prefix_100)
-                },
-              )
-            when exist is {
-              Some((policy_id, asset_name, amount)) ->
-                Some((policy_id, asset_name, -amount))
-              None -> None
-            }
-          } else {
-            None
-          }
-        }
-        _ -> None
-      }
-    },
-  )
-}
-
 // check assets mint
 pub fn check_asset_mint(
   flatten: List<(PolicyId, AssetName, Int)>,
@@ -219,6 +184,7 @@ pub fn check_asset_mint(
   prefix222: ByteArray,
   outputs: List<Output>,
   store_address: Address,
+  issuer: VerificationKeyHash,
   extra_signatories: List<VerificationKeyHash>,
   has_reference: Bool,
 ) -> Bool {
@@ -236,7 +202,7 @@ pub fn check_asset_mint(
         let output_utxo_store =
           find.output_by_addr_value(outputs, store_address, reference_value)
         and {
-          check_output_utxo(output_utxo_store, extra_signatories)?,
+          check_output_utxo(output_utxo_store, issuer, extra_signatories)?,
           check_pair_asset_name(reference_asset_name, user_asset_name),
           check_minting_reference(
             flatten,
