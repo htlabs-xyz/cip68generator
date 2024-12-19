@@ -10,7 +10,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 
 import { toast } from "@/hooks/use-toast";
-import { checkAssetNameAvailable } from "@/services/contract/check-asset name-available";
 import { useBlockchainContext } from "@/components/providers/blockchain";
 import { isNil } from "lodash";
 import { parseError } from "@/utils/error/parse-error";
@@ -68,14 +67,6 @@ export default function BasicStep({
 
       if (isNil(address)) {
         throw new Error("Wallet not connected");
-      }
-      const { result, message } = await checkAssetNameAvailable({
-        assetName: data.assetName,
-        walletAddress: address,
-      });
-
-      if (!result) {
-        throw new Error(message);
       }
 
       setBasicInfoToMint({
