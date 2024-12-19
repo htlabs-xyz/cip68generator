@@ -1,4 +1,4 @@
-export const EXCHANGE_FEE_ADDRESS = process.env.EXCHANGE_FEE_ADDRESS || "";
+export const APP_WALLET_ADDRESS = process.env.APP_WALLET_ADDRESS || "";
 export const EXCHANGE_FEE_PRICE = process.env.EXCHANGE_FEE_PRICE || "1000000"; //lovelace
 
 export const MINT_REFERENCE_SCRIPT_HASH = process.env.MINT_REFERENCE_SCRIPT_HASH || "";

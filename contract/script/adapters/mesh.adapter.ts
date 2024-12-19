@@ -12,7 +12,7 @@ import {
   UTxO,
 } from "@meshsdk/core";
 import { Plutus } from "../types";
-import { EXCHANGE_FEE_ADDRESS, title } from "../constants";
+import { APP_WALLET_ADDRESS, title } from "../constants";
 import plutus from "../../plutus.json";
 import { appNetworkId } from "@/constants";
 import { getPkHash } from "@/utils";

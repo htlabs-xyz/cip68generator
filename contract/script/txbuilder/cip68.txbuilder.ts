@@ -1,7 +1,7 @@
 import { CIP68_222, stringToHex, mConStr0, CIP68_100, metadataToCip68, mConStr1, deserializeAddress, UTxO } from "@meshsdk/core";
 
 import { MeshAdapter } from "../adapters/mesh.adapter";
-import { MINT_REFERENCE_SCRIPT_HASH, EXCHANGE_FEE_ADDRESS, EXCHANGE_FEE_PRICE, STORE_REFERENCE_SCRIPT_HASH } from "../constants";
+import { MINT_REFERENCE_SCRIPT_HASH, APP_WALLET_ADDRESS, EXCHANGE_FEE_PRICE, STORE_REFERENCE_SCRIPT_HASH } from "../constants";
 import { appNetwork } from "@/constants";
 import { ICip68Contract } from "../interfaces/icip68.interface";
 import { isEmpty, isNil } from "lodash";
@@ -96,7 +96,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     );
 
     unsignedTx
-      .txOut(EXCHANGE_FEE_ADDRESS, [
+      .txOut(APP_WALLET_ADDRESS, [
         {
           unit: "lovelace",
           quantity: EXCHANGE_FEE_PRICE,
@@ -174,7 +174,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     );
 
     unsignedTx
-      .txOut(EXCHANGE_FEE_ADDRESS, [
+      .txOut(APP_WALLET_ADDRESS, [
         {
           unit: "lovelace",
           quantity: "1000000",
@@ -226,7 +226,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     );
 
     unsignedTx
-      .txOut(EXCHANGE_FEE_ADDRESS, [
+      .txOut(APP_WALLET_ADDRESS, [
         {
           unit: "lovelace",
           quantity: "1000000",

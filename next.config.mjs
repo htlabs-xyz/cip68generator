@@ -6,7 +6,6 @@ const IPFS_GATEWAY = new URL(process.env.NEXT_PUBLIC_IPFS_GATEWAY || "https://ip
 const nextConfig = () => ({
   serverExternalPackages: ["@meshsdk/core", "@meshsdk/core-cst", "@meshsdk/react"],
   experimental: {
-    after: true,
     serverActions: {
       bodySizeLimit: "100mb",
     },

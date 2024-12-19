@@ -28,7 +28,7 @@ export const getHistoryMetadata = async function ({ unit, txHash }: { unit: stri
       return {
         metadata: {
           from: null!,
-          to: await datumToJson(assetOutput.inline_datum),
+          to: assetOutput.inline_datum ? await datumToJson(assetOutput.inline_datum) : {},
         },
         txHash: txHash,
         datetime: specialTransaction.block_time,
@@ -41,7 +41,7 @@ export const getHistoryMetadata = async function ({ unit, txHash }: { unit: stri
     if (!assetOutput && assetInput) {
       return {
         metadata: {
-          from: await datumToJson(assetInput.inline_datum),
+          from: assetInput.inline_datum ? await datumToJson(assetInput.inline_datum) : {},
           to: null!,
         },
         txHash: txHash,
@@ -55,8 +55,8 @@ export const getHistoryMetadata = async function ({ unit, txHash }: { unit: stri
     if (assetInput && assetOutput) {
       return {
         metadata: {
-          from: await datumToJson(assetInput.inline_datum),
-          to: await datumToJson(assetOutput.inline_datum),
+          from: assetInput.inline_datum ? await datumToJson(assetInput.inline_datum) : {},
+          to: assetOutput.inline_datum ? await datumToJson(assetOutput.inline_datum) : {},
         },
         txHash: txHash,
         datetime: specialTransaction.block_time,
