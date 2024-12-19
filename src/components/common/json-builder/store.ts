@@ -7,7 +7,6 @@ interface IJsonBuilderStore {
     key: string;
     value: string;
   }[];
-  template: string;
   error: string;
   init: (json: Record<string, string>) => void;
   getJsonResult: () => Record<string, string>;
@@ -15,7 +14,6 @@ interface IJsonBuilderStore {
   addMediaField?: (file: Media) => void;
   updateField?: (index: number, field: "key" | "value", value: string) => void;
   removeField?: (index: number) => void;
-  setTemplate: (template: string) => void;
   setErrors: (error: string) => void;
 }
 
@@ -25,7 +23,14 @@ export const useJsonBuilderStore = create<IJsonBuilderStore>((set, get) => ({
   error: null!,
   init: (json) => {
     if (isEmpty(json)) {
-      return set({ fields: [] });
+      return set({
+        fields: [
+          { key: "name", value: "Image NFT" },
+          { key: "description", value: "Asset Description" },
+          { key: "image", value: "ipfs://..." },
+          { key: "mediaType", value: "image/png" },
+        ],
+      });
     }
     const fields = Object.entries(json).map(([key, value]) => ({
       key,
@@ -68,35 +73,6 @@ export const useJsonBuilderStore = create<IJsonBuilderStore>((set, get) => ({
       newFields[index][field] = value;
       const error = validateField(newFields);
       return { fields: newFields, error };
-    });
-  },
-  setTemplate: (template) => {
-    set(() => {
-      switch (template) {
-        case "Minimal":
-          return {
-            template: "Minimal",
-            fields: [
-              { key: "name", value: "Asset Name" },
-              { key: "description", value: "Asset Description" },
-            ],
-          };
-        case "Image":
-          return {
-            template: "Image",
-            fields: [
-              { key: "name", value: "Image NFT" },
-              { key: "description", value: "Asset Description" },
-              { key: "image", value: "ipfs://..." },
-              { key: "mediaType", value: "image/png" },
-            ],
-          };
-        default:
-          return {
-            template: "",
-            fields: [],
-          };
-      }
     });
   },
   addMediaField: (file: Media) => {
