@@ -27,8 +27,9 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     }[],
   ) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
-    const utxoRef: UTxO = (await this.fetcher.fetchUTxOs(MINT_REFERENCE_SCRIPT_HASH))[0];
+    // const utxoRef: UTxO = (await this.fetcher.fetchUTxOs(MINT_REFERENCE_SCRIPT_HASH))[0];
     const unsignedTx = this.meshTxBuilder.mintPlutusScriptV3();
+    const txOutReceiverMap = new Map<string, { unit: string; quantity: string }[]>();
 
     await Promise.all(
       params.map(async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
@@ -37,6 +38,20 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
           const pk = await getPkHash(existUtXOwithUnit?.output?.plutusData as string);
           if (pk !== deserializeAddress(walletAddress).pubKeyHash) {
             throw new Error(`${assetName} has been exist`);
+          }
+          const receiverKey = !isEmpty(receiver) ? receiver : walletAddress;
+          if (txOutReceiverMap.has(receiverKey)) {
+            txOutReceiverMap.get(receiverKey)!.push({
+              unit: this.policyId + CIP68_222(stringToHex(assetName)),
+              quantity: quantity,
+            });
+          } else {
+            txOutReceiverMap.set(receiverKey, [
+              {
+                unit: this.policyId + CIP68_222(stringToHex(assetName)),
+                quantity: quantity,
+              },
+            ]);
           }
           unsignedTx
             .spendingPlutusScriptV3()
@@ -55,15 +70,23 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
             .mintPlutusScriptV3()
             .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
             .mintingScript(this.mintScriptCbor)
-            .mintRedeemerValue(mConStr0([]))
-
-            .txOut(!isEmpty(receiver) ? receiver : walletAddress, [
+            .mintRedeemerValue(mConStr0([]));
+        } else {
+          const receiverKey = !isEmpty(receiver) ? receiver : walletAddress;
+          if (txOutReceiverMap.has(receiverKey)) {
+            txOutReceiverMap.get(receiverKey)!.push({
+              unit: this.policyId + CIP68_222(stringToHex(assetName)),
+              quantity: quantity,
+            });
+          } else {
+            txOutReceiverMap.set(receiverKey, [
               {
                 unit: this.policyId + CIP68_222(stringToHex(assetName)),
                 quantity: quantity,
               },
             ]);
-        } else {
+          }
+
           unsignedTx
             .mintPlutusScriptV3()
             .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
@@ -74,13 +97,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
             .mint("1", this.policyId, CIP68_100(stringToHex(assetName)))
             .mintingScript(this.mintScriptCbor)
             .mintRedeemerValue(mConStr0([]))
-            .txOut(!isEmpty(receiver) ? receiver : walletAddress, [
-              {
-                unit: this.policyId + CIP68_222(stringToHex(assetName)),
-                quantity: quantity,
-              },
-            ])
-
             .txOut(this.storeAddress, [
               {
                 unit: this.policyId + CIP68_100(stringToHex(assetName)),
@@ -91,6 +107,10 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
         }
       }),
     );
+
+    txOutReceiverMap.forEach((assets, receiver) => {
+      unsignedTx.txOut(receiver, assets);
+    });
 
     unsignedTx
 
