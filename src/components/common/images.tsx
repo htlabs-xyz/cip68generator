@@ -7,6 +7,8 @@ export const Images = {
   metadata: (props: LucideProps) => <Image src={appImage.metadata} className={props.className} alt="metadata" />,
   marketplace: (props: LucideProps) => <Image src={appImage.marketplace} className={props.className} alt="metadata" />,
   collection: (props: LucideProps) => <Image src={appImage.collection} className={props.className} alt="Collection" />,
+  fastCollection: (props: LucideProps) => <Image src={appImage.fastCollection} className={props.className} alt="Fast Collection" />,
+  api: (props: LucideProps) => <Image src={appImage.api} className={props.className} alt="API" />,
   storegae: (props: LucideProps) => <Image src={appImage.storegae} className={props.className} alt="metadata" />,
 
   mintOne: (props: LucideProps) => <Image src={appImage.mintOne} className={props.className} alt="metadata" />,

@@ -2,7 +2,6 @@ import { Card } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Images } from "@/components/common/images";
 import Link from "next/link";
-import { Box } from "lucide-react";
 import { routes } from "@/constants/routes";
 export default function UtilitiesPage() {
   return (
@@ -18,7 +17,7 @@ export default function UtilitiesPage() {
                 <Images.mintOne className="h-full w-full rounded-t-lg object-cover" />
               </AspectRatio>
               <div className="flex flex-col items-center justify-start gap-3 self-stretch px-4 py-2">
-                <div className="font-semibol self-stretch text-center text-base">Mint One</div>
+                <div className="font-semibol self-stretch text-center text-base">Mint single token</div>
                 <div className="font- self-stretch text-center text-sm text-secondary">Easily mint dynamic asset on Cardano!</div>
               </div>
             </Card>
@@ -32,17 +31,17 @@ export default function UtilitiesPage() {
                 <Images.mintMany className="h-full w-full rounded-t-lg object-cover" />
               </AspectRatio>
               <div className="flex flex-col items-center justify-start gap-3 self-stretch px-4 py-2">
-                <div className="font-semibol self-stretch text-center text-base">Mint Many</div>
-                <div className="font- self-stretch text-center text-sm text-secondary">Quickly asset minting using csv file</div>
+                <div className="font-semibol self-stretch text-center text-base">Mint multiple tokens</div>
+                <div className="font- self-stretch text-center text-sm text-secondary">Quickly mint multiple asset using cvs file</div>
               </div>
             </Card>
           </Link>
           <Card className="h-full opacity-50">
-            <AspectRatio ratio={5 / 3} className="bg-muted flex items-center justify-center opacity-70 border-dashed">
-              <Box className="h-20 w-20" />
+            <AspectRatio ratio={5 / 3} className="bg-muted">
+              <Images.api className="h-full w-full rounded-t-lg object-cover" />
             </AspectRatio>
             <div className="flex flex-col items-center justify-start gap-3 self-stretch px-4 py-2">
-              <div className="font-semibol self-stretch text-center text-base">API Program</div>
+              <div className="font-semibol self-stretch text-center text-base">API Service</div>
               <div className="font- self-stretch text-center text-sm text-secondary">Comming Soon</div>
             </div>
           </Card>

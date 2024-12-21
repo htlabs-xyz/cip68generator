@@ -1,6 +1,5 @@
 "use client";
 
-import {} from "@/utils";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,8 +23,7 @@ const Footer = function () {
               Subscribe To <span className="pl-4 text-[#ccc]">CIP68 Generator</span>
             </h2>
             <p className="mb-7 mt-4 text-gray-400 max-sm:text-[12px] max-md:mt-1">
-              CIP68 Generator is a tool designed to simplify the creation, management, and burning of CIP68-compliant native assets on the Cardano
-              platform.
+              Be the first to know about our new products, services, and special promotions directly in your inbox
             </p>
             <Button className="flex h-[35px] items-center gap-2 rounded-md max-md:text-[12px]">
               <span>Subcribe</span>
@@ -201,7 +199,7 @@ const Footer = function () {
             </div>
           </ul>
           <div className="text-[15px] text-[rgb(153,153,153)] max-md:text-[12px] max-md:whitespace-normal max-md:scale-[0.8] text-end">
-            © 2024 Design & Develop With By Cardano2vn
+            © 2024 Design & Develop By Cardano2vn
           </div>
         </footer>
         {/* bottom-end */}

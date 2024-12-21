@@ -1,4 +1,4 @@
-import { Globe, LayoutGrid, Loader2, LucideIcon, LucideProps, MenuIcon, Search, Send, SquareMenu, Store } from "lucide-react";
+import { BookText, Globe, LayoutGrid, Loader2, LucideIcon, LucideProps, MenuIcon, Search, Send, SquareMenu, Store } from "lucide-react";
 import { IoIosCreate } from "react-icons/io";
 import { Calendar } from "../ui/calendar";
 import { IconType } from "react-icons";
@@ -32,7 +32,8 @@ export const Icons = {
   layoutGrid: LayoutGrid,
   search: Search,
   calendar: Calendar,
-  ideaScale: ({ ...props }: LucideProps) => (
+  bookText: BookText,
+  catalyst: ({ ...props }: LucideProps) => (
     <svg width="22" height="22" className="object-cover" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path
         fillRule="evenodd"

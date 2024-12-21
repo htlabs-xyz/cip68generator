@@ -1,6 +1,6 @@
 export const routes = {
   document: {
-    redirect: "/document",
+    redirect: "https://github.com/cardano2vn/cip68generator/wiki",
   },
   landing: {
     redirect: "/",

@@ -19,6 +19,8 @@ import cardano from "./network/cardano.png";
 import metadata from "./utilities/metadata.png";
 import storegae from "./utilities/storage.png";
 import collection from "./utilities/collection.png";
+import fastCollection from "./utilities/fast-collection.png";
+import api from "./utilities/api.png";
 import marketplace from "./utilities/marketplace.png";
 import mintOne from "./utilities/mint-one.png";
 import mintMany from "./utilities/mint-many.png";
@@ -44,6 +46,8 @@ export const appImage = {
   mintOne: mintOne,
   mintMany: mintMany,
   startFromCratch: startFromCratch,
+  fastCollection: fastCollection,
+  api: api,
 } as const;
 
 export const walletImage = {
