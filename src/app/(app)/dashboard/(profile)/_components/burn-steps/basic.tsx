@@ -10,22 +10,29 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
 import { useUnitContext } from "@/contexts/unit";
+import { hexToString, stringToHex } from "@meshsdk/core";
+import { isNil } from "lodash";
 import Link from "next/link";
 import { useState } from "react";
 
 export default function BasicStep() {
   const [open, setOpen] = useState(false);
   const { startBurning, unit, quantityToBurn, setQuantityToBurn, assetDetails } = useUnitContext();
+  const [err, setErr] = useState<string | null>(null);
 
   return (
     <>
       <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent className=" max-w-[40vw]">
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>This action cannot be undone. This will permanently burn your assets on the blockchain.</AlertDialogDescription>
+            <AlertDialogTitle>
+              You are initiating a burn of {hexToString(assetDetails.asset_name.replace(/^000de140/, ""))} for total quantity {quantityToBurn}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Please note: This action is permanent and will irreversibly remove your assets data on the blockchain.
+            </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -36,18 +43,46 @@ export default function BasicStep() {
       <div className="h-full py-8 px-10 m-auto flex flex-col">
         <div className="rounded-md border border-dashed">
           <div className="flex flex-col space-y-2 text-left p-8">
-            <div className="grid gap-2">
-              <Label htmlFor="quantity">Quantity to Burn</Label>
+            <div className="space-y-2">
+              <h2 className="text-xl font-semibold text-white">Quantity to Burn</h2>
+              {err && <p className="text-red-500">{err}</p>}
               <div className="flex space-x-2 w-1/2 p-2 ">
                 <Input
                   type="number"
                   value={quantityToBurn ?? 1}
-                  onChange={(e) => setQuantityToBurn({ quantity: Number(e.target.value) })}
+                  onChange={(e) => {
+                    const val = Number(e.target.value);
+                    console.log(val);
+                    if (val > Number(assetDetails.quantity)) {
+                      setErr("Quantity to burn cannot be more than the available quantity");
+                    } else if (val < 1) {
+                      setErr("Quantity to burn cannot be less than 1");
+                    } else {
+                      setErr(null);
+                    }
+                    setQuantityToBurn({ quantity: val });
+                  }}
                   required
-                  className="border rounded"
+                  min={1}
+                  max={Number(assetDetails.quantity)}
                 />
-                <Button onClick={() => setQuantityToBurn({ quantity: Number(assetDetails.quantity) })}>Burn All</Button>
               </div>
+              <Slider
+                value={[quantityToBurn ?? 1]}
+                onValueChange={([val]) => {
+                  if (val > Number(assetDetails.quantity)) {
+                    setErr("Quantity to burn cannot be more than the available quantity");
+                  } else if (val < 1) {
+                    setErr("Quantity to burn cannot be less than 1");
+                  } else {
+                    setErr(null);
+                  }
+                  setQuantityToBurn({ quantity: val });
+                }}
+                max={Number(assetDetails.quantity)}
+                step={1}
+                className="py-4 w-1/2"
+              />
             </div>
           </div>
         </div>
@@ -57,7 +92,9 @@ export default function BasicStep() {
               <Link href={`/dashboard/${unit}`}>
                 <Button variant="secondary">Back</Button>
               </Link>
-              <Button onClick={() => setOpen(true)}>Next</Button>
+              <Button onClick={() => setOpen(true)} disabled={!isNil(err)}>
+                Next
+              </Button>
             </div>
           </div>
         </div>

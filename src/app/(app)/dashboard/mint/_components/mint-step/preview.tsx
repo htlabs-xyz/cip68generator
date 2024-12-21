@@ -9,6 +9,7 @@ import { getContractPolicyId } from "@/services/contract/get-policy-id";
 import CopyButton from "@/components/common/copy-button";
 import { SaveMetadata } from "../save-metadata";
 import { useBlockchainContext } from "@/components/providers/blockchain";
+import { stringToHex } from "@meshsdk/core";
 
 export default function PreviewStep({
   stepper,
@@ -74,7 +75,7 @@ export default function PreviewStep({
                   </div>
                   <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg">
                     <span className="text-sm text-gray-400 text-ellipsis overflow-hidden whitespace-nowrap h-10 py-2">
-                      Asset ID: (will show affter mint)
+                      Asset Hash: {stringToHex(assetNameSort)}
                     </span>
                   </div>
                   <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg ">
