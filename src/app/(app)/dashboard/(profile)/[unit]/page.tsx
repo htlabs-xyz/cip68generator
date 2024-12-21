@@ -4,9 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FileDisplay from "@/components/common/file-display";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import { isNil } from "lodash";
 import { useUnitContext } from "@/contexts/unit";
-import Loading from "@/app/(loading)/loading";
 import Property from "../_components/property";
 import { hexToString } from "@meshsdk/core";
 import CopyButton from "@/components/common/copy-button";
@@ -15,7 +13,6 @@ import TransactionHistory from "../_components/transaction-history";
 export default function DetailsPage() {
   const { assetDetails, handleBurn, handleUpdate, isAuthor, metadataToUpdate } = useUnitContext();
 
-  if (isNil(assetDetails)) return <Loading />;
   const { asset_name, policy_id, metadata, fingerprint, quantity } = assetDetails;
 
   const assetNameString = hexToString(asset_name.replace(/^000de140/, ""));

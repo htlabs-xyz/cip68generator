@@ -17,6 +17,8 @@ import { createUpdateTransaction } from "@/services/contract/update";
 import { getAssetTxHistory } from "@/services/blockchain/get-asset-tx-history";
 import { submitTx } from "@/services/blockchain/submitTx";
 import { parseError } from "@/utils/error/parse-error";
+import NotFound from "@/app/not-found";
+import Loading from "@/app/(loading)/loading";
 
 const { useStepper: useUpdateStepper, steps: updateSteps } = defineStepper(
   { id: "metadata", title: "Metadata" },
@@ -234,6 +236,8 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
       });
     }
   };
+  if (loading || assetLoading || txLoading) return <Loading />;
+  if (isNil(assetData?.data)) return <NotFound />;
 
   return (
     <UnitContext.Provider

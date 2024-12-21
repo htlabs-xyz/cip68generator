@@ -3,9 +3,9 @@ import { appImage } from "@/public/images";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Page() {
+export default function NotFound() {
   return (
-    <div className="flex h-screen w-full flex-col items-center justify-center bg-[#0d0e12] text-white gap-2">
+    <div className="fixed inset-0 z-50 flex h-full  flex-col w-full items-center justify-center bg-[#13161b]">
       <div>
         <Image className="animate-pulse" width={260} src={appImage.logo} alt="not-found" />
       </div>
