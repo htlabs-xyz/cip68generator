@@ -12,7 +12,7 @@ import ProfileFilter from "./_components/profile-filter";
 import { isEmpty } from "lodash";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { dashboardRoutes } from "@/constants/routers";
+import { routes } from "@/constants/routes";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import CopyButton from "@/components/common/copy-button";
@@ -133,7 +133,7 @@ export default function ProfilePage() {
 
                   <CardContent className="flex flex-col items-center gap-6 pb-8">
                     <p className="text-gray-400 text-center">To get started you'll need your prepared assets, we'll help guide you along your way.</p>
-                    <Link href={dashboardRoutes.mint.redirect}>
+                    <Link href={routes.mint.redirect}>
                       <Button variant="secondary" className="bg-white hover:bg-white/90 text-black">
                         <Plus className="mr-2 h-4 w-4" />
                         Mint Now

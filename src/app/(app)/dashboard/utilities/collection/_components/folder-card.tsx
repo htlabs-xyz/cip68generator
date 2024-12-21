@@ -3,7 +3,7 @@ import { CircleCheck, FolderIcon, MoreVertical } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Collection } from "@prisma/client";
 import Link from "next/link";
-import { dashboardRoutes } from "@/constants/routers";
+import { routes } from "@/constants/routes";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
@@ -108,7 +108,7 @@ export default function FolderCard({ collection }: { collection: Collection }) {
           ) : (
             <>
               <div className="flex items-center justify-between">
-                <Link href={dashboardRoutes.utilities.children.collection.redirect + `/${collection.id}`} className="flex items-center space-x-3">
+                <Link href={routes.utilities.children.collection.redirect + `/${collection.id}`} className="flex items-center space-x-3">
                   <FolderIcon className="h-5 w-5 text-yellow-400" />
                   <label htmlFor="file-select" className="cursor-pointer truncate text-sm">
                     {collection.name}

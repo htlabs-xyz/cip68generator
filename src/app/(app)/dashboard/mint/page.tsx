@@ -2,15 +2,15 @@ import { Card } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Images } from "@/components/common/images";
 import Link from "next/link";
-import { dashboardRoutes } from "@/constants/routers";
 import { Box } from "lucide-react";
+import { routes } from "@/constants/routes";
 export default function UtilitiesPage() {
   return (
     <div className="py-8 px-10 m-auto flex flex-col max-md:px-0">
       <div className="rounded-xl p-6 bg-section shadow-md flex-wrap gap-3 space-y-5">
         <div className="mt-2 grid  gap-4 grid-cols-3 max-md:grid-cols-1">
           <Link
-            href={dashboardRoutes.mint.children.mintOne.redirect}
+            href={routes.mint.children.mintOne.redirect}
             className="rounded-lg shadow-none transition-shadow duration-300 hover:shadow-md hover:shadow-slate-800"
           >
             <Card className="h-full">
@@ -24,7 +24,7 @@ export default function UtilitiesPage() {
             </Card>
           </Link>
           <Link
-            href={dashboardRoutes.mint.children.mintMany.redirect}
+            href={routes.mint.children.mintMany.redirect}
             className="rounded-lg shadow-none transition-shadow duration-300 hover:shadow-md hover:shadow-slate-800"
           >
             <Card className="h-full">

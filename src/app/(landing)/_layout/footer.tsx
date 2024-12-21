@@ -4,12 +4,11 @@ import {} from "@/utils";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import routers from "@/constants/routers";
 import { FaMailBulk, FaTelegramPlane, FaYoutube } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { appImage } from "@/public/images";
-import router from "@/constants/routers";
 import { appSocialMedia } from "@/constants";
+import { routes } from "@/constants/routes";
 
 const Footer = function () {
   return (
@@ -46,7 +45,7 @@ const Footer = function () {
         {/*  footer-begin */}
         <section className="mt-[100px] max-md:my-[50px] flex justify-between max-md:flex-col">
           <div className="flex w-[412px] flex-col">
-            <Link className="relative flex items-center gap-[8px]" href={routers.landing}>
+            <Link className="relative flex items-center gap-[8px]" href={routes.landing.redirect}>
               <Image className="h-[35px] w-[35px] object-cover" src={appImage.logo} alt="Logo" />
               <span className="text-2xl">Generator</span>
             </Link>
@@ -63,22 +62,28 @@ const Footer = function () {
             <ul>
               <h2 className="mb-9 max-md:mb-4 text-[19px] font-bold text-white max-md:text-[12px]">Explore</h2>
               <li className="mt-[25px] max-md:mt-2">
-                <Link className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]" href={router.mint}>
+                <Link className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]" href={routes.mint.redirect}>
                   Asset Minting
                 </Link>
               </li>
               <li className="mt-[25px] max-md:mt-2">
-                <Link className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]" href={router.document}>
+                <Link className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]" href={routes.document.redirect}>
                   Collections
                 </Link>
               </li>
               <li className="mt-[25px] max-md:mt-2">
-                <Link className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]" href={router.metadata}>
+                <Link
+                  className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
+                  href={routes.utilities.children.collection.redirect}
+                >
                   Metadata
                 </Link>
               </li>
               <li className="mt-[25px] max-md:mt-2">
-                <Link className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]" href={router.storages}>
+                <Link
+                  className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
+                  href={routes.utilities.children.storage.redirect}
+                >
                   Storage
                 </Link>
               </li>
@@ -87,7 +92,7 @@ const Footer = function () {
             <ul>
               <h2 className="mb-9 max-md:mb-4 text-[19px] font-bold text-white max-md:text-[12px]">Resources</h2>
               <li className="mt-[25px] max-md:mt-2">
-                <Link className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]" href={router.document}>
+                <Link className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]" href={routes.document.redirect}>
                   Documentation
                 </Link>
               </li>

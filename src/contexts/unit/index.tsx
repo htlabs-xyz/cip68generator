@@ -68,13 +68,13 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
     setQuantityToBurn,
   } = useUnitStore();
 
-  const { data: assetData, isLoading } = useQuery({
+  const { data: assetData, isLoading: assetLoading } = useQuery({
     queryKey: ["getAssetInfo", unit],
     queryFn: () => getAssetInfo(unit),
     enabled: !isNil(unit) && !isEmpty(unit),
   });
 
-  const { data: assetTxHistory } = useQuery({
+  const { data: assetTxHistory, isLoading: txLoading } = useQuery({
     queryKey: ["getAssetTxHistory", unit, txCurrentPage],
     queryFn: () =>
       getAssetTxHistory({
@@ -86,10 +86,6 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
   });
 
   useEffect(() => {
-    setLoading(isLoading);
-  }, [isLoading]);
-
-  useEffect(() => {
     if (assetData?.data && !isNil(assetData.data.metadata)) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { _pk, ...metadata } = assetData.data.metadata;
@@ -98,7 +94,7 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
       setMetadataToUpdate({});
       setQuantityToBurn({ quantity: 1 });
     }
-  }, [assetData, isLoading]);
+  }, [assetData, assetLoading]);
 
   const pubKeyHash = !isNil(address) && deserializeAddress(address)?.pubKeyHash;
 
@@ -176,6 +172,7 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
       });
     }
   };
+
   const startBurning = async () => {
     resetTasks();
     burnStepper.goTo("transaction");
@@ -244,7 +241,7 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
         unit,
         isAuthor,
         assetDetails: assetData?.data || null!,
-        loading: loading,
+        loading: loading || assetLoading || txLoading,
         assetTxHistory: assetTxHistory?.data || [],
         setLoading,
         metadataToUpdate,

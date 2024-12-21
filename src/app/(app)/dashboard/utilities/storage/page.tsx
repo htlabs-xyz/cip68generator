@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import { TabsList } from "@radix-ui/react-tabs";
 import Link from "next/link";
-import { dashboardRoutes } from "@/constants/routers";
+import { routes } from "@/constants/routes";
 import MediaGird from "./_components/media-gird";
 import MediaList from "./_components/media-list";
 import { Filter } from "./_components/filter";
@@ -36,7 +36,7 @@ export default function StoragePage() {
               </TabsList>
               <div className="flex items-center space-x-2">
                 <StorageAction />
-                <Link href={dashboardRoutes.utilities.children.storage.children.upload.redirect}>
+                <Link href={routes.utilities.children.storage.children.upload.redirect}>
                   <Button> Upload New</Button>
                 </Link>
               </div>

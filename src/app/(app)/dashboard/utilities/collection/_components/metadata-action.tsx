@@ -4,7 +4,7 @@ import { useJsonBuilderStore } from "@/components/common/json-builder/store";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { dashboardRoutes } from "@/constants/routers";
+import { routes } from "@/constants/routes";
 import { useMetadataContext } from "@/contexts/metadata";
 import { toast } from "@/hooks/use-toast";
 import { updateMetadata } from "@/services/database/metadata";
@@ -82,7 +82,7 @@ export default function MetadataAction({ metadata }: { metadata: PMetadata }) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-32">
-          <DropdownMenuItem onClick={() => router.push(dashboardRoutes.mint.children.mintOne.redirect + "?template=" + metadata.id)}>
+          <DropdownMenuItem onClick={() => router.push(routes.mint.children.mintOne.redirect + "?template=" + metadata.id)}>
             <span>Mint This</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleOpen}>

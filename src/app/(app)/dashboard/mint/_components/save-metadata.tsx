@@ -11,7 +11,7 @@ import { cn } from "@/utils";
 import { getAllCollection } from "@/services/database/collection";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { dashboardRoutes } from "@/constants/routers";
+import { routes } from "@/constants/routes";
 
 export function SaveMetadata({
   collectioToSave,
@@ -85,7 +85,7 @@ export function SaveMetadata({
           ) : (
             <p>
               No collection found, create it on{" "}
-              <Link className="underline" href={dashboardRoutes.utilities.children.collection.redirect}>
+              <Link className="underline" href={routes.utilities.children.collection.redirect}>
                 Collection
               </Link>{" "}
               page

@@ -4,7 +4,7 @@ import { createContext, useContext } from "react";
 import useMetadataStore, { MetadataStore } from "./store";
 import { addMetadata, deleteMetadata, getMetadata } from "@/services/database/metadata";
 import { toast } from "@/hooks/use-toast";
-import { dashboardRoutes } from "@/constants/routers";
+import { routes } from "@/constants/routes";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 
@@ -42,7 +42,7 @@ export default function MetadataProvider({ collectionId, children }: { collectio
         variant: "default",
         description: "Metadata created",
       });
-      router.push(dashboardRoutes.utilities.children.collection.redirect + "/" + collectionId);
+      router.push(routes.utilities.children.collection.redirect + "/" + collectionId);
     } else {
       toast({
         title: "Error",

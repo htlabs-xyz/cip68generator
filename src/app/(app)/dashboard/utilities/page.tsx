@@ -2,14 +2,14 @@ import { Card } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Images } from "@/components/common/images";
 import Link from "next/link";
-import { dashboardRoutes } from "@/constants/routers";
+import { routes } from "@/constants/routes";
 export default function UtilitiesPage() {
   return (
     <div className="py-8 px-10 m-auto flex flex-col max-md:px-0">
       <div className="rounded-xl p-6 bg-section shadow-md flex-wrap gap-3 space-y-5">
         <div className="mt-2 grid  gap-4 grid-cols-3 max-md:grid-cols-1">
           <Link
-            href={dashboardRoutes.utilities.children.collection.redirect}
+            href={routes.utilities.children.collection.redirect}
             className="rounded-lg shadow-none transition-shadow duration-300 hover:shadow-md hover:shadow-slate-800"
           >
             <Card className="h-full">
@@ -24,7 +24,7 @@ export default function UtilitiesPage() {
           </Link>
 
           <Link
-            href={dashboardRoutes.utilities.children.storage.redirect}
+            href={routes.utilities.children.storage.redirect}
             className="rounded-lg shadow-none transition-shadow duration-300 hover:shadow-md hover:shadow-slate-800"
           >
             <Card className="h-full">
@@ -38,7 +38,7 @@ export default function UtilitiesPage() {
             </Card>
           </Link>
           <Link
-            href={dashboardRoutes.utilities.children.fastCollection.redirect}
+            href={routes.utilities.children.fastCollection.redirect}
             className="rounded-lg shadow-none transition-shadow duration-300 hover:shadow-md hover:shadow-slate-800"
           >
             <Card className="h-full">

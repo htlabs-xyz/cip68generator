@@ -3,7 +3,7 @@ import Link from "next/link";
 import WalletConnect from "./_components/wallet-connect";
 import Image from "next/image";
 import { appImage } from "@/public/images";
-import routers from "@/constants/routers";
+import { routes } from "@/constants/routes";
 
 export const metadata: Metadata = {
   title: "Authentication",
@@ -16,7 +16,7 @@ export default function SignInViewPage() {
       <div className="mx-auto my-0 flex h-full w-full max-w-[1200px] flex-col">
         <header className="container mx-auto flex items-center justify-between px-4 py-4">
           <div className="flex h-[60px] w-[150px] items-center justify-center">
-            <Link className="relative flex items-center justify-center gap-2" href={routers.landing}>
+            <Link className="relative flex items-center justify-center gap-2" href={routes.landing.redirect}>
               <Image className="h-[35px] w-[35px] object-cover" src={appImage.logo} alt="Logo" />
               <span className="text-2xl">Generator</span>
             </Link>

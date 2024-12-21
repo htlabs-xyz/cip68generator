@@ -1,4 +1,32 @@
 import { NavItem } from "@/types";
+import { routes } from "./routes";
+
+export const landingMenu: NavItem[] = [
+  {
+    title: "Dashboard",
+    href: routes.home.redirect,
+    icon: "house",
+    disabled: false,
+  },
+  {
+    title: "Mint",
+    href: routes.mint.redirect,
+    icon: "imagePlus",
+    disabled: false,
+  },
+  {
+    title: "Utilities",
+    href: routes.utilities.redirect,
+    icon: "circuitBoard",
+    disabled: false,
+  },
+  {
+    title: "Documentation",
+    href: routes.document.redirect,
+    icon: "store",
+    disabled: true,
+  },
+];
 
 export const mainMenu: NavItem[] = [
   {
