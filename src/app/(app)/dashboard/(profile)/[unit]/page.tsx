@@ -72,10 +72,10 @@ export default function DetailsPage() {
               <div className="space-y-4">
                 {isAuthor && (
                   <div className="flex gap-4">
-                    <Button onClick={handleUpdate} className="flex-1 bg-gray-800 hover:bg-gray-700">
+                    <Button onClick={handleUpdate} className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black">
                       Update
                     </Button>
-                    <Button onClick={handleBurn} className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black">
+                    <Button onClick={handleBurn} className="flex-1 bg-red-500 hover:bg-red-600 text-black ">
                       Burn
                     </Button>
                   </div>
