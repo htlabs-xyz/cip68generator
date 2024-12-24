@@ -8,7 +8,6 @@ import {
   PlutusScript,
   resolveScriptHash,
   serializePlutusScript,
-  stringToHex,
   UTxO,
 } from "@meshsdk/core";
 import { Plutus } from "../types";
