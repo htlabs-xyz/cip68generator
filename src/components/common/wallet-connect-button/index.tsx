@@ -24,5 +24,6 @@ const CardanoWallet = () => {
 };
 
 export const WalletConnectButton = dynamic(() => Promise.resolve(CardanoWallet), {
+  loading: () => <Loading />,
   ssr: false,
 });

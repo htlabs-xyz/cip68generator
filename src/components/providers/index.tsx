@@ -8,6 +8,7 @@ import Loading from "@/app/(loading)/loading";
 import dynamic from "next/dynamic";
 import { SessionProvider, SessionProviderProps } from "next-auth/react";
 const BlockchainProvider = dynamic(async () => await import("@/components/providers/blockchain"), {
+  loading: () => <Loading />,
   ssr: false,
 });
 
