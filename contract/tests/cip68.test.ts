@@ -47,7 +47,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
           description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
           _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
         },
-        quantity: "2",
+        quantity: "1",
         receiver: null!,
       },
     ]);
@@ -167,7 +167,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     blockfrostProvider.onTxConfirmed(txHash, () => {
-      expect(txHash.length)
+      expect(txHash.length);
     });
   });
 
@@ -249,5 +249,26 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   });
   test("[SC24]: By default request is 2 outputs. Make a new output sent to another address.", async function () {
     return;
+  });
+  test("[SC25]: redeemer remove spend UTxO do burn but attach 1 more UTxO but this UTxO is only for metadata change and send to author's address", async function () {
+    // return;
+    const cip68Contract: Cip68Contract = new Cip68Contract({
+      wallet: wallet,
+    });
+    const unsignedTx: string = await cip68Contract.tx25(
+      {
+        assetName: "CIP68 Generators v2",
+        quantity: "-1",
+      },
+      {
+        assetName: "CIP68 Generators v2",
+        quantity: "-1",
+      },
+    );
+    const signedTx = wallet.signTx(unsignedTx, true);
+    const txHash = await wallet.submitTx(signedTx);
+    console.log("https://preview.cexplorer.io/tx/" + txHash);
+    jest.setTimeout(20000);
+    expect(txHash.length).toBe(64);
   });
 });

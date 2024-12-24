@@ -425,12 +425,14 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
    * @method TC2
    * @description [TC2]: Casting assets but default fields in metadata (name, image, media_type, author) do not exist.
    */
-  tc2 = async (params: {
+  tc2 = async (
+    params: {
       assetName: string;
       metadata: Record<string, string>;
       quantity: string;
       receiver: string;
-    }[],) => {
+    }[],
+  ) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
 
     const unsignedTx = this.meshTxBuilder.mintPlutusScriptV3();
@@ -531,5 +533,69 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
       .setNetwork(appNetwork);
     return await unsignedTx.complete();
-  }
+  };
+
+  /**
+   * @method TC25
+   * @description [TC25]: Casting assets but default fields in metadata (name, image, media_type, author) do not exist.
+   */
+  tx25 = async (params: { assetName: string; quantity: string; txHash?: string }, test: { assetName: string; quantity: string; txHash?: string }) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder;
+    const storeUtxo = !isNil(params.txHash)
+      ? await this.getUtxoForTx(this.storeAddress, params.txHash)
+      : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(params.assetName)));
+    const storeUtxo1 = !isNil(test.txHash)
+      ? await this.getUtxoForTx(this.storeAddress, test.txHash)
+      : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(test.assetName)));
+
+    if (!storeUtxo) throw new Error("Store UTXO not found");
+    if (!storeUtxo1) throw new Error("Store UTXO not found");
+
+    unsignedTx
+      .mintPlutusScriptV3()
+      .mint(params.quantity, this.policyId, CIP68_222(stringToHex(params.assetName)))
+      .mintRedeemerValue(mConStr1([]))
+      .mintingScript(this.mintScriptCbor)
+
+      .mintPlutusScriptV3()
+      .mint("-1", this.policyId, CIP68_100(stringToHex(params.assetName)))
+      .mintRedeemerValue(mConStr1([]))
+      .mintingScript(this.mintScriptCbor)
+
+      .spendingPlutusScriptV3()
+      .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+      .txInInlineDatumPresent()
+      .txInRedeemerValue(mConStr1([]))
+      .txInScript(this.storeScriptCbor)
+
+      .spendingPlutusScriptV3()
+      .txIn(storeUtxo1.input.txHash, storeUtxo1.input.outputIndex)
+      .txInInlineDatumPresent()
+      .txInRedeemerValue(mConStr1([]))
+      .txInScript(this.storeScriptCbor)
+
+      .txOut(walletAddress, [
+        {
+          unit: this.policyId + CIP68_100(stringToHex(test.assetName)),
+          quantity: "1",
+        },
+      ]);
+
+    unsignedTx
+      .txOut(APP_WALLET_ADDRESS, [
+        {
+          unit: "lovelace",
+          quantity: "1000000",
+        },
+      ])
+
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .changeAddress(walletAddress)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+
+    return await unsignedTx.complete();
+  };
 }
