@@ -106,11 +106,11 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
   );
 
   const handleUpdate = () => {
-    redirect(`/dashboard/${unit}/update`);
+    redirect(`/dashboard/asset/${unit}/update`);
   };
 
   const handleBurn = () => {
-    redirect(`/dashboard/${unit}/burn`);
+    redirect(`/dashboard/asset/${unit}/burn`);
   };
 
   const startUpdating = async () => {
