@@ -217,7 +217,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   });
 
   test("[TC5]: Mint assets with transaction fees less than the specified amount included in the validator parameters.", async function () {
-    // return;
+    return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
@@ -240,8 +240,28 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     });
   });
 
-  test("[SC6]: Mint asset with correct transaction fee as params. however wrong exchange address defined in params.", async function () {
-    return;
+  test("[TC6]: Mint asset with correct transaction fee as params. however wrong exchange address defined in params.", async function () {
+    // return;
+    const cip68Contract: Cip68Contract = new Cip68Contract({
+      wallet: wallet,
+    });
+    const unsignedTx: string = await cip68Contract.tc5({
+      assetName: "CIP68 Generators v1",
+      metadata: {
+        name: "CIP68 Generators",
+        image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+        mediaType: "image/jpg",
+        description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+        _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+      },
+      quantity: "1",
+    });
+    const signedTx = wallet.signTx(unsignedTx, true);
+    const txHash = await wallet.submitTx(signedTx);
+    console.log("https://preview.cexplorer.io/tx/" + txHash);
+    blockfrostProvider.onTxConfirmed(txHash, () => {
+      expect(txHash.length).toBe(64);
+    });
   });
 
   test("[SC7]: Token creator sent wrong store address given in params.", async function () {

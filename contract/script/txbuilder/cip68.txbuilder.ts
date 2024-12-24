@@ -485,7 +485,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     return await unsignedTx.complete();
   };
 
-
   /**
    * @method TC5
    * @description [TC5]: Mint assets with transaction fees less than the specified amount included in the validator parameters.
@@ -516,6 +515,46 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
         {
           unit: "lovelace",
           quantity: "900000",
+        },
+      ])
+      .changeAddress(walletAddress)
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+    return await unsignedTx.complete();
+  };
+
+  /**
+   * @method TC6
+   * @description [TC6]: Mint asset with correct transaction fee as params. however wrong exchange address defined in params.
+   *
+   */
+  tc6 = async (param: { assetName: string; metadata: Record<string, string>; quantity: string; txHash?: string }) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder
+
+      .mintPlutusScriptV3()
+      .mint(param.quantity, this.policyId, CIP68_222(stringToHex(param.assetName)))
+      .mintingScript(this.mintScriptCbor)
+      .mintRedeemerValue(mConStr0([]))
+
+      .mintPlutusScriptV3()
+      .mint("1", this.policyId, CIP68_100(stringToHex(param.assetName)))
+      .mintingScript(this.mintScriptCbor)
+      .mintRedeemerValue(mConStr0([]))
+      .txOut(this.storeAddress, [
+        {
+          unit: this.policyId + CIP68_100(stringToHex(param.assetName)),
+          quantity: "1",
+        },
+      ])
+      .txOutInlineDatumValue(metadataToCip68(param.metadata))
+
+      .txOut("addr_test1qzwu6jcqk8f96fxq02pvq2h4a927ggn35f2gzdklfte4kwx0sd5zdvsat2chsyyjxkjxcg6uz2y46avd46mzqdgdy3dsckqxs4", [
+        {
+          unit: "lovelace",
+          quantity: "1000000",
         },
       ])
       .changeAddress(walletAddress)
