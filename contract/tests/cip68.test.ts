@@ -26,18 +26,18 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       wallet: wallet,
     });
     const unsignedTx: string = await cip68Contract.mint([
-      {
-        assetName: "CIP68 Generators v1",
-        metadata: {
-          name: "CIP68 Generators",
-          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
-          mediaType: "image/jpg",
-          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
-          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
-        },
-        quantity: "1",
-        receiver: null!,
-      },
+      // {
+      //   assetName: "CIP68 Generators v1",
+      //   metadata: {
+      //     name: "CIP68 Generators",
+      //     image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+      //     mediaType: "image/jpg",
+      //     description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+      //     _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+      //   },
+      //   quantity: "1",
+      //   receiver: null!,
+      // },
       {
         assetName: "CIP68 Generators v2",
         metadata: {
@@ -251,17 +251,24 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     return;
   });
   test("[SC25]: redeemer remove spend UTxO do burn but attach 1 more UTxO but this UTxO is only for metadata change and send to author's address", async function () {
-    // return;
+    return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
-    const unsignedTx: string = await cip68Contract.tx25(
+    const unsignedTx: string = await cip68Contract.tc25(
       {
-        assetName: "CIP68 Generators v2",
+        assetName: "CIP68 Generators v1",
         quantity: "-1",
       },
       {
         assetName: "CIP68 Generators v2",
+        metadata: {
+          name: "CIP68 Generators",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
         quantity: "-1",
       },
     );

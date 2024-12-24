@@ -538,28 +538,35 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
   /**
    * @method TC25
    * @description [TC25]: Casting assets but default fields in metadata (name, image, media_type, author) do not exist.
+   *
+   * @param params { assetName; quantity; txHash? }
+   * @param test: { assetName; metadata; quantity; txHash? }
+   *
+   * @returns unsignedTx
    */
-  tx25 = async (params: { assetName: string; quantity: string; txHash?: string }, test: { assetName: string; quantity: string; txHash?: string }) => {
+  tc25 = async (
+    param: { assetName: string; quantity: string; txHash?: string },
+    test: { assetName: string; metadata: Record<string, string>; quantity: string; txHash?: string },
+  ) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
-    const unsignedTx = this.meshTxBuilder;
-    const storeUtxo = !isNil(params.txHash)
-      ? await this.getUtxoForTx(this.storeAddress, params.txHash)
-      : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(params.assetName)));
+    const storeUtxo = !isNil(param.txHash)
+      ? await this.getUtxoForTx(this.storeAddress, param.txHash)
+      : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(param.assetName)));
     const storeUtxo1 = !isNil(test.txHash)
       ? await this.getUtxoForTx(this.storeAddress, test.txHash)
       : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(test.assetName)));
 
     if (!storeUtxo) throw new Error("Store UTXO not found");
-    if (!storeUtxo1) throw new Error("Store UTXO not found");
+    if (!storeUtxo1) throw new Error("Store1 UTXO not found");
 
-    unsignedTx
+    const unsignedTx = this.meshTxBuilder
       .mintPlutusScriptV3()
-      .mint(params.quantity, this.policyId, CIP68_222(stringToHex(params.assetName)))
+      .mint(param.quantity, this.policyId, CIP68_222(stringToHex(param.assetName)))
       .mintRedeemerValue(mConStr1([]))
       .mintingScript(this.mintScriptCbor)
 
       .mintPlutusScriptV3()
-      .mint("-1", this.policyId, CIP68_100(stringToHex(params.assetName)))
+      .mint("-1", this.policyId, CIP68_100(stringToHex(param.assetName)))
       .mintRedeemerValue(mConStr1([]))
       .mintingScript(this.mintScriptCbor)
 
@@ -573,14 +580,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       .txIn(storeUtxo1.input.txHash, storeUtxo1.input.outputIndex)
       .txInInlineDatumPresent()
       .txInRedeemerValue(mConStr1([]))
-      .txInScript(this.storeScriptCbor)
-
-      .txOut(walletAddress, [
-        {
-          unit: this.policyId + CIP68_100(stringToHex(test.assetName)),
-          quantity: "1",
-        },
-      ]);
+      .txInScript(this.storeScriptCbor);
 
     unsignedTx
       .txOut(APP_WALLET_ADDRESS, [
