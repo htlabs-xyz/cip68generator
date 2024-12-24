@@ -565,6 +565,46 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     return await unsignedTx.complete();
   };
 
+   /**
+   * @method TC7
+   * @description [TC7]: Token creator sent wrong store address given in params.
+   *
+   */
+  tc7 = async (param: { assetName: string; metadata: Record<string, string>; quantity: string; txHash?: string }) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder
+
+      .mintPlutusScriptV3()
+      .mint(param.quantity, this.policyId, CIP68_222(stringToHex(param.assetName)))
+      .mintingScript(this.mintScriptCbor)
+      .mintRedeemerValue(mConStr0([]))
+
+      .mintPlutusScriptV3()
+      .mint("1", this.policyId, CIP68_100(stringToHex(param.assetName)))
+      .mintingScript(this.mintScriptCbor)
+      .mintRedeemerValue(mConStr0([]))
+      .txOut("addr_test1qzwu6jcqk8f96fxq02pvq2h4a927ggn35f2gzdklfte4kwx0sd5zdvsat2chsyyjxkjxcg6uz2y46avd46mzqdgdy3dsckqxs4", [
+        {
+          unit: this.policyId + CIP68_100(stringToHex(param.assetName)),
+          quantity: "1",
+        },
+      ])
+      .txOutInlineDatumValue(metadataToCip68(param.metadata))
+
+      .txOut(APP_WALLET_ADDRESS, [
+        {
+          unit: "lovelace",
+          quantity: EXCHANGE_FEE_PRICE,
+        },
+      ])
+      .changeAddress(walletAddress)
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+    return await unsignedTx.complete();
+  };
+
   /**
    * @method TC24
    * @description [TC24]: Casting assets but default fields in metadata (name, image, media_type, author) do not exist.
