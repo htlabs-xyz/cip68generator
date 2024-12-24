@@ -605,6 +605,82 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     return await unsignedTx.complete();
   };
 
+
+   /**
+   * @method TC8
+   * @description [TC8]: Token creator sent wrong store address given in params.
+   *
+   */
+  tc8 = async (param: { assetName: string; metadata: Record<string, string>; quantity: string; txHash?: string }) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder
+
+      .mintPlutusScriptV3()
+      .mint(param.quantity, this.policyId, CIP68_222(stringToHex(param.assetName)))
+      .mintingScript(this.mintScriptCbor)
+      .mintRedeemerValue(mConStr0([]))
+
+      .mintPlutusScriptV3()
+      .mint("1", this.policyId, CIP68_100(stringToHex(param.assetName)))
+      .mintingScript(this.mintScriptCbor)
+      .mintRedeemerValue(mConStr0([]))
+      .txOut(this.storeAddress, [
+        {
+          unit: this.policyId + CIP68_222(stringToHex(param.assetName)),
+          quantity: "1",
+        },
+      ])
+      .txOutInlineDatumValue(metadataToCip68(param.metadata))
+
+      .txOut(APP_WALLET_ADDRESS, [
+        {
+          unit: "lovelace",
+          quantity: EXCHANGE_FEE_PRICE,
+        },
+      ])
+      .changeAddress(walletAddress)
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+    return await unsignedTx.complete();
+  };
+
+    /**
+   * @method TC9
+   * @description [TC9]: The output of UTxOs is missing the part sent to the smart contract store address or sent to the exchange fee is missing.
+   *
+   */
+  tc9 = async (param: { assetName: string; metadata: Record<string, string>; quantity: string; txHash?: string }) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder
+
+      .mintPlutusScriptV3()
+      .mint(param.quantity, this.policyId, CIP68_222(stringToHex(param.assetName)))
+      .mintingScript(this.mintScriptCbor)
+      .mintRedeemerValue(mConStr0([]))
+
+      .mintPlutusScriptV3()
+      .mint("1", this.policyId, CIP68_100(stringToHex(param.assetName)))
+      .mintingScript(this.mintScriptCbor)
+      .mintRedeemerValue(mConStr0([]))
+      .txOut(this.storeAddress, [
+        {
+          unit: this.policyId + CIP68_100(stringToHex(param.assetName)),
+          quantity: "1",
+        },
+      ])
+      .txOutInlineDatumValue(metadataToCip68(param.metadata))
+      .changeAddress(walletAddress)
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+    return await unsignedTx.complete();
+  };
+
+
+
   /**
    * @method TC24
    * @description [TC24]: Casting assets but default fields in metadata (name, image, media_type, author) do not exist.
