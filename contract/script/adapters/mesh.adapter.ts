@@ -17,6 +17,7 @@ import plutus from "../../plutus.json";
 import { appNetworkId } from "@/constants";
 import { getPkHash } from "@/utils";
 import { blockfrostProvider } from "@/lib/cardano";
+
 export class MeshAdapter {
   protected meshTxBuilder: MeshTxBuilder;
   protected wallet: MeshWallet;
