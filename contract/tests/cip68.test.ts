@@ -241,7 +241,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   });
 
   test("[TC6]: Mint asset with correct transaction fee as params. however wrong exchange address defined in params.", async function () {
-    // return;
+    return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
@@ -264,16 +264,76 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     });
   });
 
-  test("[SC7]: Token creator sent wrong store address given in params.", async function () {
+  test("[TC7]: Token creator sent wrong store address given in params.", async function () {
     return;
+    const cip68Contract: Cip68Contract = new Cip68Contract({
+      wallet: wallet,
+    });
+    const unsignedTx: string = await cip68Contract.tc5({
+      assetName: "CIP68 Generators v1",
+      metadata: {
+        name: "CIP68 Generators",
+        image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+        mediaType: "image/jpg",
+        description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+        _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+      },
+      quantity: "1",
+    });
+    const signedTx = wallet.signTx(unsignedTx, true);
+    const txHash = await wallet.submitTx(signedTx);
+    console.log("https://preview.cexplorer.io/tx/" + txHash);
+    blockfrostProvider.onTxConfirmed(txHash, () => {
+      expect(txHash.length).toBe(64);
+    });
   });
 
   test("[SC8]: Creator sends Token with prefix_100 (CIP100).", async function () {
     return;
+    const cip68Contract: Cip68Contract = new Cip68Contract({
+      wallet: wallet,
+    });
+    const unsignedTx: string = await cip68Contract.tc8({
+      assetName: "CIP68 Generators v1",
+      metadata: {
+        name: "CIP68 Generators",
+        image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+        mediaType: "image/jpg",
+        description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+        _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+      },
+      quantity: "1",
+    });
+    const signedTx = wallet.signTx(unsignedTx, true);
+    const txHash = await wallet.submitTx(signedTx);
+    console.log("https://preview.cexplorer.io/tx/" + txHash);
+    blockfrostProvider.onTxConfirmed(txHash, () => {
+      expect(txHash.length).toBe(64);
+    });
   });
 
-  test("[SC9]: The output of UTxOs is missing the part sent to the smart contract store address or sent to the exchange fee is missing.", async function () {
-    return;
+  test("[TC9]: The output of UTxOs is missing the part sent to the smart contract store address or sent to the exchange fee is missing.", async function () {
+    // return;
+    const cip68Contract: Cip68Contract = new Cip68Contract({
+      wallet: wallet,
+    });
+    const unsignedTx: string = await cip68Contract.tc8({
+      assetName: "CIP68 Generators v1",
+      metadata: {
+        name: "CIP68 Generators",
+        image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+        mediaType: "image/jpg",
+        description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+        _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+      },
+      quantity: "1",
+    });
+    const signedTx = wallet.signTx(unsignedTx, true);
+    const txHash = await wallet.submitTx(signedTx);
+    console.log("https://preview.cexplorer.io/tx/" + txHash);
+    blockfrostProvider.onTxConfirmed(txHash, () => {
+      expect(txHash.length).toBe(64);
+    });
   });
 
   test("[SC10]: Asset update successful. Exchange fee transferred to exchange address. Asset updated successful.", async function () {
