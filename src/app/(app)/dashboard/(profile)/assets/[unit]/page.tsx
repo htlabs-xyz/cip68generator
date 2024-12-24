@@ -5,10 +5,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FileDisplay from "@/components/common/file-display";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { useUnitContext } from "@/contexts/unit";
-import Property from "../_components/property";
+import Property from "../../_components/property";
 import { hexToString } from "@meshsdk/core";
 import CopyButton from "@/components/common/copy-button";
-import TransactionHistory from "../_components/transaction-history";
+import TransactionHistory from "../../_components/transaction-history";
 
 export default function DetailsPage() {
   const { assetDetails, handleBurn, handleUpdate, isAuthor, metadataToUpdate } = useUnitContext();

@@ -1,8 +1,8 @@
 "use client";
 import * as React from "react";
 import { useUnitContext } from "@/contexts/unit";
-import { BasicStep, ResultStep, TransactionStep } from "../../_components/burn-steps";
-import StepperNav from "../../_components/burn-steps/stepper-nav";
+import { BasicStep, ResultStep, TransactionStep } from "../../../_components/burn-steps";
+import StepperNav from "../../../_components/burn-steps/stepper-nav";
 
 export default function Page() {
   const { burnStepper } = useUnitContext();

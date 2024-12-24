@@ -15,7 +15,7 @@ export default function AssetCard({ data }: { data: AssetDetails }) {
   const assetNameString = hexToString(asset_name.replace(/^000de140/, ""));
 
   return (
-    <Link href={`/dashboard/${policy_id + asset_name}`}>
+    <Link href={`/dashboard/assets/${policy_id + asset_name}`}>
       <div className="rounded-lg shadow-none transition-shadow duration-300 hover:shadow-md hover:shadow-slate-800">
         <Card className="h-full p-2">
           <AspectRatio ratio={4 / 3} className="bg-muted">
