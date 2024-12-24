@@ -111,7 +111,9 @@ export default async function LandingPage() {
                 interact with these assets while also offering open-source code for developers to integrate and deploy applications faster and more
                 efficiently.
               </span>
-              <Button className={"w-full px-8 py-6"}>About us</Button>
+              <Link href="https://cips.cardano.org/cip/CIP-68">
+                <Button className={"w-full px-8 py-6"}>Learn More Cip68</Button>
+              </Link>
             </div>
           </div>
         </aside>
