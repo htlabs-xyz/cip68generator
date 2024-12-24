@@ -27,7 +27,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     }[],
   ) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
-    // const utxoRef: UTxO = (await this.fetcher.fetchUTxOs(MINT_REFERENCE_SCRIPT_HASH))[0];
+
     const unsignedTx = this.meshTxBuilder.mintPlutusScriptV3();
     const txOutReceiverMap = new Map<string, { unit: string; quantity: string }[]>();
 
@@ -302,6 +302,299 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       .changeAddress(walletAddress)
       .selectUtxosFrom(utxos)
       .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address);
+
+    return await unsignedTx.complete();
+  };
+
+  /**
+   * @method TC1
+   * @description [TC1]: Cast assets with the desired quantity and metadata with all required fields.
+   *
+   */
+  tc1 = async (
+    params: {
+      assetName: string;
+      metadata: Record<string, string>;
+      quantity: string;
+      receiver: string;
+    }[],
+  ) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+
+    const unsignedTx = this.meshTxBuilder.mintPlutusScriptV3();
+    const txOutReceiverMap = new Map<string, { unit: string; quantity: string }[]>();
+
+    await Promise.all(
+      params.map(async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
+        const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (existUtXOwithUnit?.output?.plutusData) {
+          const pk = await getPkHash(existUtXOwithUnit?.output?.plutusData as string);
+          if (pk !== deserializeAddress(walletAddress).pubKeyHash) {
+            throw new Error(`${assetName} has been exist`);
+          }
+          const receiverKey = !isEmpty(receiver) ? receiver : walletAddress;
+          if (txOutReceiverMap.has(receiverKey)) {
+            txOutReceiverMap.get(receiverKey)!.push({
+              unit: this.policyId + CIP68_222(stringToHex(assetName)),
+              quantity: quantity,
+            });
+          } else {
+            txOutReceiverMap.set(receiverKey, [
+              {
+                unit: this.policyId + CIP68_222(stringToHex(assetName)),
+                quantity: quantity,
+              },
+            ]);
+          }
+          unsignedTx
+            .spendingPlutusScriptV3()
+            .txIn(existUtXOwithUnit.input.txHash, existUtXOwithUnit.input.outputIndex)
+            .txInInlineDatumPresent()
+            .txInRedeemerValue(mConStr0([]))
+            .txInScript(this.storeScriptCbor)
+            .txOut(this.storeAddress, [
+              {
+                unit: this.policyId + CIP68_100(stringToHex(assetName)),
+                quantity: "1",
+              },
+            ])
+            .txOutInlineDatumValue(metadataToCip68(metadata))
+
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            .mintingScript(this.mintScriptCbor)
+            .mintRedeemerValue(mConStr0([]));
+        } else {
+          const receiverKey = !isEmpty(receiver) ? receiver : walletAddress;
+          if (txOutReceiverMap.has(receiverKey)) {
+            txOutReceiverMap.get(receiverKey)!.push({
+              unit: this.policyId + CIP68_222(stringToHex(assetName)),
+              quantity: quantity,
+            });
+          } else {
+            txOutReceiverMap.set(receiverKey, [
+              {
+                unit: this.policyId + CIP68_222(stringToHex(assetName)),
+                quantity: quantity,
+              },
+            ]);
+          }
+
+          unsignedTx
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            .mintingScript(this.mintScriptCbor)
+            .mintRedeemerValue(mConStr0([]))
+
+            .mintPlutusScriptV3()
+            .mint("1", this.policyId, CIP68_100(stringToHex(assetName)))
+            .mintingScript(this.mintScriptCbor)
+            .mintRedeemerValue(mConStr0([]))
+            .txOut(this.storeAddress, [
+              {
+                unit: this.policyId + CIP68_100(stringToHex(assetName)),
+                quantity: "1",
+              },
+            ])
+            .txOutInlineDatumValue(metadataToCip68(metadata));
+        }
+      }),
+    );
+
+    txOutReceiverMap.forEach((assets, receiver) => {
+      unsignedTx.txOut(receiver, assets);
+    });
+
+    unsignedTx
+
+      .txOut(APP_WALLET_ADDRESS, [
+        {
+          unit: "lovelace",
+          quantity: EXCHANGE_FEE_PRICE,
+        },
+      ])
+      .changeAddress(walletAddress)
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+    return await unsignedTx.complete();
+  };
+
+  /**
+   * @method TC2
+   * @description [TC2]: Casting assets but default fields in metadata (name, image, media_type, author) do not exist.
+   */
+  tc2 = async (
+    params: {
+      assetName: string;
+      metadata: Record<string, string>;
+      quantity: string;
+      receiver: string;
+    }[],
+  ) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+
+    const unsignedTx = this.meshTxBuilder.mintPlutusScriptV3();
+    const txOutReceiverMap = new Map<string, { unit: string; quantity: string }[]>();
+
+    await Promise.all(
+      params.map(async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
+        const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (existUtXOwithUnit?.output?.plutusData) {
+          const pk = await getPkHash(existUtXOwithUnit?.output?.plutusData as string);
+          if (pk !== deserializeAddress(walletAddress).pubKeyHash) {
+            throw new Error(`${assetName} has been exist`);
+          }
+          const receiverKey = !isEmpty(receiver) ? receiver : walletAddress;
+          if (txOutReceiverMap.has(receiverKey)) {
+            txOutReceiverMap.get(receiverKey)!.push({
+              unit: this.policyId + CIP68_222(stringToHex(assetName)),
+              quantity: quantity,
+            });
+          } else {
+            txOutReceiverMap.set(receiverKey, [
+              {
+                unit: this.policyId + CIP68_222(stringToHex(assetName)),
+                quantity: quantity,
+              },
+            ]);
+          }
+          unsignedTx
+            .spendingPlutusScriptV3()
+            .txIn(existUtXOwithUnit.input.txHash, existUtXOwithUnit.input.outputIndex)
+            .txInInlineDatumPresent()
+            .txInRedeemerValue(mConStr0([]))
+            .txInScript(this.storeScriptCbor)
+            .txOut(this.storeAddress, [
+              {
+                unit: this.policyId + CIP68_100(stringToHex(assetName)),
+                quantity: "1",
+              },
+            ])
+            .txOutInlineDatumValue(metadataToCip68(metadata))
+
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            .mintingScript(this.mintScriptCbor)
+            .mintRedeemerValue(mConStr0([]));
+        } else {
+          const receiverKey = !isEmpty(receiver) ? receiver : walletAddress;
+          if (txOutReceiverMap.has(receiverKey)) {
+            txOutReceiverMap.get(receiverKey)!.push({
+              unit: this.policyId + CIP68_222(stringToHex(assetName)),
+              quantity: quantity,
+            });
+          } else {
+            txOutReceiverMap.set(receiverKey, [
+              {
+                unit: this.policyId + CIP68_222(stringToHex(assetName)),
+                quantity: quantity,
+              },
+            ]);
+          }
+
+          unsignedTx
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            .mintingScript(this.mintScriptCbor)
+            .mintRedeemerValue(mConStr0([]))
+
+            .mintPlutusScriptV3()
+            .mint("1", this.policyId, CIP68_100(stringToHex(assetName)))
+            .mintingScript(this.mintScriptCbor)
+            .mintRedeemerValue(mConStr0([]))
+            .txOut(this.storeAddress, [
+              {
+                unit: this.policyId + CIP68_100(stringToHex(assetName)),
+                quantity: "1",
+              },
+            ])
+            .txOutInlineDatumValue(metadataToCip68(metadata));
+        }
+      }),
+    );
+
+    txOutReceiverMap.forEach((assets, receiver) => {
+      unsignedTx.txOut(receiver, assets);
+    });
+
+    unsignedTx
+
+      .txOut(APP_WALLET_ADDRESS, [
+        {
+          unit: "lovelace",
+          quantity: EXCHANGE_FEE_PRICE,
+        },
+      ])
+      .changeAddress(walletAddress)
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+    return await unsignedTx.complete();
+  };
+
+  /**
+   * @method TC25
+   * @description [TC25]: Casting assets but default fields in metadata (name, image, media_type, author) do not exist.
+   *
+   * @param params { assetName; quantity; txHash? }
+   * @param test: { assetName; metadata; quantity; txHash? }
+   *
+   * @returns unsignedTx
+   */
+  tc25 = async (
+    param: { assetName: string; quantity: string; txHash?: string },
+    test: { assetName: string; metadata: Record<string, string>; quantity: string; txHash?: string },
+  ) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const storeUtxo = !isNil(param.txHash)
+      ? await this.getUtxoForTx(this.storeAddress, param.txHash)
+      : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(param.assetName)));
+    const storeUtxo1 = !isNil(test.txHash)
+      ? await this.getUtxoForTx(this.storeAddress, test.txHash)
+      : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(test.assetName)));
+
+    if (!storeUtxo) throw new Error("Store UTXO not found");
+    if (!storeUtxo1) throw new Error("Store1 UTXO not found");
+
+    const unsignedTx = this.meshTxBuilder
+      .mintPlutusScriptV3()
+      .mint(param.quantity, this.policyId, CIP68_222(stringToHex(param.assetName)))
+      .mintRedeemerValue(mConStr1([]))
+      .mintingScript(this.mintScriptCbor)
+
+      .mintPlutusScriptV3()
+      .mint("-1", this.policyId, CIP68_100(stringToHex(param.assetName)))
+      .mintRedeemerValue(mConStr1([]))
+      .mintingScript(this.mintScriptCbor)
+
+      .spendingPlutusScriptV3()
+      .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+      .txInInlineDatumPresent()
+      .txInRedeemerValue(mConStr1([]))
+      .txInScript(this.storeScriptCbor)
+
+      .spendingPlutusScriptV3()
+      .txIn(storeUtxo1.input.txHash, storeUtxo1.input.outputIndex)
+      .txInInlineDatumPresent()
+      .txInRedeemerValue(mConStr1([]))
+      .txInScript(this.storeScriptCbor);
+
+    unsignedTx
+      .txOut(APP_WALLET_ADDRESS, [
+        {
+          unit: "lovelace",
+          quantity: "1000000",
+        },
+      ])
+
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .changeAddress(walletAddress)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
 
     return await unsignedTx.complete();
   };

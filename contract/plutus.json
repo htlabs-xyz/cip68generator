@@ -21,13 +21,13 @@
       },
       "parameters": [
         {
-          "title": "platform",
+          "title": "admin",
           "schema": {
             "$ref": "#/definitions/VerificationKeyHash"
           }
         },
         {
-          "title": "platform_fee",
+          "title": "fee",
           "schema": {
             "$ref": "#/definitions/Int"
           }
@@ -39,7 +39,7 @@
           }
         },
         {
-          "title": "issuer",
+          "title": "author",
           "schema": {
             "$ref": "#/definitions/VerificationKeyHash"
           }
@@ -52,13 +52,13 @@
       "title": "mint.mint.else",
       "parameters": [
         {
-          "title": "platform",
+          "title": "admin",
           "schema": {
             "$ref": "#/definitions/VerificationKeyHash"
           }
         },
         {
-          "title": "platform_fee",
+          "title": "fee",
           "schema": {
             "$ref": "#/definitions/Int"
           }
@@ -70,7 +70,7 @@
           }
         },
         {
-          "title": "issuer",
+          "title": "author",
           "schema": {
             "$ref": "#/definitions/VerificationKeyHash"
           }
@@ -95,19 +95,19 @@
       },
       "parameters": [
         {
-          "title": "platform",
+          "title": "admin",
           "schema": {
             "$ref": "#/definitions/VerificationKeyHash"
           }
         },
         {
-          "title": "platform_fee",
+          "title": "fee",
           "schema": {
             "$ref": "#/definitions/Int"
           }
         },
         {
-          "title": "issuer",
+          "title": "author",
           "schema": {
             "$ref": "#/definitions/VerificationKeyHash"
           }
@@ -120,19 +120,19 @@
       "title": "store.store.else",
       "parameters": [
         {
-          "title": "platform",
+          "title": "admin",
           "schema": {
             "$ref": "#/definitions/VerificationKeyHash"
           }
         },
         {
-          "title": "platform_fee",
+          "title": "fee",
           "schema": {
             "$ref": "#/definitions/Int"
           }
         },
         {
-          "title": "issuer",
+          "title": "author",
           "schema": {
             "$ref": "#/definitions/VerificationKeyHash"
           }
