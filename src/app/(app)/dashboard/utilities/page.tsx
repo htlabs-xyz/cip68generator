@@ -47,7 +47,7 @@ export default function UtilitiesPage() {
               </AspectRatio>
               <div className="flex flex-col items-center justify-start gap-3 self-stretch px-4 py-2">
                 <div className="font-semibol self-stretch text-center text-base">Fast collection</div>
-                <div className="font- self-stretch text-center text-sm text-secondary">Create asset collection using cvs file</div>
+                <div className="font- self-stretch text-center text-sm text-secondary">Create asset collection using csv file</div>
               </div>
             </Card>
           </Link>
