@@ -51,8 +51,6 @@ const fontSans = FontSans({
 });
 
 const RootLayout = async function ({ children }: Readonly<PropsWithChildren>) {
-  const session = await auth();
-
   return (
     <html lang="en" suppressHydrationWarning>
       <link rel="apple-touch-icon" sizes="76x76" href={`/images/common/logo.png`} />
