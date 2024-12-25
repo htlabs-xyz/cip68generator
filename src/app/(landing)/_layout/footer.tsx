@@ -65,16 +65,19 @@ const Footer = function () {
                 </Link>
               </li>
               <li className="mt-[25px] max-md:mt-2">
-                <Link className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]" href={routes.document.redirect}>
-                  Collections
-                </Link>
-              </li>
-              <li className="mt-[25px] max-md:mt-2">
                 <Link
                   className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
                   href={routes.utilities.children.collection.redirect}
                 >
                   Metadata
+                </Link>
+              </li>
+              <li className="mt-[25px] max-md:mt-2">
+                <Link
+                  className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
+                  href={routes.utilities.children.fastCollection.redirect}
+                >
+                  Fast Collection
                 </Link>
               </li>
               <li className="mt-[25px] max-md:mt-2">
@@ -90,7 +93,11 @@ const Footer = function () {
             <ul>
               <h2 className="mb-9 max-md:mb-4 text-[19px] font-bold text-white max-md:text-[12px]">Resources</h2>
               <li className="mt-[25px] max-md:mt-2">
-                <Link className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]" href={routes.document.redirect}>
+                <Link
+                  className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
+                  href={routes.document.redirect}
+                  target="_blank"
+                >
                   Documentation
                 </Link>
               </li>
