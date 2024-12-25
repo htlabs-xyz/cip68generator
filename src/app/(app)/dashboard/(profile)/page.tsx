@@ -4,7 +4,6 @@ import AssetCard from "./_components/asset-card";
 import { useProfileContext } from "@/contexts/profile";
 import Image from "next/image";
 import { appImage } from "@/public/images";
-import { useBlockchainContext } from "@/components/providers/blockchain";
 import { shortenString } from "@/utils";
 import AssetCardSkeleton from "./_components/asset-card-skeleton";
 import Pagination from "@/components/common/pagination";
@@ -19,9 +18,10 @@ import CopyButton from "@/components/common/copy-button";
 import { useQuery } from "@tanstack/react-query";
 import getUserStatistics from "@/services/user/get-statistic";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useWallet } from "@/hooks/use-wallet";
 
 export default function ProfilePage() {
-  const { address, stakeAddress } = useBlockchainContext();
+  const { address, stakeAddress } = useWallet();
   const { listNft, filter, setFilter, loading, totalPages, currentPage, totalItem, setCurrentPage } = useProfileContext();
 
   const { data: userStatistics, isLoading: statisticLoading } = useQuery({

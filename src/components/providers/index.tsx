@@ -5,11 +5,8 @@ import QueryClientProvider from "./query";
 import ErrorClientProvider from "./error";
 import { Toaster } from "@/components/ui/toaster";
 import Loading from "@/app/(loading)/loading";
-import dynamic from "next/dynamic";
 import { SessionProvider, SessionProviderProps } from "next-auth/react";
-const BlockchainProvider = dynamic(async () => await import("@/components/providers/blockchain"), {
-  loading: () => <Loading />,
-});
+import BlockchainProvider from "./blockchain";
 
 export default function AppProviders({ children, session }: { children: React.ReactNode; session: SessionProviderProps["session"] }) {
   return (

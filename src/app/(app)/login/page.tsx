@@ -5,7 +5,7 @@ import { appImage } from "@/public/images";
 import { routes } from "@/constants/routes";
 import { useWalletList } from "@meshsdk/react";
 import { useSession } from "next-auth/react";
-import { useBlockchainContext } from "@/components/providers/blockchain";
+import { useWallet } from "@/hooks/use-wallet";
 import { Wallet } from "@meshsdk/core";
 import { appNetwork } from "@/constants";
 import { redirect, useRouter } from "next/navigation";
@@ -17,7 +17,7 @@ export default function SignInViewPage() {
   const router = useRouter();
   const wallets = useWalletList();
   const { data: session, status } = useSession();
-  const { signIn, wallet } = useBlockchainContext();
+  const { signIn, wallet } = useWallet();
 
   const handleConnectWallet = async function (wallet: Wallet) {
     await signIn(session, wallet);

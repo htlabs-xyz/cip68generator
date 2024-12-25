@@ -565,7 +565,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     return await unsignedTx.complete();
   };
 
-   /**
+  /**
    * @method TC7
    * @description [TC7]: Token creator sent wrong store address given in params.
    *
@@ -605,8 +605,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     return await unsignedTx.complete();
   };
 
-
-   /**
+  /**
    * @method TC8
    * @description [TC8]: Token creator sent wrong store address given in params.
    *
@@ -646,7 +645,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     return await unsignedTx.complete();
   };
 
-    /**
+  /**
    * @method TC9
    * @description [TC9]: The output of UTxOs is missing the part sent to the smart contract store address or sent to the exchange fee is missing.
    *
@@ -678,8 +677,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       .setNetwork(appNetwork);
     return await unsignedTx.complete();
   };
-
-
 
   /**
    * @method TC24

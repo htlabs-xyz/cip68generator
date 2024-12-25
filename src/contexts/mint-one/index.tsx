@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect } from "react";
 import useMintOneStore, { MintOneStore } from "./store";
 import { toast } from "@/hooks/use-toast";
 import { createMintTransaction } from "@/services/contract/mint";
-import { useBlockchainContext } from "@/components/providers/blockchain";
+import { useWallet } from "@/hooks/use-wallet";
 import { isEmpty, isNil } from "lodash";
 import { submitTx } from "@/services/blockchain/submitTx";
 import { useQuery } from "@tanstack/react-query";
@@ -28,7 +28,7 @@ type MintOneContextType = MintOneStore & {
 };
 
 export default function MintOneProvider({ metadataTemplateId, children }: { metadataTemplateId: string | null; children: React.ReactNode }) {
-  const { signTx, address } = useBlockchainContext();
+  const { signTx, address } = useWallet();
   const mintOneStepper = useMintOneStepper();
   const {
     metadataToMint,

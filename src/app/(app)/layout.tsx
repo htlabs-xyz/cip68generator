@@ -1,9 +1,6 @@
 import AppProviders from "@/components/providers";
-import { auth } from "@/lib/auth";
-import { PropsWithChildren } from "react";
-export default async function AppLayout({ children }: Readonly<PropsWithChildren>) {
-  const session = await auth();
-
+import { SessionProviderProps } from "next-auth/react";
+export default function AppLayout({ children, session }: { children: React.ReactNode; session: SessionProviderProps["session"] }) {
   return (
     <>
       <div className="lg:hidden h-screen flex items-center justify-center">

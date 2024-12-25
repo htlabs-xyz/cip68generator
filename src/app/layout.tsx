@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import { cn } from "@/utils";
 import { PropsWithChildren } from "react";
 import { siteMetadata } from "@/constants/site-metadata";
+import { auth } from "@/lib/auth";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteMetadata.siteUrl),
@@ -49,7 +50,9 @@ const fontSans = FontSans({
   weight: ["400", "500", "700"],
 });
 
-const RootLayout = function ({ children }: Readonly<PropsWithChildren>) {
+const RootLayout = async function ({ children }: Readonly<PropsWithChildren>) {
+  const session = await auth();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <link rel="apple-touch-icon" sizes="76x76" href={`/images/common/logo.png`} />
