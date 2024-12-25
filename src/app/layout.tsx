@@ -4,7 +4,6 @@ import "@/styles/globals.css";
 import { cn } from "@/utils";
 import { PropsWithChildren } from "react";
 import { siteMetadata } from "@/constants/site-metadata";
-import { auth } from "@/lib/auth";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteMetadata.siteUrl),

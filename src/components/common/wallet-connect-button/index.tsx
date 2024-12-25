@@ -1,7 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
-import Loading from "@/app/(loading)/loading";
 import { isNil } from "lodash";
 import { useWallet } from "@/hooks/use-wallet";
 import Account from "./account";
@@ -24,6 +23,6 @@ const CardanoWallet = () => {
 };
 
 export const WalletConnectButton = dynamic(() => Promise.resolve(CardanoWallet), {
-  loading: () => <Loading />,
+  loading: () => <></>,
   ssr: false,
 });
