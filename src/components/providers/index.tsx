@@ -9,7 +9,6 @@ import dynamic from "next/dynamic";
 import { SessionProvider, SessionProviderProps } from "next-auth/react";
 const BlockchainProvider = dynamic(async () => await import("@/components/providers/blockchain"), {
   loading: () => <Loading />,
-  ssr: false,
 });
 
 export default function AppProviders({ children, session }: { children: React.ReactNode; session: SessionProviderProps["session"] }) {

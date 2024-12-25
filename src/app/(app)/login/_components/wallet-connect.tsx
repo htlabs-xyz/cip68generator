@@ -32,9 +32,12 @@ export default function WalletConnect() {
         <CardDescription>Connect a wallet on {appNetwork} to continue</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
-        {wallets.map((item) => (
-          <WalletItem key={item.name} item={item} wallet={wallet} onConnectWallet={handleConnectWallet} />
-        ))}
+        {wallets.map((item) => {
+          if (item.name != "eternl") {
+            return null;
+          }
+          return <WalletItem key={item.name} wallet={wallet} item={item} onConnectWallet={handleConnectWallet} />;
+        })}
       </CardContent>
     </Card>
   );
