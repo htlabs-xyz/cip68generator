@@ -1,10 +1,10 @@
 use aiken/crypto.{VerificationKeyHash}
 use cardano/address
 use cardano/assets.{lovelace_of, without_lovelace}
+use cardano/minting
 use cardano/transaction.{
   InlineDatum, Output, OutputReference, Transaction, find_input,
 }
-use cardano/minting
 use cardano/tx
 use cip68generator/types.{Remove, StoreRedeemer, Update}
 use cip68generator/utils
@@ -29,7 +29,8 @@ validator store(
     transaction: Transaction,
   ) {
     expect Some(datum_output) = datum
-    let Transaction { inputs, outputs, mint, extra_signatories, .. } = transaction
+    let Transaction { inputs, outputs, mint, extra_signatories, .. } =
+      transaction
     let platform_address = address.from_verification_key(platform)
     let output_utxo_platform =
       utils.find_output(outputs, platform_fee, platform_address)
@@ -79,8 +80,10 @@ validator store(
             lovelace_of(input.output.value),
             author_address,
           )
+        let check_remove_asset =
+          utils.check_remove_asset(inputs, extra_signatories)
         and {
-          tx.verify_signature(extra_signatories, author_input),
+          check_remove_asset?,
           output_utxo_author != None,
           output_utxo_platform != None,
         }
