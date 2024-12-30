@@ -55,18 +55,11 @@ body:
     validations:
       required: false
 
-
-
-
   - type: input
     id: email
     attributes:
       label: 'your email'
       placeholder: 'e.g. nguyenvannam@gmail.com'
-  - type: input
-    id: address
-    attributes:
-      label: 'your wallet address'
-      placeholder: 'e.g. addr'
- 
+    validations:
+      required: true
  
