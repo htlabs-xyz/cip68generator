@@ -1,21 +1,8 @@
 services:
-  postgres:
-    container_name: cip68_postgres
-    image: postgres:latest
-    env_file:
-      - stack.env
-    volumes:
-      - /home/cip68/postgresql/data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    networks:
-      - cip68
-    restart: unless-stopped
-
   cip68_webapp:
     container_name: cip68_webapp
     env_file:
-      - ./stack.env
+      - .env
     build:
       context: .
       dockerfile: Dockerfile
