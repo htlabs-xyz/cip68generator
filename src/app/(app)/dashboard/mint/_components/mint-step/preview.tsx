@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { getContractPolicyId } from "@/services/contract/get-policy-id";
 import CopyButton from "@/components/common/copy-button";
 import { SaveMetadata } from "../save-metadata";
-import { useBlockchainContext } from "@/components/providers/blockchain";
+import { useWallet } from "@/hooks/use-wallet";
 import { stringToHex } from "@meshsdk/core";
 
 export default function PreviewStep({
@@ -26,7 +26,7 @@ export default function PreviewStep({
   collectionToSave: string;
   setCollectionToSave: (value: string) => void;
 }) {
-  const { address } = useBlockchainContext();
+  const { address } = useWallet();
   const [nftPolicyId, setNftPolicyId] = useState<string>("");
   const assetNameSort = basicInfoToMint?.assetName || "No name";
   const totalSupply = basicInfoToMint?.quantity || "1";

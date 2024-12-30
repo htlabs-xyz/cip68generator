@@ -6,7 +6,7 @@ import { isEmpty, isNil } from "lodash";
 import { submitTx } from "@/services/blockchain/submitTx";
 import { defineStepper } from "@stepperize/react";
 import useMintManyStore, { MintManyStore } from "./store";
-import { useBlockchainContext } from "@/components/providers/blockchain";
+import { useWallet } from "@/hooks/use-wallet";
 import { convertObject } from "@/utils";
 import { createMintTransaction } from "@/services/contract/mint";
 import { parseError } from "@/utils/error/parse-error";
@@ -26,7 +26,7 @@ type MintManyContextType = MintManyStore & {
 };
 
 export default function MintManyProvider({ children }: { collectionId: string | null; children: React.ReactNode }) {
-  const { signTx, address } = useBlockchainContext();
+  const { signTx, address } = useWallet();
   const mintManyStepper = useMintManyStepper();
   const { updateTaskState, setTxHash, resetTasks, setLoading, setAssetInputToMint, assetInputToMint } = useMintManyStore();
 

@@ -1,14 +1,13 @@
 "use client";
 import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
-import Loading from "@/app/(loading)/loading";
 import { isNil } from "lodash";
-import { useBlockchainContext } from "@/components/providers/blockchain";
+import { useWallet } from "@/hooks/use-wallet";
 import Account from "./account";
 import { useRouter } from "next/navigation";
 
 const CardanoWallet = () => {
-  const { wallet } = useBlockchainContext();
+  const { wallet } = useWallet();
   const router = useRouter();
   return (
     <div style={{ width: "min-content", zIndex: 50 }}>
@@ -24,6 +23,6 @@ const CardanoWallet = () => {
 };
 
 export const WalletConnectButton = dynamic(() => Promise.resolve(CardanoWallet), {
-  loading: () => <Loading />,
+  loading: () => <></>,
   ssr: false,
 });

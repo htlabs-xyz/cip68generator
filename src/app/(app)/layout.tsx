@@ -1,9 +1,8 @@
 import AppProviders from "@/components/providers";
 import { auth } from "@/lib/auth";
 import { PropsWithChildren } from "react";
-export default async function AppLayout({ children }: Readonly<PropsWithChildren>) {
+export default async function AppLayout({ children }: PropsWithChildren) {
   const session = await auth();
-
   return (
     <>
       <div className="lg:hidden h-screen flex items-center justify-center">

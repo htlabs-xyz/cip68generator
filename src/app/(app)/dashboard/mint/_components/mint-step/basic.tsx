@@ -10,7 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 
 import { toast } from "@/hooks/use-toast";
-import { useBlockchainContext } from "@/components/providers/blockchain";
+import { useWallet } from "@/hooks/use-wallet";
 import { isNil } from "lodash";
 import { parseError } from "@/utils/error/parse-error";
 
@@ -47,7 +47,7 @@ export default function BasicStep({
   stepper: any;
   setBasicInfoToMint: (data: { assetName: string; quantity: string }) => void;
 }) {
-  const { address } = useBlockchainContext();
+  const { address } = useWallet();
   const defaultValues: Partial<NftFormValues> = {
     assetQuantity: "1",
     assetName: "",

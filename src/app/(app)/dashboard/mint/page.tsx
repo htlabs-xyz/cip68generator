@@ -32,7 +32,7 @@ export default function UtilitiesPage() {
               </AspectRatio>
               <div className="flex flex-col items-center justify-start gap-3 self-stretch px-4 py-2">
                 <div className="font-semibol self-stretch text-center text-base">Mint multiple tokens</div>
-                <div className="font- self-stretch text-center text-sm text-secondary">Quickly mint multiple asset using cvs file</div>
+                <div className="font- self-stretch text-center text-sm text-secondary">Quickly mint multiple asset using csv file</div>
               </div>
             </Card>
           </Link>

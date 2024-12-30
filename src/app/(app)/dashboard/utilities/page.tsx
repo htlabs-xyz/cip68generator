@@ -14,7 +14,7 @@ export default function UtilitiesPage() {
           >
             <Card className="h-full">
               <AspectRatio ratio={5 / 3} className="bg-muted">
-                <Images.metadata className="h-full w-full rounded-t-lg object-cover" />
+                <Images.collection className="h-full w-full rounded-t-lg object-cover" />
               </AspectRatio>
               <div className="flex flex-col items-center justify-start gap-3 self-stretch px-4 py-2">
                 <div className="font-semibol self-stretch text-center text-base">Collection Metadata</div>
@@ -47,7 +47,7 @@ export default function UtilitiesPage() {
               </AspectRatio>
               <div className="flex flex-col items-center justify-start gap-3 self-stretch px-4 py-2">
                 <div className="font-semibol self-stretch text-center text-base">Fast collection</div>
-                <div className="font- self-stretch text-center text-sm text-secondary">Create asset collection using cvs file</div>
+                <div className="font- self-stretch text-center text-sm text-secondary">Create asset collection using csv file</div>
               </div>
             </Card>
           </Link>
