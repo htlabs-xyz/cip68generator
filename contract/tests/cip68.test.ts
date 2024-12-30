@@ -76,13 +76,13 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     expect(txHash.length).toBe(64);
   });
   test("Update", async function () {
-    return;
+    // return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
     const unsignedTx: string = await cip68Contract.update([
       {
-        assetName: "CIP68 Generators v1",
+        assetName: "CIP68 Generators v10",
         metadata: {
           name: "CIP68 Generators",
           image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
@@ -123,7 +123,6 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
   });
-
   test("[TC1]: Cast assets with the desired quantity and metadata with all required fields.", async function () {
     return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
@@ -148,7 +147,6 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       expect(txHash.length).toBe(64);
     });
   });
-
   test("[TC2]: Casting assets but default fields in metadata (name, image, media_type, author) do not exist.", async function () {
     return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
@@ -166,7 +164,6 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       expect(txHash.length);
     });
   });
-
   test("[TC3]: Casting assets with defined metadata but the keys (name, image, media_type) exist but the values of the fields are partially or completely missing.", async function () {
     return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
@@ -190,7 +187,6 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       expect(txHash.length).toBe(64);
     });
   });
-
   test("[TC4]: Casting property with fully defined metadata for both kay and value but author address is empty or wrong.", async function () {
     return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
@@ -214,7 +210,6 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       expect(txHash.length).toBe(64);
     });
   });
-
   test("[TC5]: Mint assets with transaction fees less than the specified amount included in the validator parameters.", async function () {
     return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
@@ -238,7 +233,6 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       expect(txHash.length).toBe(64);
     });
   });
-
   test("[TC6]: Mint asset with correct transaction fee as params. however wrong exchange address defined in params.", async function () {
     return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
@@ -262,7 +256,6 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       expect(txHash.length).toBe(64);
     });
   });
-
   test("[TC7]: Token creator sent wrong store address given in params.", async function () {
     return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
@@ -286,7 +279,6 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       expect(txHash.length).toBe(64);
     });
   });
-
   test("[SC8]: Creator sends Token with prefix_100 (CIP100).", async function () {
     return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
@@ -310,7 +302,6 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       expect(txHash.length).toBe(64);
     });
   });
-
   test("[TC9]: The output of UTxOs is missing the part sent to the smart contract store address or sent to the exchange fee is missing.", async function () {
     return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
@@ -334,9 +325,29 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       expect(txHash.length).toBe(64);
     });
   });
-
   test("[SC10]: Asset update successful. Exchange fee transferred to exchange address. Asset updated successful.", async function () {
     return;
+    const cip68Contract: Cip68Contract = new Cip68Contract({
+      wallet: wallet,
+    });
+    const unsignedTx: string = await cip68Contract.update([
+      {
+        assetName: "CIP68 Generators v1",
+        metadata: {
+          name: "CIP68 Generators",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+    ]);
+    const signedTx = wallet.signTx(unsignedTx, true);
+    const txHash = await wallet.submitTx(signedTx);
+    console.log("https://preview.cexplorer.io/tx/" + txHash);
+    expect(txHash.length).toBe(64);
   });
   test("[SC10]: Asset update successful. Exchange fee transferred to exchange address. Asset updated successful.", async function () {
     return;
@@ -416,7 +427,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   });
 
   test("[SC26]: transfer 2 NFTs from store to author wallet (1 from author, 1 from other wallet).", async function () {
-    // return;
+    return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });

@@ -28,7 +28,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
    *
    * @returns unsignedTx
    */
-
   mint = async (
     params: {
       assetName: string;
@@ -678,31 +677,44 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
    * @description [SC10]: Asset update successful. Exchange fee transferred to exchange address. Asset updated successful.
    *
    */
-  tc10 = async (param: { assetName: string; metadata: Record<string, string>; quantity: string; txHash?: string }) => {
+  tc10 = async (params: { assetName: string; metadata: Record<string, string>; quantity: string; txHash?: string }[]) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
-    const unsignedTx = this.meshTxBuilder
+    const unsignedTx = this.meshTxBuilder;
+    await Promise.all(
+      params.map(async ({ assetName, metadata, txHash }) => {
+        const storeUtxo = !isNil(txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (!storeUtxo) throw new Error("Store UTXO not found");
+        unsignedTx
+          .spendingPlutusScriptV3()
+          .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+          .txInInlineDatumPresent()
+          .txInRedeemerValue(mConStr0([]))
+          .txInScript(this.storeScriptCbor)
+          .txOut(this.storeAddress, [
+            {
+              unit: this.policyId + CIP68_100(stringToHex(assetName)),
+              quantity: "1",
+            },
+          ])
+          .txOutInlineDatumValue(metadataToCip68(metadata));
+      }),
+    );
 
-      .mintPlutusScriptV3()
-      .mint(param.quantity, this.policyId, CIP68_222(stringToHex(param.assetName)))
-      .mintingScript(this.mintScriptCbor)
-      .mintRedeemerValue(mConStr0([]))
-
-      .mintPlutusScriptV3()
-      .mint("1", this.policyId, CIP68_100(stringToHex(param.assetName)))
-      .mintingScript(this.mintScriptCbor)
-      .mintRedeemerValue(mConStr0([]))
-      .txOut(this.storeAddress, [
+    unsignedTx
+      .txOut(APP_WALLET_ADDRESS, [
         {
-          unit: this.policyId + CIP68_100(stringToHex(param.assetName)),
-          quantity: "1",
+          unit: "lovelace",
+          quantity: "1000000",
         },
       ])
-      .txOutInlineDatumValue(metadataToCip68(param.metadata))
-      .changeAddress(walletAddress)
       .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .changeAddress(walletAddress)
       .selectUtxosFrom(utxos)
       .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
       .setNetwork(appNetwork);
+
     return await unsignedTx.complete();
   };
 

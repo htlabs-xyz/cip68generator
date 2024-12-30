@@ -54,18 +54,23 @@ export class MeshAdapter {
       version: "V3",
     };
 
-    this.storeAddress = serializePlutusScript(this.storeScript, undefined, appNetworkId, false).address;
-    // this.storeAddress = serializeAddressObj(
-    //   scriptAddress(
-    //     deserializeAddress(serializePlutusScript(this.storeScript, undefined, appNetworkId, false).address).scriptHash,
-    //     deserializeAddress(APP_WALLET_ADDRESS).stakeCredentialHash,
-    //     false,
-    //   ),
-    //   appNetworkId,
-    // );
+    this.storeAddress = serializeAddressObj(
+      scriptAddress(
+        deserializeAddress(serializePlutusScript(this.storeScript, undefined, appNetworkId, false).address).scriptHash,
+        deserializeAddress(APP_WALLET_ADDRESS).stakeCredentialHash,
+        false,
+      ),
+      appNetworkId,
+    );
 
     this.storeScriptHash = deserializeAddress(this.storeAddress).scriptHash;
-    this.mintScriptCbor = applyParamsToScript(this.mintCompileCode, [this.pubKeyExchange, BigInt(1), this.storeScriptHash, this.pubKeyIssuer]);
+    this.mintScriptCbor = applyParamsToScript(this.mintCompileCode, [
+      this.pubKeyExchange,
+      BigInt(1),
+      this.storeScriptHash,
+      deserializeAddress(APP_WALLET_ADDRESS).stakeCredentialHash,
+      this.pubKeyIssuer,
+    ]);
     this.mintScript = {
       code: this.mintScriptCbor,
       version: "V3",
