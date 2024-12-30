@@ -12,7 +12,7 @@ import {
 } from "@meshsdk/core";
 
 import { MeshAdapter } from "../adapters/mesh.adapter";
-import { MINT_REFERENCE_SCRIPT_HASH, APP_WALLET_ADDRESS, EXCHANGE_FEE_PRICE, STORE_REFERENCE_SCRIPT_HASH } from "../constants";
+import { APP_WALLET_ADDRESS, EXCHANGE_FEE_PRICE } from "../constants";
 import { appNetwork } from "@/constants";
 import { ICip68Contract } from "../interfaces/icip68.interface";
 import { isEmpty, isNil } from "lodash";
@@ -38,7 +38,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     }[],
   ) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
-
     const unsignedTx = this.meshTxBuilder.mintPlutusScriptV3();
     const txOutReceiverMap = new Map<string, { unit: string; quantity: string }[]>();
 
@@ -149,9 +148,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
    */
   burn = async (params: { assetName: string; quantity: string; txHash?: string }[]) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
-    const mintUtxoRef: UTxO = (await this.fetcher.fetchUTxOs(MINT_REFERENCE_SCRIPT_HASH))[0];
-    const storeUtxoRef: UTxO = (await this.fetcher.fetchUTxOs(STORE_REFERENCE_SCRIPT_HASH))[0];
-
     const unsignedTx = this.meshTxBuilder;
     await Promise.all(
       params.map(async ({ assetName, quantity, txHash }) => {
@@ -232,7 +228,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
    * @returns
    */
   update = async (params: { assetName: string; metadata: Record<string, string>; txHash?: string }[]) => {
-    const utxoRef: UTxO = (await this.fetcher.fetchUTxOs(STORE_REFERENCE_SCRIPT_HASH))[0];
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
     const unsignedTx = this.meshTxBuilder;
     await Promise.all(
@@ -565,7 +560,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     return await unsignedTx.complete();
   };
 
-   /**
+  /**
    * @method TC7
    * @description [TC7]: Token creator sent wrong store address given in params.
    *
@@ -605,8 +600,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     return await unsignedTx.complete();
   };
 
-
-   /**
+  /**
    * @method TC8
    * @description [TC8]: Token creator sent wrong store address given in params.
    *
@@ -646,7 +640,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     return await unsignedTx.complete();
   };
 
-    /**
+  /**
    * @method TC9
    * @description [TC9]: The output of UTxOs is missing the part sent to the smart contract store address or sent to the exchange fee is missing.
    *
@@ -679,7 +673,38 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     return await unsignedTx.complete();
   };
 
+  /**
+   * @method TC10
+   * @description [SC10]: Asset update successful. Exchange fee transferred to exchange address. Asset updated successful.
+   *
+   */
+  tc10 = async (param: { assetName: string; metadata: Record<string, string>; quantity: string; txHash?: string }) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder
 
+      .mintPlutusScriptV3()
+      .mint(param.quantity, this.policyId, CIP68_222(stringToHex(param.assetName)))
+      .mintingScript(this.mintScriptCbor)
+      .mintRedeemerValue(mConStr0([]))
+
+      .mintPlutusScriptV3()
+      .mint("1", this.policyId, CIP68_100(stringToHex(param.assetName)))
+      .mintingScript(this.mintScriptCbor)
+      .mintRedeemerValue(mConStr0([]))
+      .txOut(this.storeAddress, [
+        {
+          unit: this.policyId + CIP68_100(stringToHex(param.assetName)),
+          quantity: "1",
+        },
+      ])
+      .txOutInlineDatumValue(metadataToCip68(param.metadata))
+      .changeAddress(walletAddress)
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+    return await unsignedTx.complete();
+  };
 
   /**
    * @method TC24
@@ -822,14 +847,5 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       .setNetwork(appNetwork);
 
     return await unsignedTx.complete();
-  };
-
-  tc27 = async () => {
-    const scriptAddr = scriptAddress(
-      "aa048e4cc8a1e67e1d97ffbd4be614388014cbc2b2451527202943b6",
-      "9d4dcd7e454d2434164f4efb8edeb358d86a1dad9ec6224cfcbce3e6",
-    );
-    const address = serializeAddressObj(scriptAddr);
-    console.log(address);
   };
 }

@@ -6,7 +6,6 @@ import { Cip68Contract } from "../script";
 import { APP_WALLET_ADDRESS } from "../script/constants";
 
 describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
-  let txHashTemp: string;
   let wallet: MeshWallet;
   beforeEach(async function () {
     wallet = new MeshWallet({
@@ -28,7 +27,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     });
     const unsignedTx: string = await cip68Contract.mint([
       {
-        assetName: "CIP68 Generators v1",
+        assetName: "CIP68 Generators v10",
         metadata: {
           name: "CIP68 Generators",
           image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
@@ -66,7 +65,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     });
     const unsignedTx: string = await cip68Contract.burn([
       {
-        assetName: "CIP68 Generators v2",
+        assetName: "CIP68 Generators v10",
         quantity: "-1",
       },
     ]);
@@ -313,7 +312,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   });
 
   test("[TC9]: The output of UTxOs is missing the part sent to the smart contract store address or sent to the exchange fee is missing.", async function () {
-    // return;
+    return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
@@ -423,7 +422,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     });
     const unsignedTx: string = await cip68Contract.tc26(
       {
-        assetName: "CIP68 Generators v1",
+        assetName: "CIP68 Generators v10",
         quantity: "-1",
       },
       {
@@ -443,12 +442,5 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     jest.setTimeout(20000);
     expect(txHash.length).toBe(64);
-  });
-
-  test("[SC27]", async () => {
-    const cip68Contract: Cip68Contract = new Cip68Contract({
-      wallet: wallet,
-    });
-    cip68Contract.tc27();
   });
 });

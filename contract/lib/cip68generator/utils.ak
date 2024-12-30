@@ -55,7 +55,7 @@ pub fn filter_and_pair(
   flat: List<(PolicyId, AssetName, Int)>,
   prefix100: ByteArray,
   prefix222: ByteArray,
-) -> List<(AssetName, AssetName, Int)> {
+) -> List<(PolicyId, AssetName, AssetName, Int)> {
   let filter100 =
     list.filter(
       flat,
@@ -73,30 +73,30 @@ pub fn filter_and_pair(
   let asset_names_amounts100 =
     list.map(
       filter100,
-      fn((_policy_id, asset_name, amount)) { (asset_name, amount) },
+      fn((policy_id, asset_name, amount)) { (policy_id, asset_name, amount) },
     )
   let asset_names_amounts222 =
     list.map(
       filter222,
-      fn((_policy_id, asset_name, amount)) { (asset_name, amount) },
+      fn((policy_id, asset_name, amount)) { (policy_id, asset_name, amount) },
     )
 
   let sorted100 =
     list.sort(
       asset_names_amounts100,
-      fn((name1, _), (name2, _)) { bytearray.compare(name1, name2) },
+      fn((_, name1, _), (_, name2, _)) { bytearray.compare(name1, name2) },
     )
   let sorted222 =
     list.sort(
       asset_names_amounts222,
-      fn((name1, _), (name2, _)) { bytearray.compare(name1, name2) },
+      fn((_, name1, _), (_, name2, _)) { bytearray.compare(name1, name2) },
     )
 
   let paired = list.zip(sorted100, sorted222)
   list.map(
     paired,
-    fn(((name1, amount1), (name2, amount2))) {
-      (name1, name2, amount1 + amount2)
+    fn(((policy_id1, name1, amount1), (_policy_id2, name2, amount2))) {
+      (policy_id1, name1, name2, amount1 + amount2)
     },
   )
 }
@@ -193,7 +193,7 @@ pub fn check_asset_mint(
   list.foldl(
     pairs,
     True,
-    fn((reference_asset_name, user_asset_name, amount), acc) {
+    fn((_policy_id, reference_asset_name, user_asset_name, amount), acc) {
       if !acc {
         False
       } else {
@@ -230,7 +230,7 @@ pub fn check_asset_burn(
   list.foldl(
     pairs,
     True,
-    fn((reference_asset_name, user_asset_name, amount), acc) {
+    fn((_policy_id, reference_asset_name, user_asset_name, amount), acc) {
       if !acc {
         False
       } else {
@@ -272,4 +272,65 @@ pub fn check_pair_asset_name(
     bytearray.drop(reference_asset_name, 4),
     bytearray.drop(user_asset_name, 4),
   ) == Equal
+}
+
+pub fn check_remove_asset(
+  inputs: List<Input>,
+  extra_signatories: List<VerificationKeyHash>,
+) -> Bool {
+  let flatten =
+    list.filter_map(
+      inputs,
+      fn(input) {
+        when input.output.datum is {
+          InlineDatum(data) -> {
+            expect metadatum: CIP68 = data
+            expect author: VerificationKeyHash =
+              cip68.get(metadatum, types.author_key)
+            if tx.verify_signature(extra_signatories, author) {
+              let reference_asset =
+                input.output.value
+                  |> without_lovelace()
+                  |> assets.flatten()
+              let exist =
+                list.find(
+                  reference_asset,
+                  fn((_policy_id, asset_name, _amount)) { or {
+                      bytearray.starts_with(asset_name, cip68.prefix_100),
+                      bytearray.starts_with(asset_name, cip68.prefix_222),
+                    } },
+                )
+
+              when exist is {
+                Some((policy_id, asset_name, amount)) ->
+                  Some((policy_id, asset_name, amount))
+                None -> None
+              }
+            } else {
+              None
+            }
+          }
+          _ -> None
+        }
+      },
+    )
+  let pairs = filter_and_pair(flatten, cip68.prefix_100, cip68.prefix_222)
+
+  list.foldl(
+    pairs,
+    True,
+    fn((policy_id, reference_asset_name, user_asset_name, amount), acc) {
+      if !acc {
+        False
+      } else {
+        and {
+          check_pair_asset_name(reference_asset_name, user_asset_name),
+          minting.exact(flatten, policy_id, reference_asset_name, -1)?,
+          minting.exact(flatten, policy_id, user_asset_name, amount + 1)?,
+          minting.by_prefix(flatten, policy_id, cip68.prefix_100, -1)?,
+          minting.by_prefix(flatten, policy_id, cip68.prefix_222, amount + 1)?,
+        }
+      }
+    },
+  )
 }

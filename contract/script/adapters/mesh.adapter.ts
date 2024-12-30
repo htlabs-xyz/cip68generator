@@ -7,6 +7,8 @@ import {
   MeshWallet,
   PlutusScript,
   resolveScriptHash,
+  scriptAddress,
+  serializeAddressObj,
   serializePlutusScript,
   UTxO,
 } from "@meshsdk/core";
@@ -31,6 +33,7 @@ export class MeshAdapter {
   protected storeScriptHash: string;
   protected mintScriptCbor: string;
   protected mintScript: PlutusScript;
+
   public policyId;
   constructor({ wallet = null! }: { wallet?: MeshWallet }) {
     this.wallet = wallet;
@@ -52,6 +55,14 @@ export class MeshAdapter {
     };
 
     this.storeAddress = serializePlutusScript(this.storeScript, undefined, appNetworkId, false).address;
+    // this.storeAddress = serializeAddressObj(
+    //   scriptAddress(
+    //     deserializeAddress(serializePlutusScript(this.storeScript, undefined, appNetworkId, false).address).scriptHash,
+    //     deserializeAddress(APP_WALLET_ADDRESS).stakeCredentialHash,
+    //     false,
+    //   ),
+    //   appNetworkId,
+    // );
 
     this.storeScriptHash = deserializeAddress(this.storeAddress).scriptHash;
     this.mintScriptCbor = applyParamsToScript(this.mintCompileCode, [this.pubKeyExchange, BigInt(1), this.storeScriptHash, this.pubKeyIssuer]);
