@@ -10,8 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 
 import { toast } from "@/hooks/use-toast";
-import { checkAssetNameAvailable } from "@/services/contract/check-asset name-available";
-import { useBlockchainContext } from "@/components/providers/blockchain";
+import { useWallet } from "@/hooks/use-wallet";
 import { isNil } from "lodash";
 import { parseError } from "@/utils/error/parse-error";
 
@@ -48,7 +47,7 @@ export default function BasicStep({
   stepper: any;
   setBasicInfoToMint: (data: { assetName: string; quantity: string }) => void;
 }) {
-  const { address } = useBlockchainContext();
+  const { address } = useWallet();
   const defaultValues: Partial<NftFormValues> = {
     assetQuantity: "1",
     assetName: "",
@@ -68,14 +67,6 @@ export default function BasicStep({
 
       if (isNil(address)) {
         throw new Error("Wallet not connected");
-      }
-      const { result, message } = await checkAssetNameAvailable({
-        assetName: data.assetName,
-        walletAddress: address,
-      });
-
-      if (!result) {
-        throw new Error(message);
       }
 
       setBasicInfoToMint({
@@ -144,9 +135,6 @@ export default function BasicStep({
           <div className="fixed right-0 bottom-0 z-10 max-h-16 w-full bg-section">
             <div className="mx-4 flex h-16 items-center sm:mx-8">
               <div className="flex flex-1 items-center justify-end space-x-2">
-                <Button variant="secondary" onClick={stepper.prev} disabled={stepper.isFirst}>
-                  Back
-                </Button>
                 <Button type="submit">Next</Button>
               </div>
             </div>

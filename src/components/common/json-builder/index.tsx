@@ -4,34 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/utils";
 import { FilePick } from "./file-pick";
 import { useJsonBuilderStore } from "./store";
 import { isEmpty } from "lodash";
-import { useEffect } from "react";
+import { Trash } from "lucide-react";
 
 export default function JsonBuilder({ className }: { className?: string }) {
-  const { fields, addField, removeField, updateField, error, template, setTemplate, getJsonResult } = useJsonBuilderStore();
-
-  useEffect(() => {
-    setTemplate("");
-  }, [setTemplate]);
-
+  const { fields, addField, removeField, updateField, error, getJsonResult } = useJsonBuilderStore();
   return (
     <div className={cn(className, "flex h-full bg-section p-5")}>
       <div className="w-1/2 p-4 space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg p-2 mb-4">
           <h1 className="text-2xl font-semibold tracking-tight">Metadata Builder</h1>
-          <Select value={template} onValueChange={setTemplate}>
-            <SelectTrigger className="w-2/5 bg-section">
-              <SelectValue placeholder="Select Asset Type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Minimal">Minimal Asset Metadata</SelectItem>
-              <SelectItem value="Image">Image Asset Metadata</SelectItem>
-            </SelectContent>
-          </Select>
         </div>
         <div className="h-4"> {error && <p className="text-red-500">{error}</p>}</div>
         <div>
@@ -61,7 +46,7 @@ export default function JsonBuilder({ className }: { className?: string }) {
                   />
                 </div>
                 <Button variant="destructive" className="text-white" onClick={() => removeField && removeField(index)}>
-                  Remove
+                  <Trash size={20} />
                 </Button>
               </div>
             ))}

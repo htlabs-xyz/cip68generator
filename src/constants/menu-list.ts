@@ -1,28 +1,57 @@
 import { NavItem } from "@/types";
+import { routes } from "./routes";
+import { appSocialMedia } from "./app-socialmedia";
 
-export const mainMenu: NavItem[] = [
+export const landingMenu: NavItem[] = [
   {
-    title: "Home",
-    href: "/dashboard",
+    title: "Dashboard",
+    href: routes.home.redirect,
     icon: "house",
     disabled: false,
   },
   {
-    title: "Mint Page",
-    href: "/dashboard/mint",
+    title: "Mint",
+    href: routes.mint.redirect,
     icon: "imagePlus",
     disabled: false,
   },
   {
     title: "Utilities",
-    href: "/dashboard/utilities",
+    href: routes.utilities.redirect,
     icon: "circuitBoard",
     disabled: false,
   },
   {
     title: "Documentation",
-    href: "#",
-    icon: "store",
+    href: routes.document.redirect,
+    icon: "bookText",
+    disabled: true,
+  },
+];
+
+export const mainMenu: NavItem[] = [
+  {
+    title: "Dashboard",
+    href: routes.home.redirect,
+    icon: "house",
+    disabled: false,
+  },
+  {
+    title: "Mint",
+    href: routes.mint.redirect,
+    icon: "imagePlus",
+    disabled: false,
+  },
+  {
+    title: "Utilities",
+    href: routes.utilities.redirect,
+    icon: "circuitBoard",
+    disabled: false,
+  },
+  {
+    title: "Documentation",
+    href: routes.document.redirect,
+    icon: "bookText",
     disabled: true,
   },
 ];
@@ -30,25 +59,25 @@ export const mainMenu: NavItem[] = [
 export const bottomItem: NavItem[] = [
   {
     title: "Website",
-    href: "https://cardano2vn.io",
+    href: appSocialMedia.website,
     icon: "globe",
     disabled: false,
   },
   {
     title: "Telegram",
-    href: "https://t.me",
+    href: appSocialMedia.telegram,
     icon: "send",
     disabled: false,
   },
   {
-    title: "IdeaScale",
-    href: "https://cardano.ideascale.com",
-    icon: "ideaScale",
+    title: "Catalyst",
+    href: "https://projectcatalyst.io/funds/12/cardano-use-cases-concept/open-source-dynamic-assets-tokennft-generator-cip68",
+    icon: "catalyst",
     disabled: false,
   },
   {
     title: "Youtube",
-    href: "https://youtube.com",
+    href: appSocialMedia.youtube,
     icon: "youtube",
     disabled: false,
   },

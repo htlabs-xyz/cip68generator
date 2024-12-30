@@ -8,7 +8,6 @@ import {
   PlutusScript,
   resolveScriptHash,
   serializePlutusScript,
-  stringToHex,
   UTxO,
 } from "@meshsdk/core";
 import { Plutus } from "../types";
@@ -17,6 +16,7 @@ import plutus from "../../plutus.json";
 import { appNetworkId } from "@/constants";
 import { getPkHash } from "@/utils";
 import { blockfrostProvider } from "@/lib/cardano";
+
 export class MeshAdapter {
   protected meshTxBuilder: MeshTxBuilder;
   protected wallet: MeshWallet;
@@ -108,17 +108,5 @@ export class MeshAdapter {
 
   protected getAddressUTXOAssets = async (address: string, unit: string) => {
     return await this.fetcher.fetchAddressUTxOs(address, unit);
-  };
-
-  public checkAssetNameAvailable = async ({ assetName, walletAddress }: { assetName: string; walletAddress: string }) => {
-    const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
-    if (existUtXOwithUnit?.output?.plutusData) {
-      const pk = await getPkHash(existUtXOwithUnit?.output?.plutusData as string);
-      const walletPk = deserializeAddress(walletAddress).pubKeyHash;
-      if (pk !== walletPk) {
-        return false;
-      }
-    }
-    return true;
   };
 }

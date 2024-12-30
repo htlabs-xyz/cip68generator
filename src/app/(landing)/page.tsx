@@ -2,7 +2,6 @@ import Header from "@/app/(landing)/_layout/header";
 import { Button } from "@/components/ui/button";
 import Footer from "@/app/(landing)/_layout/footer";
 import Link from "next/link";
-import router from "@/constants/routers";
 import { getAppStatistic } from "@/services/blockchain/get-app-statistic";
 import StatisticItem from "./_components/statistic-item";
 import Title from "./_components/title";
@@ -10,6 +9,7 @@ import features from "./_data/features";
 import Feature from "./_components/feature-section";
 import { founderData } from "./_data/founders";
 import Founder from "./_components/founder-section";
+import { routes } from "@/constants/routes";
 
 export default async function LandingPage() {
   const { data: statistic } = await getAppStatistic();
@@ -37,8 +37,8 @@ export default async function LandingPage() {
           {/* links-begin */}
           <div className="mt-[60px] max-md:mt-[30px] flex justify-center gap-10">
             <Button className="box-border flex cursor-pointer items-center rounded-[10px] px-6 py-0 text-[16px] font-medium leading-8 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg max-md:text-[14px] max-md:h-[35px] max-md:rounded-[5px] gap-2 ">
-              <Link className="flex items-center gap-2" href={router.mint}>
-                Launch Token
+              <Link className="flex items-center gap-2" href={routes.mint.redirect}>
+                Mint Now
                 <svg width="12" height="9" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     fillRule="evenodd"
@@ -111,7 +111,9 @@ export default async function LandingPage() {
                 interact with these assets while also offering open-source code for developers to integrate and deploy applications faster and more
                 efficiently.
               </span>
-              <Button className={"w-full px-8 py-6"}>About us</Button>
+              <Link href="https://cips.cardano.org/cip/CIP-68" target="_blank">
+                <Button className={"w-full px-8 py-6"}>Learn More Cip68</Button>
+              </Link>
             </div>
           </div>
         </aside>

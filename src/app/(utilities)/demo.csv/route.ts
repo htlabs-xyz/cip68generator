@@ -1,4 +1,6 @@
+import { MeshWallet } from "@meshsdk/core";
 import { ipfs } from "./ipfs";
+import { appNetworkId } from "@/constants";
 
 export async function GET() {
   const csvHeader = ["assetName", "metadata[name]", "metadata[image]", "metadata[mediaType]", "metadata[rarity]", "receiver"];
@@ -9,7 +11,7 @@ export async function GET() {
     `ipfs://${ipfs[Math.floor(Math.random() * ipfs.length)].cid}`,
     `image/png`,
     ["Common", "Legendary", "Mythic", "Rare"][Math.floor(Math.random() * 4)],
-    ``,
+    index < 3 ? randomAddress() : "",
   ]);
 
   const csvString = [csvHeader.join(","), ...data.map((row) => row.join(","))].join("\n");
@@ -22,3 +24,15 @@ export async function GET() {
     },
   });
 }
+
+const randomAddress = () => {
+  const mnemonic = MeshWallet.brew() as string[];
+  const wallet = new MeshWallet({
+    networkId: appNetworkId,
+    key: {
+      type: "mnemonic",
+      words: mnemonic,
+    },
+  });
+  return wallet.getChangeAddress();
+};

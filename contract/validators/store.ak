@@ -4,6 +4,7 @@ use cardano/assets.{lovelace_of, without_lovelace}
 use cardano/transaction.{
   InlineDatum, Output, OutputReference, Transaction, find_input,
 }
+use cardano/minting
 use cardano/tx
 use cip68generator/types.{Remove, StoreRedeemer, Update}
 use cip68generator/utils
@@ -28,7 +29,7 @@ validator store(
     transaction: Transaction,
   ) {
     expect Some(datum_output) = datum
-    let Transaction { inputs, outputs, extra_signatories, .. } = transaction
+    let Transaction { inputs, outputs, mint, extra_signatories, .. } = transaction
     let platform_address = address.from_verification_key(platform)
     let output_utxo_platform =
       utils.find_output(outputs, platform_fee, platform_address)

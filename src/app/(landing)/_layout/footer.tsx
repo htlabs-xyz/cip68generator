@@ -1,15 +1,13 @@
 "use client";
 
-import {} from "@/utils";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import routers from "@/constants/routers";
 import { FaMailBulk, FaTelegramPlane, FaYoutube } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { appImage } from "@/public/images";
-import router from "@/constants/routers";
 import { appSocialMedia } from "@/constants";
+import { routes } from "@/constants/routes";
 
 const Footer = function () {
   return (
@@ -25,8 +23,7 @@ const Footer = function () {
               Subscribe To <span className="pl-4 text-[#ccc]">CIP68 Generator</span>
             </h2>
             <p className="mb-7 mt-4 text-gray-400 max-sm:text-[12px] max-md:mt-1">
-              CIP68 Generator is a tool designed to simplify the creation, management, and burning of CIP68-compliant native assets on the Cardano
-              platform.
+              Be the first to know about our new products, services, and special promotions directly in your inbox
             </p>
             <Button className="flex h-[35px] items-center gap-2 rounded-md max-md:text-[12px]">
               <span>Subcribe</span>
@@ -46,7 +43,7 @@ const Footer = function () {
         {/*  footer-begin */}
         <section className="mt-[100px] max-md:my-[50px] flex justify-between max-md:flex-col">
           <div className="flex w-[412px] flex-col">
-            <Link className="relative flex items-center gap-[8px]" href={routers.landing}>
+            <Link className="relative flex items-center gap-[8px]" href={routes.landing.redirect}>
               <Image className="h-[35px] w-[35px] object-cover" src={appImage.logo} alt="Logo" />
               <span className="text-2xl">Generator</span>
             </Link>
@@ -63,22 +60,31 @@ const Footer = function () {
             <ul>
               <h2 className="mb-9 max-md:mb-4 text-[19px] font-bold text-white max-md:text-[12px]">Explore</h2>
               <li className="mt-[25px] max-md:mt-2">
-                <Link className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]" href={router.mint}>
+                <Link className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]" href={routes.mint.redirect}>
                   Asset Minting
                 </Link>
               </li>
               <li className="mt-[25px] max-md:mt-2">
-                <Link className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]" href={router.document}>
-                  Collections
-                </Link>
-              </li>
-              <li className="mt-[25px] max-md:mt-2">
-                <Link className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]" href={router.metadata}>
+                <Link
+                  className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
+                  href={routes.utilities.children.collection.redirect}
+                >
                   Metadata
                 </Link>
               </li>
               <li className="mt-[25px] max-md:mt-2">
-                <Link className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]" href={router.storages}>
+                <Link
+                  className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
+                  href={routes.utilities.children.fastCollection.redirect}
+                >
+                  Fast Collection
+                </Link>
+              </li>
+              <li className="mt-[25px] max-md:mt-2">
+                <Link
+                  className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
+                  href={routes.utilities.children.storage.redirect}
+                >
                   Storage
                 </Link>
               </li>
@@ -87,7 +93,11 @@ const Footer = function () {
             <ul>
               <h2 className="mb-9 max-md:mb-4 text-[19px] font-bold text-white max-md:text-[12px]">Resources</h2>
               <li className="mt-[25px] max-md:mt-2">
-                <Link className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]" href={router.document}>
+                <Link
+                  className="cursor-pointer text-[15px] leading-[20px] text-gray-400 max-md:text-[12px]"
+                  href={routes.document.redirect}
+                  target="_blank"
+                >
                   Documentation
                 </Link>
               </li>
@@ -196,7 +206,7 @@ const Footer = function () {
             </div>
           </ul>
           <div className="text-[15px] text-[rgb(153,153,153)] max-md:text-[12px] max-md:whitespace-normal max-md:scale-[0.8] text-end">
-            © 2024 Design & Develop With By Cardano2vn
+            © 2024 Design & Develop By Cardano2vn
           </div>
         </footer>
         {/* bottom-end */}

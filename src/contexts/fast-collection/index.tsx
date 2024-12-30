@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { convertObject } from "@/utils";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { dashboardRoutes } from "@/constants/routers";
+import { routes } from "@/constants/routes";
 import { parseError } from "@/utils/error/parse-error";
 
 type UploadCsvContextType = {
@@ -35,9 +35,7 @@ export default function UploadCSVProvider({ children }: PropsWithChildren) {
       }
       toast({
         title: "Create Collection Success",
-        description: (
-          <Button onClick={() => router.push(dashboardRoutes.utilities.children.collection.redirect + `/${data.id}`)}>Go to Collection</Button>
-        ),
+        description: <Button onClick={() => router.push(routes.utilities.children.collection.redirect + `/${data.id}`)}>Go to Collection</Button>,
       });
     } catch (e) {
       toast({

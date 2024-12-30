@@ -4,18 +4,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FileDisplay from "@/components/common/file-display";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import { isNil } from "lodash";
 import { useUnitContext } from "@/contexts/unit";
-import Loading from "@/app/(loading)/loading";
-import Property from "../_components/property";
+import Property from "../../_components/property";
 import { hexToString } from "@meshsdk/core";
 import CopyButton from "@/components/common/copy-button";
-import TransactionHistory from "../_components/transaction-history";
+import TransactionHistory from "../../_components/transaction-history";
 
 export default function DetailsPage() {
   const { assetDetails, handleBurn, handleUpdate, isAuthor, metadataToUpdate } = useUnitContext();
 
-  if (isNil(assetDetails)) return <Loading />;
   const { asset_name, policy_id, metadata, fingerprint, quantity } = assetDetails;
 
   const assetNameString = hexToString(asset_name.replace(/^000de140/, ""));
@@ -75,10 +72,10 @@ export default function DetailsPage() {
               <div className="space-y-4">
                 {isAuthor && (
                   <div className="flex gap-4">
-                    <Button onClick={handleUpdate} className="flex-1 bg-gray-800 hover:bg-gray-700">
+                    <Button onClick={handleUpdate} className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black">
                       Update
                     </Button>
-                    <Button onClick={handleBurn} className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black">
+                    <Button onClick={handleBurn} className="flex-1 bg-red-500 hover:bg-red-600 text-black ">
                       Burn
                     </Button>
                   </div>

@@ -1,22 +1,13 @@
-const router = {
-  landing: "/",
-  metadata: "/dashboard/metadata",
-  storages: "/dashboard/storages",
-  mint: "/dashboard/mint",
-  document: "/document",
-} as const;
-
-export default router;
-
-export const publicRoutes = [
-  { name: "Home", redirect: router.landing },
-  { name: "Mint", redirect: router.mint },
-  { name: "Metadata", redirect: router.metadata },
-  { name: "Storages", redirect: router.storages },
-  { name: "Documentation", redirect: router.document },
-];
-
-export const dashboardRoutes = {
+export const routes = {
+  document: {
+    redirect: "https://github.com/cardano2vn/cip68generator/wiki",
+  },
+  landing: {
+    redirect: "/",
+  },
+  login: {
+    redirect: "/login",
+  },
   home: {
     redirect: "/dashboard",
   },

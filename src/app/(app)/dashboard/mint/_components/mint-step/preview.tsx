@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import { getContractPolicyId } from "@/services/contract/get-policy-id";
 import CopyButton from "@/components/common/copy-button";
 import { SaveMetadata } from "../save-metadata";
+import { useWallet } from "@/hooks/use-wallet";
+import { stringToHex } from "@meshsdk/core";
 
 export default function PreviewStep({
   stepper,
@@ -24,6 +26,7 @@ export default function PreviewStep({
   collectionToSave: string;
   setCollectionToSave: (value: string) => void;
 }) {
+  const { address } = useWallet();
   const [nftPolicyId, setNftPolicyId] = useState<string>("");
   const assetNameSort = basicInfoToMint?.assetName || "No name";
   const totalSupply = basicInfoToMint?.quantity || "1";
@@ -31,8 +34,9 @@ export default function PreviewStep({
   const mediaType = imgSrc == "" ? "text/plain" : metadataToMint?.mediaType || "image/png";
 
   useEffect(() => {
-    getContractPolicyId().then(setNftPolicyId);
-  }, []);
+    if (!address) return;
+    getContractPolicyId({ address }).then(setNftPolicyId);
+  }, [address]);
 
   return (
     <div className="h-full py-8 px-10 m-auto flex flex-col">
@@ -71,7 +75,7 @@ export default function PreviewStep({
                   </div>
                   <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg">
                     <span className="text-sm text-gray-400 text-ellipsis overflow-hidden whitespace-nowrap h-10 py-2">
-                      Asset ID: (will show affter mint)
+                      Asset Hash: {stringToHex(assetNameSort)}
                     </span>
                   </div>
                   <div className="flex items-center justify-between p-2 bg-gray-800 rounded-lg ">

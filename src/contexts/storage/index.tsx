@@ -2,7 +2,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { dashboardRoutes } from "@/constants/routers";
+import { routes } from "@/constants/routes";
 import { toast } from "@/hooks/use-toast";
 import { deleteMedia, getMedia } from "@/services/database/media";
 import { uploadIPFS } from "@/services/upload";
@@ -67,7 +67,7 @@ export default function UploadProvider({ children }: PropsWithChildren) {
         toast({
           title: "success",
           variant: "default",
-          description: <Button onClick={() => router.push(dashboardRoutes.utilities.children.storage.redirect)}>Go to Storage</Button>,
+          description: <Button onClick={() => router.push(routes.utilities.children.storage.redirect)}>Go to Storage</Button>,
         });
         setListFileToUpload([]);
       } else {

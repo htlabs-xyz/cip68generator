@@ -4,7 +4,7 @@
 import { createContext, useContext, useEffect } from "react";
 import { defineStepper } from "@stepperize/react";
 import { toast } from "@/hooks/use-toast";
-import { useBlockchainContext } from "@/components/providers/blockchain";
+import { useWallet } from "@/hooks/use-wallet";
 import { isEmpty, isNil } from "lodash";
 import { useQuery } from "@tanstack/react-query";
 import { getAssetInfo } from "@/services/blockchain/getAssetInfo";
@@ -17,6 +17,8 @@ import { createUpdateTransaction } from "@/services/contract/update";
 import { getAssetTxHistory } from "@/services/blockchain/get-asset-tx-history";
 import { submitTx } from "@/services/blockchain/submitTx";
 import { parseError } from "@/utils/error/parse-error";
+import NotFound from "@/app/not-found";
+import Loading from "@/app/(loading)/loading";
 
 const { useStepper: useUpdateStepper, steps: updateSteps } = defineStepper(
   { id: "metadata", title: "Metadata" },
@@ -47,7 +49,7 @@ type UnitContextType = UnitStore & {
 };
 
 export default function UnitProvider({ unit, children }: { unit: string; children: React.ReactNode }) {
-  const { signTx, address } = useBlockchainContext();
+  const { signTx, address } = useWallet();
 
   const updateStepper = useUpdateStepper();
   const burnStepper = useBurnStepper();
@@ -68,13 +70,13 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
     setQuantityToBurn,
   } = useUnitStore();
 
-  const { data: assetData, isLoading } = useQuery({
+  const { data: assetData, isLoading: assetLoading } = useQuery({
     queryKey: ["getAssetInfo", unit],
     queryFn: () => getAssetInfo(unit),
     enabled: !isNil(unit) && !isEmpty(unit),
   });
 
-  const { data: assetTxHistory } = useQuery({
+  const { data: assetTxHistory, isLoading: txLoading } = useQuery({
     queryKey: ["getAssetTxHistory", unit, txCurrentPage],
     queryFn: () =>
       getAssetTxHistory({
@@ -86,10 +88,6 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
   });
 
   useEffect(() => {
-    setLoading(isLoading);
-  }, [isLoading]);
-
-  useEffect(() => {
     if (assetData?.data && !isNil(assetData.data.metadata)) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { _pk, ...metadata } = assetData.data.metadata;
@@ -98,7 +96,7 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
       setMetadataToUpdate({});
       setQuantityToBurn({ quantity: 1 });
     }
-  }, [assetData, isLoading]);
+  }, [assetData, assetLoading]);
 
   const pubKeyHash = !isNil(address) && deserializeAddress(address)?.pubKeyHash;
 
@@ -108,11 +106,11 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
   );
 
   const handleUpdate = () => {
-    redirect(`/dashboard/${unit}/update`);
+    redirect(`/dashboard/asset/${unit}/update`);
   };
 
   const handleBurn = () => {
-    redirect(`/dashboard/${unit}/burn`);
+    redirect(`/dashboard/asset/${unit}/burn`);
   };
 
   const startUpdating = async () => {
@@ -176,6 +174,7 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
       });
     }
   };
+
   const startBurning = async () => {
     resetTasks();
     burnStepper.goTo("transaction");
@@ -237,6 +236,8 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
       });
     }
   };
+  if (loading || assetLoading || txLoading) return <Loading />;
+  if (isNil(assetData?.data)) return <NotFound />;
 
   return (
     <UnitContext.Provider
@@ -244,7 +245,7 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
         unit,
         isAuthor,
         assetDetails: assetData?.data || null!,
-        loading: loading,
+        loading: loading || assetLoading || txLoading,
         assetTxHistory: assetTxHistory?.data || [],
         setLoading,
         metadataToUpdate,

@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
-import StepperNav from "../../_components/update-step/stepper-nav";
-import { MetadataStep, PreviewStep, ResultStep, TransactionStep } from "../../_components/update-step";
+import StepperNav from "../../../_components/update-step/stepper-nav";
+import { MetadataStep, PreviewStep, ResultStep, TransactionStep } from "../../../_components/update-step";
 import { useUnitContext } from "@/contexts/unit";
 
 export default function Page() {

@@ -34,7 +34,7 @@ export function MenuList() {
                         asChild
                         disabled={disabled}
                       >
-                        <Link href={href} className="flex items-center">
+                        <Link href={href} className="flex items-center" target={href.startsWith("http") ? "_blank" : ""}>
                           <span className={cn("flex h-10 w-10 items-center justify-center")}>
                             <Icon className="h-6 w-6" />
                           </span>
@@ -53,7 +53,12 @@ export function MenuList() {
               {bottomItem.map(({ href, icon }, index) => {
                 const Icon = Icons[icon || "arrowRight"];
                 return (
-                  <Link key={index} href={href} className="flex h-10 w-full items-center justify-center rounded text-secondary hover:text-primary">
+                  <Link
+                    key={index}
+                    href={href}
+                    target={href.startsWith("http") ? "_blank" : ""}
+                    className="flex h-10 w-full items-center justify-center rounded text-secondary hover:text-primary"
+                  >
                     <Icon className="h-6 w-6" />
                   </Link>
                 );

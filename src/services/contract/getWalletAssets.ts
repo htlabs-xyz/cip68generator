@@ -1,9 +1,11 @@
 "use server";
+import { appNetworkId } from "@/constants";
 import { Cip68Contract } from "@/contract";
-import { blockfrostFetcher, koiosFetcher } from "@/lib/cardano";
+import { blockfrostFetcher, blockfrostProvider, koiosFetcher } from "@/lib/cardano";
 import { AssetDetails, AssetType } from "@/types";
 import { parseError } from "@/utils/error/parse-error";
-import { hexToString } from "@meshsdk/core";
+import { hexToString, MeshWallet } from "@meshsdk/core";
+import { isNil } from "lodash";
 
 export async function getWalletAssets({
   walletAddress,
@@ -17,8 +19,23 @@ export async function getWalletAssets({
   limit?: number;
 }) {
   try {
+    if (isNil(walletAddress)) {
+      throw new Error("walletAddress is Null");
+    }
+    const wallet = new MeshWallet({
+      networkId: appNetworkId,
+      fetcher: blockfrostProvider,
+      submitter: blockfrostProvider,
+      key: {
+        type: "address",
+        address: walletAddress,
+      },
+    });
+    const cip68Contract: Cip68Contract = new Cip68Contract({
+      wallet: wallet,
+    });
     const assetsAddress: AssetType[] = await koiosFetcher.fetchAssetsFromAddress(walletAddress);
-    const filteredAssetsAddress = assetsAddress.filter((asset) => asset.policy_id === new Cip68Contract({}).policyId);
+    const filteredAssetsAddress = assetsAddress.filter((asset) => asset.policy_id === cip68Contract.policyId);
     const filteredAssetsAddressQuery = filteredAssetsAddress.filter((asset) => {
       const assetNameString = hexToString(asset.asset_name);
       return assetNameString.toLowerCase().includes(query.toLowerCase());
