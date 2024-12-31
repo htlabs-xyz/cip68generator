@@ -550,6 +550,91 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     expect(txHash.length).toBe(64);
   });
 
+  test("[TC19]: When Burn User Asset and Reference Asset and send ada for platform fee successfully.", async function () {
+    return;
+    const cip68Contract: Cip68Contract = new Cip68Contract({
+      wallet: wallet,
+    });
+    const unsignedTx: string = await cip68Contract.tc19([
+      {
+        assetName: "CIP68 Generators",
+        quantity: "-1",
+      },
+    ]);
+    const signedTx = wallet.signTx(unsignedTx, true);
+    const txHash = await wallet.submitTx(signedTx);
+    console.log("https://preview.cexplorer.io/tx/" + txHash);
+    expect(txHash.length).toBe(64);
+  });
+
+  test("[TC20]: Burn asset bị thiếu User Asset Hoặc Reference Asset Hoặc thiếu cả hai.", async function () {
+    return;
+    const cip68Contract: Cip68Contract = new Cip68Contract({
+      wallet: wallet,
+    });
+    const unsignedTx: string = await cip68Contract.tc20([
+      {
+        assetName: "CIP68 Generators",
+        quantity: "-1",
+      },
+    ]);
+    const signedTx = wallet.signTx(unsignedTx, true);
+    const txHash = await wallet.submitTx(signedTx);
+    console.log("https://preview.cexplorer.io/tx/" + txHash);
+    expect(txHash.length).toBe(64);
+  });
+
+  test("[TC21]: Burn assets but the ada sent to the platform is less than the fee defined in params.", async function () {
+    return;
+    const cip68Contract: Cip68Contract = new Cip68Contract({
+      wallet: wallet,
+    });
+    const unsignedTx: string = await cip68Contract.tc21([
+      {
+        assetName: "CIP68 Generators",
+        quantity: "-1",
+      },
+    ]);
+    const signedTx = wallet.signTx(unsignedTx, true);
+    const txHash = await wallet.submitTx(signedTx);
+    console.log("https://preview.cexplorer.io/tx/" + txHash);
+    expect(txHash.length).toBe(64);
+  });
+
+  test("[TC22]: Burn assets but the address sent in the platform is different from the address of the exchange fee defined in params.", async function () {
+    return;
+    const cip68Contract: Cip68Contract = new Cip68Contract({
+      wallet: wallet,
+    });
+    const unsignedTx: string = await cip68Contract.tc22([
+      {
+        assetName: "CIP68 Generators",
+        quantity: "-1",
+      },
+    ]);
+    const signedTx = wallet.signTx(unsignedTx, true);
+    const txHash = await wallet.submitTx(signedTx);
+    console.log("https://preview.cexplorer.io/tx/" + txHash);
+    expect(txHash.length).toBe(64);
+  });
+
+  test("[TC23]: When burning ada transaction the attached reference asset is sent to a different address or not sent to the user.", async function () {
+    return;
+    const cip68Contract: Cip68Contract = new Cip68Contract({
+      wallet: wallet,
+    });
+    const unsignedTx: string = await cip68Contract.tc23([
+      {
+        assetName: "CIP68 Generators",
+        quantity: "-1",
+      },
+    ]);
+    const signedTx = wallet.signTx(unsignedTx, true);
+    const txHash = await wallet.submitTx(signedTx);
+    console.log("https://preview.cexplorer.io/tx/" + txHash);
+    expect(txHash.length).toBe(64);
+  });
+
   test("[SC25]: redeemer remove spend UTxO do burn but attach 1 more UTxO but this UTxO is only for metadata change and send to author's address", async function () {
     return;
     const cip68Contract: Cip68Contract = new Cip68Contract({

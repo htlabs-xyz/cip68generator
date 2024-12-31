@@ -1055,15 +1055,471 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
   };
 
   /**
+   * @method TC19
+   * @description [TC19]: When Burn User Asset and Reference Asset and send ada for platform fee successfully.
+   */
+  tc19 = async (params: { assetName: string; quantity: string; txHash?: string }[]) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder;
+    await Promise.all(
+      params.map(async ({ assetName, quantity, txHash }) => {
+        const userUtxos = await this.getAddressUTXOAssets(walletAddress, this.policyId + CIP68_222(stringToHex(assetName)));
+        const amount = userUtxos.reduce((amount, utxos) => {
+          return (
+            amount +
+            utxos.output.amount.reduce((amt, utxo) => {
+              if (utxo.unit === this.policyId + CIP68_222(stringToHex(assetName))) {
+                return amt + Number(utxo.quantity);
+              }
+              return amt;
+            }, 0)
+          );
+        }, 0);
+        const storeUtxo = !isNil(txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (!storeUtxo) throw new Error("Store UTXO not found");
+
+        if (-Number(quantity) === amount) {
+          unsignedTx
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .mintPlutusScriptV3()
+            .mint("-1", this.policyId, CIP68_100(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .spendingPlutusScriptV3()
+            .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+            .txInInlineDatumPresent()
+            .txInRedeemerValue(mConStr1([]))
+            .txInScript(this.storeScriptCbor);
+        } else {
+          unsignedTx
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .txOut(walletAddress, [
+              {
+                unit: this.policyId + CIP68_222(stringToHex(assetName)),
+                quantity: String(amount + Number(quantity)),
+              },
+            ]);
+        }
+      }),
+    );
+
+    unsignedTx
+      .txOut(APP_WALLET_ADDRESS, [
+        {
+          unit: "lovelace",
+          quantity: "1000000",
+        },
+      ])
+
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .changeAddress(walletAddress)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+
+    return await unsignedTx.complete();
+  };
+
+  /**
+   * @method TC20
+   * @description [TC21]: When Burn User Asset and Reference Asset and send ada for platform fee successfully.
+   */
+  tc20 = async (params: { assetName: string; quantity: string; txHash?: string }[]) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder;
+    await Promise.all(
+      params.map(async ({ assetName, quantity, txHash }) => {
+        const userUtxos = await this.getAddressUTXOAssets(walletAddress, this.policyId + CIP68_222(stringToHex(assetName)));
+        const amount = userUtxos.reduce((amount, utxos) => {
+          return (
+            amount +
+            utxos.output.amount.reduce((amt, utxo) => {
+              if (utxo.unit === this.policyId + CIP68_222(stringToHex(assetName))) {
+                return amt + Number(utxo.quantity);
+              }
+              return amt;
+            }, 0)
+          );
+        }, 0);
+        const storeUtxo = !isNil(txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (!storeUtxo) throw new Error("Store UTXO not found");
+
+        if (-Number(quantity) === amount) {
+          unsignedTx
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .mintPlutusScriptV3()
+            .mint("-1", this.policyId, CIP68_100(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .spendingPlutusScriptV3()
+            .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+            .txInInlineDatumPresent()
+            .txInRedeemerValue(mConStr1([]))
+            .txInScript(this.storeScriptCbor);
+        } else {
+          unsignedTx
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .txOut(walletAddress, [
+              {
+                unit: this.policyId + CIP68_222(stringToHex(assetName)),
+                quantity: String(amount + Number(quantity)),
+              },
+            ]);
+        }
+      }),
+    );
+
+    unsignedTx
+      .txOut(APP_WALLET_ADDRESS, [
+        {
+          unit: "lovelace",
+          quantity: "1000000",
+        },
+      ])
+
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .changeAddress(walletAddress)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+
+    return await unsignedTx.complete();
+  };
+
+  /**
+   * @method TC21
+   * @description [TC21]: When Burn User Asset and Reference Asset and send ada for platform fee successfully.
+   */
+  tc21 = async (params: { assetName: string; quantity: string; txHash?: string }[]) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder;
+    await Promise.all(
+      params.map(async ({ assetName, quantity, txHash }) => {
+        const userUtxos = await this.getAddressUTXOAssets(walletAddress, this.policyId + CIP68_222(stringToHex(assetName)));
+        const amount = userUtxos.reduce((amount, utxos) => {
+          return (
+            amount +
+            utxos.output.amount.reduce((amt, utxo) => {
+              if (utxo.unit === this.policyId + CIP68_222(stringToHex(assetName))) {
+                return amt + Number(utxo.quantity);
+              }
+              return amt;
+            }, 0)
+          );
+        }, 0);
+        const storeUtxo = !isNil(txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (!storeUtxo) throw new Error("Store UTXO not found");
+
+        if (-Number(quantity) === amount) {
+          unsignedTx
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .mintPlutusScriptV3()
+            .mint("-1", this.policyId, CIP68_100(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .spendingPlutusScriptV3()
+            .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+            .txInInlineDatumPresent()
+            .txInRedeemerValue(mConStr1([]))
+            .txInScript(this.storeScriptCbor);
+        } else {
+          unsignedTx
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .txOut(walletAddress, [
+              {
+                unit: this.policyId + CIP68_222(stringToHex(assetName)),
+                quantity: String(amount + Number(quantity)),
+              },
+            ]);
+        }
+      }),
+    );
+
+    unsignedTx
+      .txOut(APP_WALLET_ADDRESS, [
+        {
+          unit: "lovelace",
+          quantity: "900000",
+        },
+      ])
+
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .changeAddress(walletAddress)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+
+    return await unsignedTx.complete();
+  };
+
+  /**
+   * @method TC22
+   * @description [TC22]: Burn assets but the address sent in the platform is different from the address of the exchange fee defined in params.
+   */
+  tc22 = async (params: { assetName: string; quantity: string; txHash?: string }[]) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder;
+    await Promise.all(
+      params.map(async ({ assetName, quantity, txHash }) => {
+        const userUtxos = await this.getAddressUTXOAssets(walletAddress, this.policyId + CIP68_222(stringToHex(assetName)));
+        const amount = userUtxos.reduce((amount, utxos) => {
+          return (
+            amount +
+            utxos.output.amount.reduce((amt, utxo) => {
+              if (utxo.unit === this.policyId + CIP68_222(stringToHex(assetName))) {
+                return amt + Number(utxo.quantity);
+              }
+              return amt;
+            }, 0)
+          );
+        }, 0);
+        const storeUtxo = !isNil(txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (!storeUtxo) throw new Error("Store UTXO not found");
+
+        if (-Number(quantity) === amount) {
+          unsignedTx
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .mintPlutusScriptV3()
+            .mint("-1", this.policyId, CIP68_100(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .spendingPlutusScriptV3()
+            .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+            .txInInlineDatumPresent()
+            .txInRedeemerValue(mConStr1([]))
+            .txInScript(this.storeScriptCbor);
+        } else {
+          unsignedTx
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .txOut(walletAddress, [
+              {
+                unit: this.policyId + CIP68_222(stringToHex(assetName)),
+                quantity: String(amount + Number(quantity)),
+              },
+            ]);
+        }
+      }),
+    );
+
+    unsignedTx
+      .txOut(this.storeAddress, [
+        {
+          unit: "lovelace",
+          quantity: "900000",
+        },
+      ])
+
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .changeAddress(walletAddress)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+
+    return await unsignedTx.complete();
+  };
+
+  /**
+   * @method TC23
+   * @description [TC23]: When burning ada transaction the attached reference asset is sent to a different address or not sent to the user.
+   */
+  tc23 = async (params: { assetName: string; quantity: string; txHash?: string }[]) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder;
+    await Promise.all(
+      params.map(async ({ assetName, quantity, txHash }) => {
+        const userUtxos = await this.getAddressUTXOAssets(walletAddress, this.policyId + CIP68_222(stringToHex(assetName)));
+        const amount = userUtxos.reduce((amount, utxos) => {
+          return (
+            amount +
+            utxos.output.amount.reduce((amt, utxo) => {
+              if (utxo.unit === this.policyId + CIP68_222(stringToHex(assetName))) {
+                return amt + Number(utxo.quantity);
+              }
+              return amt;
+            }, 0)
+          );
+        }, 0);
+        const storeUtxo = !isNil(txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (!storeUtxo) throw new Error("Store UTXO not found");
+
+        if (-Number(quantity) === amount) {
+          unsignedTx
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .mintPlutusScriptV3()
+            .mint("-1", this.policyId, CIP68_100(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .spendingPlutusScriptV3()
+            .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+            .txInInlineDatumPresent()
+            .txInRedeemerValue(mConStr1([]))
+            .txInScript(this.storeScriptCbor);
+        } else {
+          unsignedTx
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .txOut(walletAddress, [
+              {
+                unit: this.policyId + CIP68_222(stringToHex(assetName)),
+                quantity: String(amount + Number(quantity)),
+              },
+            ]);
+        }
+      }),
+    );
+
+    unsignedTx
+      .txOut(APP_WALLET_ADDRESS, [
+        {
+          unit: "lovelace",
+          quantity: "1000000",
+        },
+      ])
+
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .changeAddress(walletAddress)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+
+    return await unsignedTx.complete();
+  };
+
+  /**
    * @method TC24
-   * @description [TC24]: Casting assets but default fields in metadata (name, image, media_type, author) do not exist.
+   * @description [TC24]: By default request is 2 outputs. Make a new output sent to another address.
    *
    * @param params { assetName; quantity; txHash? }
    * @param test: { assetName; metadata; quantity; txHash? }
    *
    * @returns unsignedTx
    */
-  tc24 = async () => {};
+  tc24 = async (params: { assetName: string; quantity: string; txHash?: string }[]) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder;
+    await Promise.all(
+      params.map(async ({ assetName, quantity, txHash }) => {
+        const userUtxos = await this.getAddressUTXOAssets(walletAddress, this.policyId + CIP68_222(stringToHex(assetName)));
+        const amount = userUtxos.reduce((amount, utxos) => {
+          return (
+            amount +
+            utxos.output.amount.reduce((amt, utxo) => {
+              if (utxo.unit === this.policyId + CIP68_222(stringToHex(assetName))) {
+                return amt + Number(utxo.quantity);
+              }
+              return amt;
+            }, 0)
+          );
+        }, 0);
+        const storeUtxo = !isNil(txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (!storeUtxo) throw new Error("Store UTXO not found");
+
+        if (-Number(quantity) === amount) {
+          unsignedTx
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .mintPlutusScriptV3()
+            .mint("-1", this.policyId, CIP68_100(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .spendingPlutusScriptV3()
+            .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+            .txInInlineDatumPresent()
+            .txInRedeemerValue(mConStr1([]))
+            .txInScript(this.storeScriptCbor);
+        } else {
+          unsignedTx
+            .mintPlutusScriptV3()
+            .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
+            .mintRedeemerValue(mConStr1([]))
+            .mintingScript(this.mintScriptCbor)
+
+            .txOut(walletAddress, [
+              {
+                unit: this.policyId + CIP68_222(stringToHex(assetName)),
+                quantity: String(amount + Number(quantity)),
+              },
+            ]);
+        }
+      }),
+    );
+
+    unsignedTx
+      .txOut(APP_WALLET_ADDRESS, [
+        {
+          unit: "lovelace",
+          quantity: "1000000",
+        },
+      ])
+
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .changeAddress(walletAddress)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+
+    return await unsignedTx.complete();
+  };
 
   /**
    * @method TC25
