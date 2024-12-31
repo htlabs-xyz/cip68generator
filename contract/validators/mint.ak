@@ -16,7 +16,8 @@ use types/cip68
 validator mint(
   platform: VerificationKeyHash,
   platform_fee: Int,
-  store: ScriptHash,
+  store_payment_credential: ScriptHash,
+  store_stake_credential: VerificationKeyHash,
   issuer: VerificationKeyHash,
 ) {
   mint(redeemer: MintRedeemer, policy_id: PolicyId, transaction: Transaction) {
@@ -26,7 +27,10 @@ validator mint(
       mint
         |> without_lovelace()
         |> assets.flatten()
-    let store_address = address.from_script(store)
+    let store_address =
+      store_payment_credential
+        |> address.from_script()
+        |> address.with_delegation_key(store_stake_credential)
     let platform_address = address.from_verification_key(platform)
     let output_utxo_platform =
       utils.find_output(outputs, platform_fee, platform_address)

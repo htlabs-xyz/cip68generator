@@ -28,7 +28,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
    *
    * @returns unsignedTx
    */
-
   mint = async (
     params: {
       assetName: string;
@@ -678,31 +677,380 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
    * @description [SC10]: Asset update successful. Exchange fee transferred to exchange address. Asset updated successful.
    *
    */
-  tc10 = async (param: { assetName: string; metadata: Record<string, string>; quantity: string; txHash?: string }) => {
+  tc10 = async (params: { assetName: string; metadata: Record<string, string>; txHash?: string }[]) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
-    const unsignedTx = this.meshTxBuilder
+    const unsignedTx = this.meshTxBuilder;
+    await Promise.all(
+      params.map(async ({ assetName, metadata, txHash }) => {
+        const storeUtxo = !isNil(txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (!storeUtxo) throw new Error("Store UTXO not found");
+        unsignedTx
+          .spendingPlutusScriptV3()
+          .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+          .txInInlineDatumPresent()
+          .txInRedeemerValue(mConStr0([]))
+          .txInScript(this.storeScriptCbor)
+          .txOut(this.storeAddress, [
+            {
+              unit: this.policyId + CIP68_100(stringToHex(assetName)),
+              quantity: "1",
+            },
+          ])
+          .txOutInlineDatumValue(metadataToCip68(metadata));
+      }),
+    );
 
-      .mintPlutusScriptV3()
-      .mint(param.quantity, this.policyId, CIP68_222(stringToHex(param.assetName)))
-      .mintingScript(this.mintScriptCbor)
-      .mintRedeemerValue(mConStr0([]))
-
-      .mintPlutusScriptV3()
-      .mint("1", this.policyId, CIP68_100(stringToHex(param.assetName)))
-      .mintingScript(this.mintScriptCbor)
-      .mintRedeemerValue(mConStr0([]))
-      .txOut(this.storeAddress, [
+    unsignedTx
+      .txOut(APP_WALLET_ADDRESS, [
         {
-          unit: this.policyId + CIP68_100(stringToHex(param.assetName)),
-          quantity: "1",
+          unit: "lovelace",
+          quantity: "1000000",
         },
       ])
-      .txOutInlineDatumValue(metadataToCip68(param.metadata))
-      .changeAddress(walletAddress)
       .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .changeAddress(walletAddress)
       .selectUtxosFrom(utxos)
       .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
       .setNetwork(appNetwork);
+
+    return await unsignedTx.complete();
+  };
+
+  /**
+   * @method TC11
+   * @description [TC11]: In metadata change author field or no author field
+   */
+  tc11 = async (params: { assetName: string; metadata: Record<string, string>; txHash?: string }[]) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder;
+    await Promise.all(
+      params.map(async ({ assetName, metadata, txHash }) => {
+        const storeUtxo = !isNil(txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (!storeUtxo) throw new Error("Store UTXO not found");
+        unsignedTx
+          .spendingPlutusScriptV3()
+          .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+          .txInInlineDatumPresent()
+          .txInRedeemerValue(mConStr0([]))
+          .txInScript(this.storeScriptCbor)
+          .txOut(this.storeAddress, [
+            {
+              unit: this.policyId + CIP68_100(stringToHex(assetName)),
+              quantity: "1",
+            },
+          ])
+          .txOutInlineDatumValue(metadataToCip68(metadata));
+      }),
+    );
+
+    unsignedTx
+      .txOut(APP_WALLET_ADDRESS, [
+        {
+          unit: "lovelace",
+          quantity: "1000000",
+        },
+      ])
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .changeAddress(walletAddress)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+
+    return await unsignedTx.complete();
+  };
+
+  /**
+   * @method TC12
+   * @description [TC12]: Author did not send signature to confirm transaction.
+   */
+  tc12 = async (params: { assetName: string; metadata: Record<string, string>; txHash?: string }[]) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder;
+    await Promise.all(
+      params.map(async ({ assetName, metadata, txHash }) => {
+        const storeUtxo = !isNil(txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (!storeUtxo) throw new Error("Store UTXO not found");
+        unsignedTx
+          .spendingPlutusScriptV3()
+          .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+          .txInInlineDatumPresent()
+          .txInRedeemerValue(mConStr0([]))
+          .txInScript(this.storeScriptCbor)
+          .txOut(this.storeAddress, [
+            {
+              unit: this.policyId + CIP68_100(stringToHex(assetName)),
+              quantity: "1",
+            },
+          ])
+          .txOutInlineDatumValue(metadataToCip68(metadata));
+      }),
+    );
+
+    unsignedTx
+      .txOut(APP_WALLET_ADDRESS, [
+        {
+          unit: "lovelace",
+          quantity: "1000000",
+        },
+      ])
+      .changeAddress(walletAddress)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+
+    return await unsignedTx.complete();
+  };
+
+  /**
+   * @method TC13
+   * @description [TC13]: The user entered an incorrect asset name or did not enter an asset name.
+   */
+  tc13 = async (params: { assetName: string; metadata: Record<string, string>; txHash?: string }[]) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder;
+    await Promise.all(
+      params.map(async ({ assetName, metadata, txHash }) => {
+        const storeUtxo = !isNil(txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (!storeUtxo) throw new Error("Store UTXO not found");
+        unsignedTx
+          .spendingPlutusScriptV3()
+          .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+          .txInInlineDatumPresent()
+          .txInRedeemerValue(mConStr0([]))
+          .txInScript(this.storeScriptCbor)
+          .txOut(this.storeAddress, [
+            {
+              unit: this.policyId + CIP68_100(stringToHex(assetName)),
+              quantity: "1",
+            },
+          ])
+          .txOutInlineDatumValue(metadataToCip68(metadata));
+      }),
+    );
+
+    unsignedTx
+      .txOut(APP_WALLET_ADDRESS, [
+        {
+          unit: "lovelace",
+          quantity: "1000000",
+        },
+      ])
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .changeAddress(walletAddress)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+
+    return await unsignedTx.complete();
+  };
+
+  /**
+   * @method TC14
+   * @description [TC13]: The user entered an incorrect asset name or did not enter an asset name.
+   */
+  tc14 = async (params: { assetName: string; metadata: Record<string, string>; txHash?: string }[]) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder;
+    await Promise.all(
+      params.map(async ({ assetName, metadata, txHash }) => {
+        const storeUtxo = !isNil(txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (!storeUtxo) throw new Error("Store UTXO not found");
+        unsignedTx
+          .spendingPlutusScriptV3()
+          .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+          .txInInlineDatumPresent()
+          .txInRedeemerValue(mConStr0([]))
+          .txInScript(this.storeScriptCbor)
+          .txOut(this.storeAddress, [
+            {
+              unit: this.policyId + CIP68_100(stringToHex(assetName)),
+              quantity: "1",
+            },
+          ])
+          .txOutInlineDatumValue(metadataToCip68(metadata));
+      }),
+    );
+
+    unsignedTx
+      .txOut(APP_WALLET_ADDRESS, [
+        {
+          unit: "lovelace",
+          quantity: "900000",
+        },
+      ])
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .changeAddress(walletAddress)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+
+    return await unsignedTx.complete();
+  };
+
+  /**
+   * @method TC15
+   * @description [TC15]: The user entered an incorrect asset name or did not enter an asset name.
+   */
+  tc15 = async (params: { assetName: string; metadata: Record<string, string>; txHash?: string }[]) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder;
+    await Promise.all(
+      params.map(async ({ assetName, metadata, txHash }) => {
+        const storeUtxo = !isNil(txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (!storeUtxo) throw new Error("Store UTXO not found");
+        unsignedTx
+          .spendingPlutusScriptV3()
+          .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+          .txInInlineDatumPresent()
+          .txInRedeemerValue(mConStr0([]))
+          .txInScript(this.storeScriptCbor)
+          .txOut(this.storeAddress, [
+            {
+              unit: this.policyId + CIP68_100(stringToHex(assetName)),
+              quantity: "1",
+            },
+          ])
+          .txOutInlineDatumValue(metadataToCip68(metadata));
+      }),
+    );
+
+    unsignedTx
+      .txOut(APP_WALLET_ADDRESS, [
+        {
+          unit: "lovelace",
+          quantity: "1000000",
+        },
+      ])
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .changeAddress(walletAddress)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+
+    return await unsignedTx.complete();
+  };
+
+  /**
+   * @method TC16
+   * @description [TC16]: The output of UTxOs is missing the part sent to the smart contract store address or sent to the exchange fee is missing.
+   */
+  tc16 = async (params: { assetName: string; metadata: Record<string, string>; txHash?: string }[]) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder;
+    await Promise.all(
+      params.map(async ({ assetName, metadata, txHash }) => {
+        const storeUtxo = !isNil(txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (!storeUtxo) throw new Error("Store UTXO not found");
+        unsignedTx
+          .spendingPlutusScriptV3()
+          .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+          .txInInlineDatumPresent()
+          .txInRedeemerValue(mConStr0([]))
+          .txInScript(this.storeScriptCbor)
+          .txOut(APP_WALLET_ADDRESS, [
+            {
+              unit: this.policyId + CIP68_100(stringToHex(assetName)),
+              quantity: "1",
+            },
+          ])
+          .txOutInlineDatumValue(metadataToCip68(metadata));
+      }),
+    );
+
+    unsignedTx
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .changeAddress(walletAddress)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+
+    return await unsignedTx.complete();
+  };
+
+  /**
+   * @method TC17
+   * @description [TC17]: The transaction input does not contain a UTxO containing a Reference Asset.
+   */
+  tc17 = async (params: { assetName: string; metadata: Record<string, string>; txHash?: string }[]) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder;
+    await Promise.all(
+      params.map(async ({ assetName, metadata, txHash }) => {
+        const storeUtxo = !isNil(txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (!storeUtxo) throw new Error("Store UTXO not found");
+        unsignedTx
+          .spendingPlutusScriptV3()
+          .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+          .txInInlineDatumPresent()
+          .txInRedeemerValue(mConStr0([]))
+          .txInScript(this.storeScriptCbor)
+          .txOutInlineDatumValue(metadataToCip68(metadata));
+      }),
+    );
+
+    unsignedTx
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .changeAddress(walletAddress)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+
+    return await unsignedTx.complete();
+  };
+
+  /**
+   * @method TC18
+   * @description [TC18]: The transaction input does not contain a UTxO containing a Reference Asset.
+   */
+  tc18 = async (params: { assetName: string; metadata: Record<string, string>; txHash?: string }[]) => {
+    const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+    const unsignedTx = this.meshTxBuilder;
+    await Promise.all(
+      params.map(async ({ assetName, metadata, txHash }) => {
+        const storeUtxo = !isNil(txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        if (!storeUtxo) throw new Error("Store UTXO not found");
+        unsignedTx
+          .spendingPlutusScriptV3()
+          .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+          .txInInlineDatumPresent()
+          .txInRedeemerValue(mConStr1([]))
+          .txInScript(this.storeScriptCbor)
+          .txOutInlineDatumValue(metadataToCip68(metadata))
+          .txOut(this.storeAddress, [
+            {
+              unit: this.policyId + CIP68_100(stringToHex(assetName)),
+              quantity: "1",
+            },
+          ])
+          .txOutInlineDatumValue(metadataToCip68(metadata));
+      }),
+    );
+
+    unsignedTx
+      .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
+      .changeAddress(walletAddress)
+      .selectUtxosFrom(utxos)
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+
     return await unsignedTx.complete();
   };
 
