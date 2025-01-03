@@ -7,6 +7,7 @@ import { parseError } from "@/utils/error/parse-error";
 export const getAppStatistic = async () => {
   try {
     const storedAddress = new Cip68Contract({}).storeAddress;
+    console.log(storedAddress)
     const response = await blockfrostFetcher.fetchAddressDetail(storedAddress);
     const storeUtxos = await blockfrostFetcher.fetchUtxoByAddress(storedAddress);
     const totalUpdate = storeUtxos.length;
