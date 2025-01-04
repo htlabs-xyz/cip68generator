@@ -77,10 +77,10 @@ validator store(
             lovelace_of(input.output.value),
             author_address,
           )
-        // let check_remove_asset =
-        //   utils.check_remove_asset(inputs, extra_signatories)
+        let check_remove_asset =
+          utils.check_remove_asset(inputs, extra_signatories)
         and {
-          // check_remove_asset?,
+          check_remove_asset?,
           output_utxo_author != None,
           output_utxo_platform != None,
         }
