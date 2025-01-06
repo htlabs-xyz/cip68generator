@@ -134,4 +134,26 @@ export class BlockfrostFetcher {
       throw parseHttpError(error);
     }
   }
+
+  async fetchAccountAssociate(stakeAddress: string) {
+    try {
+      const { data, status } = await this._axiosInstance.get(`/accounts/${stakeAddress}/addresses`);
+
+      if (status === 200 || status == 202) return data;
+      throw parseHttpError(data);
+    } catch (error) {
+      throw parseHttpError(error);
+    }
+  }
+
+  async fetchDetailsAccount(stakeAddress: string) {
+    try {
+      const { data, status } = await this._axiosInstance.get(`/accounts/${stakeAddress}/addresses/total`);
+
+      if (status === 200 || status == 202) return data;
+      throw parseHttpError(data);
+    } catch (error) {
+      throw parseHttpError(error);
+    }
+  }
 }
