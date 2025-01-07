@@ -7,6 +7,8 @@ services:
     volumes:
       - ${KUBO_STAGING}:/export
       - ${KUBO_DATA}:/data/ipfs
+    ports:
+      - 5001:5001
     networks:
       - cip68
     restart: unless-stopped
