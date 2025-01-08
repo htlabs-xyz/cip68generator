@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { blockfrostProvider } from "@/lib/cardano";
 import { describe, test, expect, beforeEach, jest } from "@jest/globals";
-import { BlockfrostProvider, BrowserWallet, deserializeAddress, KoiosProvider, MeshTxBuilder, MeshWallet } from "@meshsdk/core";
+import { BlockfrostProvider, BrowserWallet, deserializeAddress, MeshWallet } from "@meshsdk/core";
 import { Cip68Contract } from "../script";
 import { APP_WALLET_ADDRESS } from "../script/constants";
 
@@ -48,7 +48,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   });
 
   test("Burn", async function () {
-    // return;
+    return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
@@ -73,6 +73,18 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     const unsignedTx: string = await cip68Contract.update([
       {
         assetName: "CIP68 Generators",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+      {
+        assetName: "CIP68 Generators 1",
         metadata: {
           name: "2",
           image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
