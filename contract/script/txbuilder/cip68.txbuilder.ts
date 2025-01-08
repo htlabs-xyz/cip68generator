@@ -1,12 +1,4 @@
-import {
-  CIP68_222,
-  stringToHex,
-  mConStr0,
-  CIP68_100,
-  metadataToCip68,
-  mConStr1,
-  deserializeAddress,
-} from "@meshsdk/core";
+import { CIP68_222, stringToHex, mConStr0, CIP68_100, metadataToCip68, mConStr1, deserializeAddress } from "@meshsdk/core";
 
 import { MeshAdapter } from "../adapters/mesh.adapter";
 import { APP_WALLET_ADDRESS, EXCHANGE_FEE_PRICE } from "../constants";
@@ -235,7 +227,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
         unsignedTx
           .spendingPlutusScriptV3()
           .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
-          .txInInlineDatumPresent()
+          .txInInlineDatumPresent() // output // datum sinh ra
           .txInRedeemerValue(mConStr0([]))
           .txInScript(this.storeScriptCbor)
           .txOut(this.storeAddress, [
@@ -1606,7 +1598,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
 
     if (!storeUtxo) throw new Error("Store UTXO not found");
     if (!storeUtxo1) throw new Error("Store1 UTXO not found");
-    
 
     const unsignedTx = this.meshTxBuilder
 

@@ -74,7 +74,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       {
         assetName: "CIP68 Generators",
         metadata: {
-          name: "CIP68 Generators",
+          name: "2",
           image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
           mediaType: "image/jpg",
           description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
