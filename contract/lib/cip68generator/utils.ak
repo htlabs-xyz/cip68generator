@@ -51,11 +51,7 @@ pub fn find_output(
 }
 
 // check output with lovelace and address
-// địa chỉ ví sàn , địa chỉ user và không có bất kì một địa chỉ nào khác
-
-// địa chỉ sàn địa chỉ của user hải phần này phải đi đôi với nhau theo từng cặp một
-
-pub fn check_output(
+pub fn check_output_remove(
   outputs: List<Output>,
   platform_address: Address,
   platform_fee: Int,
@@ -70,6 +66,21 @@ pub fn check_output(
         } })
 
   list.length(outputs) == 2
+}
+
+// check amount output update
+pub fn check_output_update(
+  inputs: List<Input>,
+  outputs: List<Output>,
+  address: Address,
+) -> Bool {
+  let utxo_outputs =
+    list.filter(outputs, fn(output) { output.address == address })
+
+  let utxo_inputs =
+    list.filter(inputs, fn(input) { input.output.address == address })
+
+  list.length(utxo_outputs) == list.length(utxo_inputs)
 }
 
 // filter flatten and return pair of asset names

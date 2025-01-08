@@ -28,7 +28,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
     const unsignedTx = this.meshTxBuilder.mintPlutusScriptV3();
     const txOutReceiverMap = new Map<string, { unit: string; quantity: string }[]>();
-
     await Promise.all(
       params.map(async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
         const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
@@ -227,7 +226,8 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
         unsignedTx
           .spendingPlutusScriptV3()
           .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
-          .txInInlineDatumPresent() // output // datum sinh ra
+          .txInInlineDatumPresent() // Lấy datum ở utxo chi tiêu
+          // .spendingReferenceTxInInlineDatumPresent() // lấy datum ở utxo reference
           .txInRedeemerValue(mConStr0([]))
           .txInScript(this.storeScriptCbor)
           .txOut(this.storeAddress, [

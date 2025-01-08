@@ -27,6 +27,7 @@ validator mint(
       mint
         |> without_lovelace()
         |> assets.flatten()
+        
     let store_address =
       store_payment_credential
         |> address.from_script()
