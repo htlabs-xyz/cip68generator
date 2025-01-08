@@ -6,9 +6,6 @@ import {
   metadataToCip68,
   mConStr1,
   deserializeAddress,
-  UTxO,
-  serializeAddressObj,
-  scriptAddress,
 } from "@meshsdk/core";
 
 import { MeshAdapter } from "../adapters/mesh.adapter";
@@ -1599,6 +1596,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     test: { assetName: string; metadata: Record<string, string>; quantity: string; txHash?: string },
   ) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
+
     const storeUtxo = !isNil(param.txHash)
       ? await this.getUtxoForTx(this.storeAddress, param.txHash)
       : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(param.assetName)));
@@ -1608,6 +1606,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
 
     if (!storeUtxo) throw new Error("Store UTXO not found");
     if (!storeUtxo1) throw new Error("Store1 UTXO not found");
+    
 
     const unsignedTx = this.meshTxBuilder
 

@@ -72,7 +72,7 @@ validator store(
           cip68.get(metadatum_input, types.author_key)
         let author_address = address.from_verification_key(author_input)
         let output_utxo_author =
-          utils.find_output(
+          utils.check_outp(
             outputs,
             lovelace_of(input.output.value),
             author_address,

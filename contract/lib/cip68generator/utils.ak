@@ -51,14 +51,16 @@ pub fn find_output(
 }
 
 // check output with lovelace and address
-// pub fn check_output(outputs: List<Output>, price: Int, address: Address) -> Bool {
-//   list.filter(
-//     outputs,
-//     fn(output) {
-//       lovelace_of(output.value) >= price && output.address.payment_credential == address.payment_credential
-//     },
-//   ) == 1
-// }
+pub fn check_output(outputs: List<Output>, price: Int, address: Address) -> Bool {
+  let outs =
+    list.filter(
+      outputs,
+      fn(output) {
+        lovelace_of(output.value) < price || output.address.payment_credential != address.payment_credential
+      },
+    )
+  list.length(outs) == 0
+}
 
 // filter flatten and return pair of asset names
 pub fn filter_and_pair(

@@ -48,7 +48,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   });
 
   test("Burn", async function () {
-    return;
+    // return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
@@ -642,7 +642,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     });
     const unsignedTx: string = await cip68Contract.tc25(
       {
-        assetName: "CIP68 Generators v1",
+        assetName: "CIP68 Generators",
         quantity: "-1",
       },
       {
@@ -671,11 +671,11 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     });
     const unsignedTx: string = await cip68Contract.tc26(
       {
-        assetName: "CIP68 Generators v10",
+        assetName: "CIP68 Generators",
         quantity: "-1",
       },
       {
-        assetName: "CIP68 Generators v2",
+        assetName: "CIP68 Generators 1",
         metadata: {
           name: "CIP68 Generators",
           image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
