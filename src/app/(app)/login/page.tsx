@@ -44,14 +44,20 @@ export default function SignInViewPage() {
               <CardDescription>Connect a wallet on {appNetwork} to continue</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
-              <WalletItem
-                wallet={wallet}
-                item={wallets.eternl}
-                onConnectWallet={(wallet) => {
-                  return signIn(session, wallet);
-                }}
-                status={walletInstalledList.find((wallet) => wallet.id === wallets.eternl.id) ? "ready" : "not installed"}
-              />
+              {Object.entries(wallets).map(([key, value]) => {
+                if (value.id != "eternl") return;
+                return (
+                  <WalletItem
+                    key={key}
+                    wallet={wallet}
+                    item={value}
+                    onConnectWallet={(wallet) => {
+                      return signIn(session, wallet);
+                    }}
+                    status={walletInstalledList.find((wallet) => wallet.id === value.id) ? "ready" : "not installed"}
+                  />
+                );
+              })}
             </CardContent>
           </Card>
           <p className="px-8 text-center text-sm text-muted-foreground">
