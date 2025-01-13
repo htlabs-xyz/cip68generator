@@ -1,6 +1,5 @@
 import {
   applyParamsToScript,
-  CIP68_100,
   deserializeAddress,
   IFetcher,
   MeshTxBuilder,
@@ -16,7 +15,6 @@ import { Plutus } from "../types";
 import { APP_WALLET_ADDRESS, title } from "../constants";
 import plutus from "../../plutus.json";
 import { appNetworkId } from "@/constants";
-import { getPkHash } from "@/utils";
 import { blockfrostProvider } from "@/lib/cardano";
 
 export class MeshAdapter {
