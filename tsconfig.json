@@ -19,6 +19,7 @@
       }
     ],
     "paths": {
+      "package": ["./package.json"],
       "@/*": ["./src/*"],
       "@/public/*": ["./public/*"],
       "@/contract": ["./contract/index.ts"]

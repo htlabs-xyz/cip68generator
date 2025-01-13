@@ -1,4 +1,5 @@
 import { FilterType } from "@/types";
+import packageJson from "package";
 
 export const appConfig = {
   title: "CIP68 Generator",
@@ -16,3 +17,4 @@ export const filterDefault: FilterType = {
   },
   query: "",
 };
+export const appVersion = packageJson.version;

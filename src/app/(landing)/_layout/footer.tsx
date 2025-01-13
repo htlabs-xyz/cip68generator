@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FaMailBulk, FaTelegramPlane, FaYoutube } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { appImage } from "@/public/images";
-import { appSocialMedia } from "@/constants";
+import { appSocialMedia, appVersion } from "@/constants";
 import { routes } from "@/constants/routes";
 import { cn } from "@/utils";
 
@@ -179,7 +179,7 @@ const Footer = function ({ className = "" }: { className?: string }) {
             </div>
           </ul>
           <div className="text-[15px] text-[rgb(153,153,153)] max-md:text-[12px] max-md:whitespace-normal max-md:scale-[0.8] text-end">
-            © 2024 Design & Develop By Cardano2vn
+            © 2024 Design & Develop By Cardano2vn, Version {appVersion}
           </div>
         </footer>
         {/* bottom-end */}
