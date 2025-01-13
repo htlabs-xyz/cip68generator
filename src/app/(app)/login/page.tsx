@@ -3,25 +3,21 @@ import Link from "next/link";
 import Image from "next/image";
 import { appImage } from "@/public/images";
 import { routes } from "@/constants/routes";
-import { useWalletList } from "@meshsdk/react";
 import { useSession } from "next-auth/react";
 import { useWallet } from "@/hooks/use-wallet";
-import { Wallet } from "@meshsdk/core";
-import { appNetwork } from "@/constants";
+import { appNetwork, wallets } from "@/constants";
 import { redirect, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import WalletItem from "./_components/wallet-item";
+import { useWalletList } from "@meshsdk/react";
 
 export default function SignInViewPage() {
   const router = useRouter();
-  const wallets = useWalletList();
   const { data: session, status } = useSession();
-  const { signIn, wallet } = useWallet();
+  const walletInstalledList = useWalletList();
 
-  const handleConnectWallet = async function (wallet: Wallet) {
-    await signIn(session, wallet);
-  };
+  const { signIn, wallet } = useWallet();
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -48,12 +44,14 @@ export default function SignInViewPage() {
               <CardDescription>Connect a wallet on {appNetwork} to continue</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
-              {wallets.map((item) => {
-                if (item.name != "eternl") {
-                  return null;
-                }
-                return <WalletItem key={item.name} wallet={wallet} item={item} onConnectWallet={handleConnectWallet} />;
-              })}
+              <WalletItem
+                wallet={wallet}
+                item={wallets.eternl}
+                onConnectWallet={(wallet) => {
+                  return signIn(session, wallet);
+                }}
+                status={walletInstalledList.find((wallet) => wallet.id === wallets.eternl.id) ? "ready" : "not installed"}
+              />
             </CardContent>
           </Card>
           <p className="px-8 text-center text-sm text-muted-foreground">

@@ -1,5 +1,7 @@
 import { Icons } from "@/components/common/icons";
 import { StaticImageData } from "next/image";
+import { Wallet } from "@meshsdk/core";
+
 declare module "next-auth" {
   interface User {
     address?: string;
@@ -19,9 +21,7 @@ export type StatisticType = {
   totalUpdate?: number;
 };
 
-export type WalletType = {
-  name: string;
-  image: string | StaticImageData;
+export type WalletType = Wallet & {
   balance?: number;
   address?: string;
   downloadApi?: string;
