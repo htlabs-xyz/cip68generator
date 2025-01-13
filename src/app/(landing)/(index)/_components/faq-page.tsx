@@ -3,8 +3,8 @@ import { bannerImage } from "@/public/images";
 import Title from "./title";
 import faqs from "../_data/faq";
 import FaqItem from "./faq-item";
-import Header from "../_layout/header";
-import Footer from "../_layout/footer";
+import Header from "../../_layout/header";
+import Footer from "../../_layout/footer";
 export default function FaqPage() {
   return (
     <main className="relative box-border flex flex-col items-center justify-center">

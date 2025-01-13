@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { FaMailBulk, FaTelegramPlane, FaYoutube } from "react-icons/fa";
@@ -8,38 +7,12 @@ import { FaXTwitter } from "react-icons/fa6";
 import { appImage } from "@/public/images";
 import { appSocialMedia } from "@/constants";
 import { routes } from "@/constants/routes";
+import { cn } from "@/utils";
 
-const Footer = function () {
+const Footer = function ({ className = "" }: { className?: string }) {
   return (
-    <div className="px-auto pb-[50px] mt-[100px]">
+    <div className={cn(className, "px-auto pb-[50px] mt-[100px]")}>
       <div className="mx-auto my-0 w-full max-w-[1200px]">
-        {/* subscribe-begin */}
-        <section className="flex justify-between rounded-xl bg-slate-900 px-[100px] py-[45px] max-sm:flex-col max-sm:px-3 max-sm:py-7">
-          <div className="mr-[100px] h-[150px] w-[150px] max-md:w-[100px] max-md:h-[100px]">
-            <Image className="h-full w-full animate-pulse object-cover" src={appImage.logo} alt="" />
-          </div>
-          <div className="flex-1">
-            <h2 className="text-[40px] leading-[50px] max-sm:text-[22px] max-md:text-[20px]">
-              Subscribe To <span className="pl-4 text-[#ccc]">CIP68 Generator</span>
-            </h2>
-            <p className="mb-7 mt-4 text-gray-400 max-sm:text-[12px] max-md:mt-1">
-              Be the first to know about our new products, services, and special promotions directly in your inbox
-            </p>
-            <Button className="flex h-[35px] items-center gap-2 rounded-md max-md:text-[12px]">
-              <span>Subcribe</span>
-              <svg width="12" height="9" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M7.92652 0.198869L11.9459 4.51989C12.1925 4.78505 12.1925 5.21495 11.9459 5.48011L7.92652 9.80113C7.67987 10.0663 7.27998 10.0663 7.03334 9.80113C6.78669 9.53597 6.78669 9.10606 7.03334 8.8409L9.9745 5.67898H0.631579C0.282768 5.67898 0 5.37499 0 5C0 4.62501 0.282768 4.32102 0.631579 4.32102H9.9745L7.03334 1.1591C6.78669 0.893936 6.78669 0.464029 7.03334 0.198869C7.27998 -0.0662898 7.67987 -0.0662898 7.92652 0.198869Z"
-                  fill="currentColor"
-                ></path>
-              </svg>
-            </Button>
-          </div>
-        </section>
-        {/* subscribe-end */}
-
         {/*  footer-begin */}
         <section className="mt-[100px] max-md:my-[50px] flex justify-between max-md:flex-col">
           <div className="flex w-[412px] flex-col">

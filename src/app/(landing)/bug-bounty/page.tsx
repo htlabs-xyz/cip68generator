@@ -1,151 +1,216 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Zap, Shield, CheckCircle, ChevronRight, CalendarDays } from "lucide-react";
+import Header from "../_layout/header";
+import Footer from "../_layout/footer";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export default function BugBountyLandingPage() {
+export default function BugBountyLanding() {
   return (
-    <div className="min-h-screen">
-      <header className="border-b">
-        <div className="container mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold">CIP68 Bug Bounty Program</h1>
-        </div>
-      </header>
-
-      <main className="container mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        {/* Hero Section */}
-        <section className="text-center py-12">
-          <h2 className="text-4xl font-extrabold mb-4">Help Us Secure Our Platform</h2>
-          <p className="text-xl text-muted-foreground mb-8">Join our bug bounty program and earn rewards for finding vulnerabilities!</p>
-          <Button size="lg">Start Hunting</Button>
+    <div className="relative  px-4 overflow-x-hidden">
+      <Header />
+      <main className="flex-1">
+        <section className="w-full py-12 md:py-24 lg:py-52 xl:py-72 bg-section">
+          <div className="container px-4 md:px-6 mx-auto">
+            <div className="flex flex-col items-center space-y-4 text-center">
+              <div className="space-y-2">
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">Cardano Bug Bounty Program</h1>
+                <p className="mx-auto max-w-[700px] text-gray-400 md:text-xl">
+                  Help us improve security and earn rewards for finding vulnerabilities in our CIP68 implementation.
+                </p>
+              </div>
+              <div className="space-x-4">
+                <Button asChild>
+                  <a href="https://github.com/cardano2vn/cip68generator/issues" target="_blank" rel="noopener noreferrer">
+                    Start Hunting
+                  </a>
+                </Button>
+                <Button variant="outline">Learn More</Button>
+              </div>
+            </div>
+          </div>
         </section>
-
-        {/* Program Overview */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Program Overview</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">
-              Our bug bounty program aims to identify and mitigate potential vulnerabilities before they can be exploited by malicious actors,
-              ensuring the safety and trust of our users. We focus on smart contract code and application functionalities.
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Scope and Eligibility */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Scope and Eligibility</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
-              <li>
-                Smart contract source code on GitHub:{" "}
-                <a href="https://github.com/cardano2vn/cip68generator" className="underline hover:no-underline">
-                  https://github.com/cardano2vn/cip68generator
-                </a>
-              </li>
-              <li>Application functionalities through the web interface</li>
-              <li>Specific URLs and features as outlined in the program details</li>
-            </ul>
-          </CardContent>
-        </Card>
-
-        {/* Rewards Structure */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Rewards Structure</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Severity</TableHead>
-                  <TableHead>Reward</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell>High</TableCell>
-                  <TableCell>300 ADA</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Medium</TableCell>
-                  <TableCell>150 ADA</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Low</TableCell>
-                  <TableCell>100 ADA</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-
-        {/* How to Report */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>How to Report</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ol className="list-decimal pl-5 space-y-2 text-muted-foreground">
-              <li>Access the Issues page of our repository</li>
-              <li>Choose "New Issue" and fill out the provided template</li>
-              <li>Describe the bug in detail, including steps to reproduce, test environment, and severity</li>
-              <li>Submit the issue on GitHub</li>
-            </ol>
-          </CardContent>
-        </Card>
-
-        {/* Rules and Guidelines */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Rules and Guidelines</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
-              <li>Provide detailed reports with reproducible steps</li>
-              <li>Do not use automated scanners</li>
-              <li>Submit each vulnerability as a separate issue unless they need to be linked for maximum impact</li>
-              <li>Do not report issues from third-party providers</li>
-              <li>No DoS/DDoS, social engineering, or spam attacks</li>
-              <li>Stay within the defined scope</li>
-            </ul>
-          </CardContent>
-        </Card>
-
-        {/* Timeline */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Program Timeline</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">The bug bounty program will run from January 14, 2025, to February 9, 2025.</p>
-          </CardContent>
-        </Card>
-
-        {/* Contact Information */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Contact Us</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">
-              If you have any questions about the program, please contact us at{" "}
-              <a href="mailto:bugbounty@example.com" className="underline hover:no-underline">
-                bugbounty@example.com
-              </a>
-              .
-            </p>
-          </CardContent>
-        </Card>
+        <section id="overview" className="w-full py-12 md:py-24 lg:py-32 ">
+          <div className="container px-4 md:px-6 mx-auto">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">Overview</h2>
+            <div className="grid gap-6 lg:grid-cols-3 lg:gap-12 place-items-center">
+              <Card>
+                <CardHeader>
+                  <Shield className="w-8 h-8 mb-2 text-primary" />
+                  <CardTitle>Scope</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>Smart contract code and web application functionality for CIP68 implementation.</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <Zap className="w-8 h-8 mb-2 text-primary" />
+                  <CardTitle>Objective</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>Identify and mitigate potential vulnerabilities before they can be exploited by malicious actors.</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CheckCircle className="w-8 h-8 mb-2 text-primary" />
+                  <CardTitle>Benefits</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>Enhance platform security, build user trust, and reward contributors for finding bugs.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-section">
+          <div className="container px-4 md:px-6 mx-auto">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">How to Participate</h2>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+              <div className="flex flex-col items-center text-center">
+                <h3 className="text-xl font-semibold mb-2">1. Access Repository</h3>
+                <p className="text-gray-600">Visit our GitHub repository to review the code and documentation.</p>
+              </div>
+              <ChevronRight className="hidden md:block w-6 h-6 text-gray-400" />
+              <div className="flex flex-col items-center text-center">
+                <h3 className="text-xl font-semibold mb-2">2. Find Vulnerabilities</h3>
+                <p className="text-gray-600">Analyze the code and application for potential security issues.</p>
+              </div>
+              <ChevronRight className="hidden md:block w-6 h-6 text-gray-400" />
+              <div className="flex flex-col items-center text-center">
+                <h3 className="text-xl font-semibold mb-2">3. Report Issues</h3>
+                <p className="text-gray-600">Submit detailed bug reports through GitHub Issues.</p>
+              </div>
+              <ChevronRight className="hidden md:block w-6 h-6 text-gray-400" />
+              <div className="flex flex-col items-center text-center">
+                <h3 className="text-xl font-semibold mb-2">4. Earn Rewards</h3>
+                <p className="text-gray-600">Receive bounties for valid, unique vulnerability reports.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="timeline" className="w-full py-12 md:py-24 lg:py-32 ">
+          <div className="container px-4 md:px-6 mx-auto">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">Program Timeline</h2>
+            <div className="grid gap-6 md:grid-cols-3">
+              <Card>
+                <CardHeader>
+                  <CalendarDays className="w-8 h-8 mb-2 text-primary" />
+                  <CardTitle>Preparation</CardTitle>
+                  <CardDescription>22/11/2024 - 29/12/2024</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p>Setting up program rules, documentation, and bug reporting tools.</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CalendarDays className="w-8 h-8 mb-2 text-primary" />
+                  <CardTitle>Execution</CardTitle>
+                  <CardDescription>14/01/2025 - 09/02/2025</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p>Active bug hunting period. Receive and process vulnerability reports.</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CalendarDays className="w-8 h-8 mb-2 text-primary" />
+                  <CardTitle>Evaluation</CardTitle>
+                  <CardDescription>11/02/2025 - 12/02/2025</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p>Analyze results and publish program outcome report.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+        <section id="rewards" className="w-full py-12 md:py-24 lg:py-32 bg-section ">
+          <div className="container px-4 md:px-6 mx-auto">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">Reward Tiers</h2>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-12">
+              <Card>
+                <CardHeader>
+                  <CardTitle>High Severity</CardTitle>
+                  <CardDescription>Asset spending, voting rights loss, stake loss</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">300 ADA</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Medium Severity</CardTitle>
+                  <CardDescription>API key leaks, incorrect pricing, asset info mismatch</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">150 ADA</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Low Severity</CardTitle>
+                  <CardDescription>UI bugs, responsiveness issues, typos, broken links</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">100 ADA</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
       </main>
-
-      <footer className="border-t py-4">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p>&copy; 2025 CIP68 Bug Bounty Program. All rights reserved.</p>
+      <section id="faq" className="w-full py-12 md:py-24 lg:py-32">
+        <div className="container px-4 md:px-6 mx-auto">
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">Frequently Asked Questions</h2>
+          <Tabs defaultValue="eligibility" className="w-full max-w-3xl mx-auto">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="eligibility">Eligibility</TabsTrigger>
+              <TabsTrigger value="reporting">Reporting</TabsTrigger>
+              <TabsTrigger value="rewards">Rewards</TabsTrigger>
+            </TabsList>
+            <TabsContent value="eligibility">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Who can participate?</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>Anyone can participate in the bug bounty program, except for employees and contractors of the project.</p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="reporting">
+              <Card>
+                <CardHeader>
+                  <CardTitle>How do I report a vulnerability?</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>
+                    Submit your findings through GitHub Issues on our repository. Provide a detailed description, steps to reproduce, and any relevant
+                    attachments.
+                  </p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="rewards">
+              <Card>
+                <CardHeader>
+                  <CardTitle>How are rewards determined?</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>
+                    Rewards are based on the severity of the vulnerability and the quality of the report. Final decisions are made by the project
+                    team.
+                  </p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
-      </footer>
+      </section>
+      <Footer className="bg-section" />
     </div>
   );
 }

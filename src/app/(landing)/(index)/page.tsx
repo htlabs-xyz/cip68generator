@@ -1,141 +1,188 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bug, Shield, Zap, Trophy, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { getAppStatistic } from "@/services/blockchain/get-app-statistic";
+import StatisticItem from "./_components/statistic-item";
+import Title from "./_components/title";
+import features from "./_data/features";
+import Feature from "./_components/feature-section";
+import { founderData } from "./_data/founders";
+import Founder from "./_components/founder-section";
+import { routes } from "@/constants/routes";
 
-export default function BugBountyLanding() {
+import Image from "next/image";
+import { appImage } from "@/public/images";
+import Header from "../_layout/header";
+import Footer from "../_layout/footer";
+export default async function LandingPage() {
+  const { data: statistic } = await getAppStatistic();
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="px-4 lg:px-6 h-14 flex items-center">
-        <Link className="flex items-center justify-center" href="/#">
-          <Shield className="h-6 w-6 mr-2" />
-          <span className="font-bold">SecureProduct</span>
-        </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#program">
-            Program
-          </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#how-it-works">
-            How It Works
-          </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#rewards">
-            Rewards
-          </Link>
-        </nav>
-      </header>
-      <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
-          <div className="container px-4 md:px-6 mx-auto">
-            <div className="flex flex-col items-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">Join Our Bug Bounty Program</h1>
-                <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-                  Help us improve our security and earn rewards for finding vulnerabilities in our product.
-                </p>
-              </div>
-              <div className="space-x-4">
-                <Button>Get Started</Button>
-                <Button variant="outline">Learn More</Button>
-              </div>
+    <main className="relative  px-4 overflow-x-hidden">
+      <Header />
+      {/* banner-begin */}
+      <section className="px-0 pt-[215px] max-md:pt-[150px] max-md:px-3">
+        <aside className="mx-auto my-0 w-full max-w-[1200px]">
+          {/* slogan-begin */}
+          <section className="text-center">
+            <h2 className="text-[54px] leading-[64px] text-[#ff9345] max-md:text-[28px] max-md:leading-[33px] max-md:w-[320px] max-md:my-0 max-md:mx-auto">
+              Simplify Cardano Asset Creation
+            </h2>
+            <h3 className="mt-[15px] text-[42px] leading-[50px] text-[#fff] max-md:mt-[10px] max-md:text-[18px] max-md:leading-[22px]">
+              Open-Source Innovation for All
+            </h3>
+            <h4 className="text-[rgb(119, 119, 118)] mx-auto mb-0 mt-10 max-w-[940px] text-[16px] leading-[20px] max-md:mt-5 max-md:mx-auto max-md:mb-0 max-md:text-[12px] max-md:leading-[16px]">
+              CIP68 Generator is a tool designed to simplify the creation, management, and burning of CIP68-compliant native assets on the Cardano
+              platform
+            </h4>
+          </section>
+          {/* slogan-end */}
+
+          {/* links-begin */}
+          <div className="mt-[60px] max-md:mt-[30px] flex justify-center gap-10">
+            <Button className="box-border flex cursor-pointer items-center rounded-[10px] px-6 py-0 text-[16px] font-medium leading-8 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg max-md:text-[14px] max-md:h-[35px] max-md:rounded-[5px] gap-2 ">
+              <Link className="flex items-center gap-2" href={routes.mint.redirect}>
+                Mint Now
+                <svg width="12" height="9" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M7.92652 0.198869L11.9459 4.51989C12.1925 4.78505 12.1925 5.21495 11.9459 5.48011L7.92652 9.80113C7.67987 10.0663 7.27998 10.0663 7.03334 9.80113C6.78669 9.53597 6.78669 9.10606 7.03334 8.8409L9.9745 5.67898H0.631579C0.282768 5.67898 0 5.37499 0 5C0 4.62501 0.282768 4.32102 0.631579 4.32102H9.9745L7.03334 1.1591C6.78669 0.893936 6.78669 0.464029 7.03334 0.198869C7.27998 -0.0662898 7.67987 -0.0662898 7.92652 0.198869Z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </Link>
+            </Button>
+            <Button className="box-border flex cursor-pointer items-center rounded-[10px] px-6 py-0 text-[16px] font-medium leading-8 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg max-md:text-[14px] max-md:h-[35px] max-md:rounded-[5px] gap-2 ">
+              <Link className="flex items-center gap-2" href={"/#"}>
+                Subscription
+              </Link>
+            </Button>
+          </div>
+          {/* links-end */}
+
+          {/* statistic-begin */}
+          <div className="mt-[125px] flex h-[160px] items-center justify-around rounded-xl bg-[#13161B] px-[10px] py-0 text-center shadow-2xl max-md:mt-[35px] max-md:bg-none max-md:flex-wrap max-md:h-0 max-md:p-0">
+            {statistic && (
+              <>
+                <StatisticItem value={statistic.transaction} title="Transactions" />
+                <StatisticItem value={statistic.update} title="Assets Active" />
+                <StatisticItem value={statistic.mint} title="Minting Assets" />
+                <StatisticItem value={statistic.burn} title="Burning Assets" />
+              </>
+            )}
+          </div>
+          {/* statistic-end */}
+        </aside>
+      </section>
+      {/* banner-end */}
+
+      {/* feature-begin */}
+      <section className={"px-0 mt-[100px] max-md:mt-[200px]"}>
+        <aside className="mx-auto my-0 flex w-full max-w-[1200px] flex-col gap-2">
+          <Title title="Features" description="Discover the highlight features of our CIP68 Generator" />
+
+          {/* content-begin */}
+          <section className="grid grid-cols-3 gap-1 max-md:grid-cols-2 ">
+            {features.map(function (feature, index: number) {
+              return <Feature index={index} key={index} title={feature.title} slogan={feature.slogan} description={feature.description} />;
+            })}
+          </section>
+          {/* content-end */}
+        </aside>
+      </section>
+      {/* feature-end */}
+
+      {/* about-begin */}
+      <section className="px-0 mt-[100px]">
+        <aside className="mx-auto my-0 flex w-full max-w-[1200px] flex-col gap-2">
+          <div className="flex w-full gap-7 max-sm:flex-col">
+            <div className='m relative aspect-video w-[60%] rounded-3xl before:absolute before:left-8 before:top-8 before:h-full before:w-full before:rounded-3xl before:bg-slate-900 before:shadow-xl before:content-[""] max-sm:w-full'>
+              <iframe
+                className="absolute inset-0 z-10 block h-full w-full rounded-xl"
+                src="https://www.youtube.com/embed/_GrbIRoT3mU"
+                title="Open source dynamic assets (Token/NFT) generator (CIP68)"
+                frameBorder={"none"}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              ></iframe>
+            </div>
+            <div className="z-10 flex w-[40%] flex-col items-start gap-[15px] max-md:gap-3 max-sm:w-full">
+              <h2 className="text-left text-[25px]  font-bold max-md:text-xl">About CIP68 Generator</h2>
+              <p className="mb-1 text-[20px] font-normal max-md:text-lg">Open source dynamic assets (Token/NFT) generator (CIP68)</p>
+              <span className={"text-left leading-[1.8] max-md:text-base"}>
+                Open source dynamic assets (Token/NFT) generator (CIP68) CIP68 Generator is a tool designed to simplify the creation, management, and
+                burning of CIP68-compliant native assets on the Cardano platform. It provides an easy-to-use interface for non-technical users to
+                interact with these assets while also offering open-source code for developers to integrate and deploy applications faster and more
+                efficiently.
+              </span>
+              <Link href="https://cips.cardano.org/cip/CIP-68" target="_blank">
+                <Button className={"w-full px-8 py-6"}>Learn More Cip68</Button>
+              </Link>
             </div>
           </div>
-        </section>
-        <section id="program" className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
-          <div className="container px-4 md:px-6 mx-auto">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">Why Join Our Bug Bounty Program?</h2>
-            <div className="grid gap-6 lg:grid-cols-3 lg:gap-12 place-items-center">
-              <Card>
-                <CardHeader>
-                  <Bug className="w-8 h-8 mb-2" />
-                  <CardTitle>Find Vulnerabilities</CardTitle>
-                </CardHeader>
-                <CardContent>Help us identify security issues in our product and contribute to a safer digital environment.</CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <Trophy className="w-8 h-8 mb-2" />
-                  <CardTitle>Earn Rewards</CardTitle>
-                </CardHeader>
-                <CardContent>Receive competitive bounties for valid vulnerabilities, with rewards scaling based on severity.</CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <Zap className="w-8 h-8 mb-2" />
-                  <CardTitle>Boost Your Skills</CardTitle>
-                </CardHeader>
-                <CardContent>Challenge yourself, learn new techniques, and enhance your cybersecurity expertise.</CardContent>
-              </Card>
+        </aside>
+      </section>
+      {/* about-end */}
+
+      {/* founder-begin */}
+      <section className={"px-0 mt-[100px] max-md:mt-[50px]"}>
+        <aside className="mx-auto my-0 flex w-full max-w-[1200px] flex-col gap-2">
+          <Title title="Our Team" description="The driving force behind our success" />
+          {/* founder-begin */}
+          <section className="grid grid-cols-3 content-start justify-stretch gap-8 rounded-lg max-lg:grid-cols-2 max-sm:grid-cols-1">
+            {founderData.map(function (founder, index: number) {
+              return (
+                <Founder
+                  index={index}
+                  key={index}
+                  avatar={founder.avatar!}
+                  description={founder.description}
+                  firstName={founder.firstName}
+                  lastName={founder.lastName}
+                  id={index}
+                  linkedin={founder.linkedin}
+                  role={founder.role}
+                  twitter={founder.role}
+                  company={founder.company}
+                />
+              );
+            })}
+          </section>
+          {/* founder-end */}
+        </aside>
+      </section>
+      {/* founder-end */}
+      {/* subscribe-begin */}
+      <div className="px-auto pb-[50px] mt-[100px]">
+        <div className="mx-auto my-0 w-full max-w-[1200px]">
+          <section className="flex justify-between rounded-xl bg-slate-900 px-[100px] py-[45px] max-sm:flex-col max-sm:px-3 max-sm:py-7">
+            <div className="mr-[100px] h-[150px] w-[150px] max-md:w-[100px] max-md:h-[100px]">
+              <Image className="h-full w-full animate-pulse object-cover" src={appImage.logo} alt="" />
             </div>
-          </div>
-        </section>
-        <section id="how-it-works" className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6 mx-auto">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">How It Works</h2>
-            <ol className="grid gap-6 lg:grid-cols-3 lg:gap-12 place-items-center">
-              <li className="flex flex-col items-center text-center">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground">1</div>
-                <h3 className="mt-4 font-semibold">Sign Up</h3>
-                <p className="mt-2 text-gray-500 dark:text-gray-400">Create an account and agree to our program terms.</p>
-              </li>
-              <li className="flex flex-col items-center text-center">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground">2</div>
-                <h3 className="mt-4 font-semibold">Find Bugs</h3>
-                <p className="mt-2 text-gray-500 dark:text-gray-400">Test our product and report any vulnerabilities you discover.</p>
-              </li>
-              <li className="flex flex-col items-center text-center">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground">3</div>
-                <h3 className="mt-4 font-semibold">Get Rewarded</h3>
-                <p className="mt-2 text-gray-500 dark:text-gray-400">Receive bounties for valid, unique vulnerability reports.</p>
-              </li>
-            </ol>
-          </div>
-        </section>
-        <section id="rewards" className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
-          <div className="container px-4 md:px-6 mx-auto">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">Reward Tiers</h2>
-            <div className="grid gap-6 lg:grid-cols-4 lg:gap-12 place-items-center">
-              {["Low", "Medium", "High", "Critical"].map((severity, index) => (
-                <Card key={severity}>
-                  <CardHeader>
-                    <CardTitle>{severity}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-4xl font-bold">${(index + 1) * 500}</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Minimum Reward</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6 mx-auto">
-            <div className="flex flex-col items-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Ready to Start Hunting?</h2>
-                <p className="mx-auto max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
-                  Join our bug bounty program today and help us make our product more secure while earning rewards.
-                </p>
-              </div>
-              <Button className="inline-flex items-center">
-                Join Now
-                <ArrowRight className="ml-2 h-4 w-4" />
+            <div className="flex-1">
+              <h2 className="text-[40px] leading-[50px] max-sm:text-[22px] max-md:text-[20px]">
+                Subscribe To <span className="pl-4 text-[#ccc]">CIP68 Generator</span>
+              </h2>
+              <p className="mb-7 mt-4 text-gray-400 max-sm:text-[12px] max-md:mt-1">
+                Be the first to know about our new products, services, and special promotions directly in your inbox
+              </p>
+              <Button className="flex h-[35px] items-center gap-2 rounded-md max-md:text-[12px]">
+                <span>Subcribe</span>
+                <svg width="12" height="9" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M7.92652 0.198869L11.9459 4.51989C12.1925 4.78505 12.1925 5.21495 11.9459 5.48011L7.92652 9.80113C7.67987 10.0663 7.27998 10.0663 7.03334 9.80113C6.78669 9.53597 6.78669 9.10606 7.03334 8.8409L9.9745 5.67898H0.631579C0.282768 5.67898 0 5.37499 0 5C0 4.62501 0.282768 4.32102 0.631579 4.32102H9.9745L7.03334 1.1591C6.78669 0.893936 6.78669 0.464029 7.03334 0.198869C7.27998 -0.0662898 7.67987 -0.0662898 7.92652 0.198869Z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
               </Button>
             </div>
-          </div>
-        </section>
-      </main>
-      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center justify-center px-4 md:px-6 border-t">
-        <p className="text-xs text-gray-500 dark:text-gray-400">© 2024 SecureProduct Bug Bounty Program. All rights reserved.</p>
-        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-xs hover:underline underline-offset-4" href="/#">
-            Terms of Service
-          </Link>
-          <Link className="text-xs hover:underline underline-offset-4" href="/#">
-            Privacy
-          </Link>
-        </nav>
-      </footer>
-    </div>
+          </section>
+        </div>
+      </div>
+      {/* subscribe-end */}
+      {/* footer-begin */}
+      <Footer />
+      {/* footer-end */}
+    </main>
   );
 }
