@@ -31,7 +31,7 @@ export default function UploadFilePage() {
             ) : (
               <FilePicker
                 title=" Provide the file youd like to use. Make sure each name is
-          unique, and not contain any special characters."
+          unique"
                 setFiles={setListFileToUpload}
               />
             )}
