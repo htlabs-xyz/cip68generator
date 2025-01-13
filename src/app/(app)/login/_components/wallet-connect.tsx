@@ -36,7 +36,7 @@ export default function WalletConnect() {
           if (item.name != "eternl") {
             return null;
           }
-          return <WalletItem key={item.name} wallet={wallet} item={item} onConnectWallet={handleConnectWallet} />;
+          return <WalletItem key={item.name} wallet={wallet} item={item} onConnectWallet={handleConnectWallet} status={"ready"} />;
         })}
       </CardContent>
     </Card>
