@@ -8,7 +8,7 @@ import { useState } from "react";
 
 export default function HowItWorks() {
   const [activeTab, setActiveTab] = useState(0);
-  const totalTabs = 5;
+  const totalTabs = 4;
 
   const nextTab = () => {
     setActiveTab((prev) => (prev + 1) % totalTabs);
