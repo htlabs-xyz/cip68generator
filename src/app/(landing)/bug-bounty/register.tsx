@@ -1,65 +1,31 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/hooks/use-toast";
+import Link from "next/link";
 
 export function RegistrationForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsSubmitting(true);
-
-    // Here you would typically send the form data to your server
-    // For this example, we'll just simulate a submission
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    toast({
-      title: "Registration successful!",
-      description: "We will contact you soon.",
-    });
-
-    setIsSubmitting(false);
-  };
-
   return (
     <section id="register" className="w-full py-12 md:py-24 lg:py-32">
       <div className="container px-4 md:px-6 mx-auto">
-        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">Register</h2>
-
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Label htmlFor="name">Full Name</Label>
-              <Input id="name" name="name" required />
+        <h2 className="text-4xl font-bold text-center mb-16">Register</h2>
+        <div className="grid md:grid-cols-2 gap-12">
+          <div>
+            <p className="text-gray-400 text-lg mb-6">
+              Do you want to become a "Super Bug Hunter"? Register our bug bounty program now! Simply fill out the registration form below, and you'll
+              have the chance to uncover security vulnerabilities, sharpen your skills, and earn exciting rewards. Don't miss out on this opportunity!
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link href="https://forms.gle/Jdpz9vXJWHAqgXNN6" target="_blank">
+                <Button className="font-semibold px-8 py-3 rounded-md">
+                  Hunt now <span className="ml-2">→</span>
+                </Button>
+              </Link>
             </div>
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" required />
-            </div>
-            <div>
-              <Label htmlFor="github">GitHub Username</Label>
-              <Input id="github" name="github" required />
-            </div>
-            <div>
-              <Label htmlFor="experience">Security Experience</Label>
-              <Textarea id="experience" name="experience" required />
-            </div>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Registering..." : "Register to Participate"}
-            </Button>
-          </form>
-          <div className="flex items-center justify-center">
+          </div>
+          <div className="flex justify-center">
             <img
-              src="https://www.hackerone.com/sites/default/files/styles/carousel_spotlight_2x/public/BBLP_HowitworksCentralizedMgt.png.webp"
+              src="https://lh6.googleusercontent.com/MC_6ptThaBoOY0B5cKDNoiDjtCG_vp78lqq67hh5vwCyeAI4O3RrlNgeVqJRYeklKMxJAJqr2S89mghA7lpco_xoetIZrzLOi-ZY29mYxYJa6eoVujg3AWCd08RG9E9T0B98SgqWT7Q=w1916"
               alt="Bug Bounty Program Overview"
-              width={500}
-              height={300}
               className="rounded-lg object-cover"
             />
           </div>

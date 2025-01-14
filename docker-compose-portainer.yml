@@ -30,7 +30,7 @@ services:
       - stack.env
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.portainer
     ports:
       - "${APP_PORT}:3000"
     depends_on:

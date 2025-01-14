@@ -1,98 +1,67 @@
 export default function Timeline() {
+  // Dữ liệu các mốc thời gian
+  const milestones = [
+    {
+      name: "Preparation Phase",
+      dateRange: "22/11/2024 - 12/01/2025",
+      position: [131.11111111111111, 100.57142857142857],
+    },
+    {
+      name: "Execution Phase",
+      dateRange: "15/01/2025 - 16/02/2024",
+      position: [524.4444444444445, 100.57142857142857],
+    },
+    {
+      name: "Initial Review",
+      dateRange: "17/02/2025 - 18/02/2025",
+      position: [917.7777777777778, 100.57142857142857],
+    },
+    {
+      name: "Final Evaluation",
+      dateRange: "18/02/2025 - 23/02/2025",
+      position: [721.1111111111111, 251.42857142857142],
+    },
+    {
+      name: "Results Announcement",
+      dateRange: "24/02/2025 - 26/02/2025",
+      position: [327.77777777777777, 251.42857142857142],
+    },
+  ];
+
+  const getColor = (dateRange: string): string => {
+    const now = new Date();
+    const [day, month, year] = (dateRange.includes(" - ") ? dateRange.split(" - ")[0] : dateRange).split("/");
+    const end = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+    return now > end ? "#ff9447" : "#979695";
+  };
+
   return (
     <section id="timeline" className="w-full py-12 md:py-24 lg:py-32 ">
       <div className="px-4 md:px-6 mx-auto">
-        <h2 className="text-3xl font-bold text-white text-center mb-12">Timeline</h2>
-        <div className="relativ w-full mx-auto">
-          <svg width="100%" height="352" viewBox="0 0 1579 300" preserveAspectRatio="xMidYMid meet">
+        <h2 className="text-4xl font-bold text-center mb-16 ">Timeline</h2>
+        <div className="relative w-full mx-auto">
+          <svg width="100%" height="250" viewBox="0 0 1579 250" preserveAspectRatio="xMidYMid meet">
             <g transform="translate(199.5, 0)">
-              {/* Horizontal Lines */}
-              <path d="M-330.6111111111111 100.57142857142857 L902.7777777777778 100.57142857142857" stroke="#3b82f6" strokeWidth="2" fill="none" />
-
-              {/* Curved Line */}
+              {/* Đường ngang */}
+              <path d="M-330.6111111111111 100.57142857142857 L902.7777777777778 100.57142857142857" stroke="#ff9447" strokeWidth="2" fill="none" />
               <path
                 d="M932.7777777777778 100.57142857142857 h98.33333333333334 c98.33333333333334,0 98.33333333333334,150.85714285714283 0,150.85714285714283 L342.77777777777777 251.42857142857142"
-                stroke="#3b82f6"
-                strokeWidth="2"
+                stroke="#ff9447"
+                strokeWidth="3"
                 fill="none"
               />
 
-              {/* Timeline Points - Top Row */}
-              <g>
-                {/* Preparation Phase */}
-                <g transform="translate(131.11111111111111, 100.57142857142857)">
-                  <circle r="15" fill="#3b82f6" />
-                  <circle r="15" stroke="#3b82f6" strokeWidth="2" fill="none" />
-                  <text y="-50" textAnchor="middle" className="text-sm font-semibold fill-white">
-                    Preparation Phase
+              {/* Các mốc thời gian */}
+              {milestones.map((milestone, index) => (
+                <g key={index} transform={`translate(${milestone.position[0]}, ${milestone.position[1]})`}>
+                  <circle r="15" fill={getColor(milestone.dateRange)} />
+                  <circle r="15" stroke={getColor(milestone.dateRange)} strokeWidth="3" fill="none" />
+                  <text y="-50" textAnchor="middle" className="font-semibold fill-white">
+                    {milestone.name}
                   </text>
                   <text y="-28" textAnchor="middle" className="text-xs fill-gray-400">
-                    22/11/2024 - 29/12/2024
+                    {milestone.dateRange}
                   </text>
-                </g>
-
-                {/* Execution Phase */}
-                <g transform="translate(524.4444444444445, 100.57142857142857)">
-                  <circle r="15" fill="#3b82f6" />
-                  <circle r="15" stroke="#3b82f6" strokeWidth="2" fill="none" />
-                  <text y="-50" textAnchor="middle" className="text-sm font-semibold fill-white">
-                    Execution Phase
-                  </text>
-                  <text y="-28" textAnchor="middle" className="text-xs fill-gray-400">
-                    14/01/2025 - 09/02/2025
-                  </text>
-                </g>
-
-                {/* Initial Review */}
-                <g transform="translate(917.7777777777778, 100.57142857142857)">
-                  <circle r="15" fill="#3b82f6" />
-                  <circle r="15" stroke="#3b82f6" strokeWidth="2" fill="none" />
-                  <text y="-50" textAnchor="middle" className="text-sm font-semibold fill-white">
-                    Initial Review
-                  </text>
-                  <text y="-28" textAnchor="middle" className="text-xs fill-gray-400">
-                    09/02/2025 - 10/02/2025
-                  </text>
-                </g>
-              </g>
-
-              {/* Timeline Points - Bottom Row */}
-              <g>
-                {/* Final Evaluation */}
-                <g transform="translate(721.1111111111111, 251.42857142857142)">
-                  <circle r="15" fill="#3b82f6" />
-                  <circle r="15" stroke="#3b82f6" strokeWidth="2" fill="none" />
-                  <text y="-50" textAnchor="middle" className="text-sm font-semibold fill-white">
-                    Final Evaluation
-                  </text>
-                  <text y="-28" textAnchor="middle" className="text-xs fill-gray-400">
-                    11/02/2025
-                  </text>
-                </g>
-
-                {/* Results Announcement */}
-                <g transform="translate(327.77777777777777, 251.42857142857142)">
-                  <circle r="15" fill="#3b82f6" />
-                  <circle r="15" stroke="#3b82f6" strokeWidth="2" fill="none" />
-                  <text y="-50" textAnchor="middle" className="text-sm font-semibold fill-white">
-                    Results Announcement
-                  </text>
-                  <text y="-28" textAnchor="middle" className="text-xs fill-gray-400">
-                    12/02/2025
-                  </text>
-                </g>
-              </g>
-
-              {/* Info Indicators */}
-              {[
-                [131.11111111111111, 100.57142857142857],
-                [524.4444444444445, 100.57142857142857],
-                [917.7777777777778, 100.57142857142857],
-                [721.1111111111111, 251.42857142857142],
-                [327.77777777777777, 251.42857142857142],
-              ].map(([x, y], i) => (
-                <g key={i} transform={`translate(${x}, ${y})`}>
-                  <path d="M0 -4 v0.1 m0 4 v3.5" stroke="#0A0D14" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </g>
               ))}
             </g>
