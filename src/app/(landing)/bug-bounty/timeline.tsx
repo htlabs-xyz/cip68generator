@@ -40,7 +40,7 @@ export default function Timeline() {
       <div className="px-4 md:px-6 mx-auto">
         <h2 className="text-4xl font-bold text-center mb-16 ">Timeline</h2>
         <div className="relative w-full mx-auto">
-          <svg width="100%" height="250" viewBox="0 0 1579 250" preserveAspectRatio="xMidYMid meet">
+          <svg width="100%" height="100%" viewBox="0 0 1579 300" preserveAspectRatio="xMidYMid meet">
             <g transform="translate(199.5, 0)">
               {/* Đường ngang */}
               <path d="M-330.6111111111111 100.57142857142857 L902.7777777777778 100.57142857142857" stroke="#ff9447" strokeWidth="2" fill="none" />
