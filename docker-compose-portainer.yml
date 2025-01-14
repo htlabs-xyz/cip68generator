@@ -19,7 +19,7 @@ services:
     volumes:
       - ${POSTGRES_DATA}:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - "${POSTGRES_PORT}:5432"
     networks:
       - cip68
     restart: unless-stopped
@@ -32,7 +32,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3785:3000"
+      - "${APP_PORT}:3000"
     depends_on:
       - postgres
     networks:
