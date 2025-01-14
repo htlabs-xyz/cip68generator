@@ -1,31 +1,42 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Zap, Shield, CheckCircle, ChevronRight, CalendarDays } from "lucide-react";
+import { Zap, Shield, CheckCircle } from "lucide-react";
 import Header from "../_layout/header";
 import Footer from "../_layout/footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import HowItWorks from "./how-it-work";
 
 export default function BugBountyLanding() {
   return (
-    <div className="relative  px-4 overflow-x-hidden">
+    <div className="relative px-4 overflow-x-hidden">
       <Header />
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-52 xl:py-72 bg-section">
+        {/* Hero Section */}
+        <section id="hero" className="w-full py-12 md:py-24 lg:py-32 bg-section">
           <div className="container px-4 md:px-6 mx-auto">
-            <div className="flex flex-col items-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">Cardano Bug Bounty Program</h1>
-                <p className="mx-auto max-w-[700px] text-gray-400 md:text-xl">
-                  Help us improve security and earn rewards for finding vulnerabilities in our CIP68 implementation.
-                </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div className="space-y-8">
+                <div>
+                  <div className="text-cyan-400 text-sm font-semibold mb-4">Bug Bounty Program</div>
+                  <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">Your last line of defense</h1>
+                  <p className="text-gray-400 text-lg md:text-xl max-w-2xl">
+                    The ultimate line of defense, uncovering novel and elusive vulnerabilities missed by other controls in our CIP68 implementation.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-4">
+                  <Button className="bg-cyan-400 hover:bg-cyan-500 text-black font-semibold px-8 py-3 rounded-md">
+                    Speak with a Security Expert
+                  </Button>
+                  <Button variant="outline" className="border-gray-600 text-white hover:bg-gray-800 px-8 py-3 rounded-md">
+                    Solution Brief
+                  </Button>
+                </div>
               </div>
-              <div className="space-x-4">
-                <Button asChild>
-                  <a href="https://github.com/cardano2vn/cip68generator/issues" target="_blank" rel="noopener noreferrer">
-                    Start Hunting
-                  </a>
-                </Button>
-                <Button variant="outline">Learn More</Button>
+              <div className="relative h-[400px] md:h-[600px]">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-600/30 to-cyan-400/30 rounded-full blur-3xl"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <img src="https://i.imgur.com/w9fAVBl.png" alt="Security Visualization" width={600} height={600} className="object-contain" />
+                </div>
               </div>
             </div>
           </div>
@@ -64,66 +75,116 @@ export default function BugBountyLanding() {
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-section">
-          <div className="container px-4 md:px-6 mx-auto">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">How to Participate</h2>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
-              <div className="flex flex-col items-center text-center">
-                <h3 className="text-xl font-semibold mb-2">1. Access Repository</h3>
-                <p className="text-gray-600">Visit our GitHub repository to review the code and documentation.</p>
-              </div>
-              <ChevronRight className="hidden md:block w-6 h-6 text-gray-400" />
-              <div className="flex flex-col items-center text-center">
-                <h3 className="text-xl font-semibold mb-2">2. Find Vulnerabilities</h3>
-                <p className="text-gray-600">Analyze the code and application for potential security issues.</p>
-              </div>
-              <ChevronRight className="hidden md:block w-6 h-6 text-gray-400" />
-              <div className="flex flex-col items-center text-center">
-                <h3 className="text-xl font-semibold mb-2">3. Report Issues</h3>
-                <p className="text-gray-600">Submit detailed bug reports through GitHub Issues.</p>
-              </div>
-              <ChevronRight className="hidden md:block w-6 h-6 text-gray-400" />
-              <div className="flex flex-col items-center text-center">
-                <h3 className="text-xl font-semibold mb-2">4. Earn Rewards</h3>
-                <p className="text-gray-600">Receive bounties for valid, unique vulnerability reports.</p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <HowItWorks />
         <section id="timeline" className="w-full py-12 md:py-24 lg:py-32 ">
-          <div className="container px-4 md:px-6 mx-auto">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">Program Timeline</h2>
-            <div className="grid gap-6 md:grid-cols-3">
-              <Card>
-                <CardHeader>
-                  <CalendarDays className="w-8 h-8 mb-2 text-primary" />
-                  <CardTitle>Preparation</CardTitle>
-                  <CardDescription>22/11/2024 - 29/12/2024</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>Setting up program rules, documentation, and bug reporting tools.</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CalendarDays className="w-8 h-8 mb-2 text-primary" />
-                  <CardTitle>Execution</CardTitle>
-                  <CardDescription>14/01/2025 - 09/02/2025</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>Active bug hunting period. Receive and process vulnerability reports.</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CalendarDays className="w-8 h-8 mb-2 text-primary" />
-                  <CardTitle>Evaluation</CardTitle>
-                  <CardDescription>11/02/2025 - 12/02/2025</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>Analyze results and publish program outcome report.</p>
-                </CardContent>
-              </Card>
+          <div className="px-4 md:px-6 mx-auto">
+            <h2 className="text-3xl font-bold text-white text-center mb-12">Timeline</h2>
+            <div className="relativ w-full mx-auto">
+              <svg width="100%" height="352" viewBox="0 0 1579 300" preserveAspectRatio="xMidYMid meet">
+                <g transform="translate(199.5, 0)">
+                  {/* Horizontal Lines */}
+                  <path
+                    d="M-330.6111111111111 100.57142857142857 L902.7777777777778 100.57142857142857"
+                    stroke="#3b82f6"
+                    strokeWidth="2"
+                    fill="none"
+                  />
+
+                  {/* Curved Line */}
+                  <path
+                    d="M932.7777777777778 100.57142857142857 h98.33333333333334 c98.33333333333334,0 98.33333333333334,150.85714285714283 0,150.85714285714283 L342.77777777777777 251.42857142857142"
+                    stroke="#3b82f6"
+                    strokeWidth="2"
+                    fill="none"
+                  />
+
+                  {/* Timeline Points - Top Row */}
+                  <g>
+                    {/* Preparation Phase */}
+                    <g transform="translate(131.11111111111111, 100.57142857142857)">
+                      <circle r="15" fill="#3b82f6" />
+                      <circle r="15" stroke="#3b82f6" strokeWidth="2" fill="none" />
+                      <text y="-50" textAnchor="middle" className="text-sm font-semibold fill-white">
+                        Preparation Phase
+                      </text>
+                      <text y="-28" textAnchor="middle" className="text-xs fill-gray-400">
+                        22/11/2024 - 29/12/2024
+                      </text>
+                    </g>
+
+                    {/* Execution Phase */}
+                    <g transform="translate(524.4444444444445, 100.57142857142857)">
+                      <circle r="15" fill="#3b82f6" />
+                      <circle r="15" stroke="#3b82f6" strokeWidth="2" fill="none" />
+                      <text y="-50" textAnchor="middle" className="text-sm font-semibold fill-white">
+                        Execution Phase
+                      </text>
+                      <text y="-28" textAnchor="middle" className="text-xs fill-gray-400">
+                        14/01/2025 - 09/02/2025
+                      </text>
+                    </g>
+
+                    {/* Initial Review */}
+                    <g transform="translate(917.7777777777778, 100.57142857142857)">
+                      <circle r="15" fill="#3b82f6" />
+                      <circle r="15" stroke="#3b82f6" strokeWidth="2" fill="none" />
+                      <text y="-50" textAnchor="middle" className="text-sm font-semibold fill-white">
+                        Initial Review
+                      </text>
+                      <text y="-28" textAnchor="middle" className="text-xs fill-gray-400">
+                        09/02/2025 - 10/02/2025
+                      </text>
+                    </g>
+                  </g>
+
+                  {/* Timeline Points - Bottom Row */}
+                  <g>
+                    {/* Final Evaluation */}
+                    <g transform="translate(721.1111111111111, 251.42857142857142)">
+                      <circle r="15" fill="#3b82f6" />
+                      <circle r="15" stroke="#3b82f6" strokeWidth="2" fill="none" />
+                      <text y="-50" textAnchor="middle" className="text-sm font-semibold fill-white">
+                        Final Evaluation
+                      </text>
+                      <text y="-28" textAnchor="middle" className="text-xs fill-gray-400">
+                        11/02/2025
+                      </text>
+                    </g>
+
+                    {/* Results Announcement */}
+                    <g transform="translate(327.77777777777777, 251.42857142857142)">
+                      <circle r="15" fill="#3b82f6" />
+                      <circle r="15" stroke="#3b82f6" strokeWidth="2" fill="none" />
+                      <text y="-50" textAnchor="middle" className="text-sm font-semibold fill-white">
+                        Results Announcement
+                      </text>
+                      <text y="-28" textAnchor="middle" className="text-xs fill-gray-400">
+                        12/02/2025
+                      </text>
+                    </g>
+                  </g>
+
+                  {/* Info Indicators */}
+                  {[
+                    [131.11111111111111, 100.57142857142857],
+                    [524.4444444444445, 100.57142857142857],
+                    [917.7777777777778, 100.57142857142857],
+                    [721.1111111111111, 251.42857142857142],
+                    [327.77777777777777, 251.42857142857142],
+                  ].map(([x, y], i) => (
+                    <g key={i} transform={`translate(${x}, ${y})`}>
+                      <path d="M0 -4 v0.1 m0 4 v3.5" stroke="#0A0D14" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </g>
+                  ))}
+                </g>
+              </svg>
+            </div>
+
+            <div className="mt-16 text-center text-gray-400 max-w-2xl mx-auto">
+              <p>
+                Please note that dates are subject to change due to the dynamic nature of the program. Make sure to follow official announcements to
+                stay up to date.
+              </p>
             </div>
           </div>
         </section>
