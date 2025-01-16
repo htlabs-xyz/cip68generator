@@ -177,7 +177,7 @@ export default function HowItWorks() {
                   <h3 className="text-3xl font-bold mb-6 ">Reward Rules</h3>
                   <p className="text-gray-600 mb-8">
                     Our Bug Bounty program will reward issues based on the final decision of the project team. Rewards will be paid according to the
-                    severity of the vulnerability found. The program will run from January 14, 2025, to February 9, 2025, and the total number of
+                    severity of the vulnerability found. The program will run from January 15, 2025, to February 19, 2025, and the total number of
                     rewards will be determined by the organizers.
                   </p>
                   <ul className="space-y-4">
