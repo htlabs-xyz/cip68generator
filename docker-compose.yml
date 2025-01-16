@@ -1,0 +1,44 @@
+services:
+  kubo:
+    image: ipfs/kubo:latest
+    container_name: cip68_kubo
+    env_file:
+      - .env
+    volumes:
+      - ${KUBO_STAGING}:/export
+      - ${KUBO_DATA}:/data/ipfs
+    networks:
+      - cip68
+    restart: unless-stopped
+
+  postgres:
+    container_name: cip68_postgres
+    image: postgres:latest
+    env_file:
+      - .env
+    volumes:
+      - ${POSTGRES_DATA}:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - cip68
+    restart: unless-stopped
+
+  app:
+    container_name: cip68_app
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3785:3000"
+    depends_on:
+      - postgres
+    networks:
+      - cip68
+    restart: always
+
+networks:
+  cip68:
+    driver: bridge
