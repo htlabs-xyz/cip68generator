@@ -277,39 +277,39 @@ export default function HowItWorks() {
                   <ul className="space-y-4">
                     <p>We do not accept vulnerabilities related to the following categories:</p>
                     <li className="flex gap-2">
-                      <span className="text-orange-500 font-bold">1.</span>
+                      <span className="text-orange-500 font-bold">■</span>
                       <span>Issues outside the scope of the program.</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="text-orange-500 font-bold">2.</span>
+                      <span className="text-orange-500 font-bold">■</span>
                       <span>Vulnerabilities on third-party APIs/Libraries unless they lead to vulnerabilities on our platform.</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="text-orange-500 font-bold">3.</span>
+                      <span className="text-orange-500 font-bold">■</span>
                       <span>Denial of Service (DoS, DDoS).</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="text-orange-500 font-bold">4.</span>
+                      <span className="text-orange-500 font-bold">■</span>
                       <span>Infrastructure vulnerabilities (TLS, SSL, DNS, etc.).</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="text-orange-500 font-bold">4.</span>
+                      <span className="text-orange-500 font-bold">■</span>
                       <span>Any reports without proof of exploitation.</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="text-orange-500 font-bold">4.</span>
+                      <span className="text-orange-500 font-bold">■</span>
                       <span>Issues that have no valid impact on the program.</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="text-orange-500 font-bold">4.</span>
+                      <span className="text-orange-500 font-bold">■</span>
                       <span>If we are unable to reproduce your findings, the issue will not be eligible for a reward.</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="text-orange-500 font-bold">4.</span>
+                      <span className="text-orange-500 font-bold">■</span>
                       <span>Unclear or ambiguous content.</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="text-orange-500 font-bold">4.</span>
+                      <span className="text-orange-500 font-bold">■</span>
                       <span>Theoretical issues that do not impact or have a very low likelihood of affecting the system.</span>
                     </li>
                   </ul>
