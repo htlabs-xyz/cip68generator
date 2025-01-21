@@ -1,13 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { routes } from "@/constants/routes";
 import { toast } from "@/hooks/use-toast";
 import { deleteMedia, getMedia } from "@/services/database/media";
 import { uploadIPFS } from "@/services/upload";
 import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import useUploadStore, { UploadStore } from "./store";
 
@@ -21,7 +18,6 @@ type UploadContextType = UploadStore & {
 
 export default function UploadProvider({ children }: PropsWithChildren) {
   const [loading, setloading] = useState(false);
-  const router = useRouter();
   const {
     currentPage,
     setCurrentPage,
@@ -65,7 +61,7 @@ export default function UploadProvider({ children }: PropsWithChildren) {
         toast({
           title: "success",
           variant: "default",
-          description: <Button onClick={() => router.push(routes.utilities.children.storage.redirect)}>Go to Storage</Button>,
+          description: "Upload media success",
         });
         setListFileToUpload([]);
       } else {
