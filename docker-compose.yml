@@ -32,7 +32,7 @@ services:
       - .env
     build:
       context: .
-      dockerfile: Dockerfile.portainer
+      dockerfile: Dockerfile
     ports:
       - "${APP_PORT}:3000"
     depends_on:
