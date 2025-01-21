@@ -131,6 +131,9 @@ export async function getMetadata({
       where: whereConditions,
       skip: (page - 1) * limit,
       take: limit,
+      orderBy: {
+        updatedAt: "desc",
+      },
     });
 
     const totalItems = await prisma.metadata.count({

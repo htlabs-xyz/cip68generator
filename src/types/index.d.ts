@@ -1,5 +1,4 @@
 import { Icons } from "@/components/common/icons";
-import { StaticImageData } from "next/image";
 import { Wallet } from "@meshsdk/core";
 
 declare module "next-auth" {
@@ -196,4 +195,15 @@ export interface UtXO {
   data_hash: string | null;
   inline_datum: string | null;
   reference_script_hash: string | null;
+}
+
+export interface FounderData {
+  id: number;
+  avatar: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+  telegram: string;
+  linkedin: string;
+  description: string;
 }

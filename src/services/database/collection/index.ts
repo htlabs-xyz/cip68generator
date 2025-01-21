@@ -47,6 +47,9 @@ export async function getAllCollection() {
       where: {
         userId: userId,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     return {

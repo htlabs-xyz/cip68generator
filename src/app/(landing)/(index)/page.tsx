@@ -13,6 +13,7 @@ import Image from "next/image";
 import { appImage } from "@/public/images";
 import Header from "../_layout/header";
 import Footer from "../_layout/footer";
+import { ArrowRight } from "lucide-react";
 export default async function LandingPage() {
   const { data: statistic } = await getAppStatistic();
   return (
@@ -41,19 +42,7 @@ export default async function LandingPage() {
             <Button className="box-border flex cursor-pointer items-center rounded-[10px] px-6 py-0 text-[16px] font-medium leading-8 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg max-md:text-[14px] max-md:h-[35px] max-md:rounded-[5px] gap-2 ">
               <Link className="flex items-center gap-2" href={routes.mint.redirect}>
                 Mint Now
-                <svg width="12" height="9" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M7.92652 0.198869L11.9459 4.51989C12.1925 4.78505 12.1925 5.21495 11.9459 5.48011L7.92652 9.80113C7.67987 10.0663 7.27998 10.0663 7.03334 9.80113C6.78669 9.53597 6.78669 9.10606 7.03334 8.8409L9.9745 5.67898H0.631579C0.282768 5.67898 0 5.37499 0 5C0 4.62501 0.282768 4.32102 0.631579 4.32102H9.9745L7.03334 1.1591C6.78669 0.893936 6.78669 0.464029 7.03334 0.198869C7.27998 -0.0662898 7.67987 -0.0662898 7.92652 0.198869Z"
-                    fill="currentColor"
-                  ></path>
-                </svg>
-              </Link>
-            </Button>
-            <Button className="box-border flex cursor-pointer items-center rounded-[10px] px-6 py-0 text-[16px] font-medium leading-8 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg max-md:text-[14px] max-md:h-[35px] max-md:rounded-[5px] gap-2 ">
-              <Link className="flex items-center gap-2" href={"/#"}>
-                Subscription
+                <ArrowRight />
               </Link>
             </Button>
           </div>
@@ -128,23 +117,9 @@ export default async function LandingPage() {
           <Title title="Our Team" description="The driving force behind our success" />
           {/* founder-begin */}
           <section className="grid grid-cols-3 content-start justify-stretch gap-8 rounded-lg max-lg:grid-cols-2 max-sm:grid-cols-1">
-            {founderData.map(function (founder, index: number) {
-              return (
-                <Founder
-                  index={index}
-                  key={index}
-                  avatar={founder.avatar!}
-                  description={founder.description}
-                  firstName={founder.firstName}
-                  lastName={founder.lastName}
-                  id={index}
-                  linkedin={founder.linkedin}
-                  role={founder.role}
-                  twitter={founder.role}
-                  company={founder.company}
-                />
-              );
-            })}
+            {founderData.map((founder, index) => (
+              <Founder key={index} data={founder} />
+            ))}
           </section>
           {/* founder-end */}
         </aside>
@@ -159,22 +134,18 @@ export default async function LandingPage() {
             </div>
             <div className="flex-1">
               <h2 className="text-[40px] leading-[50px] max-sm:text-[22px] max-md:text-[20px]">
-                Subscribe To <span className="pl-4 text-[#ccc]">CIP68 Generator</span>
+                Stay Updated with<span className="pl-4 text-[#ccc]">CIP68 Generator</span>
               </h2>
               <p className="mb-7 mt-4 text-gray-400 max-sm:text-[12px] max-md:mt-1">
-                Be the first to know about our new products, services, and special promotions directly in your inbox
+                Be the first to stay updated on the latest releases, exciting new features, and exclusive updates.
               </p>
-              <Button className="flex h-[35px] items-center gap-2 rounded-md max-md:text-[12px]">
-                <span>Subcribe</span>
-                <svg width="12" height="9" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M7.92652 0.198869L11.9459 4.51989C12.1925 4.78505 12.1925 5.21495 11.9459 5.48011L7.92652 9.80113C7.67987 10.0663 7.27998 10.0663 7.03334 9.80113C6.78669 9.53597 6.78669 9.10606 7.03334 8.8409L9.9745 5.67898H0.631579C0.282768 5.67898 0 5.37499 0 5C0 4.62501 0.282768 4.32102 0.631579 4.32102H9.9745L7.03334 1.1591C6.78669 0.893936 6.78669 0.464029 7.03334 0.198869C7.27998 -0.0662898 7.67987 -0.0662898 7.92652 0.198869Z"
-                    fill="currentColor"
-                  ></path>
-                </svg>
-              </Button>
+
+              <Link href="https://github.com/cardano2vn/cip68generator" target="_blank">
+                <Button variant={"outline"} className="flex h-[45px] items-center gap-2 rounded-md max-md:text-[12px]">
+                  <span>⭐ Star us on GitHub</span>
+                  {/* <ArrowRight /> */}
+                </Button>
+              </Link>
             </div>
           </section>
         </div>
