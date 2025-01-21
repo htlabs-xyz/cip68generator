@@ -135,7 +135,7 @@ async function cp(argCid: string, argName: string) {
     };
   } catch (e) {
     if (axios.isAxiosError(e) && e.response) {
-      if (e.response.status === 500 && e.response.data.Message.includes("directory already has entry by that name")) {
+      if (e.response.status === 500 && e.response.data.Message.includes("already has entry by that name")) {
         return {
           data: { cid: argCid, name: argName },
           result: true,

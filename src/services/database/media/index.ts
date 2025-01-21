@@ -78,6 +78,9 @@ export async function getMedia({
       where: whereConditions,
       skip: (page - 1) * limit,
       take: limit,
+      orderBy: {
+        updatedAt: "desc",
+      },
     });
 
     const totalItems = await prisma.media.count({
