@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { appImage } from "@/public/images";
 type Props = {
   title: string;
@@ -31,7 +30,6 @@ const Feature = function ({ title, slogan, description }: Props) {
             <div className="text-sm font-normal flex-1 text-white max-md:text-xs">
               <p>{description}</p>
             </div>
-            <Button className="max-md:text-xs h-8">Explore</Button>
           </div>
         </div>
       </div>
