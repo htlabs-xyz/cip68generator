@@ -1,4 +1,4 @@
-import { CIP68_222, stringToHex, mConStr0, CIP68_100, metadataToCip68, mConStr1, deserializeAddress } from "@meshsdk/core";
+import { CIP68_222, stringToHex, mConStr0, mConStr2, CIP68_100, metadataToCip68, mConStr1, deserializeAddress } from "@meshsdk/core";
 
 import { MeshAdapter } from "../adapters/mesh.adapter";
 import { APP_WALLET_ADDRESS, EXCHANGE_FEE_PRICE } from "../constants";
@@ -8,6 +8,7 @@ import { isEmpty, isNil } from "lodash";
 import { getPkHash } from "@/utils";
 
 export class Cip68Contract extends MeshAdapter implements ICip68Contract {
+
   /**
    * @method Mint
    * @description Mint Asset (NFT/Token) with CIP68
@@ -31,6 +32,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     await Promise.all(
       params.map(async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
         const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        console.log(existUtXOwithUnit);
         if (existUtXOwithUnit?.output?.plutusData) {
           const pk = await getPkHash(existUtXOwithUnit?.output?.plutusData as string);
           if (pk !== deserializeAddress(walletAddress).pubKeyHash) {
@@ -54,7 +56,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
             .spendingPlutusScriptV3()
             .txIn(existUtXOwithUnit.input.txHash, existUtXOwithUnit.input.outputIndex)
             .txInInlineDatumPresent()
-            .txInRedeemerValue(mConStr0([]))
+            .txInRedeemerValue(mConStr2([]))
             .txInScript(this.storeScriptCbor)
             .txOut(this.storeAddress, [
               {
@@ -85,6 +87,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
           }
 
           unsignedTx
+
             .mintPlutusScriptV3()
             .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
             .mintingScript(this.mintScriptCbor)
@@ -106,11 +109,11 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     );
 
     txOutReceiverMap.forEach((assets, receiver) => {
+      console.log(assets, receiver);
       unsignedTx.txOut(receiver, assets);
     });
 
     unsignedTx
-
       .txOut(APP_WALLET_ADDRESS, [
         {
           unit: "lovelace",
