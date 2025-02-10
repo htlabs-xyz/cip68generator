@@ -32,7 +32,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     await Promise.all(
       params.map(async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
         const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
-        console.log(existUtXOwithUnit);
         if (existUtXOwithUnit?.output?.plutusData) {
           const pk = await getPkHash(existUtXOwithUnit?.output?.plutusData as string);
           if (pk !== deserializeAddress(walletAddress).pubKeyHash) {
@@ -53,19 +52,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
             ]);
           }
           unsignedTx
-            .spendingPlutusScriptV3()
-            .txIn(existUtXOwithUnit.input.txHash, existUtXOwithUnit.input.outputIndex)
-            .txInInlineDatumPresent()
-            .txInRedeemerValue(mConStr2([]))
-            .txInScript(this.storeScriptCbor)
-            .txOut(this.storeAddress, [
-              {
-                unit: this.policyId + CIP68_100(stringToHex(assetName)),
-                quantity: "1",
-              },
-            ])
-            .txOutInlineDatumValue(metadataToCip68(metadata))
-
             .mintPlutusScriptV3()
             .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
             .mintingScript(this.mintScriptCbor)
@@ -109,7 +95,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     );
 
     txOutReceiverMap.forEach((assets, receiver) => {
-      console.log(assets, receiver);
       unsignedTx.txOut(receiver, assets);
     });
 
@@ -123,8 +108,9 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       .changeAddress(walletAddress)
       .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
       .selectUtxosFrom(utxos)
-      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
-      .setNetwork(appNetwork);
+      .txInCollateral(collateral.input.txHash,collateral.input.outputIndex,collateral.output.amount,collateral.output.address)
+      .setNetwork(appNetwork)
+      .addUtxosFromSelection();
     return await unsignedTx.complete();
   };
 

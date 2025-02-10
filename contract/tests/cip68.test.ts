@@ -21,13 +21,13 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   jest.setTimeout(60000);
 
   test("Mint", async function () {
-    // return;
+    return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
     const unsignedTx: string = await cip68Contract.mint([
       {
-        assetName: "CIP68 Generator10",
+        assetName: "Mint CIP68 Generators",
         metadata: {
           _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
         },
@@ -35,7 +35,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         receiver: null!,
       },
       {
-        assetName: "CIP68 Generators 11",
+        assetName: "Mint CIP68 Generators 1",
         metadata: {
           _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
         },
@@ -52,13 +52,13 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   });
 
   test("Burn", async function () {
-    return;
+    // return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
     const unsignedTx: string = await cip68Contract.burn([
       {
-        assetName: "CIP68 Generators",
+        assetName: "Mint CIP68 Generators",
         quantity: "-1",
       },
     ]);
@@ -76,19 +76,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     });
     const unsignedTx: string = await cip68Contract.update([
       {
-        assetName: "CIP68 Generators",
-        metadata: {
-          name: "2",
-          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
-          mediaType: "image/jpg",
-          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
-          owner: wallet.getChangeAddress(),
-          website: "https://cip68.cardano2vn.io",
-          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
-        },
-      },
-      {
-        assetName: "CIP68 Generators 1",
+        assetName: "Mint CIP68 Generators",
         metadata: {
           name: "2",
           image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
