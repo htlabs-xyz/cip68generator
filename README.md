@@ -79,8 +79,6 @@ Of course, it may lack some specific features needed for your project since requ
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
 * [![NextJs][Next-img]][next-url]
 * [![MeshJs][Mesh-img]][mesh-url]
 * [![Aiken][Aiken-img]][aiken-url]
