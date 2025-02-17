@@ -79,6 +79,8 @@ Of course, it may lack some specific features needed for your project since requ
 
 ### Built With
 
+This project leverages cutting-edge technologies to ensure efficiency, scalability, and seamless integration:
+
 * [![NextJs][Next-img]][next-url]
 * [![MeshJs][Mesh-img]][mesh-url]
 * [![Aiken][Aiken-img]][aiken-url]
@@ -88,37 +90,54 @@ Of course, it may lack some specific features needed for your project since requ
 
 
 <!-- GETTING STARTED -->
-## Getting Started
+# Getting Started
 
-### Prerequisites
+## Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+Before installing and running the application, ensure you have the following dependencies:
 
-### Installation
+- **npm** (Node.js package manager)  
+  Install or update npm to the latest version:  
+```sh
+npm install npm@latest -g
+```
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+## Installation Guide
 
-1. Prepare an instance of [IPFS](https://github.com/ipfs/kubo) and [Database](https://www.postgresql.org)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/cardano2vn/cip68generator.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install -f
-   ```
-4. Copy and edit env file according to your environment
-   ```sh
-   cp .env.example .env
-   ```
-5. Run project
-   ```sh
-   npm run dev
-   ```
+Follow these steps to install and run the application:
+
+### 1. Set Up Your Environment
+
+- Install and run [IPFS](https://github.com/ipfs/kubo)  
+- Install the [PostgreSQL](https://www.postgresql.org) database  
+
+### 2. Clone the Repository
+
+```sh
+git clone https://github.com/cardano2vn/cip68generator.git
+cd cip68generator
+```
+
+### 3. Install Required Packages
+
+```sh
+npm install -f
+```
+
+### 4. Configure Environment Variables
+
+- Copy the `.env.example` file to `.env`  
+- Modify the `.env` file according to your environment  
+
+```sh
+cp .env.example .env
+```
+
+### 5. Run the Application
+
+```sh
+npm run dev
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
