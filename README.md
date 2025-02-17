@@ -174,7 +174,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- CONTACT -->
 ## Contact
 
-[Cardano2vn Team](https://www.cardano2vn.io/about-us) - [Cardano2vn.io](https://www.cardano2vn.io) - [Telegram](https://t.me/cardano2vn)
+[Cardano2vn Team](https://www.cardano2vn.io/about-us) -  [Telegram](https://t.me/cardano2vn)
 
 Project Link: [https://github.com/cardano2vn/cip68generator](https://github.com/cardano2vn/cip68generator)
 
