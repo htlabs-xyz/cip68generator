@@ -1,10 +1,5 @@
 <a id="readme-top"></a>
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-
 
 
 <!-- PROJECT LOGO -->
@@ -79,7 +74,7 @@ Of course, it may lack some specific features needed for your project since requ
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+This project leverages cutting-edge technologies to ensure efficiency, scalability, and seamless integration:
 
 * [![NextJs][Next-img]][next-url]
 * [![MeshJs][Mesh-img]][mesh-url]
@@ -90,40 +85,54 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 
 <!-- GETTING STARTED -->
-## Getting Started
+# Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+## Prerequisites
 
-### Prerequisites
+Before installing and running the application, ensure you have the following dependencies:
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+- **npm** (Node.js package manager)  
+  Install or update npm to the latest version:  
+```sh
+npm install npm@latest -g
+```
 
-### Installation
+## Installation Guide
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+Follow these steps to install and run the application:
 
-1. Prepare an instance of [IPFS](https://github.com/ipfs/kubo) and [Database](https://www.postgresql.org)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/cardano2vn/cip68generator.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install -f
-   ```
-4. Copy and edit env file according to your environment
-   ```sh
-   cp .env.example .env
-   ```
-5. Run project
-   ```sh
-   npm run dev
-   ```
+### 1. Set Up Your Environment
+
+- Install and run [IPFS](https://github.com/ipfs/kubo)  
+- Install the [PostgreSQL](https://www.postgresql.org) database  
+
+### 2. Clone the Repository
+
+```sh
+git clone https://github.com/cardano2vn/cip68generator.git
+cd cip68generator
+```
+
+### 3. Install Required Packages
+
+```sh
+npm install -f
+```
+
+### 4. Configure Environment Variables
+
+- Copy the `.env.example` file to `.env`  
+- Modify the `.env` file according to your environment  
+
+```sh
+cp .env.example .env
+```
+
+### 5. Run the Application
+
+```sh
+npm run dev
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -165,7 +174,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- CONTACT -->
 ## Contact
 
-[Cardano2vn Team](https://www.cardano2vn.io/about-us) - [Cardano2vn.io](https://www.cardano2vn.io) - [Telegram](https://t.me/cardano2vn)
+[Cardano2vn Team](https://www.cardano2vn.io/about-us) -  [Telegram](https://t.me/cardano2vn)
 
 Project Link: [https://github.com/cardano2vn/cip68generator](https://github.com/cardano2vn/cip68generator)
 
