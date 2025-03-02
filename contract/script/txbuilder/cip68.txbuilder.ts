@@ -51,19 +51,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
             ]);
           }
           unsignedTx
-            .spendingPlutusScriptV3()
-            .txIn(existUtXOwithUnit.input.txHash, existUtXOwithUnit.input.outputIndex)
-            .txInInlineDatumPresent()
-            .txInRedeemerValue(mConStr0([]))
-            .txInScript(this.storeScriptCbor)
-            .txOut(this.storeAddress, [
-              {
-                unit: this.policyId + CIP68_100(stringToHex(assetName)),
-                quantity: "1",
-              },
-            ])
-            .txOutInlineDatumValue(metadataToCip68(metadata))
-
             .mintPlutusScriptV3()
             .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
             .mintingScript(this.mintScriptCbor)

@@ -48,7 +48,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   });
 
   test("Burn", async function () {
-    return;
+    // return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
