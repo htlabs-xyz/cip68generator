@@ -1,4 +1,4 @@
-import { CIP68_222, stringToHex, mConStr0, CIP68_100, metadataToCip68, mConStr1, deserializeAddress } from "@meshsdk/core";
+import { CIP68_222, stringToHex, mConStr0, mConStr2, CIP68_100, metadataToCip68, mConStr1, deserializeAddress } from "@meshsdk/core";
 
 import { MeshAdapter } from "../adapters/mesh.adapter";
 import { APP_WALLET_ADDRESS, EXCHANGE_FEE_PRICE } from "../constants";
@@ -8,6 +8,7 @@ import { isEmpty, isNil } from "lodash";
 import { getPkHash } from "@/utils";
 
 export class Cip68Contract extends MeshAdapter implements ICip68Contract {
+
   /**
    * @method Mint
    * @description Mint Asset (NFT/Token) with CIP68
@@ -72,6 +73,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
           }
 
           unsignedTx
+
             .mintPlutusScriptV3()
             .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
             .mintingScript(this.mintScriptCbor)
@@ -97,7 +99,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     });
 
     unsignedTx
-
       .txOut(APP_WALLET_ADDRESS, [
         {
           unit: "lovelace",
@@ -107,8 +108,9 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       .changeAddress(walletAddress)
       .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
       .selectUtxosFrom(utxos)
-      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
-      .setNetwork(appNetwork);
+      .txInCollateral(collateral.input.txHash,collateral.input.outputIndex,collateral.output.amount,collateral.output.address)
+      .setNetwork(appNetwork)
+      .addUtxosFromSelection();
     return await unsignedTx.complete();
   };
 

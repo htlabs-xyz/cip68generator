@@ -21,18 +21,25 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   jest.setTimeout(60000);
 
   test("Mint", async function () {
-    return;
+    // return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
     const unsignedTx: string = await cip68Contract.mint([
       {
-        assetName: "CIP68 Generators",
+        assetName: "CIP68 Generators 111111",
         metadata: {
           name: "CIP68 Generators",
-          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
-          mediaType: "image/jpg",
-          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+        quantity: "1",
+        receiver: null!,
+      },
+
+      {
+        assetName: "CIP68" ,
+        metadata: {
+          name: "CIP68 Generators",
           _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
         },
         quantity: "1",
@@ -48,7 +55,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   });
 
   test("Burn", async function () {
-    // return;
+    return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
