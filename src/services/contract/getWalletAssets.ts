@@ -26,14 +26,9 @@ export async function getWalletAssets({
       networkId: appNetworkId,
       fetcher: blockfrostProvider,
       submitter: blockfrostProvider,
-      key: {
-        type: "address",
-        address: walletAddress,
-      },
+      key: { type: "address", address: walletAddress },
     });
-    const cip68Contract: Cip68Contract = new Cip68Contract({
-      wallet: wallet,
-    });
+    const cip68Contract: Cip68Contract = new Cip68Contract({ wallet: wallet });
     const assetsAddress: AssetType[] = await koiosFetcher.fetchAssetsFromAddress(walletAddress);
     const filteredAssetsAddress = assetsAddress.filter((asset) => asset.policy_id === cip68Contract.policyId);
     const filteredAssetsAddressQuery = filteredAssetsAddress.filter((asset) => {
@@ -49,16 +44,8 @@ export async function getWalletAssets({
         return assetSpec as AssetDetails;
       }),
     );
-    return {
-      data: assets,
-      totalItem: total,
-      totalPages: Math.ceil(total / limit),
-      currentPage: page,
-    };
+    return { totalUserAssets: filteredAssetsAddress.length, data: assets, totalItem: total, totalPages: Math.ceil(total / limit), currentPage: page };
   } catch (e) {
-    return {
-      data: [],
-      message: parseError(e),
-    };
+    return { data: [], message: parseError(e) };
   }
 }
