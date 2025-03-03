@@ -12,7 +12,7 @@ export default function ProfileProvider({ children }: PropsWithChildren) {
   useState<boolean>(false);
 
   const { address } = useWallet();
-  const { filter, setFilter, currentPage, setCurrentPage, totalUserAssets } = useProfileStore();
+  const { filter, setFilter, currentPage, setCurrentPage } = useProfileStore();
 
   const { data, isLoading } = useQuery({
     queryKey: ["getWalletAssets", address, filter, currentPage],
