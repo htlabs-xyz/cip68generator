@@ -22,7 +22,7 @@ import { useWallet } from "@/hooks/use-wallet";
 
 export default function ProfilePage() {
   const { address, stakeAddress } = useWallet();
-  const { listNft, filter, setFilter, loading, totalPages, currentPage, totalItem, setCurrentPage, totalUserAssets } = useProfileContext();
+  const { listNft, filter, setFilter, loading, totalPages, currentPage, setCurrentPage, totalUserAssets } = useProfileContext();
 
   const { data: userStatistics, isLoading: statisticLoading } = useQuery({ queryKey: ["getUserStatistics"], queryFn: () => getUserStatistics() });
   const isLoading = loading || statisticLoading;
