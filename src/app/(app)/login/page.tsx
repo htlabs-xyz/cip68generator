@@ -5,12 +5,15 @@ import { appImage } from "@/public/images";
 import { routes } from "@/constants/routes";
 import { useSession } from "next-auth/react";
 import { useWallet } from "@/hooks/use-wallet";
-import { appNetwork, wallets } from "@/constants";
+import { appNetwork, appUrl, wallets } from "@/constants";
 import { redirect, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import WalletItem from "./_components/wallet-item";
 import { useWalletList } from "@meshsdk/react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function SignInViewPage() {
   const router = useRouter();
@@ -24,6 +27,12 @@ export default function SignInViewPage() {
       redirect("/dashboard");
     }
   }, [status, router]);
+
+  const handleOpenNetwork = (network: string) => {
+    if (network !== appNetwork && appUrl[network as keyof typeof appUrl]) {
+      window.open(appUrl[network as keyof typeof appUrl], "_blank")
+    }
+  }
 
   return (
     <div className="h-screen">
@@ -40,7 +49,29 @@ export default function SignInViewPage() {
         <main className="mx-auto w-[550px] flex flex-1 flex-col items-center justify-center spacey-y-4">
           <Card className="w-full mx-auto">
             <CardHeader>
-              <CardTitle>Connect Wallet</CardTitle>
+              <CardTitle>
+                <div className="flex justify-between items-center w-full">
+                  <span>Connect Wallet</span>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" className="w-[180px] justify-between">
+                        {appNetwork}
+                        <ChevronDown className="h-4 w-4 opacity-50" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-[180px] justify-between">
+                      {["preview", "mainnet"]
+                        .filter((item) => item !== appNetwork)
+                        .map((item) => (
+                          <DropdownMenuItem key={item} onClick={() => handleOpenNetwork(item)}>
+                            {item}
+                          </DropdownMenuItem>
+                        ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </CardTitle>
+
               <CardDescription>Connect a wallet on {appNetwork} to continue</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
