@@ -30,9 +30,9 @@ export default function SignInViewPage() {
 
   const handleOpenNetwork = (network: string) => {
     if (network !== appNetwork && appUrl[network as keyof typeof appUrl]) {
-      window.open(appUrl[network as keyof typeof appUrl], "_blank")
+      window.open(appUrl[network as keyof typeof appUrl], "_blank");
     }
-  }
+  };
 
   return (
     <div className="h-screen">
