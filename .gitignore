@@ -42,6 +42,6 @@ next-env.d.ts
 artifacts/
 build/
 docs/
-
+bun.lock
 yarn.lock
 stack.env
