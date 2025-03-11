@@ -21,13 +21,14 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   jest.setTimeout(60000);
 
   test("Mint", async function () {
+    console.log(await wallet.getChangeAddress());
     // return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
     const unsignedTx: string = await cip68Contract.mint([
       {
-        assetName: "CIP68 Generators 111111",
+        assetName: "CIP68 01",
         metadata: {
           name: "CIP68 Generators",
           _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
@@ -37,7 +38,34 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       },
 
       {
-        assetName: "CIP68" ,
+        assetName: "CIP68 02",
+        metadata: {
+          name: "CIP68 Generators",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+        quantity: "1",
+        receiver: "addr_test1qrr879mjnxd3gjqjdgjxkwzfcnvcgsve927scqk5fc3gfs2hs03pn7uhujentyhzq3ays72u4xtfrlahyjalujhxufsqdeezc0",
+      },
+      {
+        assetName: "CIP68 03",
+        metadata: {
+          name: "CIP68 Generators",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+        quantity: "1",
+        receiver: null!,
+      },
+      {
+        assetName: "CIP68 07",
+        metadata: {
+          name: "CIP68 Generators",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+        quantity: "1",
+        receiver: null!,
+      },
+      {
+        assetName: "CIP68 06",
         metadata: {
           name: "CIP68 Generators",
           _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
