@@ -52,7 +52,6 @@ export default function BasicStep() {
                   value={quantityToBurn ?? 1}
                   onChange={(e) => {
                     const val = Number(e.target.value);
-                    console.log(val);
                     if (val > Number(assetDetails.quantity)) {
                       setErr("Quantity to burn cannot be more than the available quantity");
                     } else if (val < 1) {

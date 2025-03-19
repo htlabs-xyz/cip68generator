@@ -2,15 +2,21 @@
 
 import { isEmpty, isNil } from "lodash";
 import { signOut, useSession } from "next-auth/react";
-import { PropsWithChildren, useEffect } from "react";
-import { useWalletList } from "@meshsdk/react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { useWallet, WalletStoreType } from "@/hooks/use-wallet";
+import { BrowserWallet, Wallet } from "@meshsdk/core";
 
 export default function BlockchainProvider({ children }: PropsWithChildren) {
   const { signIn, wallet, disconnect, browserWallet, address }: WalletStoreType = useWallet();
   const { data: session, status } = useSession();
 
-  const wallets = useWalletList();
+  const [wallets, setWallets] = useState<Wallet[]>([]);
+  useEffect(() => {
+    async function get() {
+      setWallets(await BrowserWallet.getAvailableWallets());
+    }
+    get();
+  }, []);
 
   useEffect(() => {
     (async () => {

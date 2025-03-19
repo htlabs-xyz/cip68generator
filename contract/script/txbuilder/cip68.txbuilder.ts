@@ -28,11 +28,14 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
     const unsignedTx = this.meshTxBuilder.mintPlutusScriptV3();
     const txOutReceiverMap = new Map<string, { unit: string; quantity: string }[]>();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    let txType: "new" | "exist";
     await Promise.all(
       params.map(async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
         const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         //////////////
-        if (existUtXOwithUnit?.output?.plutusData) {
+        if (existUtXOwithUnit?.output?.plutusData && txType != "new") {
+          txType = "exist";
           const pk = await getPkHash(existUtXOwithUnit?.output?.plutusData as string);
           if (pk !== deserializeAddress(walletAddress).pubKeyHash) {
             throw new Error(`${assetName} has been exist`);
@@ -57,7 +60,8 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
             .mintingScript(this.mintScriptCbor)
             .mintRedeemerValue(mConStr0([]));
           //////////////
-        } else {
+        } else if (!existUtXOwithUnit?.output?.plutusData && txType != "exist") {
+          txType = "new";
           const receiverKey = !isEmpty(receiver) ? receiver : walletAddress;
           if (txOutReceiverMap.has(receiverKey)) {
             txOutReceiverMap.get(receiverKey)!.push({
@@ -91,11 +95,12 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
               },
             ])
             .txOutInlineDatumValue(metadataToCip68(metadata));
+        } else {
+          throw new Error(`Transaction only supports either minting new assets or minting existing assets, not both in the same transaction`);
         }
         //////////////
       }),
     );
-    console.log(txOutReceiverMap);
     txOutReceiverMap.forEach((assets, receiver) => {
       unsignedTx.txOut(receiver, assets);
     });
