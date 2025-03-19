@@ -72,7 +72,7 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
 
   const { data: assetData, isLoading: assetLoading } = useQuery({
     queryKey: ["getAssetInfo", unit],
-    queryFn: () => getAssetInfo(unit.replace("000de140", "000643b0")),
+    queryFn: () => getAssetInfo(unit),
     enabled: !isNil(unit) && !isEmpty(unit),
   });
 
@@ -80,7 +80,7 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
     queryKey: ["getAssetTxHistory", unit, txCurrentPage],
     queryFn: () =>
       getAssetTxHistory({
-        unit: unit.replace("000de140", "000643b0"),
+        unit: unit,
         page: txCurrentPage,
         limit: 8,
       }),
@@ -125,7 +125,7 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
       // check assetName is unique
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const assetName = hexToString((assetData?.data?.asset_name ?? "").replace(/^000de140/, ""));
+      const assetName = hexToString((assetData?.data?.asset_name ?? "").replace(/^000643b0/, ""));
 
       const input = {
         assetName: assetName,
@@ -190,7 +190,8 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
       }
       // check assetName is unique
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      const assetName = hexToString((assetData?.data?.asset_name ?? "").replace(/^000de140/, ""));
+      console.log(assetData?.data);
+      const assetName = hexToString((assetData?.data?.asset_name ?? "").replace(/^000643b0/, ""));
       const quantityInput = quantityToBurn >= Number(assetData.data.quantity) ? assetData.data.quantity : quantityToBurn;
       const input = {
         assetName: assetName,

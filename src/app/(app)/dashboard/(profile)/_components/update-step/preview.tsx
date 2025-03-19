@@ -11,7 +11,7 @@ import CopyButton from "@/components/common/copy-button";
 export default function PreviewStep() {
   const { assetDetails, updateStepper, metadataToUpdate, startUpdating } = useUnitContext();
 
-  const assetNameString = hexToString(assetDetails?.asset_name.replace(/^000de140/, ""));
+  const assetNameString = hexToString(assetDetails?.asset_name.replace(/^000643b0/, ""));
   const assetNameSort = assetNameString;
   const imgSrc = metadataToUpdate?.image || "";
   const mediaType = imgSrc == "" ? "text/plain" : metadataToUpdate?.mediaType || "image/png";

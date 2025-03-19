@@ -12,7 +12,7 @@ export default function AssetCard({ data }: { data: AssetDetails }) {
 
   const mediaType = onchain_metadata?.type || "image/png";
 
-  const assetNameString = hexToString(asset_name.replace(/^000de140/, ""));
+  const assetNameString = hexToString(asset_name.replace(/^000643b0/, ""));
 
   return (
     <Link href={`/dashboard/asset/${policy_id + asset_name}`}>
