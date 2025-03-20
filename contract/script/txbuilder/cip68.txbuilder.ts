@@ -24,10 +24,19 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       quantity: string;
       receiver: string;
     }[],
+
   ) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
     const unsignedTx = this.meshTxBuilder.mintPlutusScriptV3();
     const txOutReceiverMap = new Map<string, { unit: string; quantity: string }[]>();
+
+    // const utxoOnlyLovelace = utxos.filter((utxo) => {
+    //   const hasOnlyLovelace = utxo.output.amount.every((amount) => amount.unit === "lovelace");
+    //   const hasEnoughLovelace = utxo.output.amount.some((amount) => amount.unit === "lovelace" && Number(amount.quantity) > 5000000);
+    //   return hasOnlyLovelace && hasEnoughLovelace;
+    // });
+
+    // console.log(utxoOnlyLovelace);
 
     const assetsWithUtxo = await Promise.all(
       params.map(async ({ assetName }) => {
