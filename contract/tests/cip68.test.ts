@@ -22,65 +22,116 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   jest.setTimeout(60000);
 
   test("Mint", async function () {
-    console.log(wallet.getChangeAddress());
     // return;
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
-    const unsignedTx: string = await cip68Contract.mint([
+    const unsignedTxs = await cip68Contract.mint([
       {
-        assetName: "CIP68 01",
-        metadata: {
-          name: "CIP68 Generators",
-          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
-        },
+        assetName: "hcd009",
         quantity: "1",
-        receiver: null!,
-      },
-
-      {
-        assetName: "CIP68 02",
+        receiver: "",
         metadata: {
-          name: "CIP68 Generators",
-          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+          name: "hcd #009",
+          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
+          mediaType: "image/png",
+          rarity: "Legendary",
+          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
         },
-        quantity: "1",
-        receiver: "addr_test1qrr879mjnxd3gjqjdgjxkwzfcnvcgsve927scqk5fc3gfs2hs03pn7uhujentyhzq3ays72u4xtfrlahyjalujhxufsqdeezc0",
       },
       {
-        assetName: "CIP68 03",
-        metadata: {
-          name: "CIP68 Generators",
-          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
-        },
+        assetName: "hcd010",
         quantity: "1",
-        receiver: null!,
+        receiver: "",
+        metadata: {
+          name: "hcd #010",
+          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
+          mediaType: "image/png",
+          rarity: "Legendary",
+          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+        },
       },
       {
-        assetName: "CIP68 07",
-        metadata: {
-          name: "CIP68 Generators",
-          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
-        },
+        assetName: "hcd011",
         quantity: "1",
-        receiver: null!,
+        receiver: "",
+        metadata: {
+          name: "hcd #011",
+          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
+          mediaType: "image/png",
+          rarity: "Legendary",
+          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+        },
       },
       {
-        assetName: "CIP68 06",
-        metadata: {
-          name: "CIP68 Generators",
-          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
-        },
+        assetName: "hcd012",
         quantity: "1",
-        receiver: null!,
+        receiver: "",
+        metadata: {
+          name: "hcd #012",
+          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
+          mediaType: "image/png",
+          rarity: "Legendary",
+          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+        },
+      },
+      {
+        assetName: "hcd013",
+        quantity: "1",
+        receiver: "",
+        metadata: {
+          name: "hcd #013",
+          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
+          mediaType: "image/png",
+          rarity: "Legendary",
+          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+        },
+      },
+      {
+        assetName: "hcd014",
+        quantity: "1",
+        receiver: "",
+        metadata: {
+          name: "hcd #014",
+          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
+          mediaType: "image/png",
+          rarity: "Legendary",
+          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+        },
+      },
+      {
+        assetName: "hcd015",
+        quantity: "1",
+        receiver: "",
+        metadata: {
+          name: "hcd #015",
+          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
+          mediaType: "image/png",
+          rarity: "Legendary",
+          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+        },
+      },
+      {
+        assetName: "hcd016",
+        quantity: "1",
+        receiver: "",
+        metadata: {
+          name: "hcd #016",
+          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
+          mediaType: "image/png",
+          rarity: "Legendary",
+          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+        },
       },
     ]);
-    const signedTx = await wallet.signTx(unsignedTx, true);
+    unsignedTxs.map(async(unsignedTx)=> {
+      const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     blockfrostProvider.onTxConfirmed(txHash, () => {
       expect(txHash.length).toBe(64);
     });
+    })
   });
 
   test("Burn", async function () {

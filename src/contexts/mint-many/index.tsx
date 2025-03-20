@@ -76,27 +76,39 @@ export default function MintManyProvider({ children }: { collectionId: string | 
       updateTaskState("inprogress", "create_transaction", "Creating Transaction");
 
       const {
-        data: tx,
+        data: listTxs,
         result,
         message,
       } = await createMintTransaction({
         address: address,
         mintInput: assetInputToMint,
       });
-      if (!result || isNil(tx)) {
+      if (!result || isNil(listTxs) || isEmpty(listTxs)) {
         throw new Error(message);
       }
 
       // wait for confirmation
       updateTaskState("inprogress", "sign_transaction", "Waiting for  sign Tx");
-      const signedTx = await signTx(tx);
+      const signedTxs = await Promise.all(
+        listTxs.map(async (tx) => {
+          return await signTx(tx);
+        }),
+      );
       updateTaskState("inprogress", "submit_transaction", "Submitting Transaction");
       // submit transaction
-      const { data: txHash, result: txResult, message: txMessage } = await submitTx(signedTx);
-      if (!txResult || isNil(txHash)) {
-        throw new Error(txMessage);
-      }
-      setTxHash(txHash);
+
+      const txHashes = await Promise.all(
+        signedTxs.map(async (signedTx) => {
+          const { data: txHash, result: txResult, message: txMessage } = await submitTx(signedTx);
+          if (!txResult || isNil(txHash)) {
+            throw new Error(txMessage);
+          }
+
+          return txHash;
+        }),
+      );
+
+      setTxHash(txHashes[0]);
       updateTaskState("success");
       // show result
       mintManyStepper.goTo("result");

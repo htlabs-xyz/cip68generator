@@ -24,17 +24,16 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       quantity: string;
       receiver: string;
     }[],
-
   ) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
 
-    // const utxoOnlyLovelace = utxos.filter((utxo) => {
-    //   const hasOnlyLovelace = utxo.output.amount.every((amount) => amount.unit === "lovelace");
-    //   const hasEnoughLovelace = utxo.output.amount.some((amount) => amount.unit === "lovelace" && Number(amount.quantity) > 5000000);
-    //   return hasOnlyLovelace && hasEnoughLovelace;
-    // });
-
-    // console.log(utxoOnlyLovelace);
+    const utxoOnlyLovelace = await Promise.all(
+      utxos.filter((utxo) => {
+        const hasOnlyLovelace = utxo.output.amount.every((amount) => amount.unit === "lovelace");
+        const hasEnoughLovelace = utxo.output.amount.some((amount) => amount.unit === "lovelace" && Number(amount.quantity) > 500000000);
+        return hasOnlyLovelace && hasEnoughLovelace;
+      }),
+    );
 
     const assetsWithUtxo = await Promise.all(
       params.map(async ({ assetName }) => {
@@ -53,14 +52,30 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
 
     /// check params /10 > utxos có sẵn
 
+    if (utxoOnlyLovelace.length < params.length / 10) {
+      throw new Error("You have not UTxO only lavelace.");
+    }
+
     const list_tx = [];
-    for (let i = 0; i < params.length; i += 10) {
-      const unsignedTx = this.meshTxBuilder.mintPlutusScriptV3();
+    const chunkSize = 8;
+    let utxoIndex = 0;
+
+    for (let i = 0; i < params.length; i += chunkSize) {
+      const chunk = params.slice(i, i + Math.min(chunkSize, params.length-i));
+      console.log(String(chunk.length))
+      console.log(utxoIndex+"="+String(utxoOnlyLovelace[1]))
+
+
+      const unsignedTx = this.meshTxBuilder
+        .txIn(utxoOnlyLovelace[utxoIndex].input.txHash, utxoOnlyLovelace[utxoIndex].input.outputIndex);
       const txOutReceiverMap = new Map<string, { unit: string; quantity: string }[]>();
+
       await Promise.all(
-        params.slice(i, i + 10).map(async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
+        chunk.map(async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
+          if (utxoIndex >= utxoOnlyLovelace.length) {
+            throw new Error("Not enough UTXOs with only lovelace available.");
+          }
           const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
-          //////////////
           if (allExist) {
             const pk = await getPkHash(existUtXOwithUnit?.output?.plutusData as string);
             if (pk !== deserializeAddress(walletAddress).pubKeyHash) {
@@ -80,12 +95,14 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
                 },
               ]);
             }
+
             unsignedTx
               .mintPlutusScriptV3()
               .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
               .mintingScript(this.mintScriptCbor)
               .mintRedeemerValue(mConStr0([]));
-            //////////////
+
+            
           } else if (allNew) {
             const receiverKey = !isEmpty(receiver) ? receiver : walletAddress;
             if (txOutReceiverMap.has(receiverKey)) {
@@ -101,9 +118,9 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
                 },
               ]);
             }
+            // console.log(utxoOnlyLovelace[utxoIndex])
 
             unsignedTx
-
               .mintPlutusScriptV3()
               .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
               .mintingScript(this.mintScriptCbor)
@@ -113,6 +130,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
               .mint("1", this.policyId, CIP68_100(stringToHex(assetName)))
               .mintingScript(this.mintScriptCbor)
               .mintRedeemerValue(mConStr0([]))
+
               .txOut(this.storeAddress, [
                 {
                   unit: this.policyId + CIP68_100(stringToHex(assetName)),
@@ -120,12 +138,13 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
                 },
               ])
               .txOutInlineDatumValue(metadataToCip68(metadata));
+
           } else {
             throw new Error(`Transaction only supports either minting new assets or minting existing assets, not both in the same transaction`);
           }
-          //////////////
         }),
       );
+
       txOutReceiverMap.forEach((assets, receiver) => {
         unsignedTx.txOut(receiver, assets);
       });
@@ -145,7 +164,10 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
 
       const tx = await unsignedTx.complete();
       list_tx.push(tx);
+      utxoIndex++; // Tăng chỉ số utxoIndex sau mỗi lần sử dụng
+
     }
+
     return list_tx;
   };
 

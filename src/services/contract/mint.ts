@@ -39,10 +39,10 @@ export const createMintTransaction = async ({ address, mintInput }: { address: s
         },
       })),
     );
-    const tx = await cip68Contract.mint(input);
+    const listTxs = await cip68Contract.mint(input);
     return {
       result: true,
-      data: tx,
+      data: listTxs,
       message: "Transaction created successfully",
     };
   } catch (e) {
