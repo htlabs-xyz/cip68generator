@@ -61,13 +61,11 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     let utxoIndex = 0;
 
     for (let i = 0; i < params.length; i += chunkSize) {
-      const chunk = params.slice(i, i + Math.min(chunkSize, params.length-i));
-      console.log(String(chunk.length))
-      console.log(utxoIndex+"="+String(utxoOnlyLovelace[1]))
+      const chunk = params.slice(i, i + Math.min(chunkSize, params.length - i));
+      console.log(String(chunk.length));
+      console.log(utxoIndex + "=" + String(utxoOnlyLovelace[1]));
 
-
-      const unsignedTx = this.meshTxBuilder
-        .txIn(utxoOnlyLovelace[utxoIndex].input.txHash, utxoOnlyLovelace[utxoIndex].input.outputIndex);
+      const unsignedTx = this.meshTxBuilder.txIn(utxoOnlyLovelace[utxoIndex].input.txHash, utxoOnlyLovelace[utxoIndex].input.outputIndex);
       const txOutReceiverMap = new Map<string, { unit: string; quantity: string }[]>();
 
       await Promise.all(
@@ -101,8 +99,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
               .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
               .mintingScript(this.mintScriptCbor)
               .mintRedeemerValue(mConStr0([]));
-
-            
           } else if (allNew) {
             const receiverKey = !isEmpty(receiver) ? receiver : walletAddress;
             if (txOutReceiverMap.has(receiverKey)) {
@@ -138,7 +134,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
                 },
               ])
               .txOutInlineDatumValue(metadataToCip68(metadata));
-
           } else {
             throw new Error(`Transaction only supports either minting new assets or minting existing assets, not both in the same transaction`);
           }
@@ -165,7 +160,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       const tx = await unsignedTx.complete();
       list_tx.push(tx);
       utxoIndex++; // Tăng chỉ số utxoIndex sau mỗi lần sử dụng
-
     }
 
     return list_tx;

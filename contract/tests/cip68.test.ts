@@ -124,14 +124,14 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
     ]);
-    unsignedTxs.map(async(unsignedTx)=> {
+    unsignedTxs.map(async (unsignedTx) => {
       const signedTx = await wallet.signTx(unsignedTx, true);
-    const txHash = await wallet.submitTx(signedTx);
-    console.log("https://preview.cexplorer.io/tx/" + txHash);
-    blockfrostProvider.onTxConfirmed(txHash, () => {
-      expect(txHash.length).toBe(64);
+      const txHash = await wallet.submitTx(signedTx);
+      console.log("https://preview.cexplorer.io/tx/" + txHash);
+      blockfrostProvider.onTxConfirmed(txHash, () => {
+        expect(txHash.length).toBe(64);
+      });
     });
-    })
   });
 
   test("Burn", async function () {
