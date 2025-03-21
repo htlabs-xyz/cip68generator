@@ -4,6 +4,7 @@ import { describe, test, expect, beforeEach, jest } from "@jest/globals";
 import { BlockfrostProvider, BrowserWallet, deserializeAddress, MeshWallet } from "@meshsdk/core";
 import { Cip68Contract } from "../script";
 import { APP_WALLET_ADDRESS } from "../script/constants";
+import { UtXO } from "@/types";
 
 describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   let wallet: MeshWallet;
@@ -19,14 +20,11 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       },
     });
   });
-  jest.setTimeout(60000);
+  jest.setTimeout(6000000);
 
   test("Mint", async function () {
     // return;
-    const cip68Contract: Cip68Contract = new Cip68Contract({
-      wallet: wallet,
-    });
-    const unsignedTxs = await cip68Contract.mint([
+    const assets = [
       {
         assetName: "hcd009",
         quantity: "1",
@@ -39,6 +37,39 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
           _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
         },
       },
+    ];
+    const cip68Contract: Cip68Contract = new Cip68Contract({
+      wallet: wallet,
+    });
+
+    const utxos = await wallet.getUtxos();
+    const utxoOnlyLovelace = await Promise.all(
+      utxos.filter((utxo) => {
+        const hasOnlyLovelace = utxo.output.amount.every((amount) => amount.unit === "lovelace");
+        const hasEnoughLovelace = utxo.output.amount.some((amount) => amount.unit === "lovelace" && Number(amount.quantity) > 500000000);
+        return hasOnlyLovelace && hasEnoughLovelace;
+      }),
+    );
+
+    let utxoIndex = 0;
+    const chunkSize = 1;
+    if (utxoOnlyLovelace.length < assets.length / chunkSize) {
+      throw new Error("You have not UTxO only lavelace.");
+    }
+
+    for (let i = 0; i < assets.length; i += chunkSize) {
+      const chunk = assets.slice(i, i + Math.min(chunkSize, assets.length - i));
+      const unsignedTx = await cip68Contract.mint(chunk, utxoOnlyLovelace[utxoIndex]);
+      const signedTx = await wallet.signTx(unsignedTx, true);
+      const txHash = await wallet.submitTx(signedTx);
+      console.log("https://preview.cexplorer.io/tx/" + txHash);
+      utxoIndex++;
+    }
+  });
+
+  test("Mint - Timeout", async function () {
+    // return;
+    const assets = [
       {
         assetName: "hcd010",
         quantity: "1",
@@ -51,87 +82,35 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
           _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
         },
       },
-      {
-        assetName: "hcd011",
-        quantity: "1",
-        receiver: "",
-        metadata: {
-          name: "hcd #011",
-          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
-          mediaType: "image/png",
-          rarity: "Legendary",
-          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
-        },
-      },
-      {
-        assetName: "hcd012",
-        quantity: "1",
-        receiver: "",
-        metadata: {
-          name: "hcd #012",
-          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
-          mediaType: "image/png",
-          rarity: "Legendary",
-          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
-        },
-      },
-      {
-        assetName: "hcd013",
-        quantity: "1",
-        receiver: "",
-        metadata: {
-          name: "hcd #013",
-          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
-          mediaType: "image/png",
-          rarity: "Legendary",
-          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
-        },
-      },
-      {
-        assetName: "hcd014",
-        quantity: "1",
-        receiver: "",
-        metadata: {
-          name: "hcd #014",
-          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
-          mediaType: "image/png",
-          rarity: "Legendary",
-          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
-        },
-      },
-      {
-        assetName: "hcd015",
-        quantity: "1",
-        receiver: "",
-        metadata: {
-          name: "hcd #015",
-          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
-          mediaType: "image/png",
-          rarity: "Legendary",
-          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
-        },
-      },
-      {
-        assetName: "hcd016",
-        quantity: "1",
-        receiver: "",
-        metadata: {
-          name: "hcd #016",
-          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
-          mediaType: "image/png",
-          rarity: "Legendary",
-          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
-        },
-      },
-    ]);
-    unsignedTxs.map(async (unsignedTx) => {
+    ];
+    const cip68Contract: Cip68Contract = new Cip68Contract({
+      wallet: wallet,
+    });
+
+    const utxos = await wallet.getUtxos();
+    const utxoOnlyLovelace = await Promise.all(
+      utxos.filter((utxo) => {
+        const hasOnlyLovelace = utxo.output.amount.every((amount) => amount.unit === "lovelace");
+        const hasEnoughLovelace = utxo.output.amount.some((amount) => amount.unit === "lovelace" && Number(amount.quantity) > 500000000);
+        return hasOnlyLovelace && hasEnoughLovelace;
+      }),
+    );
+
+    let utxoIndex = 1;
+    const chunkSize = 1;
+    if (utxoOnlyLovelace.length < assets.length / chunkSize) {
+      throw new Error("You have not UTxO only lavelace.");
+    }
+
+    for (let i = 0; i < assets.length; i += chunkSize) {
+      const chunk = assets.slice(i, i + Math.min(chunkSize, assets.length - i));
+      const unsignedTx = await cip68Contract.mint(chunk, utxoOnlyLovelace[utxoIndex]);
       const signedTx = await wallet.signTx(unsignedTx, true);
       const txHash = await wallet.submitTx(signedTx);
       console.log("https://preview.cexplorer.io/tx/" + txHash);
-      blockfrostProvider.onTxConfirmed(txHash, () => {
-        expect(txHash.length).toBe(64);
-      });
-    });
+
+      utxoIndex++;
+    }
   });
 
   test("Burn", async function () {

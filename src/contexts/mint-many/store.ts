@@ -10,7 +10,7 @@ export type MintManyStore = {
   tasks: Task[];
   resetTasks: () => void;
   updateTaskState: (status: "todo" | "inprogress" | "success" | "error", name?: string, content?: string) => void;
-  txhash: string;
+  txhash: string | string[];
   setTxHash: (txhash: string) => void;
 };
 
@@ -21,7 +21,10 @@ const useMintManyStore = create<MintManyStore>((set) => ({
   tasks: [],
   setAssetInputToMint: (assetInput) => set({ assetInputToMint: assetInput }),
   resetTasks: () => set({ tasks: [] }),
-  setTxHash: (txhash) => set({ txhash }),
+  setTxHash: (txhash) =>
+    set((state) => ({
+      txhash: Array.isArray(state.txhash) ? [...state.txhash, txhash] : [txhash],
+    })),
   setLoading: (loading) => set({ loading }),
   updateTaskState: (status, name = "", content = "") => {
     set((state) => {

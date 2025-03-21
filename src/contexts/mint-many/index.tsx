@@ -26,7 +26,7 @@ type MintManyContextType = MintManyStore & {
 };
 
 export default function MintManyProvider({ children }: { collectionId: string | null; children: React.ReactNode }) {
-  const { signTx, address } = useWallet();
+  const { signTx, address, getUtxos } = useWallet();
   const mintManyStepper = useMintManyStepper();
   const { updateTaskState, setTxHash, resetTasks, setLoading, setAssetInputToMint, assetInputToMint } = useMintManyStore();
 
@@ -74,43 +74,55 @@ export default function MintManyProvider({ children }: { collectionId: string | 
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       updateTaskState("inprogress", "create_transaction", "Creating Transaction");
-
-      const {
-        data: listTxs,
-        result,
-        message,
-      } = await createMintTransaction({
-        address: address,
-        mintInput: assetInputToMint,
-      });
-      if (!result || isNil(listTxs) || isEmpty(listTxs)) {
-        throw new Error(message);
+      const utxos = await getUtxos();
+      const utxoOnlyLovelace = await Promise.all(
+        utxos.filter((utxo) => {
+          const hasOnlyLovelace = utxo.output.amount.every((amount) => amount.unit === "lovelace");
+          const hasEnoughLovelace = utxo.output.amount.some((amount) => amount.unit === "lovelace" && Number(amount.quantity) > 500000000);
+          return hasOnlyLovelace && hasEnoughLovelace;
+        }),
+      );
+      let utxoIndex = 0;
+      const chunkSize = 10;
+      if (utxoOnlyLovelace.length < assetInputToMint.length / chunkSize) {
+        throw new Error("You have not UTxO only lavelace.");
       }
 
-      // wait for confirmation
+      if (chunkSize < assetInputToMint.length) {
+        toast({
+          title: "Transactions",
+          description: `Your transaction needs to be split into ${assetInputToMint.length / chunkSize} transactions due to data security reasons.`,
+          variant: "destructive",
+        });
+      }
+      for (let i = 0; i < assetInputToMint.length; i += chunkSize) {
+        const chunk = assetInputToMint.slice(i, i + Math.min(chunkSize, assetInputToMint.length - i));
+        const {
+          data: unsignedTx,
+          result,
+          message,
+        } = await createMintTransaction({
+          address: address,
+          mintInput: chunk,
+          utxo: utxoOnlyLovelace[utxoIndex],
+        });
+        if (!result || isNil(unsignedTx)) {
+          throw new Error(message);
+        }
+
+        const signedTx = await signTx(unsignedTx);
+
+        const { data: txHash, result: txResult, message: txMessage } = await submitTx(signedTx);
+        if (!txResult || isNil(txHash)) {
+          throw new Error(txMessage);
+        }
+        setTxHash(txHash);
+        utxoIndex++;
+      }
+
       updateTaskState("inprogress", "sign_transaction", "Waiting for  sign Tx");
-      const signedTxs = await Promise.all(
-        listTxs.map(async (tx) => {
-          return await signTx(tx);
-        }),
-      );
       updateTaskState("inprogress", "submit_transaction", "Submitting Transaction");
-      // submit transaction
-
-      const txHashes = await Promise.all(
-        signedTxs.map(async (signedTx) => {
-          const { data: txHash, result: txResult, message: txMessage } = await submitTx(signedTx);
-          if (!txResult || isNil(txHash)) {
-            throw new Error(txMessage);
-          }
-
-          return txHash;
-        }),
-      );
-
-      setTxHash(txHashes[0]);
       updateTaskState("success");
-      // show result
       mintManyStepper.goTo("result");
       // create transaction
     } catch (e) {
