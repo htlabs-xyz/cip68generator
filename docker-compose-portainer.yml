@@ -31,9 +31,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: npx prisma migrate deploy
+    entrypoint: ["npx", "prisma", "migrate", "deploy"]
     env_file:
-      - .env
+      - stack.env
     depends_on:
       - postgres
     networks:

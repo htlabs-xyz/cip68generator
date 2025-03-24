@@ -25,13 +25,13 @@ services:
     networks:
       - cip68
     restart: unless-stopped
-
+  
   migrate:
     container_name: cip68_migrate_database
     build:
       context: .
       dockerfile: Dockerfile
-    command: npx prisma migrate deploy
+    entrypoint: ["npx", "prisma", "migrate", "deploy"]
     env_file:
       - .env
     depends_on:
@@ -46,7 +46,7 @@ services:
       - .env
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.portainer
     ports:
       - "${APP_PORT}:3000"
     depends_on:
