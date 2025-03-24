@@ -9,6 +9,13 @@ import { isNil } from "lodash";
 export const getAssetInfo = async (unit: string) => {
   try {
     const assetDetails: AssetDetails = await blockfrostFetcher.fetchSpecificAsset(unit);
+    const userAssetsDetails = await blockfrostFetcher.fetchSpecificAsset(unit.replace("000643b0", "000de140"));
+    if (isNil(assetDetails)) {
+      throw new Error("Asset not found");
+    }
+
+    assetDetails.quantity = userAssetsDetails.quantity;
+
     if (isNil(assetDetails)) {
       throw new Error("Asset not found");
     }

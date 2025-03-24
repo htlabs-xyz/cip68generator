@@ -1,4 +1,6 @@
 "use server";
+
+import { UTxO } from "@meshsdk/core";
 import { appNetworkId } from "@/constants";
 import { Cip68Contract } from "@/contract";
 import { blockfrostProvider } from "@/lib/cardano";
@@ -7,7 +9,7 @@ import { parseError } from "@/utils/error/parse-error";
 import { deserializeAddress, MeshWallet } from "@meshsdk/core";
 import { isEmpty, isNil } from "lodash";
 
-export const createMintTransaction = async ({ address, mintInput }: { address: string; mintInput: AssetInput[] }) => {
+export const createMintTransaction = async ({ address, mintInput, utxo }: { address: string; mintInput: AssetInput[]; utxo?: UTxO }) => {
   try {
     if (isEmpty(mintInput)) {
       throw new Error("No assets to mint");
@@ -39,10 +41,10 @@ export const createMintTransaction = async ({ address, mintInput }: { address: s
         },
       })),
     );
-    const tx = await cip68Contract.mint(input);
+    const unsignedTx = await cip68Contract.mint(input, utxo);
     return {
       result: true,
-      data: tx,
+      data: unsignedTx,
       message: "Transaction created successfully",
     };
   } catch (e) {

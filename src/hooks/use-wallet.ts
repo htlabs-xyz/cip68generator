@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { BrowserWallet, Wallet } from "@meshsdk/core";
+import { BrowserWallet, UTxO, Wallet } from "@meshsdk/core";
 import { Session } from "next-auth";
 import { isNil } from "lodash";
 import { getNonceByAddress } from "@/services/user/get-nonce";
@@ -14,6 +14,7 @@ export interface WalletStoreType {
   stakeAddress: string | null;
   browserWallet: BrowserWallet | null;
   getBalance: () => Promise<number>;
+  getUtxos: () => Promise<Array<UTxO>>;
   signTx: (message: string) => Promise<string>;
   submitTx: (signedTx: string) => Promise<string>;
   disconnect: () => Promise<void>;
@@ -25,6 +26,14 @@ export const useWallet = create<WalletStoreType>((set, get) => ({
   browserWallet: null,
   address: null,
   stakeAddress: null,
+
+  getUtxos: async () => {
+    const { browserWallet } = get();
+    if (!browserWallet) {
+      return [];
+    }
+    return await browserWallet.getUtxos();
+  },
   getBalance: async () => {
     const { browserWallet } = get();
     if (!browserWallet) {

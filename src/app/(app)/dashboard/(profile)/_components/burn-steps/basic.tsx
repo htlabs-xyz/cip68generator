@@ -28,7 +28,7 @@ export default function BasicStep() {
         <AlertDialogContent className=" max-w-[40vw]">
           <AlertDialogHeader>
             <AlertDialogTitle>
-              You are initiating a burn of {hexToString(assetDetails.asset_name.replace(/^000de140/, ""))} for total quantity {quantityToBurn}
+              You are initiating a burn of {hexToString(assetDetails.asset_name.replace(/^000643b0/, ""))} for total quantity {quantityToBurn}
             </AlertDialogTitle>
             <AlertDialogDescription>
               Please note: This action is permanent and will irreversibly remove your assets data on the blockchain.
@@ -52,7 +52,6 @@ export default function BasicStep() {
                   value={quantityToBurn ?? 1}
                   onChange={(e) => {
                     const val = Number(e.target.value);
-                    console.log(val);
                     if (val > Number(assetDetails.quantity)) {
                       setErr("Quantity to burn cannot be more than the available quantity");
                     } else if (val < 1) {
@@ -89,7 +88,7 @@ export default function BasicStep() {
         <div className="fixed right-0 bottom-0 z-10 max-h-16 w-full bg-section">
           <div className="mx-4 flex h-16 items-center sm:mx-8">
             <div className="flex flex-1 items-center justify-end space-x-2">
-              <Link href={`/dashboard/${unit}`}>
+              <Link href={`/dashboard/asset/${unit}`}>
                 <Button variant="secondary">Back</Button>
               </Link>
               <Button onClick={() => setOpen(true)} disabled={!isNil(err)}>

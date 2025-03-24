@@ -25,6 +25,20 @@ services:
     networks:
       - cip68
     restart: unless-stopped
+  
+  migrate:
+    container_name: cip68_migrate
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: ["npx", "prisma", "migrate", "deploy"]
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    networks:
+      - cip68
+    restart: "no"
 
   app:
     container_name: cip68_app
@@ -32,7 +46,7 @@ services:
       - .env
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.portainer
     ports:
       - "${APP_PORT}:3000"
     depends_on:

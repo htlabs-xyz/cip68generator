@@ -1,17 +1,23 @@
 "use client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useWalletList } from "@meshsdk/react";
 import WalletItem from "./wallet-item";
 import { useSession } from "next-auth/react";
 import { useWallet } from "@/hooks/use-wallet";
-import { Wallet } from "@meshsdk/core";
+import { BrowserWallet, Wallet } from "@meshsdk/core";
 import { appNetwork } from "@/constants";
 import { redirect, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function WalletConnect() {
   const router = useRouter();
-  const wallets = useWalletList();
+
+  const [wallets, setWallets] = useState<Wallet[]>([]);
+  useEffect(() => {
+    async function get() {
+      setWallets(await BrowserWallet.getAvailableWallets());
+    }
+    get();
+  }, []);
   const { data: session, status } = useSession();
   const { signIn, wallet } = useWallet();
 

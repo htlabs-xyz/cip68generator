@@ -1,14 +1,13 @@
-import { CIP68_222, stringToHex, mConStr0, mConStr2, CIP68_100, metadataToCip68, mConStr1, deserializeAddress } from "@meshsdk/core";
+import { CIP68_222, stringToHex, mConStr0, UTxO, mConStr2, CIP68_100, metadataToCip68, mConStr1, deserializeAddress } from "@meshsdk/core";
 
 import { MeshAdapter } from "../adapters/mesh.adapter";
 import { APP_WALLET_ADDRESS, EXCHANGE_FEE_PRICE } from "../constants";
 import { appNetwork } from "@/constants";
 import { ICip68Contract } from "../interfaces/icip68.interface";
-import { isEmpty, isNil } from "lodash";
+import { isEmpty, isNil, isNull } from "lodash";
 import { getPkHash } from "@/utils";
 
 export class Cip68Contract extends MeshAdapter implements ICip68Contract {
-
   /**
    * @method Mint
    * @description Mint Asset (NFT/Token) with CIP68
@@ -25,14 +24,35 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       quantity: string;
       receiver: string;
     }[],
+    utxo?: UTxO,
   ) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
     const unsignedTx = this.meshTxBuilder.mintPlutusScriptV3();
+    if (!isNil(utxo) || isNull(utxo)) {
+      unsignedTx.txIn(utxo.input.txHash, utxo.input.outputIndex);
+    }
     const txOutReceiverMap = new Map<string, { unit: string; quantity: string }[]>();
+
+    const assetsWithUtxo = await Promise.all(
+      params.map(async ({ assetName }) => {
+        const utxo = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
+        return { assetName, hasPlutusData: !!utxo?.output?.plutusData, utxo };
+      }),
+    );
+
+    const allExist = assetsWithUtxo.every((asset) => asset.hasPlutusData);
+    const allNew = assetsWithUtxo.every((asset) => !asset.hasPlutusData);
+
+    if (!allExist && !allNew) {
+      const existAssets = assetsWithUtxo.filter((asset) => asset.hasPlutusData).map((asset) => asset.assetName);
+      throw new Error(`Transaction only supports either minting new or existing assets.\nAssets already exist: ${existAssets.join(", ")}`);
+    }
+
     await Promise.all(
       params.map(async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
         const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
-        if (existUtXOwithUnit?.output?.plutusData) {
+        //////////////
+        if (allExist) {
           const pk = await getPkHash(existUtXOwithUnit?.output?.plutusData as string);
           if (pk !== deserializeAddress(walletAddress).pubKeyHash) {
             throw new Error(`${assetName} has been exist`);
@@ -56,7 +76,8 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
             .mint(quantity, this.policyId, CIP68_222(stringToHex(assetName)))
             .mintingScript(this.mintScriptCbor)
             .mintRedeemerValue(mConStr0([]));
-        } else {
+          //////////////
+        } else if (allNew) {
           const receiverKey = !isEmpty(receiver) ? receiver : walletAddress;
           if (txOutReceiverMap.has(receiverKey)) {
             txOutReceiverMap.get(receiverKey)!.push({
@@ -90,10 +111,12 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
               },
             ])
             .txOutInlineDatumValue(metadataToCip68(metadata));
+        } else {
+          throw new Error(`Transaction only supports either minting new assets or minting existing assets, not both in the same transaction`);
         }
+        //////////////
       }),
     );
-
     txOutReceiverMap.forEach((assets, receiver) => {
       unsignedTx.txOut(receiver, assets);
     });
@@ -108,9 +131,9 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       .changeAddress(walletAddress)
       .requiredSignerHash(deserializeAddress(walletAddress).pubKeyHash)
       .selectUtxosFrom(utxos)
-      .txInCollateral(collateral.input.txHash,collateral.input.outputIndex,collateral.output.amount,collateral.output.address)
-      .setNetwork(appNetwork)
-      .addUtxosFromSelection();
+      .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
+      .setNetwork(appNetwork);
+    // .addUtxosFromSelection();
     return await unsignedTx.complete();
   };
 

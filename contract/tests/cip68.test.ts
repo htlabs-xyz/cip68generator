@@ -4,6 +4,7 @@ import { describe, test, expect, beforeEach, jest } from "@jest/globals";
 import { BlockfrostProvider, BrowserWallet, deserializeAddress, MeshWallet } from "@meshsdk/core";
 import { Cip68Contract } from "../script";
 import { APP_WALLET_ADDRESS } from "../script/constants";
+import { UtXO } from "@/types";
 
 describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   let wallet: MeshWallet;
@@ -12,46 +13,104 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       networkId: 0,
       fetcher: blockfrostProvider,
       submitter: blockfrostProvider,
+
       key: {
         type: "mnemonic",
         words: process.env.APP_MNEMONIC?.split(" ") || [],
       },
     });
   });
-  jest.setTimeout(60000);
+  jest.setTimeout(6000000);
 
   test("Mint", async function () {
     // return;
+    const assets = [
+      {
+        assetName: "hcd009",
+        quantity: "1",
+        receiver: "",
+        metadata: {
+          name: "hcd #009",
+          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
+          mediaType: "image/png",
+          rarity: "Legendary",
+          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+        },
+      },
+    ];
     const cip68Contract: Cip68Contract = new Cip68Contract({
       wallet: wallet,
     });
-    const unsignedTx: string = await cip68Contract.mint([
-      {
-        assetName: "CIP68 Generators 111111",
-        metadata: {
-          name: "CIP68 Generators",
-          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
-        },
-        quantity: "1",
-        receiver: null!,
-      },
 
+    const utxos = await wallet.getUtxos();
+    const utxoOnlyLovelace = await Promise.all(
+      utxos.filter((utxo) => {
+        const hasOnlyLovelace = utxo.output.amount.every((amount) => amount.unit === "lovelace");
+        const hasEnoughLovelace = utxo.output.amount.some((amount) => amount.unit === "lovelace" && Number(amount.quantity) > 500000000);
+        return hasOnlyLovelace && hasEnoughLovelace;
+      }),
+    );
+
+    let utxoIndex = 0;
+    const chunkSize = 1;
+    if (utxoOnlyLovelace.length < assets.length / chunkSize) {
+      throw new Error("You have not UTxO only lavelace.");
+    }
+
+    for (let i = 0; i < assets.length; i += chunkSize) {
+      const chunk = assets.slice(i, i + Math.min(chunkSize, assets.length - i));
+      const unsignedTx = await cip68Contract.mint(chunk, utxoOnlyLovelace[utxoIndex]);
+      const signedTx = await wallet.signTx(unsignedTx, true);
+      const txHash = await wallet.submitTx(signedTx);
+      console.log("https://preview.cexplorer.io/tx/" + txHash);
+      utxoIndex++;
+    }
+  });
+
+  test("Mint - Timeout", async function () {
+    // return;
+    const assets = [
       {
-        assetName: "CIP68" ,
-        metadata: {
-          name: "CIP68 Generators",
-          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
-        },
+        assetName: "hcd010",
         quantity: "1",
-        receiver: null!,
+        receiver: "",
+        metadata: {
+          name: "hcd #010",
+          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
+          mediaType: "image/png",
+          rarity: "Legendary",
+          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+        },
       },
-    ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
-    const txHash = await wallet.submitTx(signedTx);
-    console.log("https://preview.cexplorer.io/tx/" + txHash);
-    blockfrostProvider.onTxConfirmed(txHash, () => {
-      expect(txHash.length).toBe(64);
+    ];
+    const cip68Contract: Cip68Contract = new Cip68Contract({
+      wallet: wallet,
     });
+
+    const utxos = await wallet.getUtxos();
+    const utxoOnlyLovelace = await Promise.all(
+      utxos.filter((utxo) => {
+        const hasOnlyLovelace = utxo.output.amount.every((amount) => amount.unit === "lovelace");
+        const hasEnoughLovelace = utxo.output.amount.some((amount) => amount.unit === "lovelace" && Number(amount.quantity) > 500000000);
+        return hasOnlyLovelace && hasEnoughLovelace;
+      }),
+    );
+
+    let utxoIndex = 1;
+    const chunkSize = 1;
+    if (utxoOnlyLovelace.length < assets.length / chunkSize) {
+      throw new Error("You have not UTxO only lavelace.");
+    }
+
+    for (let i = 0; i < assets.length; i += chunkSize) {
+      const chunk = assets.slice(i, i + Math.min(chunkSize, assets.length - i));
+      const unsignedTx = await cip68Contract.mint(chunk, utxoOnlyLovelace[utxoIndex]);
+      const signedTx = await wallet.signTx(unsignedTx, true);
+      const txHash = await wallet.submitTx(signedTx);
+      console.log("https://preview.cexplorer.io/tx/" + txHash);
+
+      utxoIndex++;
+    }
   });
 
   test("Burn", async function () {
@@ -65,7 +124,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         quantity: "-1",
       },
     ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     jest.setTimeout(20000);
@@ -103,7 +162,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
     ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
@@ -116,7 +175,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     });
     const ref_address = "";
     const unsignedTx: string = await cip68Contract.createReferenceScriptMint(ref_address);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
@@ -129,7 +188,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     });
     const ref_address = "";
     const unsignedTx: string = await cip68Contract.createReferenceScriptStore(ref_address);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
@@ -152,7 +211,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       quantity: "1",
       receiver: null!,
     });
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     blockfrostProvider.onTxConfirmed(txHash, () => {
@@ -170,7 +229,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       metadata: {},
       quantity: "1",
     });
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     blockfrostProvider.onTxConfirmed(txHash, () => {
@@ -194,7 +253,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       },
       quantity: "1",
     });
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     blockfrostProvider.onTxConfirmed(txHash, () => {
@@ -218,7 +277,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       },
       quantity: "1",
     });
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     blockfrostProvider.onTxConfirmed(txHash, () => {
@@ -242,7 +301,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       },
       quantity: "1",
     });
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     blockfrostProvider.onTxConfirmed(txHash, () => {
@@ -266,7 +325,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       },
       quantity: "1",
     });
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     blockfrostProvider.onTxConfirmed(txHash, () => {
@@ -290,7 +349,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       },
       quantity: "1",
     });
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     blockfrostProvider.onTxConfirmed(txHash, () => {
@@ -314,7 +373,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       },
       quantity: "1",
     });
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     blockfrostProvider.onTxConfirmed(txHash, () => {
@@ -338,7 +397,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       },
       quantity: "1",
     });
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     blockfrostProvider.onTxConfirmed(txHash, () => {
@@ -365,7 +424,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
     ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
@@ -389,7 +448,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
     ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
@@ -413,7 +472,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
     ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
@@ -438,7 +497,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
     ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
@@ -463,7 +522,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
     ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
@@ -488,7 +547,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
     ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
@@ -513,7 +572,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
     ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
@@ -538,7 +597,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
     ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
@@ -563,7 +622,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
     ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
@@ -580,7 +639,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         quantity: "-1",
       },
     ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
@@ -597,7 +656,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         quantity: "-1",
       },
     ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
@@ -614,7 +673,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         quantity: "-1",
       },
     ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
@@ -631,7 +690,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         quantity: "-1",
       },
     ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
@@ -648,7 +707,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         quantity: "-1",
       },
     ]);
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     expect(txHash.length).toBe(64);
@@ -676,7 +735,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         quantity: "-1",
       },
     );
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     jest.setTimeout(20000);
@@ -705,7 +764,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         quantity: "-1",
       },
     );
-    const signedTx = wallet.signTx(unsignedTx, true);
+    const signedTx = await wallet.signTx(unsignedTx, true);
     const txHash = await wallet.submitTx(signedTx);
     console.log("https://preview.cexplorer.io/tx/" + txHash);
     jest.setTimeout(20000);

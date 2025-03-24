@@ -7,19 +7,24 @@ import { useSession } from "next-auth/react";
 import { useWallet } from "@/hooks/use-wallet";
 import { appNetwork, appUrl, wallets } from "@/constants";
 import { redirect, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import WalletItem from "./_components/wallet-item";
-import { useWalletList } from "@meshsdk/react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BrowserWallet, Wallet } from "@meshsdk/core";
 
 export default function SignInViewPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const walletInstalledList = useWalletList();
-
+  const [walletInstalledList, setWalletInstalledList] = useState<Wallet[]>([]);
+  useEffect(() => {
+    async function get() {
+      setWalletInstalledList(await BrowserWallet.getAvailableWallets());
+    }
+    get();
+  }, []);
   const { signIn, wallet } = useWallet();
 
   useEffect(() => {
