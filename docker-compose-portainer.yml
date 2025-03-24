@@ -27,7 +27,7 @@ services:
     restart: unless-stopped
   
   migrate:
-    container_name: cip68_migrate_database
+    container_name: cip68_migrate
     build:
       context: .
       dockerfile: Dockerfile
