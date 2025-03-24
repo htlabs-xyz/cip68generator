@@ -31,6 +31,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    command: cp stack.env .env
     entrypoint: ["npx", "prisma", "migrate", "deploy"]
     env_file:
       - stack.env
