@@ -30,8 +30,8 @@ services:
     container_name: cip68_migrate
     build:
       context: .
-      dockerfile: Dockerfile
-    command: sh -c "cp stack.env .env && npx prisma migrate deploy"
+      dockerfile: Dockerfile.portainer
+    entrypoint: ["npx", "prisma", "migrate", "deploy"]
     env_file:
       - stack.env
     depends_on:
