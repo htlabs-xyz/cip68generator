@@ -26,6 +26,20 @@ services:
       - cip68
     restart: unless-stopped
 
+  migrate:
+    container_name: cip68_migrate_database
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npx prisma migrate deploy
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    networks:
+      - cip68
+    restart: "no"
+
   app:
     container_name: cip68_app
     env_file:
