@@ -39,48 +39,164 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   jest.setTimeout(6000000);
 
   test("Mint", async function () {
-    // return;
-    const assets = [
+    return;
+    const assets1 = [
       {
-        assetName: "CIP68 Generators 6",
-        quantity: "1",
-        receiver: "",
+        assetName: "Test1",
         metadata: {
-          name: "hcd #009",
-          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
-          mediaType: "image/png",
-          rarity: "Legendary",
-          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
         },
       },
       {
-        assetName: "CIP68 Generators 7",
-        quantity: "1",
-        receiver: "",
+        assetName: "Test2",
         metadata: {
-          name: "hcd #009",
-          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
-          mediaType: "image/png",
-          rarity: "Legendary",
-          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+      {
+        assetName: "Test3",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+    
+      {
+        assetName: "Test4",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
         },
       },
 
       {
-        assetName: "CIP68 Generators 8",
-        quantity: "1",
-        receiver: "",
+        assetName: "Test5",
         metadata: {
-          name: "hcd #009",
-          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
-          mediaType: "image/png",
-          rarity: "Legendary",
-          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+
+      {
+        assetName: "Test6",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
         },
       },
     ];
 
-    const chunkSize = 1; // chọn ra bao nhiều nft trong giao dịch
+    const assets = [
+      {
+        assetName: "Test7",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+      {
+        assetName: "Test8",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+      {
+        assetName: "Test9",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+    
+      {
+        assetName: "Test10",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+
+      {
+        assetName: "Test11",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+
+      {
+        assetName: "Test12",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+    ];
+
+    const chunkSize = 5; // chọn ra bao nhiều nft trong giao dịch
     let utxoIndex = 0;
 
     const utxos = await wallet.getUtxos();
@@ -176,8 +292,8 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   test("Update", async function () {
     // return;
     const assets = [
-      {
-        assetName: "CIP68 Generators",
+    {
+        assetName: "Test1",
         metadata: {
           name: "2",
           image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
@@ -189,7 +305,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
       {
-        assetName: "CIP68 Generators 1",
+        assetName: "Test2",
         metadata: {
           name: "2",
           image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
@@ -201,7 +317,46 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
       {
-        assetName: "CIP68 Generators 2",
+        assetName: "Test3",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+    
+      {
+        assetName: "Test4",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+
+      {
+        assetName: "Test5",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+
+      {
+        assetName: "Test6",
         metadata: {
           name: "2",
           image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
@@ -213,7 +368,70 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
       {
-        assetName: "CIP68 Generators 3",
+        assetName: "Test7",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+      {
+        assetName: "Test8",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+      {
+        assetName: "Test9",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+    
+      {
+        assetName: "Test10",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+
+      {
+        assetName: "Test11",
+        metadata: {
+          name: "2",
+          image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
+          mediaType: "image/jpg",
+          description: "Open source dynamic assets (Token/NFT) generator (CIP68)",
+          owner: wallet.getChangeAddress(),
+          website: "https://cip68.cardano2vn.io",
+          _pk: deserializeAddress(wallet.getChangeAddress()).pubKeyHash,
+        },
+      },
+
+      {
+        assetName: "Test12",
         metadata: {
           name: "2",
           image: "ipfs://QmRzicpReutwCkM6aotuKjErFCUD213DpwPq6ByuzMJaua",
@@ -227,7 +445,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     ];
 
     let utxoIndex = 0;
-    const chunkSize = 1;
+    const chunkSize = 10;
     const utxos = await wallet.getUtxos();
     const utxoOnlyLovelace = await Promise.all(
       utxos.filter((utxo) => {
