@@ -43,7 +43,7 @@ export default function MetadataAction({ metadata }: { metadata: PMetadata }) {
       if (!result) {
         throw new Error(message);
       }
-      toast({ title: "success", description: "Your metadata has been edited successfully!" });
+      toast({ :"Success", description: "Your metadata has been edited successfully!" });
     } catch (e) {
       toast({
         title: "Failed to update metadata",

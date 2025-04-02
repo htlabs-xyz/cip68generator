@@ -40,7 +40,7 @@ export function CreateCollectionButton() {
       if (!result) {
         throw new Error(message);
       }
-      toast({ title: "Success", description: message });
+      toast({ :"Success", description: message });
     } catch (e) {
       toast({
         title: "Error",

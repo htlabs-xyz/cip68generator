@@ -35,7 +35,7 @@ export default function FolderCard({ collection }: { collection: Collection }) {
       if (!result) {
         throw new Error(message);
       }
-      toast({ title: "Success", description: message });
+      toast({ :"Success", description: message });
     } catch (e) {
       toast({
         title: "Error",
@@ -60,7 +60,7 @@ export default function FolderCard({ collection }: { collection: Collection }) {
       if (!result) {
         throw new Error(message);
       }
-      toast({ title: "Success", description: message });
+      toast({ :"Success", description: message });
     } catch (e) {
       toast({
         title: "Error",
