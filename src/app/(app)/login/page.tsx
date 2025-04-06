@@ -5,7 +5,7 @@ import { appImage } from "@/public/images";
 import { routes } from "@/constants/routes";
 import { useSession } from "next-auth/react";
 import { useWallet } from "@/hooks/use-wallet";
-import { appNetwork, appUrl } from "@/constants";
+import { appNetwork, appUrl, wallets } from "@/constants";
 import { redirect, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -80,21 +80,8 @@ export default function SignInViewPage() {
               <CardDescription>Connect a wallet on {appNetwork} to continue</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
-              {walletInstalledList.map((item) => {
-                return (
-                  <WalletItem
-                    key={item.id}
-                    wallet={wallet}
-                    item={item}
-                    onConnectWallet={(wallet) => {
-                      return signIn(session, wallet);
-                    }}
-                    status={walletInstalledList.find((wallet) => wallet.id === item.id) ? "ready" : "not installed"}
-                  />
-                );
-              })}
-              {/* {Object.entries(wallets).map(([key, value]) => {
-                // if (value.id != "eternl") return;
+              {Object.entries(wallets).map(([key, value]) => {
+                if (value.id != "eternl") return;
                 return (
                   <WalletItem
                     key={key}
@@ -106,7 +93,7 @@ export default function SignInViewPage() {
                     status={walletInstalledList.find((wallet) => wallet.id === value.id) ? "ready" : "not installed"}
                   />
                 );
-              })} */}
+              })}
             </CardContent>
           </Card>
           <p className="px-8 text-center text-sm text-muted-foreground">
