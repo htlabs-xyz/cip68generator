@@ -50,7 +50,7 @@ export async function deleteCollection(collectionId: string) {
 
     await prisma.collection.delete({ where: { id: collectionId } });
 
-    return { result: true, message: "Your collection folder has been created successfully!" };
+    return { result: true, message: "Your collection folder has been deleted successfully!" };
   } catch (e) {
     return { result: false, message: parseError(e) };
   }
@@ -67,7 +67,7 @@ export async function updateCollection({ collectionId, name, description }: { co
 
     await prisma.collection.update({ where: { id: collectionId }, data: { name, description } });
 
-    return { result: true, message: "Your collection folder has been created successfully!" };
+    return { result: true, message: "Your collection folder has been updated successfully!" };
   } catch (e) {
     return { result: false, message: parseError(e) };
   }
