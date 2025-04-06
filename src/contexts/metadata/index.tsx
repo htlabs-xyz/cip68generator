@@ -25,8 +25,7 @@ export default function MetadataProvider({ collectionId, children }: { collectio
     queryKey: ["getMetadata", currentPage, filter],
     queryFn: async () => {
       const resullt = await getMetadata({ collectionId, page: currentPage, query: filter.query, range: filter.range });
-      console.count("resullt");
-      console.log(resullt);
+
       return resullt;
     },
   });
