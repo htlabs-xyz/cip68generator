@@ -6,7 +6,7 @@ import { addMetadata, deleteMetadata, getMetadata } from "@/services/database/me
 import { toast } from "@/hooks/use-toast";
 import { routes } from "@/constants/routes";
 import { useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 type MetadataContextType = MetadataStore & {
   loading: boolean;
@@ -19,10 +19,15 @@ type MetadataContextType = MetadataStore & {
 export default function MetadataProvider({ collectionId, children }: { collectionId: string; children: React.ReactNode }) {
   const { setListMetadata, currentPage, filter, setFilter, listSelected, setListSelected, setCurrentPage } = useMetadataStore();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["getMetadata", currentPage, filter],
-    queryFn: () => getMetadata({ collectionId, page: currentPage, query: filter.query, range: filter.range }),
+    queryFn: async () => {
+      const resullt = await getMetadata({ collectionId, page: currentPage, query: filter.query, range: filter.range });
+
+      return resullt;
+    },
   });
 
   useEffect(() => {
@@ -32,18 +37,18 @@ export default function MetadataProvider({ collectionId, children }: { collectio
   const createMetadata = async (metadataContent: Record<string, string>) => {
     const { result, message } = await addMetadata({ collectionId, listMetadata: [metadataContent] });
     if (result) {
-      toast({ title: "success", variant: "default", description: "Your metadata has been created successfully!" });
+      await queryClient.refetchQueries({ queryKey: ["getMetadata"] });
+      toast({ title: "Success", variant: "default", description: "Your metadata has been created successfully!" });
       router.push(routes.utilities.children.collection.redirect + "/" + collectionId);
     } else {
       toast({ title: "Error", variant: "destructive", description: message });
     }
-    refetch();
   };
 
   const deleteMetadataSelected = async () => {
     const { result, message } = await deleteMetadata({ collectionId, listMetadata: listSelected });
     if (result) {
-      toast({ title: "success", variant: "default", description: "Your metadata has been deleted successfully" });
+      toast({ title: "Success", variant: "default", description: "Your metadata has been deleted successfully" });
       setListSelected([]);
     } else {
       toast({ title: "Error", variant: "destructive", description: message });
