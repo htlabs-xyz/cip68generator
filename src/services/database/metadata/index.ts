@@ -145,6 +145,7 @@ export async function getMetadata({
       content: JSON.parse(item.content),
     }));
 
+    console.log("parsedMetadata", parsedMetadata);
     return {
       data: parsedMetadata,
       totalItems,
@@ -152,6 +153,7 @@ export async function getMetadata({
       currentPage: page,
     };
   } catch (e) {
+    console.error(e);
     return {
       data: [],
       message: parseError(e),
