@@ -27,6 +27,7 @@ export function BreadcrumbDashboard() {
         {filteredSegments.length > 0 && <BreadcrumbSeparator />}
 
         {filteredSegments.map((segment, index) => {
+          if (segment === "asset") return null;
           const isLast = index === filteredSegments.length - 1;
           const path = `/dashboard/${filteredSegments.slice(0, index + 1).join("/")}`;
           const segmentTruncated = shortenString(segment, 7);
