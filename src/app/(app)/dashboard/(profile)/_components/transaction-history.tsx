@@ -86,7 +86,7 @@ export default function TransactionHistory() {
                 <TableRow key={index} className={index % 2 === 0 ? "bg-[#0d0e12]" : ""}>
                   <TableCell className="h-14 py-5 px-4 text-center">
                     <Link
-                      href={`https://${appNetwork}.cexplorer.io/tx/${transaction.txHash}`}
+                      href={`https://${appNetwork == "mainnet" ? "" : appNetwork + "."}cexplorer.io/tx/${transaction.txHash}`}
                       target="_blank"
                       className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis text-white text-[14px] font-medium leading-[20px]"
                     >
