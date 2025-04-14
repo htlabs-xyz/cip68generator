@@ -25,7 +25,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     // return;
     const assets = [
       {
-        assetName: "hcd11",
+        assetName: "1hcd11",
         quantity: "1",
         receiver: "",
         metadata: {
@@ -37,7 +37,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
       {
-        assetName: "hcd12",
+        assetName: "2hcd12",
         quantity: "1",
         receiver: "",
         metadata: {
@@ -49,7 +49,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
       {
-        assetName: "hcd13",
+        assetName: "3hcd13",
         quantity: "1",
         receiver: "",
         metadata: {
@@ -61,7 +61,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
       {
-        assetName: "hcd14",
+        assetName: "4hcd14",
         quantity: "1",
         receiver: "",
         metadata: {
@@ -74,7 +74,43 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       },
 
       {
-        assetName: "hcd15",
+        assetName: "5hcd15",
+        quantity: "1",
+        receiver: "",
+        metadata: {
+          name: "hcd #009",
+          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
+          mediaType: "image/png",
+          rarity: "Legendary",
+          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+        },
+      },
+      {
+        assetName: "6hcd15",
+        quantity: "1",
+        receiver: "",
+        metadata: {
+          name: "hcd #009",
+          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
+          mediaType: "image/png",
+          rarity: "Legendary",
+          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+        },
+      },
+      {
+        assetName: "7hcd15",
+        quantity: "1",
+        receiver: "",
+        metadata: {
+          name: "hcd #009",
+          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
+          mediaType: "image/png",
+          rarity: "Legendary",
+          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+        },
+      },
+      {
+        assetName: "8hcd15",
         quantity: "1",
         receiver: "",
         metadata: {
@@ -86,12 +122,11 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
     ];
-
-    const utxos = await wallet.getUtxos();
-    const utxoOnlyLovelace = getUtxosOnlyLovelace(utxos, 50_000_000);
     let utxoIndex = 0;
-    const chunkSize = 1;
-    if (utxoOnlyLovelace.length < assets.length / chunkSize) {
+    const chunkSize = 3;
+    const utxos = await wallet.getUtxos();
+    const utxoOnlyLovelace = getUtxosOnlyLovelace(utxos, assets.length, 5_000_000, chunkSize);
+    if (!utxoOnlyLovelace || utxoOnlyLovelace.length < assets.length / chunkSize) {
       throw new Error("You have not UTxO only lavelace.");
     }
 
@@ -100,7 +135,6 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         wallet: wallet,
       });
       const chunk = assets.slice(i, i + Math.min(chunkSize, assets.length - i));
-      console.log(utxoOnlyLovelace[utxoIndex]);
       const unsignedTx = await cip68Contract.mint(chunk, utxoOnlyLovelace[utxoIndex]);
       const signedTx = await wallet.signTx(unsignedTx, true);
       const txHash = await wallet.submitTx(signedTx);

@@ -73,12 +73,12 @@ export default function MintManyProvider({ children }: { collectionId: string | 
 
       await new Promise((resolve) => setTimeout(resolve, 500));
       updateTaskState("inprogress", "create_transaction", "Creating Transaction");
-      const utxos = await getUtxos();
-      const utxoOnlyLovelace = getUtxosOnlyLovelace(utxos, 50_000_000);
       let utxoIndex = 0;
       const chunkSize = 10;
-      if (utxoOnlyLovelace.length < assetInputToMint.length / chunkSize) {
-        throw new Error("You have not UTxO only lovelace and Each UTxO must have 100 ada");
+      const utxos = await getUtxos();
+      const utxoOnlyLovelace = getUtxosOnlyLovelace(utxos, assetInputToMint.length, 5_000_000, chunkSize);
+      if (!utxoOnlyLovelace || utxoOnlyLovelace.length < assetInputToMint.length / chunkSize) {
+        throw new Error("You have not UTxO only lavelace.");
       }
 
       if (chunkSize < assetInputToMint.length) {

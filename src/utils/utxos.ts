@@ -1,37 +1,48 @@
 import { UTxO } from "@meshsdk/core";
 
-export function getUtxosOnlyLovelace(utxos: UTxO[], targetLovelace: number): UTxO[][] {
-  const groupedUtxos: UTxO[][] = [];
-  let currentGroup: UTxO[] = [];
-  let currentTotal = 0;
+export function getUtxosOnlyLovelace(utxos: UTxO[], total: number, minLovelace = 5_000_000, amount_per_tx = 10) {
+  const validUtxos = utxos
+    .filter((utxo) => utxo.output.amount.every((amount) => amount.unit === "lovelace"))
+    .sort((a, b) => Number(b.output.amount[0].quantity) - Number(a.output.amount[0].quantity));
 
-  for (const utxo of utxos) {
-    const hasOnlyLovelace = utxo.output.amount.every((amount) => amount.unit === "lovelace");
-    if (!hasOnlyLovelace) {
-      continue;
-    }
+  const groupCount = Math.floor(total / amount_per_tx);
+  const remainder = total % amount_per_tx;
 
-    const lovelaceAmount = utxo.output.amount.find((amount) => amount.unit === "lovelace")?.quantity || 0;
+  const groupTargets = [];
 
-    if (currentTotal + Number(lovelaceAmount) > targetLovelace) {
-      groupedUtxos.push(currentGroup);
-      currentGroup = [];
-      currentTotal = 0;
-    }
-
-    currentGroup.push(utxo);
-    currentTotal += Number(lovelaceAmount);
-
-    if (currentTotal === targetLovelace) {
-      groupedUtxos.push(currentGroup);
-      currentGroup = [];
-      currentTotal = 0;
-    }
+  for (let i = 0; i < groupCount; i++) {
+    groupTargets.push(amount_per_tx * minLovelace);
   }
 
-  if (currentGroup.length > 0) {
-    groupedUtxos.push(currentGroup);
+  if (remainder > 0) {
+    groupTargets.push(remainder * minLovelace);
   }
 
+  const groupedUtxos = [];
+
+  for (const target of groupTargets) {
+    const currentGroup = [];
+    let sumLovelace = 0;
+
+    let i = 0;
+    while (i < validUtxos.length) {
+      if (validUtxos[i] === undefined) {
+        i++;
+        continue;
+      }
+
+      currentGroup.push(validUtxos[i]);
+      sumLovelace += Number(validUtxos[i].output.amount[0].quantity);
+      validUtxos.splice(i, 1);
+
+      if (sumLovelace > target) break;
+    }
+
+    if (sumLovelace > target) {
+      groupedUtxos.push(currentGroup);
+    } else {
+      return null;
+    }
+  }
   return groupedUtxos;
 }
