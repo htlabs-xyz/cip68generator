@@ -9,7 +9,7 @@ import { parseError } from "@/utils/error/parse-error";
 import { deserializeAddress, MeshWallet } from "@meshsdk/core";
 import { isEmpty, isNil } from "lodash";
 
-export const createMintTransaction = async ({ address, mintInput, utxo }: { address: string; mintInput: AssetInput[]; utxo?: UTxO }) => {
+export const createMintTransaction = async ({ address, mintInput, utxos }: { address: string; mintInput: AssetInput[]; utxos?: UTxO[] }) => {
   try {
     if (isEmpty(mintInput)) {
       throw new Error("No assets to mint");
@@ -41,7 +41,7 @@ export const createMintTransaction = async ({ address, mintInput, utxo }: { addr
         },
       })),
     );
-    const unsignedTx = await cip68Contract.mint(input, utxo);
+    const unsignedTx = await cip68Contract.mint(input, utxos);
     return {
       result: true,
       data: unsignedTx,

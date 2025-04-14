@@ -7,10 +7,9 @@ import { submitTx } from "@/services/blockchain/submitTx";
 import { defineStepper } from "@stepperize/react";
 import useMintManyStore, { MintManyStore } from "./store";
 import { useWallet } from "@/hooks/use-wallet";
-import { convertObject } from "@/utils";
+import { convertObject, getUtxosOnlyLovelace } from "@/utils";
 import { createMintTransaction } from "@/services/contract/mint";
 import { parseError } from "@/utils/error/parse-error";
-import { decialPlace } from "@/constants";
 
 const { useStepper: useMintManyStepper, steps: mintManySteps } = defineStepper(
   { id: "upload", title: "Upload" },
@@ -73,22 +72,13 @@ export default function MintManyProvider({ children }: { collectionId: string | 
       }
 
       await new Promise((resolve) => setTimeout(resolve, 500));
-      const lovelaceRequire = 100;
       updateTaskState("inprogress", "create_transaction", "Creating Transaction");
       const utxos = await getUtxos();
-      const utxoOnlyLovelace = await Promise.all(
-        utxos.filter((utxo) => {
-          const hasOnlyLovelace = utxo.output.amount.every((amount) => amount.unit === "lovelace");
-          const hasEnoughLovelace = utxo.output.amount.some(
-            (amount) => amount.unit === "lovelace" && Number(amount.quantity) >= lovelaceRequire * decialPlace,
-          );
-          return hasOnlyLovelace && hasEnoughLovelace;
-        }),
-      );
+      const utxoOnlyLovelace = getUtxosOnlyLovelace(utxos, 50_000_000);
       let utxoIndex = 0;
       const chunkSize = 10;
       if (utxoOnlyLovelace.length < assetInputToMint.length / chunkSize) {
-        throw new Error("You have not UTxO only lavelace and Each UTxO must have 100 ada");
+        throw new Error("You have not UTxO only lovelace and Each UTxO must have 100 ada");
       }
 
       if (chunkSize < assetInputToMint.length) {
@@ -107,7 +97,7 @@ export default function MintManyProvider({ children }: { collectionId: string | 
         } = await createMintTransaction({
           address: address,
           mintInput: chunk,
-          utxo: utxoOnlyLovelace[utxoIndex],
+          utxos: utxoOnlyLovelace[utxoIndex],
         });
         if (!result || isNil(unsignedTx)) {
           throw new Error(message);
@@ -127,7 +117,6 @@ export default function MintManyProvider({ children }: { collectionId: string | 
       updateTaskState("inprogress", "submit_transaction", "Submitting Transaction");
       updateTaskState("success");
       mintManyStepper.goTo("result");
-      // create transaction
     } catch (e) {
       updateTaskState("error", "", parseError(e));
       toast({

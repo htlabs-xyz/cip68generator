@@ -24,12 +24,14 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
       quantity: string;
       receiver: string;
     }[],
-    utxo?: UTxO,
+    utxosInput?: UTxO[],
   ) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
     const unsignedTx = this.meshTxBuilder.mintPlutusScriptV3();
-    if (!isNil(utxo) || isNull(utxo)) {
-      unsignedTx.txIn(utxo.input.txHash, utxo.input.outputIndex);
+    if (!isNil(utxosInput) && Array.isArray(utxosInput)) {
+      utxosInput.forEach((utxo) => {
+        unsignedTx.txIn(utxo.input.txHash, utxo.input.outputIndex);
+      });
     }
     const txOutReceiverMap = new Map<string, { unit: string; quantity: string }[]>();
 
@@ -51,7 +53,6 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     await Promise.all(
       params.map(async ({ assetName, metadata, quantity = "1", receiver = "" }) => {
         const existUtXOwithUnit = await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
-        //////////////
         if (allExist) {
           const pk = await getPkHash(existUtXOwithUnit?.output?.plutusData as string);
           if (pk !== deserializeAddress(walletAddress).pubKeyHash) {

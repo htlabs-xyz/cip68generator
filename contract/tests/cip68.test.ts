@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { blockfrostProvider } from "@/lib/cardano";
 import { describe, test, expect, beforeEach, jest } from "@jest/globals";
-import { BlockfrostProvider, BrowserWallet, deserializeAddress, MeshWallet } from "@meshsdk/core";
+import { deserializeAddress, MeshWallet } from "@meshsdk/core";
 import { Cip68Contract } from "../script";
 import { APP_WALLET_ADDRESS } from "../script/constants";
-import { UtXO } from "@/types";
+import { getUtxosOnlyLovelace } from "@/utils";
 
 describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
   let wallet: MeshWallet;
@@ -19,24 +19,62 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
       },
     });
   });
-  jest.setTimeout(6000000);
-
-  test("address", async function () {
-    const cip68Contract: Cip68Contract = new Cip68Contract({
-      wallet: wallet,
-    });
-
-    const address = cip68Contract.storeAddress;
-    console.log(address);
-    const policyId = cip68Contract.policyId;
-    console.log(policyId);
-  });
+  jest.setTimeout(600000000);
 
   test("Mint", async function () {
-    return;
+    // return;
     const assets = [
       {
-        assetName: "hcd009",
+        assetName: "hcd11",
+        quantity: "1",
+        receiver: "",
+        metadata: {
+          name: "hcd #009",
+          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
+          mediaType: "image/png",
+          rarity: "Legendary",
+          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+        },
+      },
+      {
+        assetName: "hcd12",
+        quantity: "1",
+        receiver: "",
+        metadata: {
+          name: "hcd #009",
+          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
+          mediaType: "image/png",
+          rarity: "Legendary",
+          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+        },
+      },
+      {
+        assetName: "hcd13",
+        quantity: "1",
+        receiver: "",
+        metadata: {
+          name: "hcd #009",
+          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
+          mediaType: "image/png",
+          rarity: "Legendary",
+          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+        },
+      },
+      {
+        assetName: "hcd14",
+        quantity: "1",
+        receiver: "",
+        metadata: {
+          name: "hcd #009",
+          image: "ipfs://QmQK3ZfKnwg772ZUhSodoyaqTMPazG2Ni3V4ydifYaYzdV",
+          mediaType: "image/png",
+          rarity: "Legendary",
+          _pk: "c67f1772999b1448126a246b3849c4d98441992abd0c02d44e2284c1",
+        },
+      },
+
+      {
+        assetName: "hcd15",
         quantity: "1",
         receiver: "",
         metadata: {
@@ -48,19 +86,9 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
         },
       },
     ];
-    const cip68Contract: Cip68Contract = new Cip68Contract({
-      wallet: wallet,
-    });
 
     const utxos = await wallet.getUtxos();
-    const utxoOnlyLovelace = await Promise.all(
-      utxos.filter((utxo) => {
-        const hasOnlyLovelace = utxo.output.amount.every((amount) => amount.unit === "lovelace");
-        const hasEnoughLovelace = utxo.output.amount.some((amount) => amount.unit === "lovelace" && Number(amount.quantity) > 500000000);
-        return hasOnlyLovelace && hasEnoughLovelace;
-      }),
-    );
-
+    const utxoOnlyLovelace = getUtxosOnlyLovelace(utxos, 50_000_000);
     let utxoIndex = 0;
     const chunkSize = 1;
     if (utxoOnlyLovelace.length < assets.length / chunkSize) {
@@ -68,7 +96,11 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
     }
 
     for (let i = 0; i < assets.length; i += chunkSize) {
+      const cip68Contract: Cip68Contract = new Cip68Contract({
+        wallet: wallet,
+      });
       const chunk = assets.slice(i, i + Math.min(chunkSize, assets.length - i));
+      console.log(utxoOnlyLovelace[utxoIndex]);
       const unsignedTx = await cip68Contract.mint(chunk, utxoOnlyLovelace[utxoIndex]);
       const signedTx = await wallet.signTx(unsignedTx, true);
       const txHash = await wallet.submitTx(signedTx);
@@ -114,7 +146,7 @@ describe("Mint, Burn, Update, Remove Assets (NFT/TOKEN) CIP68", function () {
 
     for (let i = 0; i < assets.length; i += chunkSize) {
       const chunk = assets.slice(i, i + Math.min(chunkSize, assets.length - i));
-      const unsignedTx = await cip68Contract.mint(chunk, utxoOnlyLovelace[utxoIndex]);
+      const unsignedTx = await cip68Contract.mint(chunk, [utxoOnlyLovelace[utxoIndex]]);
       const signedTx = await wallet.signTx(unsignedTx, true);
       const txHash = await wallet.submitTx(signedTx);
       console.log("https://preview.cexplorer.io/tx/" + txHash);
