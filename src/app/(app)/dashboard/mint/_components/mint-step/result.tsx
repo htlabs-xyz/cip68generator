@@ -19,7 +19,7 @@ export default function ResultStep({ txhash }: { txhash: string | string[] }) {
                 Go Home
               </Link>
               <Link
-                href={`https://${appNetwork}.cexplorer.io/tx/${hash}`}
+                href={`https://${appNetwork == "mainnet" ? "" : appNetwork + "."}cexplorer.io/tx/${hash}`}
                 target="_blank"
                 className="mt-4 rounded-lg bg-white px-6 py-2 text-sm font-semibold text-blue-500 shadow-md hover:bg-gray-100"
               >
@@ -44,7 +44,7 @@ export default function ResultStep({ txhash }: { txhash: string | string[] }) {
             Go Home
           </Link>
           <Link
-            href={`https://${appNetwork}.cexplorer.io/tx/${txhash}`}
+            href={`https://${appNetwork == "mainnet" ? "" : appNetwork + "."}cexplorer.io/tx/${txhash}`}
             target="_blank"
             className="mt-4 rounded-lg bg-white px-6 py-2 text-sm font-semibold text-blue-500 shadow-md hover:bg-gray-100"
           >
