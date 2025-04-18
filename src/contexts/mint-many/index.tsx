@@ -7,7 +7,7 @@ import { submitTx } from "@/services/blockchain/submitTx";
 import { defineStepper } from "@stepperize/react";
 import useMintManyStore, { MintManyStore } from "./store";
 import { useWallet } from "@/hooks/use-wallet";
-import { convertObject } from "@/utils";
+import { convertObject, getUtxosOnlyLovelace } from "@/utils";
 import { createMintTransaction } from "@/services/contract/mint";
 import { parseError } from "@/utils/error/parse-error";
 
@@ -72,26 +72,19 @@ export default function MintManyProvider({ children }: { collectionId: string | 
       }
 
       await new Promise((resolve) => setTimeout(resolve, 500));
-
       updateTaskState("inprogress", "create_transaction", "Creating Transaction");
-      const utxos = await getUtxos();
-      const utxoOnlyLovelace = await Promise.all(
-        utxos.filter((utxo) => {
-          const hasOnlyLovelace = utxo.output.amount.every((amount) => amount.unit === "lovelace");
-          const hasEnoughLovelace = utxo.output.amount.some((amount) => amount.unit === "lovelace" && Number(amount.quantity) > 500000000);
-          return hasOnlyLovelace && hasEnoughLovelace;
-        }),
-      );
       let utxoIndex = 0;
       const chunkSize = 10;
-      if (utxoOnlyLovelace.length < assetInputToMint.length / chunkSize) {
+      const utxos = await getUtxos();
+      const utxoOnlyLovelace = getUtxosOnlyLovelace(utxos, assetInputToMint.length, 5_000_000, chunkSize);
+      if (!utxoOnlyLovelace || utxoOnlyLovelace.length < assetInputToMint.length / chunkSize) {
         throw new Error("You have not UTxO only lavelace.");
       }
 
       if (chunkSize < assetInputToMint.length) {
         toast({
           title: "Transactions",
-          description: `Your transaction needs to be split into ${assetInputToMint.length / chunkSize} transactions due to data security reasons.`,
+          description: `Your transaction needs to be split into ${Math.ceil(assetInputToMint.length / chunkSize)} transactions due to data security reasons.`,
           variant: "destructive",
         });
       }
@@ -104,7 +97,7 @@ export default function MintManyProvider({ children }: { collectionId: string | 
         } = await createMintTransaction({
           address: address,
           mintInput: chunk,
-          utxo: utxoOnlyLovelace[utxoIndex],
+          utxos: utxoOnlyLovelace[utxoIndex],
         });
         if (!result || isNil(unsignedTx)) {
           throw new Error(message);
@@ -124,7 +117,6 @@ export default function MintManyProvider({ children }: { collectionId: string | 
       updateTaskState("inprogress", "submit_transaction", "Submitting Transaction");
       updateTaskState("success");
       mintManyStepper.goTo("result");
-      // create transaction
     } catch (e) {
       updateTaskState("error", "", parseError(e));
       toast({
