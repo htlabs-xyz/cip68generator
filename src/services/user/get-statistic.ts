@@ -41,7 +41,7 @@ async function getUserStatistics() {
     }
 
     const totalMetadata = userStats!.Collection.reduce(
-      (sum, collection) => sum + (collection._count?.Metadata || 0),
+      (sum: number, collection) => sum + (collection._count?.Metadata || 0),
       0
     );
 
