@@ -65,7 +65,7 @@ export function FilePick() {
                 </div>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
-                  {listMedia.map((file) => (
+                  {listMedia.map((file: Media) => (
                     <Button
                       key={file.id}
                       variant="outline"
