@@ -3,6 +3,7 @@
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { PMetadata } from "@/types";
+import { Metadata } from "@prisma/client";
 import { parseError } from "@/utils/error/parse-error";
 import { UnauthorizedException } from "@/utils/http/http-exceptions";
 import { isEmpty, isNil } from "lodash";
@@ -140,7 +141,7 @@ export async function getMetadata({
       where: whereConditions,
     });
 
-    const parsedMetadata: PMetadata[] = metadata.map((item) => ({
+    const parsedMetadata: PMetadata[] = metadata.map((item: Metadata) => ({
       ...item,
       content: JSON.parse(item.content),
     }));
