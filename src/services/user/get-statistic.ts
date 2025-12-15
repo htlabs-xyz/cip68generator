@@ -40,8 +40,8 @@ async function getUserStatistics() {
       throw new Error("User not found");
     }
 
-    const totalMetadata = userStats!.Collection.reduce(
-      (sum: number, collection) => sum + (collection._count?.Metadata || 0),
+    const totalMetadata = userStats.Collection.reduce<number>(
+      (sum, collection) => sum + (collection._count?.Metadata || 0),
       0
     );
 
@@ -49,8 +49,8 @@ async function getUserStatistics() {
       result: true,
       message: "Get user statistics successful",
       data: {
-        collection: userStats!._count.Collection || 0,
-        media: userStats!._count.Media || 0,
+        collection: userStats._count.Collection || 0,
+        media: userStats._count.Media || 0,
         metadata: totalMetadata,
       },
     };
