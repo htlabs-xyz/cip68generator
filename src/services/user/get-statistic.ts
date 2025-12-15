@@ -40,7 +40,10 @@ async function getUserStatistics() {
       throw new Error("User not found");
     }
 
-    const totalMetadata = userStats.Collection.reduce((sum: number, collection) => sum + (collection._count?.Metadata || 0), 0);
+    const totalMetadata = userStats.Collection.reduce(
+      (sum, collection) => sum + (collection._count?.Metadata || 0),
+      0
+    );
 
     return {
       result: true,
