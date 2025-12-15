@@ -20,6 +20,7 @@ const nextConfig = () => ({
   },
   output: "standalone",
   reactStrictMode: true,
+  turbopack: {},
   webpack: function (config) {
     config.experiments = {
       asyncWebAssembly: true,

@@ -1,10 +1,10 @@
-import { CIP68_222, stringToHex, mConStr0, UTxO, mConStr2, CIP68_100, metadataToCip68, mConStr1, deserializeAddress } from "@meshsdk/core";
+import { CIP68_222, stringToHex, mConStr0, UTxO, CIP68_100, metadataToCip68, mConStr1, deserializeAddress } from "@meshsdk/core";
 
 import { MeshAdapter } from "../adapters/mesh.adapter";
 import { APP_WALLET_ADDRESS, EXCHANGE_FEE_PRICE } from "../constants";
 import { appNetwork } from "@/constants";
 import { ICip68Contract } from "../interfaces/icip68.interface";
-import { isEmpty, isNil, isNull } from "lodash-es";
+import { isEmpty, isNil } from "lodash-es";
 import { getPkHash } from "@/utils";
 
 export class Cip68Contract extends MeshAdapter implements ICip68Contract {
