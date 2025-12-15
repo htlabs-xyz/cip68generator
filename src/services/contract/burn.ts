@@ -5,7 +5,7 @@ import { blockfrostProvider } from "@/lib/cardano";
 import { AssetInput } from "@/types";
 import { parseError } from "@/utils/error/parse-error";
 import { MeshWallet } from "@meshsdk/core";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 
 export const createBurnTransaction = async ({ address, input }: { address: string; input: AssetInput[] }) => {
   try {

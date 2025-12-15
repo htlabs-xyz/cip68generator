@@ -1,7 +1,7 @@
 import FileDisplay from "@/components/common/file-display";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import { isNil, isEmpty } from "lodash";
+import { isNil, isEmpty } from "lodash-es";
 import { ViewMetadataContent } from "@/components/common/view-json";
 import { AssetInput } from "@/types";
 import { shortenString } from "@/utils";

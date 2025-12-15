@@ -2,7 +2,8 @@ import { getAllCollection } from "@/services/database/collection";
 import FolderCard from "./_components/folder-card";
 import { CreateCollectionButton } from "./_components/create-collection-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
+import type { Collection } from "@prisma/client";
 
 export default async function CollectionPage() {
   const { result, data: listCollection, message } = await getAllCollection();
@@ -20,7 +21,7 @@ export default async function CollectionPage() {
           {!isEmpty(listCollection) ? (
             <div className="overflow-x-auto">
               <div className="md:grid-col-2 grid grid-cols-1 gap-4 lg:grid-cols-3 xl:grid-cols-4">
-                {listCollection.map((collection) => (
+                {listCollection.map((collection: Collection) => (
                   <FolderCard collection={collection} key={collection.id} />
                 ))}
               </div>

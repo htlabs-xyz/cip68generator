@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from "react";
 import { toast } from "@/hooks/use-toast";
-import { isEmpty, isNil } from "lodash";
+import { isEmpty, isNil } from "lodash-es";
 import { submitTx } from "@/services/blockchain/submitTx";
 import { defineStepper } from "@stepperize/react";
 import useMintManyStore, { MintManyStore } from "./store";
@@ -95,7 +95,7 @@ export default function MintManyProvider({ children }: { collectionId: string | 
           result,
           message,
         } = await createMintTransaction({
-          address: address,
+          address: address!,
           mintInput: chunk,
           utxos: utxoOnlyLovelace[utxoIndex],
         });
@@ -103,13 +103,13 @@ export default function MintManyProvider({ children }: { collectionId: string | 
           throw new Error(message);
         }
 
-        const signedTx = await signTx(unsignedTx);
+        const signedTx = await signTx(unsignedTx!);
 
         const { data: txHash, result: txResult, message: txMessage } = await submitTx(signedTx);
         if (!txResult || isNil(txHash)) {
           throw new Error(txMessage);
         }
-        setTxHash(txHash);
+        setTxHash(txHash!);
         utxoIndex++;
       }
 

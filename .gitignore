@@ -45,3 +45,10 @@ docs/
 bun.lock
 yarn.lock
 stack.env
+
+**/.claude
+**/.venv
+**/.opencode
+**/plans
+.repomixignore
+CLAUDE.md

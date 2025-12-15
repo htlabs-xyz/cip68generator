@@ -1,12 +1,10 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { cn } from "@/utils";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 
 type Props = {
   title?: string;
   index: number;
-  Children: () => JSX.Element;
+  Children: () => ReactNode;
 };
 
 export default function FaqItem({ title, Children, index }: Props) {

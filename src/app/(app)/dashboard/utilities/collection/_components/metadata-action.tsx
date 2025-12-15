@@ -10,7 +10,7 @@ import { toast } from "@/hooks/use-toast";
 import { updateMetadata } from "@/services/database/metadata";
 import { PMetadata } from "@/types";
 import { parseError } from "@/utils/error/parse-error";
-import { isEmpty, isNil } from "lodash";
+import { isEmpty, isNil } from "lodash-es";
 import { MoreVertical } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

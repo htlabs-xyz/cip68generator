@@ -1,6 +1,6 @@
 "use client";
 
-import { isEmpty, isNil } from "lodash";
+import { isEmpty, isNil } from "lodash-es";
 import { signOut, useSession } from "next-auth/react";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { useWallet, WalletStoreType } from "@/hooks/use-wallet";

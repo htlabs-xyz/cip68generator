@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { parseError } from "@/utils/error/parse-error";
 import { UnauthorizedException } from "@/utils/http/http-exceptions";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 
 async function getUserStatistics() {
   try {
@@ -40,7 +40,10 @@ async function getUserStatistics() {
       throw new Error("User not found");
     }
 
-    const totalMetadata = userStats.Collection.reduce((sum, collection) => sum + (collection._count?.Metadata || 0), 0);
+    const totalMetadata = userStats.Collection.reduce(
+      (sum:any, collection:any) => sum + (collection._count?.Metadata || 0),
+      0
+    );
 
     return {
       result: true,

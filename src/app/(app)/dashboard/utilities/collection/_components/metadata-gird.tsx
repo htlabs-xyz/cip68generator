@@ -1,4 +1,4 @@
-import { isEmpty, isNil } from "lodash";
+import { isEmpty, isNil } from "lodash-es";
 import { useMetadataContext } from "@/contexts/metadata";
 import MetadataCard from "./metadata-card";
 import { Card } from "@/components/ui/card";

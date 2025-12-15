@@ -5,6 +5,7 @@ import { useUnitContext } from "@/contexts/unit";
 
 export default function UpdateStepperNav() {
   const { updateStepper, updateSteps } = useUnitContext();
+  const currentIndex = updateStepper.all.findIndex((s) => s.id === updateStepper.current.id);
 
   return (
     <nav aria-label="Checkout Steps" className="group my-4">
@@ -20,14 +21,14 @@ export default function UpdateStepperNav() {
                 aria-selected={updateStepper.current.id === step.id}
                 className={cn(
                   "flex size-10 items-center justify-center rounded-full",
-                  index <= updateStepper.current.index ? "bg-primary text-white" : "bg-muted text-muted",
+                  index <= currentIndex ? "bg-primary text-white" : "bg-muted text-muted",
                 )}
               >
                 {index + 1}
               </div>
               <span className="text-sm font-medium">{step.title}</span>
             </li>
-            {index < array.length - 1 && <Separator className={`flex-1 ${index < updateStepper.current.index ? "bg-primary" : "bg-muted"}`} />}
+            {index < array.length - 1 && <Separator className={`flex-1 ${index < currentIndex ? "bg-primary" : "bg-muted"}`} />}
           </React.Fragment>
         ))}
       </ol>

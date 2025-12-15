@@ -4,7 +4,7 @@ import { useMintOneContext } from "@/contexts/mint-one";
 import { BasicStep, MetadataStep, PreviewStep, ResultStep, TransactionStep } from "../_components/mint-step";
 import StepperNav from "../_components/stepper-nav";
 import { useEffect } from "react";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 
 export default function Page() {
   const {
@@ -24,7 +24,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!isNil(metadataTemplate)) {
-      setMetadataToMint(metadataTemplate);
+      setMetadataToMint(metadataTemplate!);
     }
   }, [metadataTemplate, setMetadataToMint]);
 

@@ -5,7 +5,7 @@ import { MoreVertical } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useMetadataContext } from "@/contexts/metadata";
 import FileDisplay from "@/components/common/file-display";
-import { isEmpty, isNil } from "lodash";
+import { isEmpty, isNil } from "lodash-es";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ViewMetadataContent } from "../../../../../../components/common/view-json";
 import MetadataAction from "./metadata-action";

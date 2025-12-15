@@ -3,9 +3,10 @@
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { PMetadata } from "@/types";
+import { Metadata } from "@prisma/client";
 import { parseError } from "@/utils/error/parse-error";
 import { UnauthorizedException } from "@/utils/http/http-exceptions";
-import { isEmpty, isNil } from "lodash";
+import { isEmpty, isNil } from "lodash-es";
 import { DateRange } from "react-day-picker";
 
 export async function addMetadata({ collectionId, listMetadata }: { collectionId: string; listMetadata: Record<string, string>[] }) {
@@ -107,13 +108,13 @@ export async function getMetadata({
       whereConditions.OR = [
         {
           assetName: {
-            contains: query,
+            contains: query!,
             mode: "insensitive",
           },
         },
         {
           content: {
-            contains: query,
+            contains: query!,
             mode: "insensitive",
           },
         },
@@ -122,8 +123,8 @@ export async function getMetadata({
 
     if (!isNil(range)) {
       whereConditions.createdAt = {
-        gte: range.from,
-        lte: range.to,
+        gte: range!.from,
+        lte: range!.to,
       };
     }
 
@@ -140,7 +141,7 @@ export async function getMetadata({
       where: whereConditions,
     });
 
-    const parsedMetadata: PMetadata[] = metadata.map((item) => ({
+    const parsedMetadata: PMetadata[] = metadata.map((item: Metadata) => ({
       ...item,
       content: JSON.parse(item.content),
     }));

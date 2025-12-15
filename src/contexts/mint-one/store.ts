@@ -1,5 +1,5 @@
 import { Task } from "@/types";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import { create } from "zustand";
 
 export type MintOneStore = {

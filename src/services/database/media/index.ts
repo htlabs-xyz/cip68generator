@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { parseError } from "@/utils/error/parse-error";
 import { UnauthorizedException } from "@/utils/http/http-exceptions";
 import { Media } from "@prisma/client";
-import { isEmpty, isNil } from "lodash";
+import { isEmpty, isNil } from "lodash-es";
 import { DateRange } from "react-day-picker";
 
 export async function getMedia({
@@ -54,13 +54,13 @@ export async function getMedia({
       whereConditions.OR = [
         {
           name: {
-            contains: query,
+            contains: query!,
             mode: "insensitive",
           },
         },
         {
           url: {
-            contains: query,
+            contains: query!,
             mode: "insensitive",
           },
         },
@@ -69,8 +69,8 @@ export async function getMedia({
 
     if (!isNil(range)) {
       whereConditions.createdAt = {
-        gte: range.from,
-        lte: range.to,
+        gte: range!.from,
+        lte: range!.to,
       };
     }
 

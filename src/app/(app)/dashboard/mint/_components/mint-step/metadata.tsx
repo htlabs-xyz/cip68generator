@@ -2,7 +2,7 @@ import JsonBuilder from "@/components/common/json-builder";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { useJsonBuilderStore } from "@/components/common/json-builder/store";
-import { isEmpty, isNil } from "lodash";
+import { isEmpty, isNil } from "lodash-es";
 
 export default function MetadataStep({
   stepper,

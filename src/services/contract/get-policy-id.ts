@@ -4,7 +4,7 @@ import { appNetworkId } from "@/constants";
 import { Cip68Contract } from "@/contract";
 import { blockfrostProvider } from "@/lib/cardano";
 import { MeshWallet } from "@meshsdk/core";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 
 export const getContractPolicyId = async ({ address }: { address: string }) => {
   if (isNil(address)) {

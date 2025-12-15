@@ -4,7 +4,7 @@ import { checkSignature, DataSignature, generateNonce } from "@meshsdk/core";
 import { NextAuthConfig } from "next-auth";
 import CredentialProvider from "next-auth/providers/credentials";
 import prisma from "@/lib/prisma";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 
 const authConfig = {
   providers: [
@@ -30,10 +30,10 @@ const authConfig = {
             address,
           },
         });
-        if (isNil(walletNonce) || isNil(walletNonce.nonce)) {
+        if (isNil(walletNonce) || isNil(walletNonce!.nonce)) {
           throw new Error("Nonce not found");
         }
-        const isSignatureValid = checkSignature(walletNonce.nonce, signature);
+        const isSignatureValid = checkSignature(walletNonce!.nonce!, signature);
 
         if (!isSignatureValid) {
           throw new Error("Invalid signature");

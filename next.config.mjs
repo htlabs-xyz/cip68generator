@@ -12,7 +12,7 @@ const nextConfig = () => ({
   images: {
     remotePatterns: [
       {
-        protocol: IPFS_GATEWAY.protocol.slice(0, -1), // Remove trailing colon
+        protocol: IPFS_GATEWAY.protocol.slice(0, -1),
         hostname: IPFS_GATEWAY.hostname,
         pathname: "/**",
       },
@@ -20,6 +20,7 @@ const nextConfig = () => ({
   },
   output: "standalone",
   reactStrictMode: true,
+  turbopack: {},
   webpack: function (config) {
     config.experiments = {
       asyncWebAssembly: true,

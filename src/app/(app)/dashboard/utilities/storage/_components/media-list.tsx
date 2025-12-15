@@ -7,7 +7,7 @@ import { useUploadContext } from "@/contexts/storage";
 import { Media } from "@prisma/client";
 import FileDisplay from "@/components/common/file-display";
 import { Skeleton } from "@/components/ui/skeleton";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import CopyButton from "@/components/common/copy-button";
 
 export default function MediaList() {

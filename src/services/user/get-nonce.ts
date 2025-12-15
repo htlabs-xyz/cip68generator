@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { parseError } from "@/utils/error/parse-error";
 import { generateNonce } from "@meshsdk/core";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 
 export const getNonceByAddress = async (address: string) => {
   try {

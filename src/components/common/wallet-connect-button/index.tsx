@@ -1,7 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 import { useWallet } from "@/hooks/use-wallet";
 import Account from "./account";
 import { useRouter } from "next/navigation";
