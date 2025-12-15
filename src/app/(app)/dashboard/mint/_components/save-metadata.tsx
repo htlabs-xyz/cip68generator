@@ -54,7 +54,7 @@ export function SaveMetadata({
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
                 <Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between">
-                  {collectioToSave ? data?.data.find((collection) => collection.id === collectioToSave)?.name : "Select collection..."}
+                  {collectioToSave ? data?.data.find((c: { id: string; name: string }) => c.id === collectioToSave)?.name : "Select collection..."}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
@@ -64,7 +64,7 @@ export function SaveMetadata({
                   <CommandEmpty>No collection found.</CommandEmpty>
                   <CommandList>
                     {/* <CommandGroup> */}
-                    {data?.data.map((collection) => (
+                    {data?.data.map((collection: { id: string; name: string }) => (
                       <CommandItem
                         value={collection.id}
                         key={collection.id}

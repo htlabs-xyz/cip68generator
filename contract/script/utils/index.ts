@@ -30,7 +30,9 @@ export const readValidator = function (title: string): string {
  * @returns - Asset name unique
  */
 export const getUniqueAssetName = async function (utxo: UTxO): Promise<string> {
-  const hash = new Uint8Array(await crypto.subtle.digest("SHA3-256", fromHex(utxo.input.txHash)));
+  const inputData = fromHex(utxo.input.txHash);
+  const hashBuffer = await crypto.subtle.digest("SHA3-256", inputData.buffer as ArrayBuffer);
+  const hash = new Uint8Array(hashBuffer);
 
   return toHex(new Uint8Array([utxo.input.outputIndex])) + toHex(hash.slice(0, 27));
 };

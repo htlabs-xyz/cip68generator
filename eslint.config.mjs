@@ -1,69 +1,37 @@
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import globals from "globals";
-import tsParser from "@typescript-eslint/parser";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
+import pluginJs from "@eslint/js";
+import tseslint from "typescript-eslint";
+import pluginReact from "eslint-plugin-react";
+import pluginReactHooks from "eslint-plugin-react-hooks";
+import nextPlugin from "@next/eslint-plugin-next";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
-
-const eslintConfig = [
-  {
-    ignores: ["**/node_modules", "**/.eslintrc.js", "src/components/ui/**", ".next/**"],
-  },
-  ...compat.extends(
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:jsx-a11y/recommended",
-    "plugin:prettier/recommended",
-    "next",
-    "next/core-web-vitals",
-  ),
+export default [
+  { ignores: ["**/node_modules/**", ".next/**", "src/components/ui/**", "contract/**"] },
+  { files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
+  { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
   {
     plugins: {
-      "@typescript-eslint": typescriptEslint,
+      react: pluginReact,
+      "react-hooks": pluginReactHooks,
+      "@next/next": nextPlugin,
     },
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.amd,
-        ...globals.node,
-      },
-      parser: tsParser,
-      ecmaVersion: 5,
-      sourceType: "commonjs",
-      parserOptions: {
-        project: true,
-        tsconfigRootDir: __dirname,
+    settings: {
+      react: {
+        version: "detect",
       },
     },
     rules: {
-      "prettier/prettier": "error",
+      ...pluginReactHooks.configs.recommended.rules,
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs["core-web-vitals"].rules,
       "react/react-in-jsx-scope": "off",
-      "jsx-a11y/anchor-is-valid": [
-        "error",
-        {
-          components: ["Link"],
-          specialLink: ["hrefLeft", "hrefRight"],
-          aspects: ["invalidHref", "preferButton"],
-        },
-      ],
-      "react/prop-types": 0,
-      "@typescript-eslint/no-unused-vars": 1,
-      "react/no-unescaped-entities": 0,
-      "@typescript-eslint/explicit-module-boundary-types": "off",
-      "@typescript-eslint/no-var-requires": "off",
-      "@typescript-eslint/ban-ts-comment": "off",
+      "react/prop-types": "off",
+      "react/no-unescaped-entities": "off",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-require-imports": "off",
     },
   },
 ];
-
-export default eslintConfig;

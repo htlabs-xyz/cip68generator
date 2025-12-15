@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import GuideStep from "../_components/faq-step";
 import { cn } from "@/utils";
 
@@ -320,7 +321,7 @@ const smartContractGuides = [
   },
 ];
 
-const faqs: { title: string; Children: () => JSX.Element }[] = [
+const faqs: { title: string; Children: () => ReactNode }[] = [
   {
     title: "How to get started in DEMARKET?",
     Children: function () {
