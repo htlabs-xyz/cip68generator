@@ -5,7 +5,7 @@ import useMintOneStore, { MintOneStore } from "./store";
 import { toast } from "@/hooks/use-toast";
 import { createMintTransaction } from "@/services/contract/mint";
 import { useWallet } from "@/hooks/use-wallet";
-import { isEmpty, isNil } from "lodash";
+import { isEmpty, isNil } from "lodash-es";
 import { submitTx } from "@/services/blockchain/submitTx";
 import { useQuery } from "@tanstack/react-query";
 import { addMetadata, getMetadataById } from "@/services/database/metadata";
@@ -98,7 +98,7 @@ export default function MintOneProvider({ metadataTemplateId, children }: { meta
         message,
         result,
       } = await createMintTransaction({
-        address: address,
+        address: address!,
         mintInput: [
           {
             assetName: input.assetName,
@@ -113,14 +113,14 @@ export default function MintOneProvider({ metadataTemplateId, children }: { meta
 
       // wait for confirmation
       updateTaskState("inprogress", "sign_transaction", "Waiting for  sign Tx");
-      const signedTx = await signTx(tx);
+      const signedTx = await signTx(tx!);
       updateTaskState("inprogress", "submit_transaction", "Submitting Transaction");
       // submit transaction
       const { data: txHash, result: txResult, message: txMessage } = await submitTx(signedTx);
       if (!txResult || isNil(txHash)) {
         throw new Error(txMessage);
       }
-      setTxHash(txHash);
+      setTxHash(txHash!);
       updateTaskState("success");
       // show result
       mintOneStepper.goTo("result");

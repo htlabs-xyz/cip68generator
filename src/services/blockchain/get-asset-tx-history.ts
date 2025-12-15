@@ -3,7 +3,7 @@
 import { blockfrostFetcher } from "@/lib/cardano";
 import { SpecialTransaction, Transaction, TransactionAsset } from "@/types";
 import { parseError } from "@/utils/error/parse-error";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 
 export async function getAssetTxHistory({ unit, page = 1, limit = 12 }: { unit: string; page?: number; limit?: number }) {
   try {
@@ -61,7 +61,7 @@ export async function getAssetTxHistory({ unit, page = 1, limit = 12 }: { unit: 
       }),
     );
 
-    const response = assetHistories.filter((history) => !isNil(history));
+    const response = assetHistories.filter((history): history is NonNullable<typeof history> => !isNil(history));
 
     return {
       data: response,

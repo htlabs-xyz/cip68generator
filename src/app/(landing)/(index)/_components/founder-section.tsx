@@ -2,7 +2,7 @@ import { FounderData } from "@/types";
 import Link from "next/link";
 import Image from "next/image";
 import { FaLinkedinIn as LinkedinIcon, FaTelegram } from "react-icons/fa";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 
 const Founder = function ({ data }: { data: FounderData }) {
   return (

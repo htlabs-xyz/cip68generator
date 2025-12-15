@@ -4,7 +4,7 @@ import { MeshAdapter } from "../adapters/mesh.adapter";
 import { APP_WALLET_ADDRESS, EXCHANGE_FEE_PRICE } from "../constants";
 import { appNetwork } from "@/constants";
 import { ICip68Contract } from "../interfaces/icip68.interface";
-import { isEmpty, isNil, isNull } from "lodash";
+import { isEmpty, isNil, isNull } from "lodash-es";
 import { getPkHash } from "@/utils";
 
 export class Cip68Contract extends MeshAdapter implements ICip68Contract {
@@ -164,7 +164,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
           );
         }, 0);
         const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash!)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (!storeUtxo) throw new Error("Store UTXO not found");
 
@@ -233,7 +233,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     await Promise.all(
       params.map(async ({ assetName, metadata, txHash }) => {
         const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash!)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (!storeUtxo) throw new Error("Store UTXO not found");
         unsignedTx
@@ -685,7 +685,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     await Promise.all(
       params.map(async ({ assetName, metadata, txHash }) => {
         const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash!)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (!storeUtxo) throw new Error("Store UTXO not found");
         unsignedTx
@@ -730,7 +730,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     await Promise.all(
       params.map(async ({ assetName, metadata, txHash }) => {
         const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash!)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (!storeUtxo) throw new Error("Store UTXO not found");
         unsignedTx
@@ -775,7 +775,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     await Promise.all(
       params.map(async ({ assetName, metadata, txHash }) => {
         const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash!)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (!storeUtxo) throw new Error("Store UTXO not found");
         unsignedTx
@@ -819,7 +819,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     await Promise.all(
       params.map(async ({ assetName, metadata, txHash }) => {
         const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash!)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (!storeUtxo) throw new Error("Store UTXO not found");
         unsignedTx
@@ -864,7 +864,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     await Promise.all(
       params.map(async ({ assetName, metadata, txHash }) => {
         const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash!)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (!storeUtxo) throw new Error("Store UTXO not found");
         unsignedTx
@@ -909,7 +909,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     await Promise.all(
       params.map(async ({ assetName, metadata, txHash }) => {
         const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash!)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (!storeUtxo) throw new Error("Store UTXO not found");
         unsignedTx
@@ -954,7 +954,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     await Promise.all(
       params.map(async ({ assetName, metadata, txHash }) => {
         const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash!)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (!storeUtxo) throw new Error("Store UTXO not found");
         unsignedTx
@@ -993,7 +993,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     await Promise.all(
       params.map(async ({ assetName, metadata, txHash }) => {
         const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash!)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (!storeUtxo) throw new Error("Store UTXO not found");
         unsignedTx
@@ -1026,7 +1026,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     await Promise.all(
       params.map(async ({ assetName, metadata, txHash }) => {
         const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash!)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (!storeUtxo) throw new Error("Store UTXO not found");
         unsignedTx
@@ -1078,7 +1078,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
           );
         }, 0);
         const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash!)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (!storeUtxo) throw new Error("Store UTXO not found");
 
@@ -1155,7 +1155,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
           );
         }, 0);
         const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash!)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (!storeUtxo) throw new Error("Store UTXO not found");
 
@@ -1232,7 +1232,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
           );
         }, 0);
         const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash!)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (!storeUtxo) throw new Error("Store UTXO not found");
 
@@ -1309,7 +1309,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
           );
         }, 0);
         const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash!)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (!storeUtxo) throw new Error("Store UTXO not found");
 
@@ -1386,7 +1386,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
           );
         }, 0);
         const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash!)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (!storeUtxo) throw new Error("Store UTXO not found");
 
@@ -1468,7 +1468,7 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
           );
         }, 0);
         const storeUtxo = !isNil(txHash)
-          ? await this.getUtxoForTx(this.storeAddress, txHash)
+          ? await this.getUtxoForTx(this.storeAddress, txHash!)
           : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(assetName)));
         if (!storeUtxo) throw new Error("Store UTXO not found");
 
@@ -1538,10 +1538,10 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
   ) => {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
     const storeUtxo = !isNil(param.txHash)
-      ? await this.getUtxoForTx(this.storeAddress, param.txHash)
+      ? await this.getUtxoForTx(this.storeAddress, param.txHash!)
       : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(param.assetName)));
     const storeUtxo1 = !isNil(test.txHash)
-      ? await this.getUtxoForTx(this.storeAddress, test.txHash)
+      ? await this.getUtxoForTx(this.storeAddress, test.txHash!)
       : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(test.assetName)));
 
     if (!storeUtxo) throw new Error("Store UTXO not found");
@@ -1603,10 +1603,10 @@ export class Cip68Contract extends MeshAdapter implements ICip68Contract {
     const { utxos, walletAddress, collateral } = await this.getWalletForTx();
 
     const storeUtxo = !isNil(param.txHash)
-      ? await this.getUtxoForTx(this.storeAddress, param.txHash)
+      ? await this.getUtxoForTx(this.storeAddress, param.txHash!)
       : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(param.assetName)));
     const storeUtxo1 = !isNil(test.txHash)
-      ? await this.getUtxoForTx(this.storeAddress, test.txHash)
+      ? await this.getUtxoForTx(this.storeAddress, test.txHash!)
       : await this.getAddressUTXOAsset(this.storeAddress, this.policyId + CIP68_100(stringToHex(test.assetName)));
 
     if (!storeUtxo) throw new Error("Store UTXO not found");

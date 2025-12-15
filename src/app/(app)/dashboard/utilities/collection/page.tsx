@@ -2,7 +2,7 @@ import { getAllCollection } from "@/services/database/collection";
 import FolderCard from "./_components/folder-card";
 import { CreateCollectionButton } from "./_components/create-collection-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import type { Collection } from "@prisma/client";
 
 export default async function CollectionPage() {

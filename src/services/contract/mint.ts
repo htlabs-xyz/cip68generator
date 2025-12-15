@@ -7,7 +7,7 @@ import { blockfrostProvider } from "@/lib/cardano";
 import { AssetInput } from "@/types";
 import { parseError } from "@/utils/error/parse-error";
 import { deserializeAddress, MeshWallet } from "@meshsdk/core";
-import { isEmpty, isNil } from "lodash";
+import { isEmpty, isNil } from "lodash-es";
 
 export const createMintTransaction = async ({ address, mintInput, utxos }: { address: string; mintInput: AssetInput[]; utxos?: UTxO[] }) => {
   try {

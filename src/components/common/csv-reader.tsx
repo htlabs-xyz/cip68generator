@@ -6,7 +6,7 @@ import { useCSVReader } from "react-papaparse";
 import { Button } from "@/components/ui/button";
 import { Loader2, Trash2 } from "lucide-react";
 import FileDisplay from "@/components/common/file-display";
-import { isEmpty, isNil } from "lodash";
+import { isEmpty, isNil } from "lodash-es";
 import Link from "next/link";
 import { parseError } from "@/utils/error/parse-error";
 

@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect } from "react";
 import { defineStepper } from "@stepperize/react";
 import { toast } from "@/hooks/use-toast";
 import { useWallet } from "@/hooks/use-wallet";
-import { isEmpty, isNil } from "lodash";
+import { isEmpty, isNil } from "lodash-es";
 import { useQuery } from "@tanstack/react-query";
 import { getAssetInfo } from "@/services/blockchain/getAssetInfo";
 import { AssetDetailsWithTransactionHistory, TxHistory } from "@/types";
@@ -98,7 +98,7 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
     }
   }, [assetData, assetLoading]);
 
-  const pubKeyHash = !isNil(address) && deserializeAddress(address)?.pubKeyHash;
+  const pubKeyHash = !isNil(address) && deserializeAddress(address!)?.pubKeyHash;
 
   const isAuthor = !!(
     (!isNil(assetData?.data?.metadata?._pk) && pubKeyHash && assetData?.data?.metadata?._pk.includes(pubKeyHash)) ||
@@ -138,7 +138,7 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
         message,
         result,
       } = await createUpdateTransaction({
-        address: address,
+        address: address!,
         input: [
           {
             assetName: input.assetName,
@@ -153,14 +153,14 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
 
       // wait for confirmation
       updateTaskState("inprogress", "sign_transaction", "Waiting for  sign Tx");
-      const signedTx = await signTx(tx);
+      const signedTx = await signTx(tx!);
       updateTaskState("inprogress", "submit_transaction", "Submitting Transaction");
       // // submit transaction
       const { data: txHash, result: txResult, message: txMessage } = await submitTx(signedTx);
       if (!txResult || isNil(txHash)) {
         throw new Error(txMessage);
       }
-      setTxHash(txHash);
+      setTxHash(txHash!);
       updateTaskState("success");
       // show result
       updateStepper.goTo("result");
@@ -192,7 +192,7 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
       await new Promise((resolve) => setTimeout(resolve, 1000));
       console.log(assetData?.data);
       const assetName = hexToString((assetData?.data?.asset_name ?? "").replace(/^000643b0/, ""));
-      const quantityInput = quantityToBurn >= Number(assetData.data.quantity) ? assetData.data.quantity : quantityToBurn;
+      const quantityInput = quantityToBurn >= Number(assetData!.data!.quantity) ? assetData!.data!.quantity : quantityToBurn;
       const input = {
         assetName: assetName,
         quantity: `-${quantityInput}`,
@@ -205,7 +205,7 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
         message,
         result,
       } = await createBurnTransaction({
-        address: address,
+        address: address!,
         input: [input],
       });
 
@@ -216,14 +216,14 @@ export default function UnitProvider({ unit, children }: { unit: string; childre
 
       // wait for confirmation
       updateTaskState("inprogress", "sign_transaction", "Waiting for  sign Tx");
-      const signedTx = await signTx(tx);
+      const signedTx = await signTx(tx!);
       updateTaskState("inprogress", "submit_transaction", "Submitting Transaction");
       // submit transaction
       const { data: txHash, result: txResult, message: txMessage } = await submitTx(signedTx);
       if (!txResult || isNil(txHash)) {
         throw new Error(txMessage);
       }
-      setTxHash(txHash);
+      setTxHash(txHash!);
       updateTaskState("success");
       // show result
       burnStepper.goTo("result");

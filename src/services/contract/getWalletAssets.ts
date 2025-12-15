@@ -6,7 +6,7 @@ import { AssetDetails, AssetType } from "@/types";
 import { convertToKeyValue } from "@/utils";
 import { parseError } from "@/utils/error/parse-error";
 import { hexToString, MeshWallet } from "@meshsdk/core";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 
 export async function getWalletAssets({
   walletAddress,

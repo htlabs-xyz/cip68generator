@@ -8,7 +8,7 @@ import { shortenString } from "@/utils";
 import AssetCardSkeleton from "./_components/asset-card-skeleton";
 import Pagination from "@/components/common/pagination";
 import ProfileFilter from "./_components/profile-filter";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { routes } from "@/constants/routes";

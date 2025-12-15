@@ -4,7 +4,7 @@ import { blockfrostFetcher } from "@/lib/cardano";
 import { AssetDetails, AssetDetailsWithTransactionHistory, TransactionAsset, TransactionHistory } from "@/types";
 import { datumToJson } from "@/utils";
 import { parseError } from "@/utils/error/parse-error";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 
 export const getAssetInfo = async (unit: string) => {
   try {

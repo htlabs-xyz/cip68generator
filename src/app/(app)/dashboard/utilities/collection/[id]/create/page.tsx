@@ -1,7 +1,7 @@
 "use client";
 import JsonBuilder from "@/components/common/json-builder";
 import { Button } from "@/components/ui/button";
-import { isEmpty, isNil } from "lodash";
+import { isEmpty, isNil } from "lodash-es";
 import { useMetadataContext } from "@/contexts/metadata";
 import { useJsonBuilderStore } from "@/components/common/json-builder/store";
 import { useEffect } from "react";

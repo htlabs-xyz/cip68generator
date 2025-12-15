@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MoreVertical } from "lucide-react";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 
 export default function MediaGird() {
   const { loading, listMedia } = useUploadContext();

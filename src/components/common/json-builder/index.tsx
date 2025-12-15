@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/utils";
 import { FilePick } from "./file-pick";
 import { useJsonBuilderStore } from "./store";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import { Trash } from "lucide-react";
 
 export default function JsonBuilder({ className }: { className?: string }) {

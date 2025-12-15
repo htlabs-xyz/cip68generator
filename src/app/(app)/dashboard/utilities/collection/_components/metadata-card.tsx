@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { useMetadataContext } from "@/contexts/metadata";
 import Image from "next/image";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 import MetadataAction from "./metadata-action";
 import { PMetadata } from "@/types";
 

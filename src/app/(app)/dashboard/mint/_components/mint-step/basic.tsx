@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 
 import { toast } from "@/hooks/use-toast";
 import { useWallet } from "@/hooks/use-wallet";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 import { parseError } from "@/utils/error/parse-error";
 
 const nftFormSchema = z.object({

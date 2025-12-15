@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { useUnitContext } from "@/contexts/unit";
 import { hexToString } from "@meshsdk/core";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 import Link from "next/link";
 import { useState } from "react";
 
