@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import { IPFS_ENDPOINT } from "@/constants";
 import mimeTypes from "@/constants/mime-types";
-import { auth } from "@/lib/auth";
+import { verifyAuth } from "@/lib/auth/verify-auth";
 import prisma from "@/lib/prisma";
 import { parseError } from "@/utils/error/parse-error";
 
@@ -42,11 +42,11 @@ async function cp(argCid: string, argName: string) {
 }
 
 // Main function to handle kudo upload
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
-    const session = await auth();
-    const userId = session?.user?.id;
+    const user = await verifyAuth(request);
+    const userId = user?.id;
     if (!userId) {
       return NextResponse.json({ message: "Unauthorized", result: false }, { status: 401 });
     }
