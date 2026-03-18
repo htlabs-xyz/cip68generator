@@ -1,13 +1,6 @@
 import { Icons } from "@/components/common/icons";
 import { Wallet } from "@meshsdk/core";
 
-declare module "next-auth" {
-  interface User {
-    address?: string;
-    wallet?: string;
-  }
-}
-
 export type FilterType = {
   range: DateRange;
   query: string;
