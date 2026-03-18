@@ -10,6 +10,7 @@
     "lint": "next lint --fix",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,json}' --config ./.prettierrc",
     "prepare": "husky",
+    "postinstall": "node scripts/fix-libsodium.cjs",
     "test": "jest --runInBand",
     "build:contract": "cd ./contract && aiken build"
   },
