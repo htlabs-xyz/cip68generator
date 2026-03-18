@@ -7,21 +7,16 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 
 export default function DashboardLayout({ children }: Readonly<PropsWithChildren>) {
-  const { isAuthenticated, token } = useWallet();
-  const [checking, setChecking] = useState(true);
+  const { isAuthenticated, restoreSession } = useWallet();
+  const [restoring, setRestoring] = useState(true);
 
-  // Wait for session restore before deciding redirect
+  // Restore session from localStorage, then decide redirect
   useEffect(() => {
-    const timer = setTimeout(() => setChecking(false), 500);
-    return () => clearTimeout(timer);
-  }, []);
+    restoreSession().finally(() => setRestoring(false));
+  }, [restoreSession]);
 
-  useEffect(() => {
-    if (isAuthenticated) setChecking(false);
-  }, [isAuthenticated]);
-
-  if (checking) return <Loading />;
-  if (!isAuthenticated && !token) redirect("/login");
+  if (restoring) return <Loading />;
+  if (!isAuthenticated) redirect("/login");
 
   return <DesktopDashboardLayout>{children}</DesktopDashboardLayout>;
 }

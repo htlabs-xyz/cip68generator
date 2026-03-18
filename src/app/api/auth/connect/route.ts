@@ -18,8 +18,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ result: false, message: "Nonce not found. Request /api/auth/nonce first." }, { status: 400 });
     }
 
-    // Verify wallet signature against stored nonce
-    const isValid = checkSignature(walletNonce.nonce, signature);
+    // Verify wallet signature against stored nonce, binding to the requesting address
+    const isValid = checkSignature(walletNonce.nonce, signature, address);
     if (!isValid) {
       return NextResponse.json({ result: false, message: "Invalid signature" }, { status: 401 });
     }

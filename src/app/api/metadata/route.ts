@@ -133,7 +133,7 @@ export async function DELETE(request: NextRequest) {
     const metadataIds = listMetadata.map((m) => m.id);
 
     await prisma.metadata.deleteMany({
-      where: { id: { in: metadataIds } },
+      where: { id: { in: metadataIds }, collectionId },
     });
 
     return NextResponse.json({ result: true, message: "success" });

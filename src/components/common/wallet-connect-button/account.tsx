@@ -74,7 +74,7 @@ export default function Account() {
               <span className="text-sm">{shortenString(address || "", 10)}</span>
             </div>
             <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white">
-              <CopyButton className="h-4 w-4" content={stakeAddress || ""} />
+              <CopyButton className="h-4 w-4" content={address || ""} />
             </Button>
           </div>
         </div>

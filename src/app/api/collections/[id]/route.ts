@@ -17,10 +17,14 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ result: false, message: "Name required" }, { status: 400 });
     }
 
-    await prisma.collection.update({
-      where: { id: collectionId },
+    const updated = await prisma.collection.updateMany({
+      where: { id: collectionId, userId: user.id },
       data: { name, description },
     });
+
+    if (updated.count === 0) {
+      return NextResponse.json({ result: false, message: "Collection not found" }, { status: 404 });
+    }
 
     return NextResponse.json({ result: true, message: "Your collection folder has been updated successfully!" });
   } catch (e) {
@@ -41,7 +45,11 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
     const { id: collectionId } = await params;
 
-    await prisma.collection.delete({ where: { id: collectionId } });
+    const deleted = await prisma.collection.deleteMany({ where: { id: collectionId, userId: user.id } });
+
+    if (deleted.count === 0) {
+      return NextResponse.json({ result: false, message: "Collection not found" }, { status: 404 });
+    }
 
     return NextResponse.json({ result: true, message: "Your collection folder has been deleted successfully!" });
   } catch (e) {

@@ -54,10 +54,15 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ result: false, message: "Collection not found" }, { status: 404 });
     }
 
-    await prisma.metadata.update({
-      where: { id: metadataId },
+    // Verify metadata belongs to the user's collection before updating
+    const updated = await prisma.metadata.updateMany({
+      where: { id: metadataId, collectionId },
       data: { content: JSON.stringify(metadata.content) },
     });
+
+    if (updated.count === 0) {
+      return NextResponse.json({ result: false, message: "Metadata not found" }, { status: 404 });
+    }
 
     return NextResponse.json({ result: true, message: "success" });
   } catch (e) {

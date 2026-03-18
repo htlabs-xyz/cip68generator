@@ -1,6 +1,10 @@
-import CryptoJS from "crypto-js";
+import { createHmac, timingSafeEqual } from "crypto";
 
-const JWT_SECRET = process.env.JWT_SECRET || "change-your-own-jwt-secret";
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET environment variable is required");
+}
+
 const TOKEN_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 export type TokenPayload = {
@@ -10,12 +14,17 @@ export type TokenPayload = {
   exp: number;
 };
 
+// HMAC-SHA256 helper using Node.js crypto (replaces CryptoJS)
+function hmacSign(data: string): string {
+  return createHmac("sha256", JWT_SECRET!).update(data).digest("hex");
+}
+
 // Sign a token with HMAC-SHA256 (base64 payload + signature)
 export function signToken(payload: Omit<TokenPayload, "exp">): string {
   const data: TokenPayload = { ...payload, exp: Date.now() + TOKEN_EXPIRY_MS };
   const json = JSON.stringify(data);
-  const base64 = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(json));
-  const signature = CryptoJS.HmacSHA256(base64, JWT_SECRET).toString();
+  const base64 = Buffer.from(json, "utf-8").toString("base64");
+  const signature = hmacSign(base64);
   return `${base64}.${signature}`;
 }
 
@@ -24,9 +33,14 @@ export function verifyToken(token: string): TokenPayload | null {
   try {
     const [base64, signature] = token.split(".");
     if (!base64 || !signature) return null;
-    const expected = CryptoJS.HmacSHA256(base64, JWT_SECRET).toString();
-    if (signature !== expected) return null;
-    const json = CryptoJS.enc.Utf8.stringify(CryptoJS.enc.Base64.parse(base64));
+
+    // Timing-safe comparison to prevent timing attacks
+    const expected = hmacSign(base64);
+    const sigBuf = Buffer.from(signature, "utf-8");
+    const expBuf = Buffer.from(expected, "utf-8");
+    if (sigBuf.length !== expBuf.length || !timingSafeEqual(sigBuf, expBuf)) return null;
+
+    const json = Buffer.from(base64, "base64").toString("utf-8");
     const payload: TokenPayload = JSON.parse(json);
     if (payload.exp < Date.now()) return null;
     return payload;

@@ -71,7 +71,9 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ result: false, message: "Unauthorized" }, { status: 401 });
     }
 
-    const media: Media[] = await request.json();
+    // Accept both { media: [...] } wrapper and raw array for compatibility
+    const body = await request.json();
+    const media: Media[] = Array.isArray(body) ? body : body.media;
 
     await prisma.media.deleteMany({
       where: {
