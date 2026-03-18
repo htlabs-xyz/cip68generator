@@ -121,9 +121,11 @@ export const useWallet = create<WalletStoreType>((set, get) => ({
         isAuthenticated: true,
       });
     } catch (error) {
+      const msg = parseError(error);
       toast({
         title: "Error",
-        description: parseError(error),
+        // Eternl throws empty {} on user deny — show friendly message
+        description: msg === "{}" ? "Wallet connection was rejected" : msg,
         variant: "destructive",
       });
       get().disconnect();
