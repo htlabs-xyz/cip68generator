@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { appImage } from "@/public/images";
 import { routes } from "@/constants/routes";
-import { useSession } from "next-auth/react";
 import { useWallet } from "@/hooks/use-wallet";
 import { appNetwork, appUrl, wallets } from "@/constants";
 import { redirect, useRouter } from "next/navigation";
@@ -17,7 +16,6 @@ import { BrowserWallet, Wallet } from "@meshsdk/core";
 
 export default function SignInViewPage() {
   const router = useRouter();
-  const { data: session, status } = useSession();
   const [walletInstalledList, setWalletInstalledList] = useState<Wallet[]>([]);
   useEffect(() => {
     async function get() {
@@ -25,13 +23,13 @@ export default function SignInViewPage() {
     }
     get();
   }, []);
-  const { signIn, wallet } = useWallet();
+  const { signIn, wallet, address } = useWallet();
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (address) {
       redirect("/dashboard");
     }
-  }, [status, router]);
+  }, [address, router]);
 
   const handleOpenNetwork = (network: string) => {
     if (network !== appNetwork && appUrl[network as keyof typeof appUrl]) {
@@ -88,7 +86,7 @@ export default function SignInViewPage() {
                     wallet={wallet}
                     item={value}
                     onConnectWallet={(wallet) => {
-                      return signIn(session, wallet);
+                      return signIn(wallet);
                     }}
                     status={walletInstalledList.find((wallet) => wallet.id === value.id) ? "ready" : "not installed"}
                   />

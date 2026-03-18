@@ -8,7 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { cn } from "@/utils";
-import { getAllCollection } from "@/services/database/collection";
+import { getAllCollection } from "@/services/api/collections";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { routes } from "@/constants/routes";

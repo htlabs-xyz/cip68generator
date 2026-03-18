@@ -5,7 +5,6 @@ import { cn } from "@/utils";
 import { PropsWithChildren } from "react";
 import { siteMetadata } from "@/constants/site-metadata";
 import AppProviders from "@/components/providers";
-import { auth } from "@/lib/auth";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteMetadata.siteUrl),
@@ -30,8 +29,7 @@ export const metadata: Metadata = {
 };
 const fontSans = FontSans({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
-const RootLayout = async function ({ children }: Readonly<PropsWithChildren>) {
-  const session = await auth();
+const RootLayout = function ({ children }: Readonly<PropsWithChildren>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <link rel="apple-touch-icon" sizes="76x76" href={`/images/common/logo.png`} />
@@ -42,7 +40,7 @@ const RootLayout = async function ({ children }: Readonly<PropsWithChildren>) {
       <meta name="msapplication-TileColor" content="#000000" />
       <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
       <body className={cn(fontSans.className)}>
-        <AppProviders session={session}>{children}</AppProviders>
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );

@@ -8,7 +8,7 @@ import { useWallet } from "@/hooks/use-wallet";
 import { isEmpty, isNil } from "lodash";
 import { submitTx } from "@/services/blockchain/submitTx";
 import { useQuery } from "@tanstack/react-query";
-import { addMetadata, getMetadataById } from "@/services/database/metadata";
+import { addMetadata, getMetadataById } from "@/services/api/metadata";
 import { defineStepper } from "@stepperize/react";
 import { parseError } from "@/utils/error/parse-error";
 

@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
-import { createCollection } from "@/services/database/collection";
+import { createCollection } from "@/services/api/collections";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";

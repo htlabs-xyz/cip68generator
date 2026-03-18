@@ -2,7 +2,7 @@
 "use client";
 
 import { toast } from "@/hooks/use-toast";
-import { deleteMedia, getMedia } from "@/services/database/media";
+import { deleteMedia, getMedia } from "@/services/api/media";
 import { uploadIPFS } from "@/services/upload";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";

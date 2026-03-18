@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect } from "react";
 import useMetadataStore, { MetadataStore } from "./store";
-import { addMetadata, deleteMetadata, getMetadata } from "@/services/database/metadata";
+import { addMetadata, deleteMetadata, getMetadata } from "@/services/api/metadata";
 import { toast } from "@/hooks/use-toast";
 import { routes } from "@/constants/routes";
 import { useRouter } from "next/navigation";

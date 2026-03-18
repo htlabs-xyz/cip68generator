@@ -16,7 +16,7 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import CopyButton from "@/components/common/copy-button";
 import { useQuery } from "@tanstack/react-query";
-import getUserStatistics from "@/services/user/get-statistic";
+import getUserStatistics from "@/services/api/user";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useWallet } from "@/hooks/use-wallet";
 

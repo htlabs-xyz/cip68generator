@@ -1,7 +1,6 @@
 "use client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import WalletItem from "./wallet-item";
-import { useSession } from "next-auth/react";
 import { useWallet } from "@/hooks/use-wallet";
 import { BrowserWallet, Wallet } from "@meshsdk/core";
 import { appNetwork } from "@/constants";
@@ -18,18 +17,17 @@ export default function WalletConnect() {
     }
     get();
   }, []);
-  const { data: session, status } = useSession();
-  const { signIn, wallet } = useWallet();
+  const { signIn, wallet, address } = useWallet();
 
   const handleConnectWallet = async function (wallet: Wallet) {
-    await signIn(session, wallet);
+    await signIn(wallet);
   };
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (address) {
       redirect("/dashboard");
     }
-  }, [status, router]);
+  }, [address, router]);
 
   return (
     <Card className="w-full mx-auto">

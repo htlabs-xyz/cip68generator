@@ -1,7 +1,7 @@
 "use client";
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { isEmpty, isNil } from "lodash";
-import { createCollectionWithData } from "@/services/database/collection";
+import { createCollectionWithData } from "@/services/api/collections";
 import { convertObject } from "@/utils";
 import { toast } from "@/hooks/use-toast";
 import { parseError } from "@/utils/error/parse-error";

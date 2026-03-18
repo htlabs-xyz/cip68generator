@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { filterDefault } from "@/constants";
-import { getMedia } from "@/services/database/media";
+import { getMedia } from "@/services/api/media";
 import FileDisplay from "../file-display";
 import Link from "next/link";
 import { useJsonBuilderStore } from "./store";

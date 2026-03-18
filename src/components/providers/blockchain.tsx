@@ -1,16 +1,14 @@
 "use client";
 
 import { isEmpty, isNil } from "lodash";
-import { signOut, useSession } from "next-auth/react";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { useWallet, WalletStoreType } from "@/hooks/use-wallet";
 import { BrowserWallet, Wallet } from "@meshsdk/core";
 
 export default function BlockchainProvider({ children }: PropsWithChildren) {
-  const { signIn, wallet, disconnect, browserWallet, address }: WalletStoreType = useWallet();
-  const { data: session, status } = useSession();
-
+  const { signIn, wallet, disconnect, browserWallet, address, user }: WalletStoreType = useWallet();
   const [wallets, setWallets] = useState<Wallet[]>([]);
+
   useEffect(() => {
     async function get() {
       setWallets(await BrowserWallet.getAvailableWallets());
@@ -20,23 +18,17 @@ export default function BlockchainProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     (async () => {
-      if (isEmpty(wallets)) {
-        return;
-      }
-      if (isNil(session) || status === "unauthenticated") {
-        disconnect();
+      if (isEmpty(wallets)) return;
+      if (isNil(user)) {
+        // Not authenticated, don't auto-reconnect
         return;
       }
       if (isNil(wallet)) {
-        const walletConnect = session?.user ? wallets.find((w) => w.name.toLocaleLowerCase() === session.user?.wallet?.toLocaleLowerCase()) : null;
-        if (!walletConnect) {
-          await signOut();
-          return;
-        }
-        signIn(session, walletConnect);
+        // User has stored state but wallet not connected - can't auto-reconnect without knowing which wallet was used
+        return;
       }
     })();
-  }, [disconnect, session, signIn, status, wallet, wallets, browserWallet, address]);
+  }, [disconnect, user, signIn, wallet, wallets, browserWallet, address]);
 
   return <>{children}</>;
 }

@@ -9,7 +9,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { deleteCollection, updateCollection } from "@/services/database/collection";
+import { deleteCollection, updateCollection } from "@/services/api/collections";
 import { toast } from "@/hooks/use-toast";
 import {
   AlertDialog,

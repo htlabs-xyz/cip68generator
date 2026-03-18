@@ -7,7 +7,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { IoIosHelpCircleOutline } from "react-icons/io";
 import { MdOutlineFeedback } from "react-icons/md";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
 import { useWallet } from "@/hooks/use-wallet";
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
@@ -15,7 +14,7 @@ import { appNetwork, appSocialMedia, decialPlace } from "@/constants";
 import CopyButton from "../copy-button";
 import { Separator } from "@/components/ui/separator";
 export default function Account() {
-  const { wallet, address, browserWallet, stakeAddress } = useWallet();
+  const { wallet, address, browserWallet, stakeAddress, disconnect } = useWallet();
   const [balance, setBalance] = useState<number>(0);
 
   useEffect(() => {
@@ -96,7 +95,7 @@ export default function Account() {
         <div className={cn("leading-0 h-[1px] overflow-hidden bg-slate-500")} />
         <div className={cn("flex flex-col items-center gap-3")}>
           <Button
-            onClick={() => signOut()}
+            onClick={() => disconnect()}
             className={cn("w-[180px] cursor-pointer rounded-[35px] bg-slate-500 text-center text-[14px] leading-[25px] text-gray-400")}
           >
             Log out

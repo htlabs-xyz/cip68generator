@@ -1,25 +1,16 @@
 "use client";
 
-import Loading from "@/app/(loading)/loading";
 import DesktopDashboardLayout from "@/components/layouts/desktop-dashboard";
-import { useSession } from "next-auth/react";
+import { useWallet } from "@/hooks/use-wallet";
 import { PropsWithChildren } from "react";
 import { redirect } from "next/navigation";
 
 export default function DashboardLayout({ children }: Readonly<PropsWithChildren>) {
-  const session = useSession();
+  const { address } = useWallet();
 
-  if (session.status === "loading") {
-    return <Loading />;
-  }
-
-  if (session.status === "unauthenticated") {
+  if (!address) {
     redirect("/login");
   }
 
-  return (
-    <>
-      <DesktopDashboardLayout>{children}</DesktopDashboardLayout>
-    </>
-  );
+  return <DesktopDashboardLayout>{children}</DesktopDashboardLayout>;
 }

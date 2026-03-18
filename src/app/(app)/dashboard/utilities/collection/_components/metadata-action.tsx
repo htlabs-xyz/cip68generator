@@ -7,7 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { routes } from "@/constants/routes";
 import { useMetadataContext } from "@/contexts/metadata";
 import { toast } from "@/hooks/use-toast";
-import { updateMetadata } from "@/services/database/metadata";
+import { updateMetadata } from "@/services/api/metadata";
 import { PMetadata } from "@/types";
 import { parseError } from "@/utils/error/parse-error";
 import { isEmpty, isNil } from "lodash";
